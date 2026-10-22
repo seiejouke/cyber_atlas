@@ -1,0 +1,39 @@
+test_equal_layer_heights (test_core.GeometryTests.test_equal_layer_heights) ... ok
+test_equal_radial_widths (test_core.GeometryTests.test_equal_radial_widths) ... ok
+test_invalid_segment_count_rejected (test_core.GeometryTests.test_invalid_segment_count_rejected) ... ok
+test_mesh_is_closed_and_consistently_wound (test_core.GeometryTests.test_mesh_is_closed_and_consistently_wound) ... ok
+test_more_arc_segments_preserve_coordinates (test_core.GeometryTests.test_more_arc_segments_preserve_coordinates) ... ok
+test_neighbor_layers_share_boundaries (test_core.GeometryTests.test_neighbor_layers_share_boundaries) ... ok
+test_sectors_have_equal_angles (test_core.GeometryTests.test_sectors_have_equal_angles) ... ok
+test_add_does_not_mutate_original (test_core.ModelTests.test_add_does_not_mutate_original) ... ok
+test_delete_frees_coordinate (test_core.ModelTests.test_delete_frees_coordinate) ... ok
+test_delete_missing_rejected (test_core.ModelTests.test_delete_missing_rejected) ... ok
+test_duplicate_coordinate_rejected (test_core.ModelTests.test_duplicate_coordinate_rejected) ... ok
+test_duplicate_id_rejected (test_core.ModelTests.test_duplicate_id_rejected) ... ok
+test_edit_preserves_identity (test_core.ModelTests.test_edit_preserves_identity) ... ok
+test_empty_roundtrip (test_core.ModelTests.test_empty_roundtrip) ... ok
+test_example_has_fourteen_distinct_nodes (test_core.ModelTests.test_example_has_fourteen_distinct_nodes) ... ok
+test_full_grid_has_595_positions (test_core.ModelTests.test_full_grid_has_595_positions) ... ok
+test_import_does_not_silently_drop_bad_nodes (test_core.ModelTests.test_import_does_not_silently_drop_bad_nodes) ... ok
+test_invalid_node_fields_rejected (test_core.ModelTests.test_invalid_node_fields_rejected) ... ok
+test_move_does_not_rearrange_other_nodes (test_core.ModelTests.test_move_does_not_rearrange_other_nodes) ... ok
+test_move_into_existing_coordinate_rejected (test_core.ModelTests.test_move_into_existing_coordinate_rejected) ... ok
+test_next_free_prefers_current_sector (test_core.ModelTests.test_next_free_prefers_current_sector) ... ok
+test_original_html_formats_supported (test_core.ModelTests.test_original_html_formats_supported) ... ok
+test_roundtrip (test_core.ModelTests.test_roundtrip) ... ok
+test_sector_reordering_rejected (test_core.ModelTests.test_sector_reordering_rejected) ... ok
+test_unknown_format_rejected (test_core.ModelTests.test_unknown_format_rejected) ... ok
+test_backup_retains_previous_document (test_storage.StorageTests.test_backup_retains_previous_document) ... ok
+test_byte_order_mark_supported (test_storage.StorageTests.test_byte_order_mark_supported) ... ok
+test_corrupt_atlas_does_not_replace_good_backup (test_storage.StorageTests.test_corrupt_atlas_does_not_replace_good_backup) ... ok
+test_creates_parent_folder (test_storage.StorageTests.test_creates_parent_folder) ... ok
+test_empty_document_roundtrip (test_storage.StorageTests.test_empty_document_roundtrip) ... ok
+test_failed_atomic_replace_leaves_original_untouched (test_storage.StorageTests.test_failed_atomic_replace_leaves_original_untouched) ... ok
+test_file_size_limit (test_storage.StorageTests.test_file_size_limit) ... ok
+test_malformed_json_rejected (test_storage.StorageTests.test_malformed_json_rejected) ... ok
+test_unicode_notes_roundtrip (test_storage.StorageTests.test_unicode_notes_roundtrip) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 0.020s
+
+OK

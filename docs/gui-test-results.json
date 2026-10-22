@@ -1,0 +1,18 @@
+{
+  "passed": 13,
+  "checks": [
+    "initial render: 14 occupied meshes, no empty-cell actors",
+    "surface picking and click-to-edit",
+    "drag rotation and zoom do not change coordinates or selection",
+    "layer filter and keyboard note traversal",
+    "create, edit, move and automatic local save",
+    "coordinate collision prevention and unsaved-edit cancel/discard",
+    "delete with previous-version backup",
+    "JSON export and original HTML v3 import",
+    "empty atlas import and first-volume allocation",
+    "invalid imports leave the current document untouched",
+    "minimum-window layout remains usable",
+    "no Tk callback errors",
+    "close cancel and save-on-close"
+  ]
+}

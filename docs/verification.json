@@ -1,0 +1,23 @@
+{
+  "environment": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "python": "3.13.5",
+    "tk": 8.6,
+    "vtk": "9.6.2",
+    "numpy": "2.3.5",
+    "display": "Xvfb 1600x1000x24"
+  },
+  "startup_checks_passed": 4,
+  "startup_checks": [
+    "main.py fresh launch creates the starter atlas",
+    "--empty does not clear an existing atlas",
+    "--empty creates a genuinely empty new atlas",
+    "startup backup recovery preserves the corrupt original"
+  ],
+  "untested_platforms": [
+    "Windows",
+    "macOS",
+    "physical Arch/Sway desktop"
+  ]
+}

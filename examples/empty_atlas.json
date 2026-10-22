@@ -1,0 +1,31 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 4,
+  "sector_order": [
+    "Ethernet",
+    "ARP",
+    "IPv4",
+    "IPv6",
+    "ICMP",
+    "TCP",
+    "UDP",
+    "DNS",
+    "HTTP",
+    "HTTPS",
+    "SSH",
+    "FTP",
+    "SMB",
+    "TLS",
+    "DHCP",
+    "Wi-Fi",
+    "Other"
+  ],
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "nodes": []
+}
