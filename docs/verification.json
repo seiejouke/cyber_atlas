@@ -1,7 +1,7 @@
 {
   "current_build": {
     "date": "2026-10-24",
-    "app_version": "0.5.3",
+    "app_version": "0.6.0",
     "environment": {
       "system": "Windows",
       "architecture": "AMD64",
@@ -88,13 +88,15 @@
       "Layer-colored spheres use the midpoint of each saved radial and angular footprint",
       "Occupied layer/depth rings have faint, unpickable orbital guides",
       "Selected and hovered nodes retain labels while the Labels option controls all other labels",
-      "Sphere clicks select, pick up and lock nodes; Save preserves identity, notes and footprint",
+      "Sphere and label clicks select saved nodes for title and note editing without moving them",
       "Hidden larger footprints continue to reserve all of their saved slots",
-      "New nodes use a 1/16 footprint while Blocks retains the last chosen block size",
-      "Switching views preserves dirty editor text, placement, selection, filters and camera",
-      "Custom layers, empty protocols, Center placement and Empty atlas work in both views",
-      "Clicking a layer's empty center anchor creates a full-center note that saves, picks, edits and connects like other nodes"
+      "New nodes use dropdowns and sliders only; occupied positions disable Create node",
+      "Saved-node coordinate dropdowns and sliders are read-only while Blocks retains spatial placement",
+      "New radial nodes use a 1/16 footprint while full Center nodes sit on the layer axis",
+      "Switching views preserves dirty editor text, current draft, selection, filters and camera",
+      "Custom layers, empty protocols, Center creation and Empty atlas work in both views"
     ],
+    "nodes_interaction": "New node uses dropdowns and sliders with a live validity preview; viewport clicks only select saved spheres for title and note editing",
     "connection_checks": [
       "Layer anchors bound the spine with no extension beyond the first or last anchor",
       "Sparse adjacency joins ring neighbors and nearest nodes on the next occupied ring",
@@ -130,6 +132,13 @@
     ]
   },
   "previous_builds": [
+    {
+      "date": "2026-10-24",
+      "app_version": "0.5.3",
+      "core_tests_passed": 96,
+      "gui_workflow_checks_passed": 72,
+      "atlas_file_version": 8
+    },
     {
       "date": "2026-10-24",
       "app_version": "0.5.2",

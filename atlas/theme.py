@@ -88,6 +88,7 @@ class BandSlider(tk.Canvas):
     def __init__(self, parent, variable: tk.IntVar, label_font=None):
         super().__init__(parent, height=36, bg=PANEL, highlightthickness=0, takefocus=True)
         self.variable = variable
+        self.enabled = True
         self.label_font = label_font or ("TkDefaultFont", 8)
         self._trace_id = variable.trace_add("write", lambda *_: self.draw())
         self.bind("<Configure>", lambda _: self.draw())
@@ -101,6 +102,8 @@ class BandSlider(tk.Canvas):
         self.bind("<FocusOut>", lambda _: self.draw())
 
     def _set(self, value: int) -> str:
+        if not self.enabled:
+            return "break"
         self.variable.set(max(CENTER_DEPTH, min(CENTER_DEPTH + len(POSITIONS) - 1, value)))
         return "break"
 
@@ -108,6 +111,8 @@ class BandSlider(tk.Canvas):
         return self._set(self.variable.get() + direction)
 
     def _pointer(self, event) -> str:
+        if not self.enabled:
+            return "break"
         self.focus_set()
         left, right = self._track_bounds()
         return self._set(CENTER_DEPTH + round((event.x - left) / max(1, right - left) * (len(POSITIONS) - 1)))
@@ -115,21 +120,27 @@ class BandSlider(tk.Canvas):
     def _track_bounds(self) -> tuple[float, float]:
         return 26, max(27, self.winfo_width() - 26)
 
+    def set_enabled(self, enabled: bool) -> None:
+        self.enabled = bool(enabled)
+        self.configure(takefocus=self.enabled, cursor="" if self.enabled else "arrow")
+        self.draw()
+
     def draw(self) -> None:
         self.delete("all")
         left, right = self._track_bounds()
         x = left + (right - left) * (self.variable.get() - CENTER_DEPTH) / (len(POSITIONS) - 1)
+        active, inactive = (ACCENT, MUTED) if self.enabled else ("#546778", "#3d5061")
         self.create_line(left, 11, right, 11, fill=BORDER, width=3)
-        self.create_line(left, 11, x, 11, fill=ACCENT, width=3)
+        self.create_line(left, 11, x, 11, fill=active, width=3)
         for index, label in enumerate(POSITIONS):
             stop = left + (right - left) * index / (len(POSITIONS) - 1)
             selected = self.variable.get() == CENTER_DEPTH + index
-            self.create_line(stop, 8, stop, 16, fill=ACCENT if selected else MUTED, tags="stop")
+            self.create_line(stop, 8, stop, 16, fill=active if selected else inactive, tags="stop")
             self.create_text(stop, 22, text=label, anchor="n", font=self.label_font,
-                             fill=ACCENT if selected else MUTED, tags="label")
-        self.create_oval(x - 5, 6, x + 5, 16, fill=ACCENT, outline=ACCENT, tags="handle")
-        if has_focus(self):
-            self.create_oval(x - 8, 3, x + 8, 19, outline=ACCENT)
+                             fill=active if selected else inactive, tags="label")
+        self.create_oval(x - 5, 6, x + 5, 16, fill=active, outline=active, tags="handle")
+        if self.enabled and has_focus(self):
+            self.create_oval(x - 8, 3, x + 8, 19, outline=active)
 
 
 class SlotSlider(tk.Canvas):
@@ -139,6 +150,7 @@ class SlotSlider(tk.Canvas):
         super().__init__(parent, height=36, bg=PANEL, highlightthickness=0, takefocus=True)
         self.variable = variable
         self.on_begin, self.on_commit = on_begin, on_commit
+        self.enabled = True
         self.label_font = label_font or ("TkDefaultFont", 8)
         self.span = 1
         self.free_starts = frozenset(range(ANGULAR_SLOTS))
@@ -170,6 +182,8 @@ class SlotSlider(tk.Canvas):
         self._set(round((event.x - left) / max(1, right - left) * (ANGULAR_SLOTS - 1)))
 
     def _press(self, event) -> str:
+        if not self.enabled:
+            return "break"
         self.focus_set()
         self._dragging = True
         self.on_begin()
@@ -177,18 +191,20 @@ class SlotSlider(tk.Canvas):
         return "break"
 
     def _drag(self, event) -> str:
-        if self._dragging:
+        if self.enabled and self._dragging:
             self._pointer(event)
         return "break"
 
     def _release(self, event) -> str:
-        if self._dragging:
+        if self.enabled and self._dragging:
             self._pointer(event)
             self._dragging = False
             self.on_commit()
         return "break"
 
     def _key(self, slot: int) -> str:
+        if not self.enabled:
+            return "break"
         self.on_begin()
         self._set(slot)
         self.on_commit()
@@ -197,11 +213,19 @@ class SlotSlider(tk.Canvas):
     def cancel_drag(self) -> None:
         self._dragging = False
 
+    def set_enabled(self, enabled: bool) -> None:
+        self.enabled = bool(enabled)
+        if not self.enabled:
+            self.cancel_drag()
+        self.configure(takefocus=self.enabled, cursor="" if self.enabled else "arrow")
+        self.draw()
+
     def draw(self) -> None:
         self.delete("all")
         start = int(self.variable.get()) - 1
         selected = {(start + offset) % ANGULAR_SLOTS for offset in range(self.span)}
-        color = ACCENT if start in self.free_starts else ERROR
+        color = (ACCENT if start in self.free_starts else ERROR) if self.enabled else "#546778"
+        inactive = MUTED if self.enabled else "#3d5061"
         left, right = self._track_bounds()
         step = (right - left) / (ANGULAR_SLOTS - 1)
         self.create_line(left, 11, right, 11, fill=BORDER, width=3)
@@ -212,12 +236,13 @@ class SlotSlider(tk.Canvas):
                     self.create_line(x - step, 11, x, 11, fill=color, width=3, tags="range")
                 self.create_rectangle(x - 4, 6, x + 4, 16, fill=color, outline="", tags=("footprint", f"slot-{slot}"))
             free = slot in self.free_starts
-            self.create_line(x, 8, x, 16, fill=color if slot in selected else MUTED if free else ERROR,
+            stop_color = color if slot in selected else inactive if free or not self.enabled else ERROR
+            self.create_line(x, 8, x, 16, fill=stop_color,
                              tags=("stop", "free" if free else "blocked", f"slot-{slot}"))
             if slot in (0, 3, 7, 11, 15):
                 self.create_text(x, 22, text=f"{slot + 1:02d}", anchor="n", font=self.label_font,
-                                 fill=color if slot in selected else MUTED, tags="label")
+                                 fill=color if slot in selected else inactive, tags="label")
         x = left + start * step
         self.create_oval(x - 5, 6, x + 5, 16, fill=color, outline=color, tags="handle")
-        if has_focus(self):
+        if self.enabled and has_focus(self):
             self.create_oval(x - 8, 3, x + 8, 19, outline=color)

@@ -96,6 +96,6 @@ test_unicode_notes_roundtrip (test_storage.StorageTests.test_unicode_notes_round
 test_raw_focus_path_tolerates_combobox_popdown_and_destroyed_window (test_theme.ThemeTests.test_raw_focus_path_tolerates_combobox_popdown_and_destroyed_window) ... ok
 
 ----------------------------------------------------------------------
-Ran 96 tests in 0.198s
+Ran 96 tests in 0.189s
 
 OK

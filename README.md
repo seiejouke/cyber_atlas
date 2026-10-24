@@ -62,7 +62,8 @@ system packages or trying to compile VTK as a first step.
 ## First use
 
 The first launch creates a local atlas containing the 14 starter notes from
-the HTML concept. Select a block or sphere to edit its title, coordinates, and notes.
+the HTML concept. Blocks support coordinate editing; clicking a sphere in
+Nodes edits only its title and personal notes.
 
 Use the **Blocks / Nodes** switch to change the view. Nodes draws one small,
 equally sized sphere per note, using its layer color and saved layer, radial
@@ -73,15 +74,15 @@ show all labels that fit. Custom label formats and optional protocols work
 in both views.
 
 Enable **Connections** beside Blocks/Nodes to link adjacent visible spheres.
-Lines use their layer color; selected-node links are brighter. Click a layer's
-center sphere or label to add its title, protocol and notes; the saved center
-node then selects and edits like any other sphere. The vertical spine stops at
-the first and last center nodes.
+Lines use their layer color; selected-node links are brighter. Create a center
+node with **New node** and the radial slider's **Center** stop; its saved sphere
+then selects and edits like any other node. The vertical spine stops at the
+first and last center nodes.
 Connections are derived from saved positions and are not stored in JSON.
 
-Switching views preserves the camera, filters, notes and current draft,
-including a preview that is still being placed. The view choice lasts for
-the current session and does not change saved or exported atlas data.
+Switching views preserves the camera, filters, notes and current draft. The
+view choice lasts for the current session and does not change saved or exported
+atlas data.
 
 [See Nodes view](docs/nodes-preview.png).
 
@@ -133,17 +134,27 @@ design is included in saved/exported JSON. A design supports 1–64 layers and
 
 [See the design editor](docs/design-editor.png).
 
+In **Nodes**, press **New node**, choose its layer and protocol from the
+dropdowns, and choose its radial position and start slot with the sliders. The
+preview updates immediately; **Create node** saves a valid position. Occupied
+positions turn red and disable creation. Clicking empty space does nothing.
+Clicking a saved sphere only opens its title and personal notes for editing;
+its coordinate controls remain read-only. Drag and wheel continue to rotate,
+pan and zoom the view.
+
+In **Blocks**, the spatial workflow remains:
 **Add here -> choose size -> move the preview -> left-click to lock -> write your note -> Save node.**
 
 Add here keeps the current layer, protocol and radial position, and finds
 the next free space around that ring. New blocks default to **1/16 (22.5
 degrees)**. Your last explicitly chosen size is remembered between additions
 during the current session, even when you select a differently sized block.
-In Nodes view, **Block size** is hidden and newly added notes use **1/16**,
+In Nodes view, **Block size** is hidden and newly added radial notes use **1/16**,
 regardless of the remembered Blocks size. Existing notes keep their saved
 size: a wider block still reserves its original slots, shown by the Start
 slot slider's footprint, even though every sphere has the same marker size.
-Switch back to Blocks to see or edit those dimensions.
+Center nodes use **Full** automatically so their sphere sits on the layer axis.
+Switch back to Blocks to see those saved dimensions.
 
 Each ring has 16 angular slots. A **1/16** block occupies one slot, **1/8**
 occupies two adjacent slots, **1/4** occupies four, **1/2** occupies eight,
@@ -156,11 +167,10 @@ and **Full** occupies all sixteen. Sizes can be mixed. Start slot is numbered
 red stops mark starts that would overlap another block at the chosen size.
 Wrapping footprints highlight both ends and show **Slots 16 → 01**.
 
-Drag to preview the start position and **release on a valid slot to lock
-it**. Releasing on a blocked slot keeps the red preview and leaves Save
-disabled. Left/Right step one slot; Home/End select the first/last slot.
-Escape cancels a drag and returns to the previous locked position. Releasing
-the slider does not start mouse-following mode; Save node commits its lock.
+In Nodes, dragging this slider updates the creation preview and **Create node**
+saves it. In Blocks, releasing a valid slot locks the preview. Releasing on a
+blocked slot keeps it red and disables saving. Left/Right step one slot;
+Home/End select the first/last slot.
 
 Existing blocks stay fixed. Deleting leaves an empty gap that can be reused.
 Resizing grows or shrinks the selected block clockwise from its start slot.
@@ -168,7 +178,7 @@ A resize or move that overlaps another block is rejected without saving.
 If a ring has no suitable space, Add here reports that it is full for that
 size; it keeps the current radial depth. Choose another size or position.
 
-Placement has two states, shown in the editor and viewport:
+Block placement has two states, shown in the editor and viewport:
 
 - **Placing:** Add here starts a preview that follows the mouse on the editor's
   current OSI layer. A cyan outline shows a valid position; red indicates an
@@ -221,20 +231,21 @@ saved volume is visible.
 | Rotate the atlas | Left-button drag |
 | Pan | Shift + drag, or middle-button drag |
 | Zoom | Mouse wheel; `+` / `-` with viewport focused |
-| Select a note | Click a visible block, sphere or label |
-| Lock a moving block | Left-click a valid location |
-| Pick up a locked draft or selected block | Left-click the block again |
-| Cancel a move | Escape restores its last locked position |
-| Place a new block | Add here, then click to lock on the editor's current OSI layer |
+| Edit a node's title and notes | Click a saved sphere or its label |
+| Create a node | New node, then use the dropdowns and sliders; Create node saves it |
+| Lock a moving block | In Blocks, left-click a valid location |
+| Pick up a locked draft or selected block | In Blocks, left-click the block again |
+| Cancel a move | In Blocks, Escape restores its last locked position |
+| Place a new block | In Blocks, Add here, then click to lock on the selected layer |
 | Choose block size | Block size dropdown in Blocks view; Save node commits a resize |
-| Set the start slot | Drag the Start slot slider; releasing a valid position locks it; Left/Right and Home/End also work |
+| Set the start slot | Drag the slider or use Left/Right and Home/End; Nodes previews, Blocks locks on release |
 | Reset the camera | Reset view, or `R` in the viewport |
 | Rotate using keys | Arrow keys in the viewport |
 | Next / previous visible note | Tab / Shift + Tab in the viewport |
 | Move from viewport to editor | Enter |
 | Select Center or a radial band | Click or drag its slider; left/right keys when focused; Home/End for first/last |
-| Save node | Ctrl + S |
-| Add a block at the current position | Add here, or Ctrl + N |
+| Save or create | Ctrl + S |
+| Start a new node/block | New node or Add here, or Ctrl + N |
 | Start with no blocks | Empty atlas in the top bar |
 | Customize layers, protocols, field names and labels | Edit design in the top bar |
 | Import JSON | Ctrl + O |
@@ -336,10 +347,11 @@ so filtering never allows accidental overlaps.
 
 Nodes uses these same coordinates and occupancy rules, with a uniform sphere
 at each note's position instead of its curved block mesh. Spheres do not grow
-with saved block sizes. Selection, click-to-pick-up, click-to-lock, Escape
-and both position sliders work in either view. A full Center note sits on the
-layer axis. Connections join neighbors on the same ring and nearest neighbors
-on the next occupied ring, never across layers.
+with saved block sizes. New nodes are positioned only with the editor's
+dropdowns and sliders. Viewport clicks select saved nodes for title and note
+editing without moving them. A full Center note sits on the layer axis.
+Connections join neighbors on the same ring and nearest neighbors on the next
+occupied ring, never across layers.
 
 Protocols no longer reserve angular sectors. Choose a protocol, add your own
 in Edit design, or use `Other` in the preset. Protocols can occur at different angles in
@@ -404,9 +416,9 @@ sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
 clearing and rebuilding lists, legacy migration and storage. The desktop smoke test exercises
-the actual Tk controls, VTK rendering and picking, Center, Add here, moving,
-deleting, protocol filtering, design editing, view switching, sphere picking,
-placement with saved footprints, JSON import/export and unsaved drafts. All
+the actual Tk controls, VTK rendering and picking, Center, Blocks placement,
+Nodes control-only creation and note editing, deleting, protocol filtering,
+design editing, view switching, JSON import/export and unsaved drafts. All
 **96 core tests and 72 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 

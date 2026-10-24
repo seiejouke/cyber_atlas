@@ -112,26 +112,19 @@ def check_node_view(root, app, path, checks):
     checks.append("Blocks/Nodes switches preserve dirty titles, notes, selection, camera and saved data; Nodes hides block size and restores the Blocks label choice")
 
     app._load_editor(wide)
-    app.begin_placement()
-    app._hover_at(*point(target(12)))
-    assert app.scene.preview_node.slot == 12 and app.scene.preview_node.span == 4
-    assert app._floating_position == (2, 12)
-    app.name_var.set("Moving draft title")
-    app.notes.insert("end", "\nStill moving.")
-    preview = app.scene.preview_node
-    floating, origin, form = app._floating_position, app._placement_origin, app._form_state()
+    assert app.editor_heading.cget("text") == "EDIT NOTE"
+    assert app.layer_box.instate(["disabled"]) and app.protocol_box.instate(["disabled"])
+    assert not app.scale_widget.enabled and not app.slot_slider.enabled
+    before_form = app._form_state()
+    app.scale_widget.event_generate("<Home>")
+    app.slot_slider.event_generate("<End>")
+    assert app._form_state() == before_form
     app.set_view_mode("blocks")
+    assert not app.layer_box.instate(["disabled"]) and app.scale_widget.enabled and app.slot_slider.enabled
     app.set_view_mode("nodes")
     _pump(root)
-    assert app.placement_state == "placing" and app.scene.preview_node == preview
-    assert app._floating_position == floating and app._placement_origin == origin and app._form_state() == form
-    assert app.canvas.find_withtag("preview-halo") and app.save_button.instate(["disabled"])
-    assert camera() == original_camera and path.read_bytes() == saved_bytes
-    app.cancel_placement()
-    assert app.slot_var.get() == "03" and app.name_var.get() == "Moving draft title"
-    app._load_editor(wide)
-    _pump(root)
-    checks.append("switching views during placement preserves the floating preview, original lock, wide footprint and text without saving")
+    assert app._form_state() == before_form and app.selected == wide.id
+    checks.append("saved Nodes expose title and notes while coordinate dropdowns and sliders stay read-only; Blocks restores its placement controls")
 
     assert set(app.scene.guides) == {node.position for node in fixture.nodes}
     assert all(not actor.GetPickable() for actor in app.scene.guides.values())
@@ -163,20 +156,20 @@ def check_node_view(root, app, path, checks):
     click(wide)
     assert app.selected == wide.id and app.placement_state == "locked"
     click(wide)
-    assert app.selected == wide.id and app.placement_state == "placing"
-    assert app.scene.position_at(*point(target(12)), wide.layer, span=wide.span) == (2, 12)
-    app._hover_at(*point(target(12)))
-    click(target(12))
-    assert app.placement_state == "locked" and app.slot_var.get() == "13"
-    assert app.scene.preview_node.slot == 12 and app.scene.preview_node.span == 4
-    app._hover_at(*point(target(0)))
-    assert app.scene.preview_node.slot == 12
-    assert path.read_bytes() == saved_bytes and app.document.get(wide.id) == wide
+    assert app.selected == wide.id and app.placement_state == "locked" and app.scene.preview_node is None
+    empty_target = target(6, span=1, depth=4)
+    click(empty_target)
+    assert app.selected == wide.id and app._form_state() == before_form
+    app.name_var.set("Edited from the sphere")
+    app.notes.delete("1.0", "end")
+    app.notes.insert("1.0", "Mouse selection edits this note without moving it.")
     assert app.save_node()
-    moved = app.document.get(wide.id)
-    assert moved == replace(wide, slot=12) and read_atlas(path).get(wide.id) == moved
+    edited = app.document.get(wide.id)
+    assert (edited.layer, edited.protocol, edited.depth, edited.slot, edited.span) == (
+        wide.layer, wide.protocol, wide.depth, wide.slot, wide.span)
+    assert edited.name == "Edited from the sphere" and read_atlas(path).get(wide.id) == edited
     assert len(app.document.nodes) == len(fixture.nodes)
-    checks.append("sphere clicks select, pick up and lock at the next location; Save preserves identity, notes and a larger original block footprint")
+    checks.append("sphere and label clicks select notes for editing; repeat and empty-space clicks never move or create nodes")
 
     saved_bytes = path.read_bytes()
     app.protocol_filter_var.set("Visible group")
@@ -184,35 +177,33 @@ def check_node_view(root, app, path, checks):
     _pump(root)
     assert not app.scene.is_visible(blocker)
     assert all(blocker.id not in endpoint_ids for endpoint_ids in app.scene._connection_nodes.values())
-    click(moved)
-    assert app.placement_state == "placing"
-    app._hover_at(*point(target(8)))
-    assert app.scene.preview_node.slot == 8 and not app.scene.preview_valid
-    click(target(8))
-    assert app.placement_state == "placing" and not app.scene.preview_valid
+    app.new_node()
+    assert app.selected is None and app.placement_state == "locked"
+    assert app.editor_heading.cget("text") == "CREATE NODE"
+    assert app.layer_box.instate(["readonly"]) and app.protocol_box.instate(["readonly"])
+    assert app.scale_widget.enabled and app.slot_slider.enabled
+    app.layer_var.set(app._layer_displays[wide.layer])
+    app.depth_var.set(2)
+    app.slot_var.set("10")
+    assert app.scene.preview_node.slot == 9 and not app.scene.preview_valid
+    assert app.save_button.instate(["disabled"])
     assert not app.save_node() and path.read_bytes() == saved_bytes
-    app.canvas.focus_force()
-    app.canvas.event_generate("<Escape>")
-    _pump(root)
-    assert app.placement_state == "locked" and app.slot_var.get() == "13" and not app.dirty
-    assert app.document.get(wide.id) == moved and path.read_bytes() == saved_bytes
+    app.slot_var.set("07")
+    assert app.scene.preview_valid and app.save_button.instate(["!disabled"])
     app.protocol_filter_var.set(app._all_protocols)
     app._filter_changed()
     _pump(root)
     assert any(blocker.id in endpoint_ids for endpoint_ids in app.scene._connection_nodes.values())
-    checks.append("Nodes placement rejects slots reserved by a hidden larger block; Escape restores the saved lock without changing the file")
+    checks.append("Nodes creation uses only dropdowns and sliders; hidden occupied slots disable Create node without changing saved data")
 
-    app.new_node()
-    assert app.placement_state == "placing" and app.size_var.get() == "1/16"
-    assert app._last_size == "1/4" and app.scene.preview_node.span == 1
     app.name_var.set("Small node addition")
     app.notes.insert("1.0", "A new sphere occupies one slot.")
-    click(target(0, span=1))
-    assert app.placement_state == "locked" and app.slot_var.get() == "01"
     assert app.save_node()
     added = app.document.get(app.selected)
-    assert added.span == 1 and added.slot == 0 and added.notes == "A new sphere occupies one slot."
-    assert app.document.get(wide.id) == moved
+    assert app.placement_state == "locked" and app.size_var.get() == "1/16"
+    assert app._last_size == "1/4"
+    assert added.span == 1 and added.slot == 6 and added.notes == "A new sphere occupies one slot."
+    assert app.document.get(wide.id) == edited
     app.set_view_mode("blocks")
     _pump(root)
     assert app.scene.mode == "blocks" and app.labels_var.get() and app.size_box.winfo_ismapped()
@@ -223,7 +214,7 @@ def check_node_view(root, app, path, checks):
     app._load_editor(app.document.get(wide.id))
     app.set_view_mode("nodes")
     _pump(root)
-    checks.append("new spheres use one slot despite the remembered larger Blocks size; returning to Blocks restores that size and preserves saved dimensions")
+    checks.append("Create node saves the slider position with a one-slot footprint; Blocks restores its independent size choice")
 
     without_protocols = app.document.without_protocols()
     assert app.apply_design(without_protocols)
@@ -247,12 +238,16 @@ def check_node_view(root, app, path, checks):
     layer = app.document.design.layers[-1]
     axis_x, axis_y, _ = app.scene.project(app.scene.layer_anchor(layer.id))
     axis_x, axis_y = round(axis_x), round(axis_y)
-    assert app._axis_layer_at(axis_x, axis_y) == layer.id
+    creation_form = app._form_state()
     app.canvas.event_generate("<ButtonPress-1>", x=axis_x, y=axis_y)
     app.canvas.event_generate("<ButtonRelease-1>", x=axis_x, y=axis_y)
     _pump(root)
-    assert app.selected is None and app.placement_state == "locked"
+    assert app.selected is None and app._form_state() == creation_form
+    app.scale_widget.focus_force()
+    app.scale_widget.event_generate("<Home>")
+    _pump(root)
     assert app.depth_var.get() == CENTER_DEPTH and app.size_var.get() == "Full"
+    assert app.slot_var.get() == "01" and not app.slot_slider.enabled
     assert app.scene.preview_node is not None and app.scene.preview_node.span == 16
     app.name_var.set("Center sphere")
     app.notes.insert("1.0", "An empty custom atlas can start with an editable axis note.")
@@ -266,7 +261,12 @@ def check_node_view(root, app, path, checks):
     assert not app.scene.axis_markers[center.layer].GetVisibility()
     assert read_atlas(path) == app.document and not app.dirty
 
-    app.place_at(0, 4)
+    app.new_node()
+    assert app.selected is None and app.save_button.instate(["disabled"])
+    app.depth_var.set(0)
+    app.slot_var.set("05")
+    assert app.size_var.get() == "1/16" and app.slot_slider.enabled
+    assert app.save_button.instate(["!disabled"])
     app.name_var.set("Adjacent sphere")
     app.notes.insert("1.0", "Connected to the editable center node.")
     assert app.save_node()
@@ -281,7 +281,7 @@ def check_node_view(root, app, path, checks):
     assert app.save_node()
     center = app.document.get(center.id)
     assert center.notes.endswith("Saved like every other node.") and read_atlas(path).get(center.id) == center
-    checks.append("clicking an empty center anchor creates a full-center note; it saves, picks, edits and connects like other nodes")
+    checks.append("the radial slider creates a full center note; empty-space clicks do nothing and the saved center sphere edits and connects normally")
 
     root.geometry("1020x780")
     _pump(root)
