@@ -104,21 +104,21 @@ discards pending design edits. Removing an individual entry used by blocks asks 
 choose a replacement. A reassignment that would overlap blocks is rejected;
 move those blocks to free slots before combining their layers.
 
-To rebuild the layer list, use **Remove list** beside Remove in **Layers**.
-It asks **Are you sure?** and clears the layer draft. Add replacements and use
-**Reassign blocks…** for entries that still have blocks. Apply stays disabled
-until every block has a valid layer; overlapping assignments are rejected.
+To rebuild layers: **Remove list → Add layer → Update entry → Reassign
+blocks… → Apply design**. Apply stays disabled until every existing block has
+a layer. A merge that puts blocks in the same slot is rejected; keep more
+layers or move those blocks to free slots first.
 
-**Remove protocols** in **Protocols** asks **Are you sure?**, then **saves the
-empty protocol list immediately**. Existing blocks retain their notes and
-positions and show **No protocol**. The editor and filters update at once;
-adding a replacement protocol is optional. Confirmed protocol removal is
-already saved when you close or cancel the design editor. Pending layer
-edits remain drafts until Apply, including when the layer list is empty.
+Example: after removing the OSI layers, add **File System**, then map each
+removed layer to it under **Reassign blocks…**. If the merge overlaps, add
+more replacement layers and split the assignments. Blocks and notes are never
+discarded automatically.
 
-**No protocol** is an unassigned state, rather than an entry in the protocol
-list. Select it in the block editor or view filter. Adding protocols later
-does not automatically assign them to existing blocks.
+**Remove protocols** saves immediately and changes existing blocks to **No
+protocol**. Adding **Directory**, for example, creates an available protocol
+but does not assign it to those blocks; assign it from each node editor as
+needed. **Layer field name** and **Protocol field name** change captions only,
+not entries or assignments.
 
 Renaming and reordering keep every block attached through stable IDs. The
 design is included in saved/exported JSON. A design supports 1–64 layers and
