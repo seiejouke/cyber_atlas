@@ -2,8 +2,8 @@
 
 A local Python desktop notebook built around your Munsell-inspired design.
 
-**Height = your chosen layer. Radius = detail position. Each block has a fixed size and start slot.**
-Choose 1/16, 1/8 or a larger fraction of the circle for each block. Blocks
+**Height = your chosen layer. Radius = detail position. Choose Blocks or Nodes to view the same atlas.**
+Blocks is the default view. Choose 1/16, 1/8 or a larger fraction of the circle for each block. Blocks
 keep their size and position when others are added or removed. Only occupied
 space is drawn. Center is an optional radial position with the same controls.
 Protocol is an optional block property. The seven-layer OSI design is the starting preset;
@@ -62,7 +62,24 @@ system packages or trying to compile VTK as a first step.
 ## First use
 
 The first launch creates a local atlas containing the 14 starter notes from
-the HTML concept. Select a volume to edit its title, coordinates, and notes.
+the HTML concept. Select a block or sphere to edit its title, coordinates, and notes.
+
+Use the **Blocks / Nodes** switch to change the view. Nodes draws one small,
+equally sized sphere per note, using its layer color and saved layer, radial
+position and start slot. Faint orbital guides appear only for occupied,
+visible rings; guides cannot be selected. A cyan halo marks the selected note.
+Nodes shows labels on hover or selection by default; enable **Labels** to
+show all labels that fit. Custom label formats and optional protocols work
+in both views.
+
+Switching views preserves the camera, filters, notes and current draft,
+including a preview that is still being placed. The view choice lasts for
+the current session and does not change saved or exported atlas data.
+
+[See Nodes view](docs/nodes-preview.png).
+
+Import `examples/nodes_view_atlas.json` to explore a demo with 42 editable
+notes distributed across all seven layers.
 
 To start fresh, click **Empty atlas** in the top bar. The app checks for
 unsaved edits and asks before replacing any saved blocks. It saves an empty
@@ -115,6 +132,11 @@ Add here keeps the current layer, protocol and radial position, and finds
 the next free space around that ring. New blocks default to **1/16 (22.5
 degrees)**. Your last explicitly chosen size is remembered between additions
 during the current session, even when you select a differently sized block.
+In Nodes view, **Block size** is hidden and newly added notes use **1/16**,
+regardless of the remembered Blocks size. Existing notes keep their saved
+size: a wider block still reserves its original slots, shown by the Start
+slot slider's footprint, even though every sphere has the same marker size.
+Switch back to Blocks to see or edit those dimensions.
 
 Each ring has 16 angular slots. A **1/16** block occupies one slot, **1/8**
 occupies two adjacent slots, **1/4** occupies four, **1/2** occupies eight,
@@ -173,7 +195,8 @@ The editor shows the block's angle and available slots at its destination.
 
 Use the layer and protocol dropdowns to filter the view. Filters keep the
 saved block sizes and positions intact. The Labels checkbox controls
-annotations, not the volumes themselves. Labels that would overlap or belong
+annotations, not the notes themselves; in Nodes, hover and selection labels
+remain available when it is unchecked. Labels that would overlap or belong
 to obscured surfaces are omitted to keep the view readable. The selected note
 is prioritized. You can still rotate the map, filter a layer, or use Tab to
 reach a note whose label is hidden.
@@ -186,15 +209,16 @@ saved volume is visible.
 
 | Action | Control |
 | --- | --- |
+| Change the representation | Blocks / Nodes switch; keeps the same atlas and current draft |
 | Rotate the atlas | Left-button drag |
 | Pan | Shift + drag, or middle-button drag |
 | Zoom | Mouse wheel; `+` / `-` with viewport focused |
-| Select a volume | Click a visible surface or label |
+| Select a note | Click a visible block, sphere or label |
 | Lock a moving block | Left-click a valid location |
 | Pick up a locked draft or selected block | Left-click the block again |
 | Cancel a move | Escape restores its last locked position |
 | Place a new block | Add here, then click to lock on the editor's current OSI layer |
-| Choose block size | Block size dropdown; Save node commits a resize |
+| Choose block size | Block size dropdown in Blocks view; Save node commits a resize |
 | Set the start slot | Drag the Start slot slider; releasing a valid position locks it; Left/Right and Home/End also work |
 | Reset the camera | Reset view, or `R` in the viewport |
 | Rotate using keys | Arrow keys in the viewport |
@@ -302,6 +326,11 @@ The UI displays start slots as 01-16. Geometry depends on these coordinates,
 not on block count or node-list order. Occupancy checks include hidden blocks,
 so filtering never allows accidental overlaps.
 
+Nodes uses these same coordinates and occupancy rules, with a uniform sphere
+at each note's position instead of its curved block mesh. Spheres do not grow
+with saved block sizes. Selection, click-to-pick-up, click-to-lock, Escape
+and both position sliders work in either view.
+
 Protocols no longer reserve angular sectors. Choose a protocol, add your own
 in Edit design, or use `Other` in the preset. Protocols can occur at different angles in
 different rings. The old 595-coordinate limit no longer applies; files have
@@ -360,13 +389,15 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The editable-design build includes **89 core tests** covering chosen angular
+The Blocks/Nodes build includes **93 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
-layer reassignment, optional protocols, clearing and rebuilding lists, legacy migration and storage. The desktop smoke test exercises
+layer reassignment, optional protocols, shared node/block coordinates,
+clearing and rebuilding lists, legacy migration and storage. The desktop smoke test exercises
 the actual Tk controls, VTK rendering and picking, Center, Add here, moving,
-deleting, protocol filtering, design editing, JSON import/export and unsaved drafts. All
-**89 core tests and 61 GUI workflow checks passed** on Windows with Python
+deleting, protocol filtering, design editing, view switching, sphere picking,
+placement with saved footprints, JSON import/export and unsaved drafts. All
+**93 core tests and 70 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and launch instructions

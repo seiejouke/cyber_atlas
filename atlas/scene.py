@@ -14,13 +14,13 @@ from vtkmodules.util.numpy_support import vtk_to_numpy
 from vtkmodules.vtkCommonCore import vtkPoints
 from vtkmodules.vtkCommonDataModel import vtkCellArray, vtkPolyData
 from vtkmodules.vtkFiltersCore import vtkFeatureEdges, vtkPolyDataNormals
-from vtkmodules.vtkFiltersSources import vtkLineSource
+from vtkmodules.vtkFiltersSources import vtkLineSource, vtkRegularPolygonSource, vtkSphereSource
 from vtkmodules.vtkRenderingCore import (
     vtkActor, vtkCellPicker, vtkLight, vtkPolyDataMapper, vtkRenderer,
     vtkRenderWindow, vtkWindowToImageFilter,
 )
 
-from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, layout_meshes, wedge_mesh
+from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, layout_meshes, node_position, wedge_mesh
 from .model import ANGULAR_SLOTS, BANDS, Design, LayerId, Node
 
 
@@ -29,6 +29,7 @@ class ProtocolFilter(Enum):
 
 
 NO_PROTOCOL_FILTER = ProtocolFilter.UNASSIGNED
+NODE_RADIUS = .065
 
 
 def rgb(hex_color: str, factor: float = 1.0) -> tuple[float, float, float]:
@@ -53,6 +54,7 @@ def polydata(mesh: Mesh) -> vtkPolyData:
 class Scene:
     def __init__(self, design: Design = Design()) -> None:
         self.design = design
+        self.mode = "blocks"
         self._axis_actors: list[vtkActor] = []
         self.renderer = vtkRenderer()
         self.renderer.SetBackground(rgb("#080f1b"))
@@ -72,7 +74,15 @@ class Scene:
         self.picker.SetTolerance(0.0005)
         self._actor_ids: dict[str, str] = {}
         self.actors: dict[str, tuple[vtkActor, vtkActor]] = {}
+        self.guides: dict[tuple[LayerId, int], vtkActor] = {}
         self.meshes: dict[str, Mesh] = {}
+        sphere = vtkSphereSource()
+        sphere.SetRadius(NODE_RADIUS)
+        sphere.SetThetaResolution(24)
+        sphere.SetPhiResolution(16)
+        self._sphere_mapper = vtkPolyDataMapper()
+        self._sphere_mapper.SetInputConnection(sphere.GetOutputPort())
+        self._sphere_mapper.ScalarVisibilityOff()
         self.preview_actor: vtkActor | None = None
         self.preview_node: Node | None = None
         self.preview_valid = True
@@ -124,6 +134,53 @@ class Scene:
         self.set_preview(None)
         self.design = design
         self._reference_axis()
+        self._update_guides()
+
+    def set_mode(self, mode: str) -> None:
+        """Change only the presentation, preserving atlas and camera state."""
+        if mode not in ("blocks", "nodes"):
+            raise ValueError("View mode must be 'blocks' or 'nodes'.")
+        if self.mode == mode:
+            return
+        preview, valid = self.preview_node, self.preview_valid
+        self.mode = mode
+        self.set_nodes(self.nodes)
+        self.set_preview(preview, valid)
+
+    def node_anchor(self, node: Node) -> tuple[float, float, float]:
+        return node_position(node, self.design)
+
+    def _update_guides(self) -> None:
+        for actor in self.guides.values():
+            self.renderer.RemoveActor(actor)
+        self.guides.clear()
+        if self.mode != "nodes":
+            return
+        layer_ids = {layer.id for layer in self.design.layers}
+        for node in self.nodes:
+            key = node.layer, node.depth
+            # set_design is followed by set_nodes when entries are reassigned.
+            if key in self.guides or node.layer not in layer_ids or not self.is_visible(node):
+                continue
+            x, y, z = self.node_anchor(node)
+            circle = vtkRegularPolygonSource()
+            circle.SetNumberOfSides(128)
+            circle.SetRadius(hypot(x, y))
+            circle.SetCenter(0, 0, z)
+            circle.SetNormal(0, 0, 1)
+            circle.GeneratePolygonOff()
+            mapper = vtkPolyDataMapper()
+            mapper.SetInputConnection(circle.GetOutputPort())
+            actor = vtkActor()
+            actor.SetMapper(mapper)
+            actor.PickableOff()
+            prop = actor.GetProperty()
+            prop.SetColor(rgb(self.design.layer(node.layer).color))
+            prop.SetOpacity(.10)
+            prop.SetLineWidth(.8)
+            prop.LightingOff()
+            self.renderer.AddActor(actor)
+            self.guides[key] = actor
 
     def set_nodes(self, nodes: tuple[Node, ...]) -> None:
         # No empty grid cells are ever constructed or rendered.
@@ -136,6 +193,28 @@ class Scene:
         self.nodes = nodes
         for node in nodes:
             mesh = self.meshes[node.id]
+            if self.mode == "nodes":
+                actor = vtkActor()
+                actor.SetMapper(self._sphere_mapper)
+                actor.SetPosition(*self.node_anchor(node))
+                prop = actor.GetProperty()
+                prop.SetAmbient(.45)
+                prop.SetDiffuse(.65)
+                prop.SetSpecular(.45)
+                prop.SetSpecularPower(30)
+                prop.SetInterpolationToPhong()
+                # Keep the public actor pair consistent across view modes.
+                # The UI draws selection halos in screen coordinates.
+                outline = vtkActor()
+                outline.SetMapper(self._sphere_mapper)
+                outline.SetPosition(*self.node_anchor(node))
+                outline.PickableOff()
+                outline.VisibilityOff()
+                self.renderer.AddActor(actor)
+                self.renderer.AddActor(outline)
+                self.actors[node.id] = actor, outline
+                self._actor_ids[actor.GetAddressAsString("")] = node.id
+                continue
             data = polydata(mesh)
             normals = vtkPolyDataNormals()
             normals.SetInputData(data)
@@ -183,6 +262,7 @@ class Scene:
             solid, outline = self.actors[node.id]
             selected = node.id == node_id
             color = self.design.layer(node.layer).color
+            solid.SetScale(1.15 if self.mode == "nodes" and selected else 1.0)
             solid.GetProperty().SetColor(rgb(color, 1.10 if selected else 1.0))
             outline.GetProperty().SetColor(rgb("#fff0c2") if selected else rgb(color, 0.65))
             outline.GetProperty().SetLineWidth(2.0 if selected else 0.85)
@@ -195,19 +275,25 @@ class Scene:
             self.renderer.RemoveActor(self.preview_actor)
             self.preview_actor = None
         if node is not None:
-            data = polydata(wedge_mesh(node, design=self.design))
-            edges = vtkFeatureEdges()
-            edges.SetInputData(data)
-            edges.SetFeatureAngle(25)
-            edges.BoundaryEdgesOn()
-            edges.FeatureEdgesOn()
-            edges.ManifoldEdgesOff()
-            edges.NonManifoldEdgesOff()
-            mapper = vtkPolyDataMapper()
-            mapper.SetInputConnection(edges.GetOutputPort())
-            mapper.SetResolveCoincidentTopologyToPolygonOffset()
+            if self.mode == "nodes":
+                mapper = self._sphere_mapper
+            else:
+                data = polydata(wedge_mesh(node, design=self.design))
+                edges = vtkFeatureEdges()
+                edges.SetInputData(data)
+                edges.SetFeatureAngle(25)
+                edges.BoundaryEdgesOn()
+                edges.FeatureEdgesOn()
+                edges.ManifoldEdgesOff()
+                edges.NonManifoldEdgesOff()
+                mapper = vtkPolyDataMapper()
+                mapper.SetInputConnection(edges.GetOutputPort())
+                mapper.SetResolveCoincidentTopologyToPolygonOffset()
             actor = vtkActor()
             actor.SetMapper(mapper)
+            if self.mode == "nodes":
+                actor.SetPosition(*self.node_anchor(node))
+                actor.GetProperty().SetRepresentationToWireframe()
             actor.PickableOff()
             actor.GetProperty().LightingOff()
             actor.GetProperty().SetColor(rgb("#70cbd8" if valid else "#ee9a9a"))
@@ -216,10 +302,14 @@ class Scene:
             self.preview_actor = actor
             # A separate, unrendered solid makes the whole draft clickable,
             # including its faces, while the visible preview stays an outline.
-            pick_mapper = vtkPolyDataMapper()
-            pick_mapper.SetInputData(data)
             self._preview_pick_actor = vtkActor()
-            self._preview_pick_actor.SetMapper(pick_mapper)
+            if self.mode == "nodes":
+                self._preview_pick_actor.SetMapper(self._sphere_mapper)
+                self._preview_pick_actor.SetPosition(*self.node_anchor(node))
+            else:
+                pick_mapper = vtkPolyDataMapper()
+                pick_mapper.SetInputData(data)
+                self._preview_pick_actor.SetMapper(pick_mapper)
             self._preview_picker.AddPickList(self._preview_pick_actor)
         self.renderer.ResetCameraClippingRange()
 
@@ -239,8 +329,11 @@ class Scene:
     def set_layer_filter(self, layer: LayerId | None) -> None:
         self.layer_filter = layer
         for node in self.nodes:
-            for actor in self.actors[node.id]:
-                actor.SetVisibility(self.is_visible(node))
+            solid, outline = self.actors[node.id]
+            visible = self.is_visible(node)
+            solid.SetVisibility(visible)
+            outline.SetVisibility(visible and self.mode == "blocks")
+        self._update_guides()
         self.renderer.ResetCameraClippingRange()
 
     def set_protocol_filter(self, protocol: str | ProtocolFilter | None) -> None:
@@ -307,8 +400,12 @@ class Scene:
         x, y, depth = self.renderer.GetDisplayPoint()
         return x, self.height - 1 - y, depth
 
-    def position_at(self, x: float, y: float, layer: LayerId) -> tuple[int, int] | None:
-        """Intersect the pointer ray with the editor layer's top plane."""
+    def position_at(self, x: float, y: float, layer: LayerId, span: int = 1) -> tuple[int, int] | None:
+        """Intersect the pointer ray with the active mode's placement plane.
+
+        Nodes snap their footprint midpoint to the pointer. Blocks retain the
+        existing top-face hit test and slot-boundary behavior.
+        """
         if not (0 <= x < self.width and 0 <= y < self.height):
             return None
         ray = []
@@ -321,16 +418,21 @@ class Scene:
         dz = far[2] - near[2]
         if abs(dz) < 1e-8:
             return None
-        t = (self.design.z_base + (self.design.layer_index(layer) + 1) * LAYER_HEIGHT - near[2]) / dz
-        if not 0 <= t <= 1:
-            return None
+        layer_offset = .5 if self.mode == "nodes" else 1
+        plane = self.design.z_base + (self.design.layer_index(layer) + layer_offset) * LAYER_HEIGHT
+        t = (plane - near[2]) / dz
+        # The clip range bounds the geometry currently on screen, not the
+        # editor's whole work plane. Empty outer slots can lie beyond it;
+        # intersect the extended orthographic ray so those remain placeable.
         wx, wy = (near[i] + t * (far[i] - near[i]) for i in (0, 1))
         radius = hypot(wx, wy)
         if radius >= (len(BANDS) + 1) * RADIAL_WIDTH:
             return None
         band = int(radius / RADIAL_WIDTH) - 1
         angle = (atan2(wy, wx) + pi / 2) % (2 * pi)
-        return band, int(angle / (2 * pi) * ANGULAR_SLOTS) % ANGULAR_SLOTS
+        angular_slot = angle / (2 * pi) * ANGULAR_SLOTS
+        slot = round(angular_slot - span / 2) if self.mode == "nodes" else int(angular_slot)
+        return band, slot % ANGULAR_SLOTS
 
     def pick(self, x: float, y: float) -> str | None:
         if not (0 <= x < self.width and 0 <= y < self.height):

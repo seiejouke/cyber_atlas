@@ -22,6 +22,7 @@ from atlas.design_editor import DesignEditor, ReassignDialog, ReassignListDialog
 from atlas.storage import read_atlas, write_atlas
 from atlas.ui import AtlasApp
 from atlas.scene import NO_PROTOCOL_FILTER
+from node_view_checks import check_node_view
 
 
 def pump(root, steps=5):
@@ -1028,6 +1029,7 @@ def main(report_path=None):
 
             check_clear_lists(root, app, path, checks)
             check_immediate_protocol_clear(root, app, path, checks)
+            check_node_view(root, app, path, checks)
 
             root.geometry("1020x780")
             pump(root)
@@ -1058,26 +1060,28 @@ def main(report_path=None):
     print(report)
 
 
-def capture_preview(destination, *, design_editor=False):
+def capture_preview(destination, *, design_editor=False, nodes_view=False):
     """Optional screenshot of the actual UI; Pillow is only needed for capture."""
     from PIL import ImageGrab
 
-    example = "custom_design_atlas.json" if design_editor else "fixed_slots_atlas.json"
+    example = "custom_design_atlas.json" if design_editor else "nodes_view_atlas.json" if nodes_view else "fixed_slots_atlas.json"
     doc = read_atlas(Path(__file__).resolve().parents[1] / "examples" / example)
     with TemporaryDirectory() as folder:
         root = tk.Tk()
         app = AtlasApp(root, Path(folder) / "preview.json", doc)
         try:
             root.geometry("1300x860+30+30")
-            if not design_editor:
+            if nodes_view:
+                app.set_view_mode("nodes")
+            elif not design_editor:
                 app.filter_var.set("2  Data Link")
                 app._filter_changed()
-            app.scene.elevation = pi / 4
-            app.scene.target = [0.0, 0.0, 0.0 if design_editor else -2.0]
-            app.scene.scale = 3.0 if design_editor else 2.0
+            app.scene.elevation = pi / 7 if nodes_view else pi / 4
+            app.scene.target = [0.0, 0.0, 0.0 if design_editor or nodes_view else -2.0]
+            app.scene.scale = 5.5 if nodes_view else 3.0 if design_editor else 2.0
             app.scene._apply_camera()
-            app.select_node("control" if design_editor else "switch")
-            app._set_status("Preview / Mixed 1/8 and 1/16 blocks with empty space")
+            app.select_node("control" if design_editor else "orbit-2-3" if nodes_view else "switch")
+            app._set_status("Nodes view / 42 editable example notes" if nodes_view else "Preview / Mixed 1/8 and 1/16 blocks with empty space")
             app.request_render()
             pump(root, 12)
             capture_widget = root
@@ -1102,9 +1106,12 @@ if __name__ == "__main__":
     parser.add_argument("--report", type=Path, help="Save the JSON test report.")
     parser.add_argument("--preview", type=Path, help="Capture an example UI screenshot (requires Pillow).")
     parser.add_argument("--design-preview", type=Path, help="Capture the design editor (requires Pillow).")
+    parser.add_argument("--nodes-preview", type=Path, help="Capture the actual Nodes view (requires Pillow).")
     args = parser.parse_args()
     main(args.report)
     if args.preview:
         capture_preview(args.preview)
     if args.design_preview:
         capture_preview(args.design_preview, design_editor=True)
+    if args.nodes_preview:
+        capture_preview(args.nodes_preview, nodes_view=True)

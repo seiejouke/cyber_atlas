@@ -1,5 +1,5 @@
 {
-  "passed": 61,
+  "passed": 70,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -59,6 +59,15 @@
     "adding protocols stays optional; explicit assignment, unassignment and No protocol filtering work together",
     "a protocol named No protocol is distinct from the unassigned state",
     "optional protocol state survives JSON, new-block placement, Empty atlas and creating its first block",
+    "Blocks/Nodes switches preserve dirty titles, notes, selection, camera and saved data; Nodes hides block size and restores the Blocks label choice",
+    "switching views during placement preserves the floating preview, original lock, wide footprint and text without saving",
+    "custom-layer spheres pick at their midplanes, occupied rings have unpickable guides, and selected/hover labels remain visible with Labels off",
+    "sphere clicks select, pick up and lock at the next location; Save preserves identity, notes and a larger original block footprint",
+    "Nodes placement rejects slots reserved by a hidden larger block; Escape restores the saved lock without changing the file",
+    "new spheres use one slot despite the remembered larger Blocks size; returning to Blocks restores that size and preserves saved dimensions",
+    "both views support custom layers and an empty protocol list without adding entries or changing the saved atlas",
+    "Empty atlas retains Nodes mode and the custom design; a protocol-free center sphere can be created, saved and picked",
+    "Nodes controls, selected halo and note editor fit the minimum window with a clean saved selection",
     "minimum-window layout remains usable",
     "no Tk callback errors",
     "close cancel and save-on-close"

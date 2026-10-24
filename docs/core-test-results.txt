@@ -67,6 +67,10 @@ test_layer_merge_collision_is_atomic_even_without_protocols (test_design_draft.D
 test_pending_groups_keep_names_and_counts (test_design_draft.DesignDraftTests.test_pending_groups_keep_names_and_counts) ... ok
 test_repeated_clearing_retains_the_latest_removed_names (test_design_draft.DesignDraftTests.test_repeated_clearing_retains_the_latest_removed_names) ... ok
 test_single_remove_still_requires_safe_reassignment (test_design_draft.DesignDraftTests.test_single_remove_still_requires_safe_reassignment) ... ok
+test_all_radial_levels_are_equally_spaced_including_center (test_node_positions.NodePositionTests.test_all_radial_levels_are_equally_spaced_including_center) ... ok
+test_custom_layer_order_controls_height_without_rewriting_note (test_node_positions.NodePositionTests.test_custom_layer_order_controls_height_without_rewriting_note) ... ok
+test_node_positions_share_saved_block_centers (test_node_positions.NodePositionTests.test_node_positions_share_saved_block_centers) ... ok
+test_wrapping_footprints_keep_their_midpoint (test_node_positions.NodePositionTests.test_wrapping_footprints_keep_their_midpoint) ... ok
 test_adding_protocols_does_not_automatically_assign_existing_blocks (test_optional_protocols.OptionalProtocolTests.test_adding_protocols_does_not_automatically_assign_existing_blocks) ... ok
 test_clear_and_reload_keeps_backup_of_original_protocol_assignments (test_optional_protocols.OptionalProtocolTests.test_clear_and_reload_keeps_backup_of_original_protocol_assignments) ... ok
 test_clear_keeps_notes_ids_positions_sizes_and_design_settings (test_optional_protocols.OptionalProtocolTests.test_clear_keeps_notes_ids_positions_sizes_and_design_settings) ... ok
@@ -89,6 +93,6 @@ test_overfull_legacy_ring_load_leaves_file_untouched (test_storage.StorageTests.
 test_unicode_notes_roundtrip (test_storage.StorageTests.test_unicode_notes_roundtrip) ... ok
 
 ----------------------------------------------------------------------
-Ran 89 tests in 0.219s
+Ran 93 tests in 0.215s
 
 OK

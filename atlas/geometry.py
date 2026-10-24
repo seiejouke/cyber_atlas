@@ -33,6 +33,20 @@ def layout_meshes(nodes: tuple[Node, ...], design: Design = Design()) -> dict[st
     return {node.id: wedge_mesh(node, design=design) for node in nodes}
 
 
+def node_position(node: Node, design: Design = Design()) -> Point:
+    """Locate a note at the midpoint of its saved radial/angular footprint.
+
+    Both render modes share these coordinates, so changing the presentation
+    does not alter a note's layer, occupied slots, or radial detail level.
+    """
+    inner = INNER_RADIUS + node.depth * RADIAL_WIDTH if node.depth != CENTER_DEPTH else 0.0
+    outer = inner + RADIAL_WIDTH
+    angle = -pi / 2 + (node.slot + node.span / 2) * 2 * pi / ANGULAR_SLOTS
+    radius = (inner + outer) / 2
+    bottom = design.z_base + design.layer_index(node.layer) * LAYER_HEIGHT
+    return radius * cos(angle), radius * sin(angle), bottom + LAYER_HEIGHT / 2
+
+
 def wedge_mesh(node: Node, segments: int | None = None, *, design: Design = Design()) -> Mesh:
     if segments is None:
         segments = max(1, ceil(ARC_SEGMENTS * node.span / ANGULAR_SLOTS))
@@ -76,7 +90,5 @@ def wedge_mesh(node: Node, segments: int | None = None, *, design: Design = Desi
         if not full:
             last = segments * 4
             faces.extend(((0, 1, 2, 3), (last, last + 3, last + 2, last + 1)))
-    mid_angle = start + span / 2
-    mid_radius = (inner + outer) / 2
-    x, y = mid_radius * cos(mid_angle), mid_radius * sin(mid_angle)
-    return Mesh(tuple(points), tuple(faces), (x, y, (bottom + top) / 2), (x, y, top - 0.001))
+    center = node_position(node, design)
+    return Mesh(tuple(points), tuple(faces), center, (center[0], center[1], top - 0.001))

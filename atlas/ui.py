@@ -38,6 +38,9 @@ class AtlasApp:
         self._image_item: int | None = None
         self._label_hits: list[tuple[str, tuple]] = []
         self._axis_label_boxes: list[tuple] = []
+        self._hovered_node: str | None = None
+        self.view_mode_var = tk.StringVar(value="Blocks")
+        self._view_labels = {"blocks": True, "nodes": False}
         self.labels_var = tk.BooleanVar(value=True)
         self.filter_var = tk.StringVar(value="All layers")
         self.protocol_filter_var = tk.StringVar(value="All protocols")
@@ -99,8 +102,14 @@ class AtlasApp:
         view_header = tk.Frame(left, bg=theme.PANEL, padx=14, pady=9)
         view_header.grid(row=0, column=0, sticky="ew")
         view_header.columnconfigure(0, weight=1)
-        tk.Label(view_header, text="SPATIAL VIEW", bg=theme.PANEL, fg=theme.MUTED,
-                 font=(self.mono, 9)).grid(row=0, column=0, sticky="w")
+        mode_buttons = ttk.Frame(view_header, style="Panel.TFrame")
+        mode_buttons.grid(row=0, column=0, sticky="w")
+        self.blocks_button = ttk.Radiobutton(mode_buttons, text="Blocks", value="Blocks", variable=self.view_mode_var,
+                                             style="View.Toolbutton", command=lambda: self.set_view_mode("blocks"))
+        self.blocks_button.pack(side="left")
+        self.nodes_button = ttk.Radiobutton(mode_buttons, text="Nodes", value="Nodes", variable=self.view_mode_var,
+                                            style="View.Toolbutton", command=lambda: self.set_view_mode("nodes"))
+        self.nodes_button.pack(side="left")
         self.filter_box = ttk.Combobox(view_header, textvariable=self.filter_var,
                                       values=("All layers",) + self.layer_values, state="readonly", width=16)
         self.filter_box.grid(row=0, column=1, padx=(8, 8))
@@ -142,7 +151,8 @@ class AtlasApp:
         self.protocol_box = ttk.Combobox(coords, textvariable=self.protocol_var, values=self.protocol_values,
                                         state="readonly", width=10)
         self.protocol_box.grid(row=1, column=1, sticky="ew", pady=(5, 0), padx=(5, 0))
-        ttk.Label(coords, text="Block size", style="Muted.TLabel").grid(row=0, column=2, sticky="w", padx=(8, 0))
+        self.size_label = ttk.Label(coords, text="Block size", style="Muted.TLabel")
+        self.size_label.grid(row=0, column=2, sticky="w", padx=(8, 0))
         self.size_box = ttk.Combobox(coords, textvariable=self.size_var, values=tuple(BLOCK_SIZES), state="readonly", width=5)
         self.size_box.grid(row=1, column=2, sticky="ew", pady=(5, 0), padx=(8, 0))
         radial_header = ttk.Frame(form, style="Panel.TFrame")
@@ -265,6 +275,32 @@ class AtlasApp:
         else:
             self.legend_scroll.grid_remove()
 
+    def set_view_mode(self, mode: str) -> None:
+        mode = mode.lower()
+        if mode not in ("blocks", "nodes"):
+            raise ValueError("Choose Blocks or Nodes.")
+        self.view_mode_var.set(mode.title())
+        if self.scene.mode == mode:
+            return
+        self._cancel_hover()
+        self.slot_slider.cancel_drag()
+        self._hovered_node = None
+        self._pressed = None
+        self._view_labels[self.scene.mode] = self.labels_var.get()
+        self.labels_var.set(self._view_labels[mode])
+        self.scene.set_mode(mode)
+        for widget in (self.size_label, self.size_box):
+            widget.grid_remove() if mode == "nodes" else widget.grid()
+        self.size_box.master.columnconfigure(2, weight=0 if mode == "nodes" else 1)
+        self._changed()
+
+    def _addition_size(self) -> str:
+        return "1/16" if self.scene.mode == "nodes" else self._last_size
+
+    def _position_at(self, x: float, y: float) -> tuple[int, int] | None:
+        size = self.size_var.get() if self.placement_state == "placing" or self.selected is None else self._addition_size()
+        return self.scene.position_at(x, y, self._layer_id(), span=BLOCK_SIZES[size])
+
     def edit_design(self) -> None:
         if not self._allow_leave():
             return
@@ -359,14 +395,17 @@ class AtlasApp:
         self.slot_slider.set_context(span, self.document.free_starts(layer, depth, span, exclude_id=self.selected))
         placing = self.placement_state == "placing"
         self.save_button.state(["disabled"] if placing else ["!disabled"])
+        noun = "node" if self.scene.mode == "nodes" else "block"
         text = "Placing: click to lock (Esc cancels)" if placing else (
-            "Locked: click block to move. Save node to keep." if self.dirty or not self.selected
-            else "Saved / Locked: click block to move."
+            f"Locked: click {noun} to move. Save node to keep." if self.dirty or not self.selected
+            else f"Saved / Locked: click {noun} to move."
         )
         self.editor_state.configure(text=text,
                                     fg=theme.GOLD if self.dirty else theme.MUTED)
         if not self._refresh_preview():
-            text = "Placing: space occupied; choose another slot." if placing else "Space occupied. Choose another start slot or a smaller size."
+            text = "Placing: space occupied; choose another slot." if placing else (
+                "Space occupied. Choose another start slot or radial position." if self.scene.mode == "nodes"
+                else "Space occupied. Choose another start slot or a smaller size.")
             self.editor_state.configure(text=text, fg=theme.ERROR)
         self.request_render()
 
@@ -388,6 +427,7 @@ class AtlasApp:
     def _restore_preview(self) -> None:
         if not self._closed:
             self._cancel_hover()
+            self._hovered_node = None
             self._refresh_preview()
             self.request_render()
 
@@ -451,6 +491,7 @@ class AtlasApp:
         self._floating_position = None
         self._loading = True
         self.selected = node.id if node else None
+        self._hovered_node = None
         protocols = self.document.design.protocols
         default_protocol = "SSH" if "SSH" in self._protocol_displays else protocols[0].id if protocols else None
         layer, protocol, depth = node.coordinate if node else coordinate or (self.document.design.layers[-1].id, default_protocol, 2)
@@ -458,7 +499,7 @@ class AtlasApp:
         self.layer_var.set(self._layer_displays[layer])
         self.protocol_var.set(self._protocol_displays[protocol])
         self.depth_var.set(depth)
-        self.size_var.set(next(label for label, span in BLOCK_SIZES.items() if span == node.span) if node else size or self._last_size)
+        self.size_var.set(next(label for label, span in BLOCK_SIZES.items() if span == node.span) if node else size or self._addition_size())
         if node:
             slot = node.slot
         elif slot is None:
@@ -543,11 +584,12 @@ class AtlasApp:
         coordinate = (self._layer_id(), self._protocol_id(), self.depth_var.get())
         existing = self.document.get(self.selected)
         start = existing.slot + existing.span if existing else int(self.slot_var.get()) - 1
-        slot = self.document.next_free(coordinate[0], coordinate[2], BLOCK_SIZES[self._last_size], start=start)
+        size = self._addition_size()
+        slot = self.document.next_free(coordinate[0], coordinate[2], BLOCK_SIZES[size], start=start)
         if slot is None:
-            self.editor_state.configure(text=f"No room for {self._last_size} here. Choose a smaller size or another radial position.", fg=theme.ERROR)
+            self.editor_state.configure(text=f"No room for {size} here. Choose another radial position or a free slot.", fg=theme.ERROR)
             return
-        self._load_editor(None, coordinate, slot=slot, size=self._last_size, placing=True)
+        self._load_editor(None, coordinate, slot=slot, size=size, placing=True)
         self.name_entry.focus_set()
 
     def new_empty_atlas(self) -> bool:
@@ -629,6 +671,7 @@ class AtlasApp:
         self._set_status(f"Exported  /  {filename}")
 
     def _filter_changed(self, _event=None) -> None:
+        self._hovered_node = None
         value = self.filter_var.get()
         self.scene.set_layer_filter(None if value == "All layers" else self._layer_ids[value])
         protocol = self.protocol_filter_var.get()
@@ -666,42 +709,72 @@ class AtlasApp:
         self.canvas.delete("overlay")
         self._label_hits.clear()
         visible = [n for n in self.document.nodes if self.scene.is_visible(n)]
-        self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{len(visible):02d} FILLED VOLUMES",
+        node_view = self.scene.mode == "nodes"
+        self.canvas.create_text(18, 18, anchor="nw", text="SPATIAL VIEW", fill=theme.MUTED,
+                                font=(self.mono, 8), tags="overlay")
+        self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{len(visible):02d} NODES" if node_view else f"{len(visible):02d} FILLED VOLUMES",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self._axis_label_boxes.clear()
         for i, layer in enumerate(self.document.design.layers, 1):
             x, y, _ = self.scene.project((0.0, 0.0, self.document.design.z_base + i - 0.5))
             # Reference labels must not float through a solid in front of them.
-            if self.scene.pick(x - 24, y) is not None:
+            if not node_view and self.scene.pick(x - 24, y) is not None:
                 continue
             color = layer.color if self.scene.layer_filter in (None, layer.id) else "#41566a"
             axis_text = f"L{i} {layer.name}"
             while self.mono_font.measure(axis_text) > 170 and len(axis_text) > 4:
                 axis_text = axis_text[:-2] + "\u2026"
-            self.canvas.create_text(x - 16, y, text=axis_text, anchor="e", fill=color,
+            label_x = x + 16 if node_view else x - 16
+            self.canvas.create_text(label_x, y, text=axis_text, anchor="w" if node_view else "e", fill=color,
                                     font=(self.mono, 9), tags="overlay")
-            self._axis_label_boxes.append((x - 20 - self.mono_font.measure(axis_text), y - 10, x - 10, y + 10))
-        if self.labels_var.get():
+            text_width = self.mono_font.measure(axis_text)
+            self._axis_label_boxes.append((label_x - 4, y - 10, label_x + text_width + 4, y + 10) if node_view
+                                          else (label_x - text_width - 4, y - 10, label_x + 6, y + 10))
+        if node_view:
+            if self.scene.preview_node is not None:
+                self._draw_node_halo(self.scene.preview_node, "preview-halo", theme.ACCENT if self.scene.preview_valid else theme.ERROR, preview=True)
+            elif (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
+                self._draw_node_halo(selected, "node-halo", theme.ACCENT)
+            labeled = visible if self.labels_var.get() else [node for node in visible if node.id in (self.selected, self._hovered_node)]
+            self._draw_labels(labeled, width, height)
+        elif self.labels_var.get():
             self._draw_labels(visible, width, height)
         self.canvas.create_text(18, height - 44, anchor="sw", text="DRAG  ROTATE     WHEEL  ZOOM     CLICK  EDIT",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self.canvas.create_text(18, height - 24, anchor="sw", text="SHIFT + DRAG  PAN     TAB  NEXT NOTE",
                                 fill="#6d879f", font=(self.mono, 8), tags="overlay")
         self.canvas.create_text(18, height - 64, anchor="sw",
-                                text="PLACING: CLICK TO LOCK / ESC CANCEL" if self.placement_state == "placing" else "LOCKED: CLICK BLOCK TO MOVE",
+                                text="PLACING: CLICK TO LOCK / ESC CANCEL" if self.placement_state == "placing" else
+                                "LOCKED: CLICK NODE TO MOVE" if node_view else "LOCKED: CLICK BLOCK TO MOVE",
                                 fill=theme.ACCENT, font=(self.mono, 8), tags="overlay")
         if not visible:
-            text = "No volumes match these filters." if self.document.nodes else "Your atlas starts here."
+            text = ("No nodes match these filters." if node_view else "No volumes match these filters.") if self.document.nodes else "Your atlas starts here."
             self.canvas.create_text(width / 2, height / 2 - 20, text=text, fill=theme.TEXT,
                                     font=(self.family, 16), tags="overlay")
-            self.canvas.create_text(width / 2, height / 2 + 12, text="Create a note and save it to allocate a volume.",
+            self.canvas.create_text(width / 2, height / 2 + 12, text="Create a note and save it to add a node." if node_view else "Create a note and save it to allocate a volume.",
                                     fill=theme.MUTED, font=(self.family, 10), tags="overlay")
+
+    def _draw_node_halo(self, node: Node, tag: str, color: str, *, preview: bool = False) -> None:
+        x, y, depth = self.scene.project(self.scene.node_anchor(node))
+        if not (0 <= depth <= 1 and 0 < x < self.scene.width and 0 < y < self.scene.height):
+            return
+        if preview:
+            if not self.scene.pick_preview(x, y):
+                return
+        elif self.scene.pick(x, y) != node.id:
+            return
+        radius = max(9.0, .065 * self.scene.height / (2 * self.scene.scale) + 4)
+        self.canvas.create_oval(x - radius - 3, y - radius - 3, x + radius + 3, y + radius + 3,
+                                outline="#345866" if color == theme.ACCENT else "#68464c", width=1, tags=("overlay", tag))
+        self.canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
+                                outline=color, width=2, tags=("overlay", tag))
 
     def _draw_labels(self, nodes: list[Node], width: int, height: int) -> None:
         boxes: list[tuple[float, float, float, float]] = list(self._axis_label_boxes)
         ordered = sorted(nodes, key=lambda n: n.id != self.selected)
         for node in ordered:
-            x, y, depth = self.scene.project(self.scene.meshes[node.id].label_anchor)
+            anchor = self.scene.node_anchor(node) if self.scene.mode == "nodes" else self.scene.meshes[node.id].label_anchor
+            x, y, depth = self.scene.project(anchor)
             if not (0 <= depth <= 1 and 0 < x < width and 0 < y < height):
                 continue
             selected = node.id == self.selected
@@ -781,7 +854,7 @@ class AtlasApp:
     def _release(self, event) -> str:
         if self._pressed is not None and not self._moved and event.num == 1:
             if self.placement_state == "placing":
-                position = self.scene.position_at(event.x, event.y, self._layer_id())
+                position = self._position_at(event.x, event.y)
                 if position is not None:
                     self.place_at(*position)
             elif self.scene.pick_preview(event.x, event.y):
@@ -793,7 +866,7 @@ class AtlasApp:
                 elif node_id:
                     self.select_node(node_id)
                 elif self.selected is not None or self._placement_origin is None:
-                    position = self.scene.position_at(event.x, event.y, self._layer_id())
+                    position = self._position_at(event.x, event.y)
                     if position is not None:
                         self.place_at(*position)
         self._pressed = None
@@ -806,13 +879,14 @@ class AtlasApp:
         if self.selected is not None and not moving and not self._allow_leave():
             return False
         layer = self._layer_id()
-        size = self.size_var.get() if moving or self.selected is None else self._last_size
+        size = self.size_var.get() if moving or self.selected is None else self._addition_size()
         if slot not in self.document.free_starts(layer, depth, BLOCK_SIZES[size], exclude_id=self.selected if moving else None):
             if moving:
                 self._floating_position = depth, slot
                 self._changed()
             else:
-                self.editor_state.configure(text="That space is occupied. Choose another location or a smaller size.", fg=theme.ERROR)
+                self.editor_state.configure(text="That space is occupied. Choose another location." if self.scene.mode == "nodes"
+                                            else "That space is occupied. Choose another location or a smaller size.", fg=theme.ERROR)
             return False
         if moving or self.selected is None:
             # Positioning a draft keeps its title and notes.
@@ -841,9 +915,12 @@ class AtlasApp:
         self._hover_job = None
         if not self._closed:
             hit = self._pick_at(x, y)
+            if self.scene.mode == "nodes" and hit != self._hovered_node:
+                self._hovered_node = hit
+                self.request_render()
             self.canvas.configure(cursor="hand2" if hit or self.scene.pick_preview(x, y) else "fleur")
             if self.placement_state == "placing" and self._pressed is None:
-                position = self.scene.position_at(x, y, self._layer_id())
+                position = self._position_at(x, y)
                 if position is not None:
                     self._floating_position = position
                     self._changed()
