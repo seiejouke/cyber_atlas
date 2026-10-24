@@ -22,6 +22,7 @@ from atlas.design_editor import DesignEditor, ReassignDialog, ReassignListDialog
 from atlas.storage import read_atlas, write_atlas
 from atlas.ui import AtlasApp
 from atlas.scene import NO_PROTOCOL_FILTER
+from atlas.templates import find_template
 from node_view_checks import check_node_view
 from template_view_checks import check_template_browser
 
@@ -1110,6 +1111,49 @@ def capture_preview(destination, *, design_editor=False, nodes_view=False):
             app.shutdown()
 
 
+def capture_template(destination, key, *, library=False):
+    """Capture a built-in template using the application's real renderer."""
+    from PIL import ImageGrab
+
+    template = find_template(key)
+    document = example_atlas() if library else template.atlas
+    with TemporaryDirectory() as folder:
+        root = tk.Tk()
+        app = AtlasApp(root, Path(folder) / "template-preview.json", document)
+        try:
+            root.geometry("1300x860+30+30")
+            pump(root, 4)
+            if library:
+                app.open_templates()
+                app._show_template(template)
+            else:
+                app.set_view_mode("nodes")
+                app.labels_var.set(True)
+                app.connections_var.set(True)
+                app._connections_changed()
+                selected = template.atlas.nodes[min(len(template.atlas.nodes) - 1, len(template.atlas.nodes) // 2)]
+                app.select_node(selected.id)
+                app._set_status(f"Template  /  {template.name}  /  fully editable")
+            app.scene.yaw = 135 * pi / 180
+            app.scene.elevation = 19 * pi / 180
+            app.scene.scale = max(4.8, len(template.atlas.design.layers) * .62)
+            app.scene.target = [0.0, 0.0, 0.0]
+            app.scene._apply_camera()
+            app.request_render()
+            pump(root, 12)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            x, y = root.winfo_rootx(), root.winfo_rooty()
+            ImageGrab.grab(bbox=(x, y, x + root.winfo_width(), y + root.winfo_height())).save(destination)
+        finally:
+            app.shutdown()
+
+
+def capture_template_gallery(directory):
+    capture_template(directory / "template-library.png", "python", library=True)
+    capture_template(directory / "python-template.png", "python")
+    capture_template(directory / "solar-system-template.png", "solar-system")
+
+
 def check_templates_only():
     """Run the template workflow without the focus-sensitive placement checks."""
     with TemporaryDirectory() as folder:
@@ -1138,14 +1182,17 @@ if __name__ == "__main__":
     parser.add_argument("--design-preview", type=Path, help="Capture the design editor (requires Pillow).")
     parser.add_argument("--nodes-preview", type=Path, help="Capture the actual Nodes view (requires Pillow).")
     parser.add_argument("--templates-only", action="store_true", help="Run only the template browser workflow checks.")
+    parser.add_argument("--template-gallery", type=Path, help="Capture the template library, Python and Solar System views into a directory.")
     args = parser.parse_args()
     if args.templates_only:
         check_templates_only()
-        raise SystemExit(0)
-    main(args.report)
+    else:
+        main(args.report)
     if args.preview:
         capture_preview(args.preview)
     if args.design_preview:
         capture_preview(args.design_preview, design_editor=True)
     if args.nodes_preview:
         capture_preview(args.nodes_preview, nodes_view=True)
+    if args.template_gallery:
+        capture_template_gallery(args.template_gallery)

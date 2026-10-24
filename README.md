@@ -9,7 +9,7 @@ space is drawn. Center is an optional radial position with the same controls.
 Protocol is an optional block property. The seven-layer OSI design is the starting preset;
 layers, protocols, colors, field names and block labels are editable.
 
-![The running Python prototype](docs/preview.png)
+![Template library previewing the Python atlas](docs/template-library.png)
 
 ## Start here
 
@@ -72,6 +72,10 @@ never saved automatically. **Cancel** restores the open atlas, editor, filters,
 view and camera; **Use template** saves an editable copy and keeps the previous
 saved atlas as the normal backup. The template list contains text only; every
 visible sphere and connection comes from the real atlas document being previewed.
+
+| Python template | Solar System template |
+| --- | --- |
+| ![Python concepts rendered as editable atlas nodes](docs/python-template.png) | ![Solar System concepts using the same atlas layout](docs/solar-system-template.png) |
 
 Use the **Blocks / Nodes** switch to change the view. Nodes draws one small,
 equally sized sphere per note, using its layer color and saved layer, radial
