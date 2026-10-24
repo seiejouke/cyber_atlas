@@ -2,16 +2,19 @@
 
 A local Python desktop notebook built around your Munsell-inspired design.
 
-**Height = OSI layer. Angle = protocol. Radius = service/detail band.**
-Only occupied coordinates become solid volumes. Nothing shifts when another
-note is added, and no empty cell grid is drawn.
+**Height = your chosen layer. Radius = detail position. Each block has a fixed size and start slot.**
+Choose 1/16, 1/8 or a larger fraction of the circle for each block. Blocks
+keep their size and position when others are added or removed. Only occupied
+space is drawn. Center is an optional radial position with the same controls.
+Protocol is an optional block property. The seven-layer OSI design is the starting preset;
+layers, protocols, colors, field names and block labels are editable.
 
 ![The running Python prototype](docs/preview.png)
 
 ## Start here
 
-Use a 64-bit CPython installation, preferably **Python 3.13** (the tested
-version). Python 3.11-3.14 is the recommended range for this pinned build.
+Use a 64-bit CPython installation. This build was tested with **Python 3.12.3**
+on Windows; the original build also ran on Python 3.13 on Linux.
 You need Tkinter and a working graphical desktop/OpenGL driver.
 
 This build uses **Tkinter for the interface and VTK for 3D rendering**. It does
@@ -61,22 +64,123 @@ system packages or trying to compile VTK as a first step.
 The first launch creates a local atlas containing the 14 starter notes from
 the HTML concept. Select a volume to edit its title, coordinates, and notes.
 
-**New -> choose layer, protocol and band -> write your note -> Save node.**
+To start fresh, click **Empty atlas** in the top bar. The app checks for
+unsaved edits and asks before replacing any saved blocks. It saves an empty
+atlas and keeps the previous saved atlas in the normal backup. Export JSON
+first if you want a separate lasting copy. Clicking Empty atlas again while
+it is already empty preserves that backup. Your custom design is kept.
 
-Saving allocates one solid wedge at that coordinate. Deleting its last/only
-note removes the wedge. The other volumes stay in place. A coordinate can
-hold one note in this prototype; an attempted collision is rejected rather
-than overlapping or replacing another note.
+Click **Edit design** in the top bar to customize the atlas:
 
-Use the layer dropdown to isolate an OSI layer. The Labels checkbox controls
+- **Layers:** add, rename, recolor, remove, or move a layer higher/lower. The
+  list shows the top layer first. Axis names, colors, filters, legend and
+  camera adapt to the new order and count. Layers remain equally spaced.
+- **Protocols:** add, rename or remove your own protocol entries.
+- **Field names & labels:** change the default **OSI layer** and **Protocol**
+  captions, and choose **Title only**, **Layer + protocol**, or
+  **Title + layer + protocol** on block labels.
+
+Select an entry and edit its name/color. **Update entry** updates the design
+draft; switching entries or clicking **Apply design** also keeps those edits.
+**Apply design** saves the complete design and updates the atlas. **Cancel**
+discards pending design edits. Removing an individual entry used by blocks asks you to
+choose a replacement. A reassignment that would overlap blocks is rejected;
+move those blocks to free slots before combining their layers.
+
+To rebuild the layer list, use **Remove list** beside Remove in **Layers**.
+It asks **Are you sure?** and clears the layer draft. Add replacements and use
+**Reassign blocks…** for entries that still have blocks. Apply stays disabled
+until every block has a valid layer; overlapping assignments are rejected.
+
+**Remove protocols** in **Protocols** asks **Are you sure?**, then **saves the
+empty protocol list immediately**. Existing blocks retain their notes and
+positions and show **No protocol**. The editor and filters update at once;
+adding a replacement protocol is optional. Confirmed protocol removal is
+already saved when you close or cancel the design editor. Pending layer
+edits remain drafts until Apply, including when the layer list is empty.
+
+**No protocol** is an unassigned state, rather than an entry in the protocol
+list. Select it in the block editor or view filter. Adding protocols later
+does not automatically assign them to existing blocks.
+
+Renaming and reordering keep every block attached through stable IDs. The
+design is included in saved/exported JSON. A design supports 1–64 layers and
+0–256 protocols, including a completely custom set without OSI entries.
+
+[See the design editor](docs/design-editor.png).
+
+**Add here -> choose size -> move the preview -> left-click to lock -> write your note -> Save node.**
+
+Add here keeps the current layer, protocol and radial position, and finds
+the next free space around that ring. New blocks default to **1/16 (22.5
+degrees)**. Your last explicitly chosen size is remembered between additions
+during the current session, even when you select a differently sized block.
+
+Each ring has 16 angular slots. A **1/16** block occupies one slot, **1/8**
+occupies two adjacent slots, **1/4** occupies four, **1/2** occupies eight,
+and **Full** occupies all sixteen. Sizes can be mixed. Start slot is numbered
+**01-16**; a block can wrap from slot 16 back to slot 01.
+
+**Start slot is a slider**, with 16 snapping stops and labels at 01, 04, 08,
+12 and 16. Its heading shows the exact slot and angle, such as **Start slot
+07 / 16 · 135°**. Highlighted stops show the block's whole footprint, while
+red stops mark starts that would overlap another block at the chosen size.
+Wrapping footprints highlight both ends and show **Slots 16 → 01**.
+
+Drag to preview the start position and **release on a valid slot to lock
+it**. Releasing on a blocked slot keeps the red preview and leaves Save
+disabled. Left/Right step one slot; Home/End select the first/last slot.
+Escape cancels a drag and returns to the previous locked position. Releasing
+the slider does not start mouse-following mode; Save node commits its lock.
+
+Existing blocks stay fixed. Deleting leaves an empty gap that can be reused.
+Resizing grows or shrinks the selected block clockwise from its start slot.
+A resize or move that overlaps another block is rejected without saving.
+If a ring has no suitable space, Add here reports that it is full for that
+size; it keeps the current radial depth. Choose another size or position.
+
+Placement has two states, shown in the editor and viewport:
+
+- **Placing:** Add here starts a preview that follows the mouse on the editor's
+  current OSI layer. A cyan outline shows a valid position; red indicates an
+  overlap. **Left-click a valid location to lock it.** Occupied locations do
+  not lock. Dragging still rotates the view.
+- **Locked:** Mouse movement and unrelated empty clicks leave the draft in
+  place. **Click the locked block again to pick it up**, then left-click its
+  new location to lock it again. **Escape** cancels the move and restores its
+  last locked position, keeping its title and notes.
+
+For a saved block, click to select it and click the selected block again to
+pick it up. Moving changes the draft; **Save node** commits the position and
+notes. Save is disabled while Placing, so it cannot save a different location
+from the moving preview. The Start slot slider also locks a valid position
+on release, providing an alternative to clicking in the viewport.
+
+You can also click empty space with a saved block selected to start a new
+draft at that spot. Filtering to the editor's OSI layer makes placement
+easiest. Selecting a different saved note still checks for unsaved edits.
+
+Choose **Center** in the position control to create an ordinary block at the
+axis. Center blocks have the same size, start-slot, editing and saving
+behavior as other blocks. A 1/16 center block occupies a small slice of the
+disk; Full fills the disk when explicitly chosen. Center blocks are optional.
+
+The position control has six equally spaced stops: **Center, 00, 01, 02, 03,
+04**. Click a stop or label, drag, or use the arrow keys to move along the
+radial positions. **Save node** commits the move.
+Moving a block keeps its size and start slot and leaves its old space empty.
+The editor shows the block's angle and available slots at its destination.
+
+Use the layer and protocol dropdowns to filter the view. Filters keep the
+saved block sizes and positions intact. The Labels checkbox controls
 annotations, not the volumes themselves. Labels that would overlap or belong
 to obscured surfaces are omitted to keep the view readable. The selected note
 is prioritized. You can still rotate the map, filter a layer, or use Tab to
 reach a note whose label is hidden.
 
-The layer filter affects only the view. It does not delete data or change the
-note in the editor. Saving a note outside the active filter resets the view
-to all layers so the saved volume is visible.
+Filters affect only the view. They do not delete data or change the note in
+the editor. Saving a note outside an active filter clears that filter so the
+saved volume is visible.
 
 ## Controls
 
@@ -86,20 +190,29 @@ to all layers so the saved volume is visible.
 | Pan | Shift + drag, or middle-button drag |
 | Zoom | Mouse wheel; `+` / `-` with viewport focused |
 | Select a volume | Click a visible surface or label |
+| Lock a moving block | Left-click a valid location |
+| Pick up a locked draft or selected block | Left-click the block again |
+| Cancel a move | Escape restores its last locked position |
+| Place a new block | Add here, then click to lock on the editor's current OSI layer |
+| Choose block size | Block size dropdown; Save node commits a resize |
+| Set the start slot | Drag the Start slot slider; releasing a valid position locks it; Left/Right and Home/End also work |
 | Reset the camera | Reset view, or `R` in the viewport |
 | Rotate using keys | Arrow keys in the viewport |
 | Next / previous visible note | Tab / Shift + Tab in the viewport |
 | Move from viewport to editor | Enter |
-| Select a radial band | Click or drag its slider; left/right keys when focused |
+| Select Center or a radial band | Click or drag its slider; left/right keys when focused; Home/End for first/last |
 | Save node | Ctrl + S |
-| New node | Ctrl + N |
+| Add a block at the current position | Add here, or Ctrl + N |
+| Start with no blocks | Empty atlas in the top bar |
+| Customize layers, protocols, field names and labels | Edit design in the top bar |
 | Import JSON | Ctrl + O |
 | Export JSON | Ctrl + Shift + S |
 
 ## Saving and recovery
 
-**Save node immediately writes the atlas to disk.** Deletions and successful
-imports are also saved immediately. Text still being typed is a draft: it is
+**Save node immediately writes the atlas to disk.** Apply design, confirmed
+Remove protocols, deletions and successful imports also save immediately.
+Text still being typed is a draft: it is
 not saved on every keystroke. Before selecting another note, creating a new
 one, importing, or closing, the app asks whether to save a changed draft.
 
@@ -127,11 +240,28 @@ recovery codes, or other secrets in these notes.
 
 Export JSON saves a complete portable copy. Import JSON **replaces** the active
 atlas after confirmation; it does not merge atlases. Malformed files and
-coordinate collisions are rejected without partially importing a document.
+duplicate IDs and overlapping blocks are rejected without partially importing
+a document.
 
 The importer supports the earlier HTML prototype's JSON versions 1, 2 and 3,
-as well as this application's version 4. Legacy integer IDs become strings.
-An empty atlas is a valid file and can be imported/exported.
+as well as desktop versions 4–8. Older files retain every note's ID,
+layer, protocol, depth, notes and list order. Versions 1–5 become compact
+1/16 blocks in consecutive slots at each layer/depth; versions 6–7 retain
+their exact sizes and slots. Versions 1–6 receive the OSI design preset;
+version 7 keeps its custom design. Legacy integer node IDs become strings.
+The next save or export writes version 8
+with the design and explicit size/slot coordinates; the first save retains
+the original file as the normal previous-version backup. Empty atlases can
+be imported/exported with their custom design.
+
+Version 8 supports an empty protocol list (`"protocols": []`) and unassigned
+blocks (`"protocol": null`). Existing version 7 files load with their saved
+protocol assignments intact.
+
+A legacy ring with more than 16 notes cannot fit this grid. Import/loading
+stops with a message identifying the ring, without dropping notes or changing
+the source file. Move some notes to other depths in the older application
+before importing that file.
 
 Use a different working file from the command line:
 
@@ -146,23 +276,36 @@ python main.py --file my-empty-atlas.json --empty
 ```
 
 `--empty` never clears a file that already exists. The examples folder also
-contains a fresh starter atlas and an empty atlas for import.
+contains a fresh starter atlas, an empty atlas, and `fixed_slots_atlas.json`
+demonstrating mixed 1/8 and 1/16 blocks, a center block, and reusable empty space.
+`custom_design_atlas.json` demonstrates custom layers/protocols, field names,
+colors and combined block labels.
+`no_protocols_atlas.json` demonstrates the same blocks with no protocols.
 
 ## The geometry
 
-There are **7 equal-height levels x 17 equal-angle sectors x 5 equal-width
-radial bands = 595 addresses**. These are logical addresses, not 595 rendered
-objects. A mesh is built only for an occupied address.
+The OSI preset has **7 equal-height layers**; the design sets their count and
+order. Each layer has an optional **center disk and
+5 equal-width radial bands**. Each layer and radial position has **16 fixed
+angular slots of 22.5 degrees**. A block saves its start slot and number of
+slots; adding another block does not affect its mesh. The center radius and
+each ring's radial thickness are 0.8 units,
+so the center meets band 00 and neighboring bands share boundaries.
 
-The shape is cylindrical, not a Cartesian voxel grid. Equal increments in
-radius and angle do **not** create equal physical volumes: outer wedges are
-larger. This is intentional and follows the reference design.
+Equally sized blocks at the same layer and radial position have equal volumes.
+Outer blocks have larger volumes because their circumference is longer,
+while their radial thickness stays equal. Empty slots have no mesh or grid.
+Only the current draft/hover placement receives a temporary outline.
 
-The protocol ordering is fixed and included in every version-4 export.
-Reordering it would rotate existing knowledge into different positions, so
-files with incompatible grid definitions are rejected. Adding new protocol
-sectors through the UI is outside this prototype's scope; use the existing
-`Other` sector for an unlisted concept for now.
+The JSON saves each block's `slot` (0-15) and `span` (1, 2, 4, 8 or 16).
+The UI displays start slots as 01-16. Geometry depends on these coordinates,
+not on block count or node-list order. Occupancy checks include hidden blocks,
+so filtering never allows accidental overlaps.
+
+Protocols no longer reserve angular sectors. Choose a protocol, add your own
+in Edit design, or use `Other` in the preset. Protocols can occur at different angles in
+different rings. The old 595-coordinate limit no longer applies; files have
+a 10,000-block limit and the existing 16 MiB size limit.
 
 The map does not enforce a networking taxonomy. The example notes are learning
 prompts, not a claim that every concept fits one exact OSI layer. In particular,
@@ -176,11 +319,13 @@ cyber_atlas/
   requirements.txt        Pinned rendering dependency
   run.bat / run.sh        Launchers after virtual-environment setup
   atlas/
-    model.py              Notes, fixed coordinates and validation
-    geometry.py           Coordinate -> closed curved wedge
+    model.py              Design, stable references, notes, occupancy and migration
+    design_editor.py      Layer/protocol editor, reassignment and label options
+    design_draft.py       Temporary empty lists and pending block assignments
+    geometry.py           Explicit slot/span -> closed curved meshes
     storage.py            JSON, atomic writes and a previous-version backup
     scene.py              VTK rendering, camera and surface picking
-    theme.py              Dark colors, widget styles and discrete band slider
+    theme.py              Dark colors, widget styles and aligned position slider
     ui.py                 Window, editor and interaction handling
   examples/               Starter and empty atlases
   tests/                  Core tests and a real GUI smoke test
@@ -215,15 +360,17 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The delivered build passed **34 core tests** and **13 GUI workflow checks** on
-Linux using Python 3.13.5, Tk 8.6, VTK 9.6.2 and NumPy 2.3.5. GUI checks ran under
-Xvfb, a virtual display, and used actual VTK rendering and Tk widgets. Test
-outputs are in `docs/`. The preview is a capture of that running application,
-not a design mockup.
+The editable-design build includes **89 core tests** covering chosen angular
+sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
+blocks, overlap rejection, gap reuse, design validation, stable references,
+layer reassignment, optional protocols, clearing and rebuilding lists, legacy migration and storage. The desktop smoke test exercises
+the actual Tk controls, VTK rendering and picking, Center, Add here, moving,
+deleting, protocol filtering, design editing, JSON import/export and unsaved drafts. All
+**89 core tests and 61 GUI workflow checks passed** on Windows with Python
+3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
-Windows, macOS, physical GPU drivers, and your particular Arch/Sway setup have
-**not** been verified here. The minimum window size is 1020 x 780. Source code
-and launch instructions are included; this is not a packaged `.exe`.
+The minimum window size is 1020 x 780. Source code and launch instructions
+are included; this is not a packaged `.exe`.
 
 ## References
 

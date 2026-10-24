@@ -1,23 +1,434 @@
 {
-  "environment": {
-    "system": "Linux",
-    "architecture": "x86_64",
-    "python": "3.13.5",
-    "tk": 8.6,
-    "vtk": "9.6.2",
-    "numpy": "2.3.5",
-    "display": "Xvfb 1600x1000x24"
+  "current_build": {
+    "date": "2026-10-24",
+    "app_version": "0.4.2",
+    "environment": {
+      "system": "Windows",
+      "architecture": "AMD64",
+      "python": "3.12.3",
+      "tk": 8.6,
+      "vtk": "9.6.2",
+      "numpy": "2.5.4"
+    },
+    "core_tests_passed": 89,
+    "gui_workflow_checks_passed": 61,
+    "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+    "legacy_versions_tested": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "legacy_migration": "Versions 1-5 use consecutive 1/16 slots; versions 6-7 retain exact slots and sizes. Versions 1-6 receive the OSI design preset; version 7 retains its custom design and protocol assignments. Source backup on first save.",
+    "untested_platforms": [
+      "macOS",
+      "physical Arch/Sway desktop"
+    ],
+    "empty_atlas_checks": [
+      "Cancellation preserves document and draft",
+      "Write failure preserves active atlas",
+      "Confirmed reset saves an empty atlas with the previous saved document backed up",
+      "Repeating reset on an empty atlas preserves its backup"
+    ],
+    "placement_checks": [
+      "Add here starts explicit Placing mode; Save requires a locked location",
+      "Left click locks and cancels queued hover callbacks",
+      "Locked drafts stay fixed through motion and unrelated empty clicks",
+      "Clicking a locked draft or selected saved block picks it up",
+      "Occupied drops remain Placing with a red preview",
+      "Escape restores the last locked location and preserves notes",
+      "Relocating a saved block preserves its ID and requires Save to update disk",
+      "Dragging rotates while Placing without locking or saving"
+    ],
+    "slot_slider_checks": [
+      "16 snapping positions with aligned landmark labels",
+      "Live preview during drag; valid release locks and stops mouse following",
+      "Footprint highlights for every size, including wrapping from 16 to 01",
+      "Arrow keys and Home/End clamp to the slider endpoints",
+      "Blocked starts account for footprint width and exclude the selected saved block",
+      "Invalid releases cannot lock or save; Escape restores the prior lock and ignores a later release",
+      "Both sliders and the notes area fit the minimum window size"
+    ],
+    "atlas_file_version": 8,
+    "design_checks": [
+      "Add, rename, reorder and recolor layers with stable IDs and equal spacing",
+      "Add, rename and remove protocols with stable IDs",
+      "Editable layer/protocol captions and three block label styles",
+      "Dynamic axis, legend, filters, geometry, picking and camera",
+      "Cancel, validation errors and write failures preserve the saved atlas",
+      "Removing used entries requires explicit reassignment; overlaps reject the operation atomically",
+      "Custom design roundtrip through saved/exported JSON",
+      "Empty atlas preserves the design and backs up the saved blocks",
+      "A custom-only single-layer atlas can save its first block without preset entries"
+    ],
+    "design_editor_preview": "docs/design-editor.png",
+    "clear_list_checks": [
+      "Remove list clears layers in the draft and requires valid layer reassignments before Apply",
+      "Remove protocols saves immediately after confirmation; blocks become unassigned with unchanged notes and geometry",
+      "No protocol is an unassigned state; an empty protocol list remains valid",
+      "Immediate removal updates editor and filters and preserves camera position",
+      "Pending layer/caption edits stay in the design draft; cancelling does not undo confirmed protocol removal",
+      "Write failure preserves saved assignments and the draft; clearing unsaved additions does not replace the backup",
+      "New blocks, Empty atlas, export/import and save-on-close work without protocols",
+      "Controls fit the minimum window size"
+    ],
+    "radial_controls": "One discrete radial slider; Inward and Outward buttons removed",
+    "optional_protocol_checks": [
+      "Schema 8 stores unassigned protocol as null and an empty protocol list as []",
+      "Protocol addition does not automatically assign existing blocks",
+      "Explicit assignment/unassignment and No protocol filtering",
+      "A user protocol named No protocol remains selectable separately from the unassigned state",
+      "Version 7 custom designs migrate without changing protocol assignments"
+    ]
   },
-  "startup_checks_passed": 4,
-  "startup_checks": [
-    "main.py fresh launch creates the starter atlas",
-    "--empty does not clear an existing atlas",
-    "--empty creates a genuinely empty new atlas",
-    "startup backup recovery preserves the corrupt original"
-  ],
-  "untested_platforms": [
-    "Windows",
-    "macOS",
-    "physical Arch/Sway desktop"
+  "original_build": {
+    "environment": {
+      "system": "Linux",
+      "architecture": "x86_64",
+      "python": "3.13.5",
+      "tk": 8.6,
+      "vtk": "9.6.2",
+      "numpy": "2.3.5",
+      "display": "Xvfb 1600x1000x24"
+    },
+    "startup_checks_passed": 4,
+    "startup_checks": [
+      "main.py fresh launch creates the starter atlas",
+      "--empty does not clear an existing atlas",
+      "--empty creates a genuinely empty new atlas",
+      "startup backup recovery preserves the corrupt original"
+    ],
+    "untested_platforms": [
+      "Windows",
+      "macOS",
+      "physical Arch/Sway desktop"
+    ]
+  },
+  "previous_builds": [
+    {
+      "date": "2026-10-23",
+      "app_version": "0.2.0",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 44,
+      "gui_workflow_checks_passed": 17,
+      "layout": "Equal divisions per OSI layer and radial position, including optional Center",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.3.0",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 56,
+      "gui_workflow_checks_passed": 21,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "legacy_migration": "Consecutive 1/16 blocks; source backup on first save; overfull legacy rings rejected without altering files",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.3.1",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 56,
+      "gui_workflow_checks_passed": 24,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "legacy_migration": "Consecutive 1/16 blocks; source backup on first save; overfull legacy rings rejected without altering files",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ],
+      "empty_atlas_checks": [
+        "Cancellation preserves document and draft",
+        "Write failure preserves active atlas",
+        "Confirmed reset saves an empty atlas with the previous saved document backed up",
+        "Repeating reset on an empty atlas preserves its backup"
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.3.2",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 56,
+      "gui_workflow_checks_passed": 31,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "legacy_migration": "Consecutive 1/16 blocks; source backup on first save; overfull legacy rings rejected without altering files",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ],
+      "empty_atlas_checks": [
+        "Cancellation preserves document and draft",
+        "Write failure preserves active atlas",
+        "Confirmed reset saves an empty atlas with the previous saved document backed up",
+        "Repeating reset on an empty atlas preserves its backup"
+      ],
+      "placement_checks": [
+        "Add here starts explicit Placing mode; Save requires a locked location",
+        "Left click locks and cancels queued hover callbacks",
+        "Locked drafts stay fixed through motion and unrelated empty clicks",
+        "Clicking a locked draft or selected saved block picks it up",
+        "Occupied drops remain Placing with a red preview",
+        "Escape restores the last locked location and preserves notes",
+        "Relocating a saved block preserves its ID and requires Save to update disk",
+        "Dragging rotates while Placing without locking or saving"
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.3.3",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 56,
+      "gui_workflow_checks_passed": 36,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "legacy_migration": "Consecutive 1/16 blocks; source backup on first save; overfull legacy rings rejected without altering files",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ],
+      "empty_atlas_checks": [
+        "Cancellation preserves document and draft",
+        "Write failure preserves active atlas",
+        "Confirmed reset saves an empty atlas with the previous saved document backed up",
+        "Repeating reset on an empty atlas preserves its backup"
+      ],
+      "placement_checks": [
+        "Add here starts explicit Placing mode; Save requires a locked location",
+        "Left click locks and cancels queued hover callbacks",
+        "Locked drafts stay fixed through motion and unrelated empty clicks",
+        "Clicking a locked draft or selected saved block picks it up",
+        "Occupied drops remain Placing with a red preview",
+        "Escape restores the last locked location and preserves notes",
+        "Relocating a saved block preserves its ID and requires Save to update disk",
+        "Dragging rotates while Placing without locking or saving"
+      ],
+      "slot_slider_checks": [
+        "16 snapping positions with aligned landmark labels",
+        "Live preview during drag; valid release locks and stops mouse following",
+        "Footprint highlights for every size, including wrapping from 16 to 01",
+        "Arrow keys and Home/End clamp to the slider endpoints",
+        "Blocked starts account for footprint width and exclude the selected saved block",
+        "Invalid releases cannot lock or save; Escape restores the prior lock and ignores a later release",
+        "Both sliders and the notes area fit the minimum window size"
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.4.0",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 69,
+      "gui_workflow_checks_passed": 46,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "legacy_migration": "Versions 1-5 use consecutive 1/16 blocks; version 6 retains exact slots and sizes. All receive the OSI design preset. Source backup on first save; overfull legacy rings rejected without altering files.",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ],
+      "empty_atlas_checks": [
+        "Cancellation preserves document and draft",
+        "Write failure preserves active atlas",
+        "Confirmed reset saves an empty atlas with the previous saved document backed up",
+        "Repeating reset on an empty atlas preserves its backup"
+      ],
+      "placement_checks": [
+        "Add here starts explicit Placing mode; Save requires a locked location",
+        "Left click locks and cancels queued hover callbacks",
+        "Locked drafts stay fixed through motion and unrelated empty clicks",
+        "Clicking a locked draft or selected saved block picks it up",
+        "Occupied drops remain Placing with a red preview",
+        "Escape restores the last locked location and preserves notes",
+        "Relocating a saved block preserves its ID and requires Save to update disk",
+        "Dragging rotates while Placing without locking or saving"
+      ],
+      "slot_slider_checks": [
+        "16 snapping positions with aligned landmark labels",
+        "Live preview during drag; valid release locks and stops mouse following",
+        "Footprint highlights for every size, including wrapping from 16 to 01",
+        "Arrow keys and Home/End clamp to the slider endpoints",
+        "Blocked starts account for footprint width and exclude the selected saved block",
+        "Invalid releases cannot lock or save; Escape restores the prior lock and ignores a later release",
+        "Both sliders and the notes area fit the minimum window size"
+      ],
+      "atlas_file_version": 7,
+      "design_checks": [
+        "Add, rename, reorder and recolor layers with stable IDs and equal spacing",
+        "Add, rename and remove protocols with stable IDs",
+        "Editable layer/protocol captions and three block label styles",
+        "Dynamic axis, legend, filters, geometry, picking and camera",
+        "Cancel, validation errors and write failures preserve the saved atlas",
+        "Removing used entries requires explicit reassignment; overlaps reject the operation atomically",
+        "Custom design roundtrip through saved/exported JSON",
+        "Empty atlas preserves the design and backs up the saved blocks",
+        "A custom-only single-layer atlas can save its first block without preset entries"
+      ],
+      "design_editor_preview": "docs/design-editor.png"
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.4.1",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 79,
+      "gui_workflow_checks_passed": 53,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "legacy_migration": "Versions 1-5 use consecutive 1/16 blocks; version 6 retains exact slots and sizes. All receive the OSI design preset. Source backup on first save; overfull legacy rings rejected without altering files.",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ],
+      "empty_atlas_checks": [
+        "Cancellation preserves document and draft",
+        "Write failure preserves active atlas",
+        "Confirmed reset saves an empty atlas with the previous saved document backed up",
+        "Repeating reset on an empty atlas preserves its backup"
+      ],
+      "placement_checks": [
+        "Add here starts explicit Placing mode; Save requires a locked location",
+        "Left click locks and cancels queued hover callbacks",
+        "Locked drafts stay fixed through motion and unrelated empty clicks",
+        "Clicking a locked draft or selected saved block picks it up",
+        "Occupied drops remain Placing with a red preview",
+        "Escape restores the last locked location and preserves notes",
+        "Relocating a saved block preserves its ID and requires Save to update disk",
+        "Dragging rotates while Placing without locking or saving"
+      ],
+      "slot_slider_checks": [
+        "16 snapping positions with aligned landmark labels",
+        "Live preview during drag; valid release locks and stops mouse following",
+        "Footprint highlights for every size, including wrapping from 16 to 01",
+        "Arrow keys and Home/End clamp to the slider endpoints",
+        "Blocked starts account for footprint width and exclude the selected saved block",
+        "Invalid releases cannot lock or save; Escape restores the prior lock and ignores a later release",
+        "Both sliders and the notes area fit the minimum window size"
+      ],
+      "atlas_file_version": 7,
+      "design_checks": [
+        "Add, rename, reorder and recolor layers with stable IDs and equal spacing",
+        "Add, rename and remove protocols with stable IDs",
+        "Editable layer/protocol captions and three block label styles",
+        "Dynamic axis, legend, filters, geometry, picking and camera",
+        "Cancel, validation errors and write failures preserve the saved atlas",
+        "Removing used entries requires explicit reassignment; overlaps reject the operation atomically",
+        "Custom design roundtrip through saved/exported JSON",
+        "Empty atlas preserves the design and backs up the saved blocks",
+        "A custom-only single-layer atlas can save its first block without preset entries"
+      ],
+      "design_editor_preview": "docs/design-editor.png",
+      "clear_list_checks": [
+        "Remove list beside Remove in Layers; Remove protocols in Protocols",
+        "Both confirmations default to No; cancellation preserves pending edits and saved atlas",
+        "Empty lists exist only in a design draft; Apply requires one layer and protocol",
+        "Every block, note, ID, radial depth, slot and size survives clearing and reassignment",
+        "Explicit per-source reassignment; pending assignments disable Apply",
+        "Overlapping layer assignments reject the batch atomically, including when protocols are also cleared",
+        "Cancel leaves saved atlas unchanged; failed Apply keeps the draft; successful Apply preserves a backup",
+        "Controls fit the minimum design-window size"
+      ]
+    }
   ]
 }

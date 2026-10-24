@@ -1,22 +1,20 @@
-"""Convert a logical coordinate into a closed, wedge-shaped 3D mesh.
+"""Equal-width radial positions with explicitly sized, fixed angular blocks.
 
-Z = OSI layer, angle = protocol sector, radius = detail band.
-Cells have equal height, angular width and radial width. Outer cells have
-larger physical volumes: equal radial increments do not mean equal volumes.
+Z = layer order, radius = detail band, angle = saved start slot and block span.
+Only occupied slots are rendered. Center uses the same sizing rule.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import cos, pi, sin
+from math import ceil, cos, pi, sin
 
-from .model import Node, PROTOCOLS
+from .model import ANGULAR_SLOTS, CENTER_DEPTH, Design, Node
 
 LAYER_HEIGHT = 1.0
-INNER_RADIUS = 0.70
 RADIAL_WIDTH = 0.80
+INNER_RADIUS = RADIAL_WIDTH
 Z_BASE = -3.5
-SECTOR_ANGLE = 2 * pi / len(PROTOCOLS)
-ARC_SEGMENTS = 12
+ARC_SEGMENTS = 128  # Resolution of a full circle, shared by the ring's blocks.
 
 Point = tuple[float, float, float]
 Face = tuple[int, ...]
@@ -30,31 +28,55 @@ class Mesh:
     label_anchor: Point
 
 
-def wedge_mesh(node: Node, segments: int = ARC_SEGMENTS) -> Mesh:
-    if type(segments) is not int or segments < 1:
-        raise ValueError("A curved edge needs at least one segment.")
-    start = -pi / 2 + PROTOCOLS.index(node.protocol) * SECTOR_ANGLE
-    inner = INNER_RADIUS + node.depth * RADIAL_WIDTH
+def layout_meshes(nodes: tuple[Node, ...], design: Design = Design()) -> dict[str, Mesh]:
+    """Each mesh depends only on its own saved coordinates and size."""
+    return {node.id: wedge_mesh(node, design=design) for node in nodes}
+
+
+def wedge_mesh(node: Node, segments: int | None = None, *, design: Design = Design()) -> Mesh:
+    if segments is None:
+        segments = max(1, ceil(ARC_SEGMENTS * node.span / ANGULAR_SLOTS))
+    if type(segments) is not int or segments < 1 or (node.span == ANGULAR_SLOTS and segments < 3):
+        raise ValueError("A curved edge needs segments; a full circle needs at least three.")
+    full = node.span == ANGULAR_SLOTS
+    span = 2 * pi * node.span / ANGULAR_SLOTS
+    start = -pi / 2 + node.slot * 2 * pi / ANGULAR_SLOTS
+    inner = INNER_RADIUS + node.depth * RADIAL_WIDTH if node.depth != CENTER_DEPTH else 0.0
     outer = inner + RADIAL_WIDTH
-    bottom = Z_BASE + (node.layer - 1) * LAYER_HEIGHT
+    bottom = design.z_base + design.layer_index(node.layer) * LAYER_HEIGHT
     top = bottom + LAYER_HEIGHT
+    sections = segments if full else segments + 1
     points: list[Point] = []
-    for step in range(segments + 1):
-        angle = start + step * SECTOR_ANGLE / segments
-        # Four corners of each radial cross-section, in a consistent order.
-        for radius, height in ((inner, bottom), (outer, bottom), (outer, top), (inner, top)):
-            points.append((radius * cos(angle), radius * sin(angle), height))
     faces: list[Face] = []
-    for step in range(segments):
-        a, b = step * 4, (step + 1) * 4
-        faces.extend(((a, b, b + 1, a + 1),             # bottom
-                      (a + 1, b + 1, b + 2, a + 2),   # outer curve
-                      (a + 3, a + 2, b + 2, b + 3),   # top
-                      (a, a + 3, b + 3, b)))          # inner curve
-    faces.append((0, 1, 2, 3))
-    last = segments * 4
-    faces.append((last, last + 3, last + 2, last + 1))
-    mid_angle = start + SECTOR_ANGLE / 2
+    if node.depth == CENTER_DEPTH:
+        # Shared axis vertices avoid degenerate quads and coincident edges.
+        points.extend(((0.0, 0.0, bottom), (0.0, 0.0, top)))
+        for step in range(sections):
+            angle = start + step * span / segments
+            x, y = outer * cos(angle), outer * sin(angle)
+            points.extend(((x, y, bottom), (x, y, top)))
+        for step in range(segments):
+            a = 2 + step * 2
+            b = 2 + ((step + 1) % sections) * 2
+            faces.extend(((0, b, a), (1, a + 1, b + 1), (a, b, b + 1, a + 1)))
+        if not full:
+            last = 2 + segments * 2
+            faces.extend(((0, 2, 3, 1), (0, 1, last + 1, last)))
+    else:
+        for step in range(sections):
+            angle = start + step * span / segments
+            for radius, height in ((inner, bottom), (outer, bottom), (outer, top), (inner, top)):
+                points.append((radius * cos(angle), radius * sin(angle), height))
+        for step in range(segments):
+            a, b = step * 4, ((step + 1) % sections) * 4
+            faces.extend(((a, b, b + 1, a + 1),
+                          (a + 1, b + 1, b + 2, a + 2),
+                          (a + 3, a + 2, b + 2, b + 3),
+                          (a, a + 3, b + 3, b)))
+        if not full:
+            last = segments * 4
+            faces.extend(((0, 1, 2, 3), (last, last + 3, last + 2, last + 1)))
+    mid_angle = start + span / 2
     mid_radius = (inner + outer) / 2
     x, y = mid_radius * cos(mid_angle), mid_radius * sin(mid_angle)
     return Mesh(tuple(points), tuple(faces), (x, y, (bottom + top) / 2), (x, y, top - 0.001))

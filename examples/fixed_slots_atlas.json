@@ -1,0 +1,168 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 8,
+  "layout": "fixed-slots",
+  "center_depth": -1,
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "angular_slots": 16,
+  "design": {
+    "layers": [
+      {
+        "id": 1,
+        "name": "Physical",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 2,
+        "name": "Data Link",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 3,
+        "name": "Network",
+        "color": "#9c8bdb"
+      },
+      {
+        "id": 4,
+        "name": "Transport",
+        "color": "#70cbd8"
+      },
+      {
+        "id": 5,
+        "name": "Session",
+        "color": "#8ca9da"
+      },
+      {
+        "id": 6,
+        "name": "Presentation",
+        "color": "#cb96ba"
+      },
+      {
+        "id": 7,
+        "name": "Application",
+        "color": "#edbb69"
+      }
+    ],
+    "protocols": [
+      {
+        "id": "Ethernet",
+        "name": "Ethernet"
+      },
+      {
+        "id": "ARP",
+        "name": "ARP"
+      },
+      {
+        "id": "IPv4",
+        "name": "IPv4"
+      },
+      {
+        "id": "IPv6",
+        "name": "IPv6"
+      },
+      {
+        "id": "ICMP",
+        "name": "ICMP"
+      },
+      {
+        "id": "TCP",
+        "name": "TCP"
+      },
+      {
+        "id": "UDP",
+        "name": "UDP"
+      },
+      {
+        "id": "DNS",
+        "name": "DNS"
+      },
+      {
+        "id": "HTTP",
+        "name": "HTTP"
+      },
+      {
+        "id": "HTTPS",
+        "name": "HTTPS"
+      },
+      {
+        "id": "SSH",
+        "name": "SSH"
+      },
+      {
+        "id": "FTP",
+        "name": "FTP"
+      },
+      {
+        "id": "SMB",
+        "name": "SMB"
+      },
+      {
+        "id": "TLS",
+        "name": "TLS"
+      },
+      {
+        "id": "DHCP",
+        "name": "DHCP"
+      },
+      {
+        "id": "Wi-Fi",
+        "name": "Wi-Fi"
+      },
+      {
+        "id": "Other",
+        "name": "Other"
+      }
+    ],
+    "layer_caption": "OSI layer",
+    "protocol_caption": "Protocol",
+    "label_mode": "title"
+  },
+  "nodes": [
+    {
+      "id": "center",
+      "name": "Layer 2 notes",
+      "layer": 2,
+      "protocol": "Other",
+      "depth": -1,
+      "notes": "An ordinary 1/8 block at Center.\n\nIt keeps its size and start slot when other blocks are added or removed.",
+      "slot": 6,
+      "span": 2
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "layer": 2,
+      "protocol": "Ethernet",
+      "depth": 0,
+      "notes": "This block occupies 1/8 of the circle: 45 degrees.\n\nDrag Start slot to preview a position. Release on a valid slot to lock it. The slider highlights both slots occupied by this block.\n\nClick a locked block to pick it up. Escape cancels a move. Save node commits the lock and notes.",
+      "slot": 6,
+      "span": 2
+    },
+    {
+      "id": "nic",
+      "name": "Network Interface Card",
+      "layer": 2,
+      "protocol": "Ethernet",
+      "depth": 0,
+      "notes": "A 1/16 block next to a 1/8 block.\n\nIts 22.5-degree width stays fixed when you add another note.",
+      "slot": 8,
+      "span": 1
+    },
+    {
+      "id": "bridge",
+      "name": "Bridge",
+      "layer": 2,
+      "protocol": "Other",
+      "depth": 0,
+      "notes": "An empty slot separates this block from its neighbor.\n\nClick empty space on this layer to position a new block. The unused circle stays empty.",
+      "slot": 10,
+      "span": 1
+    }
+  ]
+}

@@ -2,34 +2,157 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+import re
 from typing import Any
 from uuid import uuid4
 
 LAYERS = ("Physical", "Data Link", "Network", "Transport", "Session", "Presentation", "Application")
-# This ordering is part of the file format. Reordering it would move existing blocks.
+# Also retained to validate the fixed-sector grid in older files.
 PROTOCOLS = (
     "Ethernet", "ARP", "IPv4", "IPv6", "ICMP", "TCP", "UDP", "DNS", "HTTP",
     "HTTPS", "SSH", "FTP", "SMB", "TLS", "DHCP", "Wi-Fi", "Other",
 )
 BANDS = ("Overview", "Protocol function", "Service", "Implementation", "Detailed example")
+CENTER_DEPTH = -1
+POSITIONS = ("Center",) + tuple(f"{i:02d}" for i in range(len(BANDS)))
 COLORS = ("#65b6a1", "#65b6a1", "#9c8bdb", "#70cbd8", "#8ca9da", "#cb96ba", "#edbb69")
-CAPACITY = len(LAYERS) * len(PROTOCOLS) * len(BANDS)
+MAX_NODES = 10_000
+ANGULAR_SLOTS = 16
+BLOCK_SIZES = {"1/16": 1, "1/8": 2, "1/4": 4, "1/2": 8, "Full": 16}
 SCHEMA = "cyber-knowledge-atlas"
-VERSION = 4
+VERSION = 8
+LAYOUT = "fixed-slots"
+NO_PROTOCOL_LABEL = "No protocol"
 
 
 class AtlasError(ValueError):
     """An invalid note, coordinate, or atlas file."""
 
 
+LayerId = int | str
+LABEL_MODES = {"title": "Title only", "coordinates": "Layer + protocol", "combined": "Title + layer + protocol"}
+
+
+def _text(value: Any, label: str, limit: int = 60) -> None:
+    if not isinstance(value, str) or not value.strip() or len(value) > limit or any(ord(c) < 32 for c in value):
+        raise AtlasError(f"{label} must be a single line of 1–{limit} characters.")
+
+
+def _layer_id(value: Any) -> None:
+    if type(value) is int and value > 0:
+        return
+    if isinstance(value, str) and value and len(value) <= 100 and not any(ord(c) < 32 for c in value):
+        return
+    raise AtlasError("A layer needs a positive integer or nonempty text ID.")
+
+
+@dataclass(frozen=True, slots=True)
+class Layer:
+    id: LayerId
+    name: str
+    color: str
+
+    def __post_init__(self) -> None:
+        _layer_id(self.id)
+        _text(self.name, "Layer name")
+        if not isinstance(self.color, str) or re.fullmatch(r"#[0-9a-fA-F]{6}", self.color) is None:
+            raise AtlasError("Choose a layer color in #RRGGBB format.")
+
+
+@dataclass(frozen=True, slots=True)
+class Protocol:
+    id: str
+    name: str
+
+    def __post_init__(self) -> None:
+        _text(self.id, "Protocol ID", 100)
+        _text(self.name, "Protocol name")
+
+
+@dataclass(frozen=True, slots=True)
+class Design:
+    # Default IDs retain the references used in earlier atlas files. They never
+    # change when an entry is renamed or reordered. Custom entries use UUIDs.
+    layers: tuple[Layer, ...] = tuple(Layer(i + 1, name, COLORS[i]) for i, name in enumerate(LAYERS))
+    protocols: tuple[Protocol, ...] = tuple(Protocol(name, name) for name in PROTOCOLS)
+    layer_caption: str = "OSI layer"
+    protocol_caption: str = "Protocol"
+    label_mode: str = "title"
+
+    def __post_init__(self) -> None:
+        for entries, kind, label, minimum, maximum in ((self.layers, Layer, "layers", 1, 64), (self.protocols, Protocol, "protocols", 0, 256)):
+            if not isinstance(entries, tuple) or not minimum <= len(entries) <= maximum or not all(isinstance(e, kind) for e in entries):
+                raise AtlasError(f"A design needs {minimum}–{maximum} valid {label}.")
+            if len({e.id for e in entries}) != len(entries):
+                raise AtlasError(f"Duplicate IDs in {label}.")
+            if len({e.name.strip().casefold() for e in entries}) != len(entries):
+                raise AtlasError(f"Use distinct names for {label}.")
+        _text(self.layer_caption, "Layer field name", 24)
+        _text(self.protocol_caption, "Protocol field name", 24)
+        if not isinstance(self.label_mode, str) or self.label_mode not in LABEL_MODES:
+            raise AtlasError("Choose a supported block label style.")
+
+    def layer(self, layer_id: LayerId) -> Layer:
+        # Reject bools: True must not resolve to the default layer ID 1.
+        _layer_id(layer_id)
+        found = next((layer for layer in self.layers if layer.id == layer_id), None)
+        if found is None:
+            raise AtlasError(f"Unknown layer ID: {layer_id}")
+        return found
+
+    def protocol(self, protocol_id: str) -> Protocol:
+        found = next((protocol for protocol in self.protocols if protocol.id == protocol_id), None)
+        if found is None:
+            raise AtlasError(f"Unknown protocol ID: {protocol_id}")
+        return found
+
+    def protocol_name(self, protocol_id: str | None) -> str:
+        return NO_PROTOCOL_LABEL if protocol_id is None else self.protocol(protocol_id).name
+
+    def layer_index(self, layer_id: LayerId) -> int:
+        return self.layers.index(self.layer(layer_id))
+
+    @property
+    def z_base(self) -> float:
+        return -len(self.layers) / 2
+
+    def block_label(self, node: Node) -> str:
+        if self.label_mode == "title":
+            return node.name
+        coordinates = f"{self.layer(node.layer).name} · {self.protocol_name(node.protocol)}"
+        return coordinates if self.label_mode == "coordinates" else f"{node.name} · {coordinates}"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"layers": [{"id": e.id, "name": e.name, "color": e.color} for e in self.layers],
+                "protocols": [{"id": e.id, "name": e.name} for e in self.protocols],
+                "layer_caption": self.layer_caption, "protocol_caption": self.protocol_caption, "label_mode": self.label_mode}
+
+    @classmethod
+    def from_dict(cls, data: Any) -> Design:
+        if not isinstance(data, dict) or not isinstance(data.get("layers"), list) or not isinstance(data.get("protocols"), list):
+            raise AtlasError("The file needs a design with layer and protocol lists.")
+        if not 1 <= len(data["layers"]) <= 64 or not 0 <= len(data["protocols"]) <= 256:
+            raise AtlasError("A design needs 1–64 layers and 0–256 protocols.")
+        try:
+            if not all(isinstance(e, dict) for e in data["layers"] + data["protocols"]):
+                raise AtlasError("Design entries must be objects.")
+            return cls(tuple(Layer(e["id"], e["name"], e["color"]) for e in data["layers"]),
+                       tuple(Protocol(e["id"], e["name"]) for e in data["protocols"]),
+                       data["layer_caption"], data["protocol_caption"], data["label_mode"])
+        except KeyError as exc:
+            raise AtlasError(f"The design is missing {exc.args[0]!r}.") from exc
+
+
 @dataclass(frozen=True, slots=True)
 class Node:
     id: str
     name: str
-    layer: int
-    protocol: str
+    layer: LayerId
+    protocol: str | None
     depth: int
     notes: str = ""
+    slot: int = 0
+    span: int = 1
 
     def __post_init__(self) -> None:
         if not isinstance(self.id, str) or not self.id or len(self.id) > 100:
@@ -38,47 +161,74 @@ class Node:
             raise AtlasError("Use a name between 1 and 120 characters.")
         if any(ord(c) < 32 for c in self.name):
             raise AtlasError("The name must be a single line without control characters.")
-        if type(self.layer) is not int or not 1 <= self.layer <= len(LAYERS):
-            raise AtlasError("The OSI layer must be an integer from 1 to 7.")
-        if not isinstance(self.protocol, str) or self.protocol not in PROTOCOLS:
-            raise AtlasError("Choose one of the existing protocol sectors.")
-        if type(self.depth) is not int or not 0 <= self.depth < len(BANDS):
-            raise AtlasError("The radial band must be an integer from 0 to 4.")
+        _layer_id(self.layer)
+        if self.protocol is not None:
+            _text(self.protocol, "Protocol ID", 100)
+        if type(self.depth) is not int or not CENTER_DEPTH <= self.depth < len(BANDS):
+            raise AtlasError("Choose Center (-1) or a radial band from 0 to 4.")
         if not isinstance(self.notes, str) or len(self.notes) > 100_000:
             raise AtlasError("Notes must be text, with at most 100,000 characters.")
         if "\x00" in self.notes:
             raise AtlasError("Notes cannot contain a null character.")
+        if type(self.slot) is not int or not 0 <= self.slot < ANGULAR_SLOTS:
+            raise AtlasError("Choose a start slot from 1 to 16.")
+        if type(self.span) is not int or self.span not in BLOCK_SIZES.values():
+            raise AtlasError("Choose a block size: 1/16, 1/8, 1/4, 1/2 or Full.")
 
     @property
-    def coordinate(self) -> tuple[int, str, int]:
+    def coordinate(self) -> tuple[LayerId, str | None, int]:
         return self.layer, self.protocol, self.depth
 
+    @property
+    def position(self) -> tuple[LayerId, int]:
+        """Blocks at the same layer and depth share one ring (or center disk)."""
+        return self.layer, self.depth
+
+    @property
+    def occupied_slots(self) -> frozenset[int]:
+        return frozenset((self.slot + offset) % ANGULAR_SLOTS for offset in range(self.span))
+
     @classmethod
-    def create(cls, name: str, layer: int, protocol: str, depth: int, notes: str = "") -> Node:
-        return cls(uuid4().hex, name.strip(), layer, protocol, depth, notes)
+    def create(cls, name: str, layer: LayerId, protocol: str | None, depth: int, notes: str = "", *, slot: int = 0, span: int = 1) -> Node:
+        return cls(uuid4().hex, name.strip(), layer, protocol, depth, notes, slot, span)
 
     def to_dict(self) -> dict[str, Any]:
-        return {key: getattr(self, key) for key in ("id", "name", "layer", "protocol", "depth", "notes")}
+        return {key: getattr(self, key) for key in ("id", "name", "layer", "protocol", "depth", "notes", "slot", "span")}
+
+
+def validate_occupancy(nodes: tuple[Node, ...], layer_names: dict[LayerId, str]) -> None:
+    """Check placement even while a design draft has unresolved references."""
+    occupied: dict[tuple[LayerId, int], set[int]] = {}
+    for node in nodes:
+        ring = occupied.setdefault(node.position, set())
+        if ring.intersection(node.occupied_slots):
+            position = "Center" if node.depth == CENTER_DEPTH else f"band {node.depth:02d}"
+            name = layer_names.get(node.layer, str(node.layer))
+            raise AtlasError(f"This block overlaps another block on {name} / {position}. Choose a free start slot or a smaller size.")
+        ring.update(node.occupied_slots)
 
 
 @dataclass(frozen=True, slots=True)
 class Atlas:
     nodes: tuple[Node, ...] = ()
+    design: Design = Design()
 
     def __post_init__(self) -> None:
+        if not isinstance(self.design, Design):
+            raise AtlasError("An atlas needs a valid design.")
         if not isinstance(self.nodes, tuple) or not all(isinstance(n, Node) for n in self.nodes):
             raise AtlasError("An atlas contains a tuple of valid nodes.")
-        if len(self.nodes) > CAPACITY:
-            raise AtlasError(f"This grid holds at most {CAPACITY} occupied coordinates.")
+        if len(self.nodes) > MAX_NODES:
+            raise AtlasError(f"An atlas can contain at most {MAX_NODES:,} blocks.")
         ids: set[str] = set()
-        coords: set[tuple[int, str, int]] = set()
         for node in self.nodes:
+            self.design.layer(node.layer)
+            if node.protocol is not None:
+                self.design.protocol(node.protocol)
             if node.id in ids:
                 raise AtlasError(f"Duplicate node ID: {node.id}")
-            if node.coordinate in coords:
-                raise AtlasError(f"Coordinate already occupied: L{node.layer} / {node.protocol} / band {node.depth}.")
             ids.add(node.id)
-            coords.add(node.coordinate)
+        validate_occupancy(self.nodes, {layer.id: layer.name for layer in self.design.layers})
 
     def get(self, node_id: str | None) -> Node | None:
         return next((n for n in self.nodes if n.id == node_id), None)
@@ -87,27 +237,46 @@ class Atlas:
         """Return a validated copy; never mutate the current document on failure."""
         previous = self.get(node.id)
         if previous is None:
-            return Atlas(self.nodes + (node,))
-        return Atlas(tuple(node if old.id == node.id else old for old in self.nodes))
+            return replace(self, nodes=self.nodes + (node,))
+        return replace(self, nodes=tuple(node if old.id == node.id else old for old in self.nodes))
+
+    def free_starts(self, layer: LayerId, depth: int, span: int = 1, *, exclude_id: str | None = None) -> tuple[int, ...]:
+        # Reuse coordinate validation even for an empty atlas.
+        self.design.layer(layer)
+        Node("placement", "Placement", layer, None, depth, span=span)
+        occupied = set().union(*(n.occupied_slots for n in self.nodes
+                                 if n.position == (layer, depth) and n.id != exclude_id))
+        return tuple(slot for slot in range(ANGULAR_SLOTS)
+                     if all((slot + offset) % ANGULAR_SLOTS not in occupied for offset in range(span)))
+
+    def next_free(self, layer: LayerId, depth: int, span: int = 1, *, start: int = 0, exclude_id: str | None = None) -> int | None:
+        free = set(self.free_starts(layer, depth, span, exclude_id=exclude_id))
+        return next(((start + step) % ANGULAR_SLOTS for step in range(ANGULAR_SLOTS)
+                     if (start + step) % ANGULAR_SLOTS in free), None)
 
     def without_node(self, node_id: str) -> Atlas:
         if self.get(node_id) is None:
             raise AtlasError("The selected node no longer exists.")
-        return Atlas(tuple(n for n in self.nodes if n.id != node_id))
+        return replace(self, nodes=tuple(n for n in self.nodes if n.id != node_id))
 
-    def next_free(self, layer: int = 7, protocol: str = "SSH") -> tuple[int, str, int] | None:
-        """Prefer the current protocol/layer, then look through the remaining grid."""
-        if type(layer) is not int or not 1 <= layer <= 7 or protocol not in PROTOCOLS:
-            raise AtlasError("Choose a valid layer and protocol when finding a free coordinate.")
-        occupied = {n.coordinate for n in self.nodes}
-        preferred = [(layer, protocol, d) for d in range(len(BANDS))]
-        all_coords = [(l, p, d) for l in range(7, 0, -1) for p in PROTOCOLS for d in range(5)]
-        return next((c for c in preferred + all_coords if c not in occupied), None)
+    def with_design(self, design: Design, layer_moves: dict | None = None, protocol_moves: dict | None = None) -> Atlas:
+        """Apply explicit reassignments atomically; overlaps and orphan IDs fail."""
+        layer_moves, protocol_moves = layer_moves or {}, protocol_moves or {}
+        return Atlas(tuple(replace(n, layer=layer_moves.get(n.layer, n.layer),
+                                   protocol=protocol_moves.get(n.protocol, n.protocol)) for n in self.nodes), design)
+
+    def without_protocols(self) -> Atlas:
+        """Clear optional metadata while preserving blocks and all geometry."""
+        if not self.design.protocols:
+            return self
+        return Atlas(tuple(replace(n, protocol=None) for n in self.nodes), replace(self.design, protocols=()))
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "type": SCHEMA, "version": VERSION,
-            "sector_order": list(PROTOCOLS), "radial_bands": list(BANDS),
+            "layout": LAYOUT, "center_depth": CENTER_DEPTH, "radial_bands": list(BANDS),
+            "angular_slots": ANGULAR_SLOTS,
+            "design": self.design.to_dict(),
             "nodes": [n.to_dict() for n in self.nodes],
         }
 
@@ -116,16 +285,24 @@ class Atlas:
         if not isinstance(data, dict) or data.get("type") != SCHEMA:
             raise AtlasError("This is not a Cyber Atlas JSON document.")
         version = data.get("version")
-        if type(version) is not int or version not in (1, 2, 3, 4):
-            raise AtlasError("Supported atlas file versions are 1, 2, 3 and 4.")
+        if type(version) is not int or version not in (1, 2, 3, 4, 5, 6, 7, 8):
+            raise AtlasError("Supported atlas file versions are 1 through 8.")
         if version == 4 and (
             data.get("sector_order") != list(PROTOCOLS) or data.get("radial_bands") != list(BANDS)
         ):
             raise AtlasError("This file uses a different grid. Import was stopped to preserve coordinates.")
+        if version >= 5 and (
+            data.get("layout") != ("equal-rings" if version == 5 else LAYOUT) or data.get("radial_bands") != list(BANDS)
+            or type(data.get("center_depth")) is not int or data.get("center_depth") != CENTER_DEPTH
+        ):
+            raise AtlasError("This file uses an unsupported radial layout.")
+        if version >= 6 and (type(data.get("angular_slots")) is not int or data.get("angular_slots") != ANGULAR_SLOTS):
+            raise AtlasError("This file must use 16 angular slots per ring.")
         raw_nodes = data.get("nodes")
-        if not isinstance(raw_nodes, list) or len(raw_nodes) > CAPACITY:
-            raise AtlasError(f"The file must contain a node list of at most {CAPACITY} entries.")
+        if not isinstance(raw_nodes, list) or len(raw_nodes) > MAX_NODES:
+            raise AtlasError(f"The file must contain a node list of at most {MAX_NODES:,} entries.")
         nodes = []
+        legacy_slots: dict[tuple[int, int], int] = {}
         for index, raw in enumerate(raw_nodes, 1):
             if not isinstance(raw, dict):
                 raise AtlasError(f"Node {index} must be an object.")
@@ -134,11 +311,25 @@ class Atlas:
                 # The HTML prototypes used integer IDs. Preserve them as strings.
                 if version < 4 and type(node_id) is int:
                     node_id = str(node_id)
-                node = Node(node_id, raw["name"], raw["layer"], raw["protocol"], raw["depth"], raw.get("notes", ""))
+                node = Node(node_id, raw["name"], raw["layer"], raw["protocol"], raw["depth"], raw.get("notes", ""),
+                            raw["slot"] if version >= 6 else 0, raw["span"] if version >= 6 else 1)
+                if version < 8 and node.protocol is None:
+                    raise AtlasError("Unassigned protocols require atlas file version 8.")
+                if version < 5 and node.depth == CENTER_DEPTH:
+                    raise AtlasError("Center is supported starting with atlas file version 5.")
+                if version < 6:
+                    slot = legacy_slots.get(node.position, 0)
+                    if slot >= ANGULAR_SLOTS:
+                        raise AtlasError(f"L{node.layer} / depth {node.depth} contains more than 16 legacy blocks. Move some to another radial depth in the older app before importing. No notes were imported or removed.")
+                    node = replace(node, slot=slot)
+                    legacy_slots[node.position] = slot + 1
             except KeyError as exc:
                 raise AtlasError(f"Node {index} is missing {exc.args[0]!r}.") from exc
             nodes.append(node)
-        return cls(tuple(nodes))
+        design = Design.from_dict(data.get("design")) if version >= 7 else Design()
+        if version == 7 and not design.protocols:
+            raise AtlasError("Empty protocol lists require atlas file version 8.")
+        return cls(tuple(nodes), design)
 
 
 def example_atlas() -> Atlas:
@@ -159,5 +350,10 @@ def example_atlas() -> Atlas:
         (7, "SMB", "File share", 2, "Explore network file access.\n\nSeparate connectivity, authentication, and permissions in your notes."),
         (6, "TLS", "TLS encryption", 1, "Learning-map placement only.\n\nTLS is not being asserted to occupy a strict OSI layer here. Use this block to investigate its relationship with application protocols and transport."),
     )
-    return Atlas(tuple(Node(str(i), name, layer, protocol, depth, notes)
-                       for i, (layer, protocol, name, depth, notes) in enumerate(rows, 1)))
+    slots: dict[tuple[int, int], int] = {}
+    nodes = []
+    for i, (layer, protocol, name, depth, notes) in enumerate(rows, 1):
+        slot = slots.get((layer, depth), 0)
+        nodes.append(Node(str(i), name, layer, protocol, depth, notes, slot))
+        slots[layer, depth] = slot + 1
+    return Atlas(tuple(nodes))

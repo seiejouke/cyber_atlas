@@ -6,7 +6,8 @@ on demand, not a continuously running animation loop.
 """
 from __future__ import annotations
 
-from math import cos, exp, pi, sin
+from enum import Enum
+from math import atan2, cos, exp, hypot, pi, sin
 
 import vtkmodules.vtkRenderingOpenGL2  # noqa: F401: register OpenGL factories
 from vtkmodules.util.numpy_support import vtk_to_numpy
@@ -19,8 +20,15 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderWindow, vtkWindowToImageFilter,
 )
 
-from .geometry import Mesh, Z_BASE, wedge_mesh
-from .model import COLORS, Node
+from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, layout_meshes, wedge_mesh
+from .model import ANGULAR_SLOTS, BANDS, Design, LayerId, Node
+
+
+class ProtocolFilter(Enum):
+    UNASSIGNED = "unassigned"
+
+
+NO_PROTOCOL_FILTER = ProtocolFilter.UNASSIGNED
 
 
 def rgb(hex_color: str, factor: float = 1.0) -> tuple[float, float, float]:
@@ -43,7 +51,9 @@ def polydata(mesh: Mesh) -> vtkPolyData:
 
 
 class Scene:
-    def __init__(self) -> None:
+    def __init__(self, design: Design = Design()) -> None:
+        self.design = design
+        self._axis_actors: list[vtkActor] = []
         self.renderer = vtkRenderer()
         self.renderer.SetBackground(rgb("#080f1b"))
         self.renderer.SetBackground2(rgb("#14253b"))
@@ -63,9 +73,17 @@ class Scene:
         self._actor_ids: dict[str, str] = {}
         self.actors: dict[str, tuple[vtkActor, vtkActor]] = {}
         self.meshes: dict[str, Mesh] = {}
+        self.preview_actor: vtkActor | None = None
+        self.preview_node: Node | None = None
+        self.preview_valid = True
+        self._preview_pick_actor: vtkActor | None = None
+        self._preview_picker = vtkCellPicker()
+        self._preview_picker.SetTolerance(0.0005)
+        self._preview_picker.PickFromListOn()
         self.nodes: tuple[Node, ...] = ()
         self.selected: str | None = None
-        self.layer_filter: int | None = None
+        self.layer_filter: LayerId | None = None
+        self.protocol_filter: str | ProtocolFilter | None = None
         self.width, self.height = 800, 650
         self.closed = False
         for position, intensity in (((0, 0, 1), 0.80), ((-1, 0.6, 0.7), 0.45)):
@@ -91,12 +109,21 @@ class Scene:
         actor.GetProperty().LightingOff()
         actor.PickableOff()
         self.renderer.AddActor(actor)
+        self._axis_actors.append(actor)
 
     def _reference_axis(self) -> None:
-        self._line((0, 0, -3.8), (0, 0, 3.8), 1.5)
-        for i in range(8):
-            z = Z_BASE + i
+        for actor in self._axis_actors:
+            self.renderer.RemoveActor(actor)
+        self._axis_actors.clear()
+        self._line((0, 0, self.design.z_base - .3), (0, 0, -self.design.z_base + .3), 1.5)
+        for i in range(len(self.design.layers) + 1):
+            z = self.design.z_base + i
             self._line((-0.10, 0, z), (0.10, 0, z))
+
+    def set_design(self, design: Design) -> None:
+        self.set_preview(None)
+        self.design = design
+        self._reference_axis()
 
     def set_nodes(self, nodes: tuple[Node, ...]) -> None:
         # No empty grid cells are ever constructed or rendered.
@@ -104,11 +131,11 @@ class Scene:
             self.renderer.RemoveActor(solid)
             self.renderer.RemoveActor(outline)
         self.actors.clear()
-        self.meshes.clear()
+        self.meshes = layout_meshes(nodes, self.design)
         self._actor_ids.clear()
         self.nodes = nodes
         for node in nodes:
-            mesh = wedge_mesh(node)
+            mesh = self.meshes[node.id]
             data = polydata(mesh)
             normals = vtkPolyDataNormals()
             normals.SetInputData(data)
@@ -155,28 +182,86 @@ class Scene:
         for node in self.nodes:
             solid, outline = self.actors[node.id]
             selected = node.id == node_id
-            solid.GetProperty().SetColor(rgb(COLORS[node.layer - 1], 1.10 if selected else 1.0))
-            outline.GetProperty().SetColor(rgb("#fff0c2") if selected else rgb(COLORS[node.layer - 1], 0.65))
+            color = self.design.layer(node.layer).color
+            solid.GetProperty().SetColor(rgb(color, 1.10 if selected else 1.0))
+            outline.GetProperty().SetColor(rgb("#fff0c2") if selected else rgb(color, 0.65))
             outline.GetProperty().SetLineWidth(2.0 if selected else 0.85)
 
-    def set_layer_filter(self, layer: int | None) -> None:
+    def set_preview(self, node: Node | None, valid: bool = True) -> None:
+        self.preview_node, self.preview_valid = node, valid
+        self._preview_picker.InitializePickList()
+        self._preview_pick_actor = None
+        if self.preview_actor is not None:
+            self.renderer.RemoveActor(self.preview_actor)
+            self.preview_actor = None
+        if node is not None:
+            data = polydata(wedge_mesh(node, design=self.design))
+            edges = vtkFeatureEdges()
+            edges.SetInputData(data)
+            edges.SetFeatureAngle(25)
+            edges.BoundaryEdgesOn()
+            edges.FeatureEdgesOn()
+            edges.ManifoldEdgesOff()
+            edges.NonManifoldEdgesOff()
+            mapper = vtkPolyDataMapper()
+            mapper.SetInputConnection(edges.GetOutputPort())
+            mapper.SetResolveCoincidentTopologyToPolygonOffset()
+            actor = vtkActor()
+            actor.SetMapper(mapper)
+            actor.PickableOff()
+            actor.GetProperty().LightingOff()
+            actor.GetProperty().SetColor(rgb("#70cbd8" if valid else "#ee9a9a"))
+            actor.GetProperty().SetLineWidth(2.0)
+            self.renderer.AddActor(actor)
+            self.preview_actor = actor
+            # A separate, unrendered solid makes the whole draft clickable,
+            # including its faces, while the visible preview stays an outline.
+            pick_mapper = vtkPolyDataMapper()
+            pick_mapper.SetInputData(data)
+            self._preview_pick_actor = vtkActor()
+            self._preview_pick_actor.SetMapper(pick_mapper)
+            self._preview_picker.AddPickList(self._preview_pick_actor)
+        self.renderer.ResetCameraClippingRange()
+
+    def pick_preview(self, x: float, y: float) -> bool:
+        if self._preview_pick_actor is None or not (0 <= x < self.width and 0 <= y < self.height):
+            return False
+        if not self._preview_picker.Pick(x, self.height - 1 - y, 0, self.renderer):
+            return False
+        # The draft cannot be picked through a nearer saved surface.
+        if self.picker.Pick(x, self.height - 1 - y, 0, self.renderer):
+            camera = self.renderer.GetActiveCamera().GetPosition()
+            distance = lambda point: sum((point[i] - camera[i]) ** 2 for i in range(3))
+            if distance(self.picker.GetPickPosition()) + 1e-4 < distance(self._preview_picker.GetPickPosition()):
+                return False
+        return True
+
+    def set_layer_filter(self, layer: LayerId | None) -> None:
         self.layer_filter = layer
         for node in self.nodes:
-            visible = layer is None or node.layer == layer
             for actor in self.actors[node.id]:
-                actor.SetVisibility(visible)
+                actor.SetVisibility(self.is_visible(node))
         self.renderer.ResetCameraClippingRange()
+
+    def set_protocol_filter(self, protocol: str | ProtocolFilter | None) -> None:
+        self.protocol_filter = protocol
+        self.set_layer_filter(self.layer_filter)
+
+    def is_visible(self, node: Node) -> bool:
+        protocol_matches = self.protocol_filter is None or (
+            node.protocol is None if self.protocol_filter is NO_PROTOCOL_FILTER else self.protocol_filter == node.protocol)
+        return self.layer_filter in (None, node.layer) and protocol_matches
 
     def reset_camera(self) -> None:
         self.yaw = 135 * pi / 180
         self.elevation = 19 * pi / 180
-        self.scale = 4.80
+        self.scale = max(4.80, len(self.design.layers) * .62)
         self.target = [0.0, 0.0, 0.0]
         self._apply_camera()
 
     def _apply_camera(self) -> None:
         camera = self.renderer.GetActiveCamera()
-        radius = 30.0
+        radius = max(30.0, len(self.design.layers) * 1.5)
         direction = (cos(self.elevation) * cos(self.yaw), cos(self.elevation) * sin(self.yaw), sin(self.elevation))
         camera.SetPosition(*(self.target[i] + radius * direction[i] for i in range(3)))
         camera.SetFocalPoint(*self.target)
@@ -199,7 +284,7 @@ class Scene:
         self._apply_camera()
 
     def zoom(self, steps: float) -> None:
-        self.scale = max(1.2, min(14.0, self.scale * exp(-steps * 0.10)))
+        self.scale = max(1.2, min(max(14.0, len(self.design.layers)), self.scale * exp(-steps * 0.10)))
         self._apply_camera()
 
     def frame(self, width: int, height: int) -> bytes:
@@ -221,6 +306,31 @@ class Scene:
         self.renderer.WorldToDisplay()
         x, y, depth = self.renderer.GetDisplayPoint()
         return x, self.height - 1 - y, depth
+
+    def position_at(self, x: float, y: float, layer: LayerId) -> tuple[int, int] | None:
+        """Intersect the pointer ray with the editor layer's top plane."""
+        if not (0 <= x < self.width and 0 <= y < self.height):
+            return None
+        ray = []
+        for depth in (0.0, 1.0):
+            self.renderer.SetDisplayPoint(x, self.height - 1 - y, depth)
+            self.renderer.DisplayToWorld()
+            world = self.renderer.GetWorldPoint()
+            ray.append(tuple(v / world[3] for v in world[:3]))
+        near, far = ray
+        dz = far[2] - near[2]
+        if abs(dz) < 1e-8:
+            return None
+        t = (self.design.z_base + (self.design.layer_index(layer) + 1) * LAYER_HEIGHT - near[2]) / dz
+        if not 0 <= t <= 1:
+            return None
+        wx, wy = (near[i] + t * (far[i] - near[i]) for i in (0, 1))
+        radius = hypot(wx, wy)
+        if radius >= (len(BANDS) + 1) * RADIAL_WIDTH:
+            return None
+        band = int(radius / RADIAL_WIDTH) - 1
+        angle = (atan2(wy, wx) + pi / 2) % (2 * pi)
+        return band, int(angle / (2 * pi) * ANGULAR_SLOTS) % ANGULAR_SLOTS
 
     def pick(self, x: float, y: float) -> str | None:
         if not (0 <= x < self.width and 0 <= y < self.height):

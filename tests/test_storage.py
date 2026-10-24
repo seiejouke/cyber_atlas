@@ -75,6 +75,35 @@ class StorageTests(unittest.TestCase):
         self.path.write_text(json.dumps(self.atlas.to_dict()), encoding="utf-8-sig")
         self.assertEqual(read_atlas(self.path), self.atlas)
 
+    def test_first_save_of_v5_preserves_original_backup_and_all_notes(self):
+        data = self.atlas.to_dict()
+        data.update(version=5, layout="equal-rings")
+        data.pop("angular_slots")
+        for node in data["nodes"]:
+            node.pop("slot")
+            node.pop("span")
+        self.path.parent.mkdir()
+        self.path.write_text(json.dumps(data), encoding="utf-8")
+        original = self.path.read_bytes()
+        migrated = read_atlas(self.path)
+        self.assertEqual(migrated, self.atlas)
+        write_atlas(self.path, migrated)
+        self.assertEqual(self.path.with_suffix(".json.bak").read_bytes(), original)
+        self.assertEqual(json.loads(self.path.read_text())["version"], 8)
+        self.assertEqual(read_atlas(self.path), migrated)
+
+    def test_overfull_legacy_ring_load_leaves_file_untouched(self):
+        data = {"type": "cyber-knowledge-atlas", "version": 5, "layout": "equal-rings",
+                "center_depth": -1, "radial_bands": self.atlas.to_dict()["radial_bands"],
+                "nodes": [{"id": str(i), "name": str(i), "layer": 7, "protocol": "SSH", "depth": 2}
+                          for i in range(17)]}
+        self.path.parent.mkdir()
+        self.path.write_text(json.dumps(data), encoding="utf-8")
+        original = self.path.read_bytes()
+        with self.assertRaisesRegex(AtlasError, "more than 16"):
+            read_atlas(self.path)
+        self.assertEqual(self.path.read_bytes(), original)
+
 
 if __name__ == "__main__":
     unittest.main()

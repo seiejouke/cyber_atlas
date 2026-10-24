@@ -1,0 +1,82 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 8,
+  "layout": "fixed-slots",
+  "center_depth": -1,
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "angular_slots": 16,
+  "design": {
+    "layers": [
+      {
+        "id": "foundation",
+        "name": "Infrastructure",
+        "color": "#65b6a1"
+      },
+      {
+        "id": "services",
+        "name": "Network services",
+        "color": "#9c8bdb"
+      },
+      {
+        "id": "apps",
+        "name": "Applications",
+        "color": "#edbb69"
+      }
+    ],
+    "protocols": [
+      {
+        "id": "ethernet",
+        "name": "Ethernet"
+      },
+      {
+        "id": "https",
+        "name": "HTTPS"
+      },
+      {
+        "id": "lab",
+        "name": "Lab protocol"
+      }
+    ],
+    "layer_caption": "Tier",
+    "protocol_caption": "Category",
+    "label_mode": "combined"
+  },
+  "nodes": [
+    {
+      "id": "nic",
+      "name": "Network interface",
+      "layer": "foundation",
+      "protocol": "ethernet",
+      "depth": 0,
+      "notes": "Add your lab findings here.",
+      "slot": 7,
+      "span": 2
+    },
+    {
+      "id": "control",
+      "name": "Control service",
+      "layer": "services",
+      "protocol": "lab",
+      "depth": 1,
+      "notes": "Investigate your own protocol.",
+      "slot": 8,
+      "span": 2
+    },
+    {
+      "id": "api",
+      "name": "API gateway",
+      "layer": "apps",
+      "protocol": "https",
+      "depth": 1,
+      "notes": "Record a request and your observations.",
+      "slot": 7,
+      "span": 2
+    }
+  ]
+}

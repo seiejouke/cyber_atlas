@@ -11,6 +11,6 @@ curriculum.
 - VTK surface picking: https://vtk.org/doc/nightly/html/classvtkCellPicker.html
 - Arch's Tk package: https://archlinux.org/packages/extra/x86_64/tk/
 
-The prototype's example concepts and fixed protocol sectors carry forward the
-user's earlier HTML atlas. Their coordinates are editable learning-map choices,
-not a strict assertion of OSI conformance.
+The prototype's example concepts carry forward the user's earlier HTML atlas.
+Explicit block sizes and angular slots replace its fixed protocol sectors. Layer and depth
+are editable learning-map choices, not a strict assertion of OSI conformance.
