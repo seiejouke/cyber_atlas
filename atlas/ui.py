@@ -13,6 +13,7 @@ from .model import ANGULAR_SLOTS, Atlas, AtlasError, BANDS, BLOCK_SIZES, CENTER_
 from .design_editor import DesignEditor
 from .scene import NO_PROTOCOL_FILTER, Scene
 from .storage import read_atlas, write_atlas
+from .templates import TEMPLATES, AtlasTemplate
 
 
 class AtlasApp:
@@ -39,6 +40,9 @@ class AtlasApp:
         self._label_hits: list[tuple[str, tuple]] = []
         self._axis_label_boxes: list[tuple] = []
         self._hovered_node: str | None = None
+        self._template_origin: dict | None = None
+        self._active_template: AtlasTemplate | None = None
+        self._listed_templates: list[AtlasTemplate] = []
         self.view_mode_var = tk.StringVar(value="Blocks")
         self.connections_var = tk.BooleanVar(value=True)
         self._view_labels = {"blocks": True, "nodes": False}
@@ -89,7 +93,9 @@ class AtlasApp:
         self.design_button.grid(row=0, column=1, rowspan=2, padx=(0, 8))
         self.empty_button = ttk.Button(header, text="Empty atlas", command=self.new_empty_atlas)
         self.empty_button.grid(row=0, column=2, rowspan=2, padx=(0, 8))
-        ttk.Button(header, text="Reset view", command=self.reset_view).grid(row=0, column=3, rowspan=2)
+        self.templates_button = ttk.Button(header, text="Templates", command=self.open_templates)
+        self.templates_button.grid(row=0, column=3, rowspan=2, padx=(0, 8))
+        ttk.Button(header, text="Reset view", command=self.reset_view).grid(row=0, column=4, rowspan=2)
 
         content = ttk.Frame(outer)
         content.grid(row=1, column=0, sticky="nsew")
@@ -129,8 +135,10 @@ class AtlasApp:
 
         right = tk.Frame(content, bg=theme.PANEL, highlightthickness=1, highlightbackground=theme.BORDER)
         right.grid(row=0, column=1, sticky="nsew")
+        self.right_panel = right
         form = ttk.Frame(right, style="Panel.TFrame", padding=10)
         form.pack(fill="both", expand=True)
+        self.editor_form = form
         form.columnconfigure(0, weight=1)
         form.rowconfigure(9, weight=1)
         self.editor_heading = ttk.Label(form, text="NODE EDITOR", style="Muted.TLabel",
@@ -214,6 +222,8 @@ class AtlasApp:
         ttk.Button(files, text="Export JSON", command=self.export_json).grid(row=0, column=0, sticky="ew", padx=(0, 6))
         ttk.Button(files, text="Import JSON", command=self.import_json).grid(row=0, column=1, sticky="ew")
 
+        self._build_template_browser(right)
+
         self.legend = tk.Canvas(outer, height=19, bg=theme.BG, highlightthickness=0)
         self.legend.grid(row=2, column=0, sticky="ew", pady=(10, 0))
         self.legend_scroll = ttk.Scrollbar(outer, orient="horizontal", command=self.legend.xview)
@@ -227,6 +237,270 @@ class AtlasApp:
         self.status.grid(row=0, column=0, sticky="ew")
         tk.Label(footer, text=f"LOCAL ONLY  /  v{__version__}", bg=theme.BG, fg=theme.MUTED,
                  font=(self.mono, 8)).grid(row=0, column=1, padx=(15, 0))
+
+    def _build_template_browser(self, parent: tk.Frame) -> None:
+        form = ttk.Frame(parent, style="Panel.TFrame", padding=10)
+        form.columnconfigure(0, weight=1)
+        form.rowconfigure(3, weight=1)
+        self.template_form = form
+
+        ttk.Label(form, text="TEMPLATE LIBRARY", style="Muted.TLabel",
+                  font=(self.mono, 9)).grid(row=0, column=0, sticky="w")
+        ttk.Label(form, text="Select a topic to preview its real atlas nodes.", style="Muted.TLabel",
+                  wraplength=310, justify="left").grid(row=1, column=0, sticky="ew", pady=(5, 9))
+        self.template_search_var = tk.StringVar()
+        self.template_search = ttk.Entry(form, textvariable=self.template_search_var)
+        self.template_search.grid(row=2, column=0, sticky="ew", pady=(0, 8))
+
+        list_frame = ttk.Frame(form, style="Panel.TFrame")
+        list_frame.grid(row=3, column=0, sticky="nsew")
+        list_frame.columnconfigure(0, weight=1)
+        list_frame.rowconfigure(0, weight=1)
+        self.template_list = tk.Listbox(
+            list_frame, exportselection=False, activestyle="none",
+            bg=theme.FIELD, fg=theme.TEXT, selectbackground="#214f5d", selectforeground=theme.ACCENT,
+            highlightbackground=theme.BORDER, highlightcolor=theme.ACCENT, highlightthickness=1,
+            relief="flat", bd=0, font=(self.family, 10),
+        )
+        self.template_list.grid(row=0, column=0, sticky="nsew")
+        scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.template_list.yview)
+        scrollbar.grid(row=0, column=1, sticky="ns")
+        self.template_list.configure(yscrollcommand=scrollbar.set)
+
+        ttk.Separator(form).grid(row=4, column=0, sticky="ew", pady=(10, 9))
+        self.template_preview_label = tk.Label(
+            form, text="", bg=theme.PANEL, fg=theme.ACCENT,
+            anchor="w", justify="left", font=(self.family, 10, "bold"),
+        )
+        self.template_preview_label.grid(row=5, column=0, sticky="ew")
+        self.template_meta_label = tk.Label(
+            form, text="", bg=theme.PANEL, fg=theme.MUTED,
+            anchor="w", justify="left", font=(self.mono, 8),
+        )
+        self.template_meta_label.grid(row=6, column=0, sticky="ew", pady=(3, 0))
+        self.template_description = tk.Label(
+            form, text="", bg=theme.PANEL, fg=theme.TEXT,
+            anchor="nw", justify="left", wraplength=310, font=(self.family, 9),
+        )
+        self.template_description.grid(row=7, column=0, sticky="ew", pady=(8, 10))
+        ttk.Label(form, text="Using a template replaces the current atlas. The previous saved version is kept as the normal backup.",
+                  style="Muted.TLabel", wraplength=310, justify="left").grid(row=8, column=0, sticky="ew")
+
+        buttons = ttk.Frame(form, style="Panel.TFrame")
+        buttons.grid(row=9, column=0, sticky="ew", pady=(12, 0))
+        buttons.columnconfigure(0, weight=1)
+        buttons.columnconfigure(1, weight=1)
+        ttk.Button(buttons, text="Cancel", command=self.cancel_templates).grid(row=0, column=0, sticky="ew", padx=(0, 6))
+        self.use_template_button = ttk.Button(buttons, text="Use template", style="Primary.TButton",
+                                              command=self.use_template)
+        self.use_template_button.grid(row=0, column=1, sticky="ew")
+
+        self.template_list.bind("<<ListboxSelect>>", self._template_selected)
+        self.template_search_var.trace_add("write", lambda *_: self._refresh_template_list())
+
+    def _refresh_template_list(self, preferred: str | None = None) -> None:
+        query = self.template_search_var.get().strip().casefold()
+        active_key = preferred or (self._active_template.key if self._active_template else None)
+        self._listed_templates = [
+            template for template in TEMPLATES
+            if not query or query in template.name.casefold() or query in template.description.casefold()
+        ]
+        self.template_list.delete(0, "end")
+        for template in self._listed_templates:
+            self.template_list.insert("end", template.name)
+        if not self._listed_templates:
+            self._active_template = None
+            self.template_preview_label.configure(text="No matching templates")
+            self.template_meta_label.configure(text="")
+            self.template_description.configure(text="Try a different search term.")
+            self.use_template_button.state(["disabled"])
+            return
+        index = next((index for index, template in enumerate(self._listed_templates)
+                      if template.key == active_key), 0)
+        self.template_list.selection_set(index)
+        self.template_list.activate(index)
+        self.template_list.see(index)
+        if self._template_origin is not None:
+            self._show_template(self._listed_templates[index])
+
+    def _template_selected(self, _event=None) -> None:
+        selection = self.template_list.curselection()
+        if self._template_origin is not None and selection:
+            self._show_template(self._listed_templates[selection[0]])
+
+    def _template_snapshot(self) -> dict:
+        return {
+            "document": self.document,
+            "selected": self.selected,
+            "form": self._form_state(),
+            "loaded_form": self._loaded_form,
+            "placement_state": self.placement_state,
+            "placement_origin": self._placement_origin,
+            "floating_position": self._floating_position,
+            "last_size": self._last_size,
+            "mode": self.scene.mode,
+            "layer_filter": self.scene.layer_filter,
+            "protocol_filter": self.scene.protocol_filter,
+            "labels": self.labels_var.get(),
+            "view_labels": dict(self._view_labels),
+            "connections": self.connections_var.get(),
+            "camera": (self.scene.yaw, self.scene.elevation, self.scene.scale, list(self.scene.target)),
+        }
+
+    def open_templates(self) -> None:
+        if self._template_origin is not None:
+            self.template_search.focus_set()
+            return
+        if self.placement_state == "placing":
+            self.cancel_placement()
+        if not self._allow_leave():
+            return
+        # A discarded draft remains in the fields until the next editor load.
+        # Normalize it before taking the state we promise to restore on Cancel.
+        if self.dirty:
+            self._load_editor(self.document.get(self.selected))
+        self._template_origin = self._template_snapshot()
+        self.editor_form.pack_forget()
+        self.template_form.pack(fill="both", expand=True)
+        self.design_button.state(["disabled"])
+        self.empty_button.state(["disabled"])
+        self.blocks_button.state(["disabled"])
+        self.nodes_button.state(["disabled"])
+        self.template_search_var.set("")
+        self._refresh_template_list("python")
+        self.template_search.focus_set()
+
+    def _show_template(self, template: AtlasTemplate) -> None:
+        if self._template_origin is None:
+            return
+        self._active_template = template
+        self._loading = True
+        self.selected = None
+        self.placement_state = "locked"
+        self._floating_position = None
+        self.document = template.atlas
+        self.scene.set_preview(None)
+        self.scene.set_mode("nodes")
+        self.scene.set_design(template.atlas.design)
+        self.scene.set_nodes(template.atlas.nodes)
+        self.scene.set_selected(None)
+        self.scene.set_layer_filter(None)
+        self.scene.set_protocol_filter(None)
+        self.view_mode_var.set("Nodes")
+        self.labels_var.set(True)
+        self.connections_check.state(["!disabled"])
+        for widget in (self.size_label, self.size_box):
+            widget.grid_remove()
+        self.size_box.master.columnconfigure(2, weight=0)
+        self._refresh_design_controls()
+        self._loading = False
+        node_count = len(template.atlas.nodes)
+        self.template_preview_label.configure(text=f"Previewing: {template.name}")
+        self.template_meta_label.configure(
+            text=f"{len(template.atlas.design.layers)} layers  /  {node_count} {'node' if node_count == 1 else 'nodes'}"
+        )
+        self.template_description.configure(text=template.description)
+        self.use_template_button.state(["!disabled"])
+        self.scene.reset_camera()
+        self._hovered_node = None
+        self._set_status(f"Template preview  /  {template.name}  /  read only")
+        self.request_render()
+
+    def _set_editor_panel_visible(self) -> None:
+        self.template_form.pack_forget()
+        self.editor_form.pack(fill="both", expand=True)
+        self.design_button.state(["!disabled"])
+        self.empty_button.state(["!disabled"])
+        self.blocks_button.state(["!disabled"])
+        self.nodes_button.state(["!disabled"])
+
+    def cancel_templates(self) -> bool:
+        if self._template_origin is None:
+            return False
+        origin = self._template_origin
+        self._template_origin = None
+        self._active_template = None
+        self._loading = True
+        self.document = origin["document"]
+        self.selected = origin["selected"]
+        self.placement_state = origin["placement_state"]
+        self._placement_origin = origin["placement_origin"]
+        self._floating_position = origin["floating_position"]
+        self._last_size = origin["last_size"]
+        self.scene.set_preview(None)
+        self.scene.set_design(self.document.design)
+        self.scene.set_nodes(self.document.nodes)
+        self.scene.set_mode(origin["mode"])
+        self.scene.set_connections_visible(origin["connections"])
+        self.scene.set_layer_filter(origin["layer_filter"])
+        self.scene.set_protocol_filter(origin["protocol_filter"])
+        self.scene.set_selected(self.selected)
+        self.view_mode_var.set(origin["mode"].title())
+        self.connections_var.set(origin["connections"])
+        self.connections_check.state(["!disabled"] if origin["mode"] == "nodes" else ["disabled"])
+        self.labels_var.set(origin["labels"])
+        self._view_labels = origin["view_labels"]
+        for widget in (self.size_label, self.size_box):
+            widget.grid_remove() if origin["mode"] == "nodes" else widget.grid()
+        self.size_box.master.columnconfigure(2, weight=0 if origin["mode"] == "nodes" else 1)
+        self._refresh_design_controls()
+        name, layer, protocol, depth, size, slot, notes = origin["form"]
+        self.name_var.set(name)
+        self.layer_var.set(layer)
+        self.protocol_var.set(protocol)
+        self.depth_var.set(depth)
+        self.size_var.set(size)
+        self.slot_var.set(slot)
+        self.notes.delete("1.0", "end")
+        self.notes.insert("1.0", notes)
+        self.notes.edit_reset()
+        self.notes.edit_modified(False)
+        self._loaded_form = origin["loaded_form"]
+        self.delete_button.state(["!disabled"] if self.selected else ["disabled"])
+        self._loading = False
+        self._set_editor_panel_visible()
+        self._update_coordinate_controls()
+        self._changed()
+        yaw, elevation, scale, target = origin["camera"]
+        self.scene.yaw, self.scene.elevation, self.scene.scale = yaw, elevation, scale
+        self.scene.target = list(target)
+        self.scene._apply_camera()
+        self._set_status(f"Local atlas  /  {self.path}")
+        self.request_render()
+        return True
+
+    def use_template(self) -> bool:
+        if self._template_origin is None or self._active_template is None:
+            return False
+        template = self._active_template
+        origin = self._template_origin
+        original = origin["document"]
+        if original.nodes and not messagebox.askyesno(
+            "Use this template?",
+            f"Replace {len(original.nodes)} saved nodes with the {template.name} template?\n\n"
+            "The current saved atlas will be kept as the previous-version backup.",
+            parent=self.root,
+        ):
+            return False
+        self.document = original
+        if not self._commit(template.atlas):
+            # Keep the preview active after a failed write.
+            self.document = template.atlas
+            return False
+        self._template_origin = None
+        self._active_template = None
+        self._set_editor_panel_visible()
+        self.filter_var.set("All layers")
+        self.protocol_filter_var.set(self._all_protocols)
+        self.scene.set_layer_filter(None)
+        self.scene.set_protocol_filter(None)
+        self.view_mode_var.set("Nodes")
+        self.scene.set_mode("nodes")
+        self.connections_check.state(["!disabled"])
+        self._load_editor(template.atlas.nodes[0] if template.atlas.nodes else None)
+        self.reset_view()
+        self._set_status(f"Applied template  /  {template.name}  /  {self.path}")
+        return True
 
     def _design_maps(self) -> None:
         design = self.document.design
@@ -285,6 +559,8 @@ class AtlasApp:
         mode = mode.lower()
         if mode not in ("blocks", "nodes"):
             raise ValueError("Choose Blocks or Nodes.")
+        if self._template_origin is not None:
+            return
         self.view_mode_var.set(mode.title())
         if self.scene.mode == mode:
             return
@@ -339,12 +615,16 @@ class AtlasApp:
         return self.scene.position_at(x, y, self._layer_id(), span=BLOCK_SIZES[size])
 
     def edit_design(self) -> None:
+        if self._template_origin is not None:
+            return
         if not self._allow_leave():
             return
         dialog = DesignEditor(self.root, self.document, self.apply_design)
         self.root.wait_window(dialog)
 
     def apply_design(self, candidate: Atlas) -> bool:
+        if self._template_origin is not None:
+            return False
         selected = self.selected
         layers_changed = candidate.design.layers != self.document.design.layers
         if candidate == self.document:
@@ -391,8 +671,8 @@ class AtlasApp:
         c.bind("<Tab>", lambda _: self._cycle_node(1))
         c.bind("<Shift-Tab>", lambda _: self._cycle_node(-1))
         c.bind("<ISO_Left_Tab>", lambda _: self._cycle_node(-1))
-        c.bind("<Return>", lambda _: self.name_entry.focus_set())
-        self.root.bind("<Escape>", lambda _: self.cancel_placement())
+        c.bind("<Return>", lambda _: self.name_entry.focus_set() if self._template_origin is None else "break")
+        self.root.bind("<Escape>", lambda _: self._escape())
         for key, callback in (("<Control-s>", self.save_node), ("<Control-n>", self.new_node),
                               ("<Control-o>", self.import_json), ("<Control-Shift-S>", self.export_json)):
             self.root.bind(key, lambda _, fn=callback: self._shortcut(fn))
@@ -401,6 +681,12 @@ class AtlasApp:
     def _shortcut(callback: Callable) -> str:
         callback()
         return "break"
+
+    def _escape(self) -> str:
+        if self._template_origin is not None:
+            self.cancel_templates()
+            return "break"
+        return self.cancel_placement()
 
     def _form_state(self) -> tuple:
         return (self.name_var.get(), self.layer_var.get(), self.protocol_var.get(),
@@ -482,6 +768,10 @@ class AtlasApp:
         if not self._closed:
             self._cancel_hover()
             self._hovered_node = None
+            if self._template_origin is not None:
+                self.scene.set_preview(None)
+                self.request_render()
+                return
             self._refresh_preview()
             self.request_render()
 
@@ -587,6 +877,8 @@ class AtlasApp:
         return self.save_node() if answer is True else answer is False
 
     def select_node(self, node_id: str) -> bool:
+        if self._template_origin is not None:
+            return False
         if node_id == self.selected:
             return True
         node = self.document.get(node_id)
@@ -615,6 +907,8 @@ class AtlasApp:
         return True
 
     def save_node(self) -> bool:
+        if self._template_origin is not None:
+            return False
         if self.placement_state == "placing":
             self.editor_state.configure(text="Placing: click a valid location to lock before saving.", fg=theme.GOLD)
             return False
@@ -649,6 +943,8 @@ class AtlasApp:
         return True
 
     def new_node(self) -> None:
+        if self._template_origin is not None:
+            return
         if not self._allow_leave():
             return
         coordinate = (self._layer_id(), self._protocol_id(), self.depth_var.get())
@@ -671,6 +967,8 @@ class AtlasApp:
         self.name_entry.focus_set()
 
     def new_empty_atlas(self) -> bool:
+        if self._template_origin is not None:
+            return False
         if not self._allow_leave():
             return False
         if self.document.nodes:
@@ -697,6 +995,8 @@ class AtlasApp:
         return True
 
     def delete_node(self) -> bool:
+        if self._template_origin is not None:
+            return False
         node = self.document.get(self.selected)
         if node is None:
             return False
@@ -709,6 +1009,8 @@ class AtlasApp:
         return True
 
     def import_json(self) -> None:
+        if self._template_origin is not None:
+            return
         filename = filedialog.askopenfilename(parent=self.root, title="Import an atlas",
                                               filetypes=[("Cyber Atlas JSON", "*.json"), ("All files", "*")])
         if not filename:
@@ -734,6 +1036,8 @@ class AtlasApp:
             self.reset_view()
 
     def export_json(self) -> None:
+        if self._template_origin is not None:
+            return
         if not self._allow_leave():
             return
         filename = filedialog.asksaveasfilename(parent=self.root, title="Export your atlas",
@@ -756,7 +1060,8 @@ class AtlasApp:
         selected_protocol = None if protocol == self._all_protocols else self._protocol_ids[protocol]
         self.scene.set_protocol_filter(None if protocol == self._all_protocols else
                                        NO_PROTOCOL_FILTER if selected_protocol is None else selected_protocol)
-        self._refresh_preview()
+        if self._template_origin is None:
+            self._refresh_preview()
         self.request_render()
 
     def reset_view(self) -> None:
@@ -828,20 +1133,17 @@ class AtlasApp:
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self.canvas.create_text(18, height - 24, anchor="sw", text="SHIFT + DRAG  PAN     TAB  NEXT NOTE",
                                 fill="#6d879f", font=(self.mono, 8), tags="overlay")
-        self.canvas.create_text(18, height - 64, anchor="sw",
-                                text="CREATE WITH EDITOR CONTROLS" if node_view and self.selected is None else
-                                "EDITING: COORDINATES LOCKED" if node_view else
-                                "PLACING: CLICK TO LOCK / ESC CANCEL" if self.placement_state == "placing" else
-                                "LOCKED: CLICK BLOCK TO MOVE",
-                                fill=theme.ACCENT, font=(self.mono, 8), tags="overlay")
-        if not visible:
-            text = ("No nodes match these filters." if node_view else "No volumes match these filters.") if self.document.nodes else "Your atlas starts here."
+        if self._template_origin is None:
+            self.canvas.create_text(18, height - 64, anchor="sw",
+                                    text="CREATE WITH EDITOR CONTROLS" if node_view and self.selected is None else
+                                    "EDITING: COORDINATES LOCKED" if node_view else
+                                    "PLACING: CLICK TO LOCK / ESC CANCEL" if self.placement_state == "placing" else
+                                    "LOCKED: CLICK BLOCK TO MOVE",
+                                    fill=theme.ACCENT, font=(self.mono, 8), tags="overlay")
+        if not visible and self.document.nodes:
+            text = "No nodes match these filters." if node_view else "No volumes match these filters."
             self.canvas.create_text(width / 2, height / 2 - 20, text=text, fill=theme.TEXT,
                                     font=(self.family, 16), tags="overlay")
-            self.canvas.create_text(width / 2, height / 2 + 12,
-                                    text="Choose the editor controls, add a title and notes, then Create node." if node_view else
-                                    "Create a note and save it to allocate a volume.",
-                                    fill=theme.MUTED, font=(self.family, 10), tags="overlay")
 
     def _draw_node_halo(self, node: Node, tag: str, color: str, *, preview: bool = False) -> None:
         x, y, depth = self.scene.project(self.scene.node_anchor(node))
@@ -942,7 +1244,9 @@ class AtlasApp:
 
     def _release(self, event) -> str:
         if self._pressed is not None and not self._moved and event.num == 1:
-            if self.scene.mode == "nodes":
+            if self._template_origin is not None:
+                pass
+            elif self.scene.mode == "nodes":
                 node_id = self._pick_at(event.x, event.y)
                 if node_id is not None:
                     self.select_node(node_id)
@@ -968,6 +1272,8 @@ class AtlasApp:
 
     def place_at(self, depth: int, slot: int) -> bool:
         """Lock a new block or a picked-up block at a valid draft location."""
+        if self._template_origin is not None:
+            return False
         if self.scene.mode == "nodes":
             self.editor_state.configure(text="Use New node and the editor controls to choose a position.", fg=theme.GOLD)
             return False
@@ -1040,6 +1346,8 @@ class AtlasApp:
         return "break"
 
     def _cycle_node(self, direction: int) -> str:
+        if self._template_origin is not None:
+            return "break"
         ids = [n.id for n in self.document.nodes if self.scene.is_visible(n)]
         if ids:
             if self.selected in ids:
@@ -1050,6 +1358,8 @@ class AtlasApp:
         return "break"
 
     def close(self) -> bool:
+        if self._template_origin is not None:
+            self.cancel_templates()
         if not self._allow_leave():
             return False
         self.shutdown()

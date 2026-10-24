@@ -23,6 +23,7 @@ from atlas.storage import read_atlas, write_atlas
 from atlas.ui import AtlasApp
 from atlas.scene import NO_PROTOCOL_FILTER
 from node_view_checks import check_node_view
+from template_view_checks import check_template_browser
 
 
 def pump(root, steps=5):
@@ -429,7 +430,8 @@ def main(report_path=None):
             slot_slider.focus_force()
             pump(root)
             slot_slider.event_generate("<End>")
-            assert app.slot_var.get() == "16" and app.placement_state == "locked"
+            assert app.slot_var.get() == "16" and app.placement_state == "locked", (
+                app.slot_var.get(), app.placement_state, app.slot_slider.enabled)
             assert "337.5°" in app.slot_label.cget("text") and "Slots 16 → 01" in app.slot_label.cget("text")
             footprint = slot_slider.find_withtag("footprint")
             assert len(footprint) == 2
@@ -1036,6 +1038,7 @@ def main(report_path=None):
             check_clear_lists(root, app, path, checks)
             check_immediate_protocol_clear(root, app, path, checks)
             check_node_view(root, app, path, checks)
+            check_template_browser(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)
@@ -1107,13 +1110,38 @@ def capture_preview(destination, *, design_editor=False, nodes_view=False):
             app.shutdown()
 
 
+def check_templates_only():
+    """Run the template workflow without the focus-sensitive placement checks."""
+    with TemporaryDirectory() as folder:
+        path = Path(folder) / "atlas.json"
+        document = example_atlas()
+        write_atlas(path, document, backup=False)
+        root = tk.Tk()
+        app = AtlasApp(root, path, document)
+        checks = []
+        errors = []
+        root.report_callback_exception = lambda *error: errors.append(error)
+        try:
+            pump(root, 12)
+            check_template_browser(root, app, path, pump, checks)
+            assert not errors, errors
+        finally:
+            if not app._closed:
+                app.shutdown()
+    print(json.dumps({"passed": len(checks), "checks": checks}, indent=2))
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, help="Save the JSON test report.")
     parser.add_argument("--preview", type=Path, help="Capture an example UI screenshot (requires Pillow).")
     parser.add_argument("--design-preview", type=Path, help="Capture the design editor (requires Pillow).")
     parser.add_argument("--nodes-preview", type=Path, help="Capture the actual Nodes view (requires Pillow).")
+    parser.add_argument("--templates-only", action="store_true", help="Run only the template browser workflow checks.")
     args = parser.parse_args()
+    if args.templates_only:
+        check_templates_only()
+        raise SystemExit(0)
     main(args.report)
     if args.preview:
         capture_preview(args.preview)

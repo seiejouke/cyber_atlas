@@ -65,6 +65,14 @@ The first launch creates a local atlas containing the 14 starter notes from
 the HTML concept. Blocks support coordinate editing; clicking a sphere in
 Nodes edits only its title and personal notes.
 
+Click **Templates** to preview a general-purpose example in the actual Nodes
+renderer. The built-in topics are Blank atlas, Python, TypeScript, Web
+application, Solar system and Project planning. A preview is read-only and is
+never saved automatically. **Cancel** restores the open atlas, editor, filters,
+view and camera; **Use template** saves an editable copy and keeps the previous
+saved atlas as the normal backup. The template list contains text only; every
+visible sphere and connection comes from the real atlas document being previewed.
+
 Use the **Blocks / Nodes** switch to change the view. Nodes draws one small,
 equally sized sphere per note, using its layer color and saved layer, radial
 position and start slot. Faint orbital guides appear only for occupied,
@@ -247,6 +255,7 @@ saved volume is visible.
 | Save or create | Ctrl + S |
 | Start a new node/block | New node or Add here, or Ctrl + N |
 | Start with no blocks | Empty atlas in the top bar |
+| Preview an editable example | Templates in the top bar; select a topic, then Use template |
 | Customize layers, protocols, field names and labels | Edit design in the top bar |
 | Import JSON | Ctrl + O |
 | Export JSON | Ctrl + Shift + S |

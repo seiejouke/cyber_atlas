@@ -1,5 +1,5 @@
 {
-  "passed": 72,
+  "passed": 74,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -70,6 +70,8 @@
     "both views support custom layers and an empty protocol list without adding entries or changing the saved atlas",
     "the radial slider creates a full center note; empty-space clicks do nothing and the saved center sphere edits and connects normally",
     "Nodes controls, selected halo and note editor fit the minimum window with a clean saved selection",
+    "template previews use real read-only atlas nodes; Cancel restores the document, editor, view and camera without writing",
+    "Use template atomically saves the selected ordinary Atlas and returns to the existing node editor",
     "minimum-window layout remains usable",
     "no Tk callback errors",
     "close cancel and save-on-close"

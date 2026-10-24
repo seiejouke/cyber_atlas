@@ -1,7 +1,7 @@
 {
   "current_build": {
     "date": "2026-10-24",
-    "app_version": "0.6.0",
+    "app_version": "0.7.0",
     "environment": {
       "system": "Windows",
       "architecture": "AMD64",
@@ -10,8 +10,8 @@
       "vtk": "9.6.2",
       "numpy": "2.5.4"
     },
-    "core_tests_passed": 96,
-    "gui_workflow_checks_passed": 72,
+    "core_tests_passed": 101,
+    "gui_workflow_checks_passed": 74,
     "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
     "legacy_versions_tested": [
       1,
@@ -104,6 +104,14 @@
       "Selected and moving-node connections are emphasized",
       "Filters rebuild the visible graph and the Connections checkbox hides or shows it without changing data"
     ],
+    "template_checks": [
+      "Blank, Python, TypeScript, Web application, Solar system and Project planning use ordinary Atlas documents",
+      "The existing Nodes renderer provides every template preview without thumbnail graphics",
+      "Preview is read-only and never writes to disk",
+      "Cancel restores the document, editor, filters, view mode and camera",
+      "Use template saves atomically and keeps the previous saved atlas as the normal backup",
+      "Empty atlases leave the spatial view unobstructed"
+    ],
     "focus_check": "Both custom sliders compare raw Tk focus paths and tolerate transient combobox popdown windows",
     "nodes_view_preview": "docs/nodes-preview.png",
     "slider_compatibility": "Six radial positions including Center and all sixteen Start slot positions are available"
@@ -132,6 +140,13 @@
     ]
   },
   "previous_builds": [
+    {
+      "date": "2026-10-24",
+      "app_version": "0.6.0",
+      "core_tests_passed": 96,
+      "gui_workflow_checks_passed": 72,
+      "atlas_file_version": 8
+    },
     {
       "date": "2026-10-24",
       "app_version": "0.5.3",
