@@ -1,8 +1,9 @@
 {
-  "passed": 70,
+  "passed": 72,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
+    "both sliders redraw safely while a combobox popdown owns transient focus",
     "all sixteen Start slot positions snap, align with their labels, and leave saved data unchanged",
     "Start slot drag previews live, clears mouse following, and locks on release without losing draft text",
     "slot keyboard controls clamp at endpoints and show footprints for every size, including wrap-around",
@@ -59,6 +60,7 @@
     "adding protocols stays optional; explicit assignment, unassignment and No protocol filtering work together",
     "a protocol named No protocol is distinct from the unassigned state",
     "optional protocol state survives JSON, new-block placement, Empty atlas and creating its first block",
+    "Nodes uses bounded layer anchors and layer-colored adjacency lines; Connections toggles the graph without changing atlas data or camera",
     "Blocks/Nodes switches preserve dirty titles, notes, selection, camera and saved data; Nodes hides block size and restores the Blocks label choice",
     "switching views during placement preserves the floating preview, original lock, wide footprint and text without saving",
     "custom-layer spheres pick at their midplanes, occupied rings have unpickable guides, and selected/hover labels remain visible with Labels off",
@@ -66,7 +68,7 @@
     "Nodes placement rejects slots reserved by a hidden larger block; Escape restores the saved lock without changing the file",
     "new spheres use one slot despite the remembered larger Blocks size; returning to Blocks restores that size and preserves saved dimensions",
     "both views support custom layers and an empty protocol list without adding entries or changing the saved atlas",
-    "Empty atlas retains Nodes mode and the custom design; a protocol-free center sphere can be created, saved and picked",
+    "clicking an empty center anchor creates a full-center note; it saves, picks, edits and connects like other nodes",
     "Nodes controls, selected halo and note editor fit the minimum window with a clean saved selection",
     "minimum-window layout remains usable",
     "no Tk callback errors",

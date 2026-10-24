@@ -72,6 +72,13 @@ Nodes shows labels on hover or selection by default; enable **Labels** to
 show all labels that fit. Custom label formats and optional protocols work
 in both views.
 
+Enable **Connections** beside Blocks/Nodes to link adjacent visible spheres.
+Lines use their layer color; selected-node links are brighter. Click a layer's
+center sphere or label to add its title, protocol and notes; the saved center
+node then selects and edits like any other sphere. The vertical spine stops at
+the first and last center nodes.
+Connections are derived from saved positions and are not stored in JSON.
+
 Switching views preserves the camera, filters, notes and current draft,
 including a preview that is still being placed. The view choice lasts for
 the current session and does not change saved or exported atlas data.
@@ -210,6 +217,7 @@ saved volume is visible.
 | Action | Control |
 | --- | --- |
 | Change the representation | Blocks / Nodes switch; keeps the same atlas and current draft |
+| Show or hide node links | Connections checkbox in Nodes view |
 | Rotate the atlas | Left-button drag |
 | Pan | Shift + drag, or middle-button drag |
 | Zoom | Mouse wheel; `+` / `-` with viewport focused |
@@ -329,7 +337,9 @@ so filtering never allows accidental overlaps.
 Nodes uses these same coordinates and occupancy rules, with a uniform sphere
 at each note's position instead of its curved block mesh. Spheres do not grow
 with saved block sizes. Selection, click-to-pick-up, click-to-lock, Escape
-and both position sliders work in either view.
+and both position sliders work in either view. A full Center note sits on the
+layer axis. Connections join neighbors on the same ring and nearest neighbors
+on the next occupied ring, never across layers.
 
 Protocols no longer reserve angular sectors. Choose a protocol, add your own
 in Edit design, or use `Other` in the preset. Protocols can occur at different angles in
@@ -389,7 +399,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The Blocks/Nodes build includes **93 core tests** covering chosen angular
+The Blocks/Nodes build includes **96 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -397,7 +407,7 @@ clearing and rebuilding lists, legacy migration and storage. The desktop smoke t
 the actual Tk controls, VTK rendering and picking, Center, Add here, moving,
 deleting, protocol filtering, design editing, view switching, sphere picking,
 placement with saved footprints, JSON import/export and unsaved drafts. All
-**93 core tests and 70 GUI workflow checks passed** on Windows with Python
+**96 core tests and 72 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and launch instructions

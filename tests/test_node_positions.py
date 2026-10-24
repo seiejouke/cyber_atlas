@@ -3,7 +3,7 @@ from dataclasses import replace
 from math import atan2, hypot, pi
 import unittest
 
-from atlas.geometry import RADIAL_WIDTH, layout_meshes, node_position
+from atlas.geometry import RADIAL_WIDTH, adjacent_node_pairs, layout_meshes, node_position
 from atlas.model import ANGULAR_SLOTS, BLOCK_SIZES, CENTER_DEPTH, Design, Layer, Node
 
 
@@ -27,6 +27,15 @@ class NodePositionTests(unittest.TestCase):
         for inner, outer in zip(radii, radii[1:]):
             self.assertAlmostEqual(outer - inner, RADIAL_WIDTH)
 
+    def test_full_center_note_uses_the_layer_axis(self):
+        layer = Layer("custom", "Custom", "#70cbd8")
+        design = Design(layers=(layer,), protocols=())
+        for slot in (0, 7, 15):
+            node = Node(f"center-{slot}", "Center note", layer.id, None, CENTER_DEPTH,
+                        "Editable notes", slot=slot, span=ANGULAR_SLOTS)
+            self.assertEqual(node_position(node, design), (0.0, 0.0, design.z_base + .5))
+            self.assertEqual(layout_meshes((node,), design)[node.id].center, node_position(node, design))
+
     def test_wrapping_footprints_keep_their_midpoint(self):
         for span in BLOCK_SIZES.values():
             node = Node("note", "Note", 2, None, 1, slot=15, span=span)
@@ -46,6 +55,19 @@ class NodePositionTests(unittest.TestCase):
         self.assertEqual(original[:2], reordered[:2])
         self.assertEqual((original[2], reordered[2]), (-.5, .5))
         self.assertEqual(node.to_dict(), before)
+
+    def test_adjacency_is_sparse_and_never_crosses_layers(self):
+        ring = tuple(Node(name, name, 2, None, 0, slot=slot)
+                     for name, slot in zip(("a", "b", "c", "d"), (0, 4, 8, 12)))
+        outer = (Node("e", "e", 2, None, 2, slot=1), Node("f", "f", 2, None, 2, slot=9))
+        other_layer = Node("g", "g", 3, None, 0, slot=0)
+        pairs = set(adjacent_node_pairs(ring + outer + (other_layer,)))
+        self.assertTrue({("a", "b"), ("b", "c"), ("c", "d"), ("a", "d")} <= pairs)
+        self.assertNotIn(("a", "c"), pairs)
+        self.assertNotIn(("b", "d"), pairs)
+        self.assertFalse(any("g" in pair for pair in pairs))
+        connected = set().union(*map(set, pairs))
+        self.assertEqual(connected, {"a", "b", "c", "d", "e", "f"})
 
 
 if __name__ == "__main__":

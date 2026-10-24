@@ -15,6 +15,14 @@ GOLD = "#edbb69"
 ERROR = "#ee9a9a"
 
 
+def has_focus(widget: tk.Misc) -> bool:
+    """Compare raw Tk paths without resolving temporary combobox popdowns."""
+    try:
+        return widget.tk.call("focus") == str(widget)
+    except tk.TclError:
+        return False
+
+
 def apply(root: tk.Tk) -> tuple[str, str]:
     families = set(font.families(root))
     family = next((f for f in ("Segoe UI", "SF Pro Text", "DejaVu Sans") if f in families), "TkDefaultFont")
@@ -120,7 +128,7 @@ class BandSlider(tk.Canvas):
             self.create_text(stop, 22, text=label, anchor="n", font=self.label_font,
                              fill=ACCENT if selected else MUTED, tags="label")
         self.create_oval(x - 5, 6, x + 5, 16, fill=ACCENT, outline=ACCENT, tags="handle")
-        if self.focus_get() == self:
+        if has_focus(self):
             self.create_oval(x - 8, 3, x + 8, 19, outline=ACCENT)
 
 
@@ -211,5 +219,5 @@ class SlotSlider(tk.Canvas):
                                  fill=color if slot in selected else MUTED, tags="label")
         x = left + start * step
         self.create_oval(x - 5, 6, x + 5, 16, fill=color, outline=color, tags="handle")
-        if self.focus_get() == self:
+        if has_focus(self):
             self.create_oval(x - 8, 3, x + 8, 19, outline=color)

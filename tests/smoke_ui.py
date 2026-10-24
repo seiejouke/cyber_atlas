@@ -359,6 +359,12 @@ def main(report_path=None):
             checks.append("all six slider positions align with labels and support pointer/keyboard input")
 
             slot_slider = app.slot_slider
+            with patch.object(slider, "focus_get", side_effect=KeyError("popdown")), \
+                 patch.object(slot_slider, "focus_get", side_effect=KeyError("popdown")):
+                slider.draw()
+                slot_slider.draw()
+            assert not errors
+            checks.append("both sliders redraw safely while a combobox popdown owns transient focus")
 
             def slot_x(slot):
                 left, right = slot_slider._track_bounds()

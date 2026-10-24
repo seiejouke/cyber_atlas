@@ -75,9 +75,37 @@ def check_node_view(root, app, path, checks):
     assert app.document == fixture and path.read_bytes() == saved_bytes and camera() == original_camera
     assert not app.size_box.winfo_ismapped() and not app.size_label.winfo_ismapped()
     assert not app.labels_var.get()
+    assert app.connections_var.get() and app.connections_check.instate(["!disabled"])
+    assert set(app.scene.axis_markers) == {layer.id for layer in design.layers}
+    axis_bounds = [actor.GetBounds() for actor in app.scene._axis_actors]
+    # The selected layer marker is intentionally 35% larger.
+    assert min(bounds[4] for bounds in axis_bounds) >= design.z_base + .5 - .076
+    assert max(bounds[5] for bounds in axis_bounds) <= -design.z_base - .5 + .076
+    assert app.scene.connections and all(not actor.GetPickable() for actor in app.scene.connections.values())
+    by_id = {node.id: node for node in fixture.nodes}
+    for key, endpoint_ids in app.scene._connection_nodes.items():
+        if len(endpoint_ids) == 2:
+            left, right = (by_id[node_id] for node_id in endpoint_ids)
+            assert left.layer == right.layer
+        actor = app.scene.connections[key]
+        node_id = next(iter(endpoint_ids))
+        assert all(abs(actual - expected) < 1e-6 for actual, expected in zip(
+            actor.GetProperty().GetColor(),
+            tuple(int(design.layer(by_id[node_id].layer).color[index:index + 2], 16) / 255 for index in (1, 3, 5))))
+    app.connections_check.invoke()
+    _pump(root)
+    assert not app.connections_var.get() and not app.scene.connections
+    assert app.scene._axis_connection_actors and not any(actor.GetVisibility() for actor in app.scene._axis_connection_actors)
+    assert app.document == fixture and path.read_bytes() == saved_bytes and camera() == original_camera
+    app.connections_check.invoke()
+    _pump(root)
+    assert app.connections_var.get() and app.scene.connections
+    assert all(actor.GetVisibility() for actor in app.scene._axis_connection_actors)
+    checks.append("Nodes uses bounded layer anchors and layer-colored adjacency lines; Connections toggles the graph without changing atlas data or camera")
     app.blocks_button.invoke()
     _pump(root)
     assert app.labels_var.get() and app.size_box.winfo_ismapped() and app.size_label.winfo_ismapped()
+    assert app.connections_check.instate(["disabled"])
     assert app._form_state() == original_form and camera() == original_camera
     app.set_view_mode("nodes")
     _pump(root)
@@ -112,7 +140,8 @@ def check_node_view(root, app, path, checks):
             for slot in range(16):
                 candidate = replace(wide, slot=slot, span=span, depth=depth)
                 x, y, _ = app.scene.project(app.scene.node_anchor(candidate))
-                assert app.scene.position_at(x, y, wide.layer, span=span) == (depth, slot), (depth, span, slot)
+                expected_slot = 0 if depth == CENTER_DEPTH and span == 16 else slot
+                assert app.scene.position_at(x, y, wide.layer, span=span) == (depth, expected_slot), (depth, span, slot)
     for node in fixture.nodes:
         anchor = app.scene.node_anchor(node)
         assert abs(anchor[2] - (design.z_base + design.layer_index(node.layer) + .5)) < 1e-9
@@ -121,7 +150,7 @@ def check_node_view(root, app, path, checks):
     assert {node_id for node_id, _ in app._label_hits} == {wide.id}
     app._hover_at(*point(neighbor))
     _pump(root)
-    assert app._hovered_node == neighbor.id and not app.labels_var.get()
+    assert app._hovered_node == neighbor.id and not app.labels_var.get(), (app._hovered_node, app.labels_var.get())
     assert {node_id for node_id, _ in app._label_hits} == {wide.id, neighbor.id}
     app._hover_at(2, 2)
     _pump(root)
@@ -154,6 +183,7 @@ def check_node_view(root, app, path, checks):
     app._filter_changed()
     _pump(root)
     assert not app.scene.is_visible(blocker)
+    assert all(blocker.id not in endpoint_ids for endpoint_ids in app.scene._connection_nodes.values())
     click(moved)
     assert app.placement_state == "placing"
     app._hover_at(*point(target(8)))
@@ -169,6 +199,7 @@ def check_node_view(root, app, path, checks):
     app.protocol_filter_var.set(app._all_protocols)
     app._filter_changed()
     _pump(root)
+    assert any(blocker.id in endpoint_ids for endpoint_ids in app.scene._connection_nodes.values())
     checks.append("Nodes placement rejects slots reserved by a hidden larger block; Escape restores the saved lock without changing the file")
 
     app.new_node()
@@ -213,24 +244,52 @@ def check_node_view(root, app, path, checks):
     _pump(root)
     assert app.scene.mode == "nodes" and app.document.design == without_protocols.design
     assert not app.document.nodes and not app.scene.guides
+    layer = app.document.design.layers[-1]
+    axis_x, axis_y, _ = app.scene.project(app.scene.layer_anchor(layer.id))
+    axis_x, axis_y = round(axis_x), round(axis_y)
+    assert app._axis_layer_at(axis_x, axis_y) == layer.id
+    app.canvas.event_generate("<ButtonPress-1>", x=axis_x, y=axis_y)
+    app.canvas.event_generate("<ButtonRelease-1>", x=axis_x, y=axis_y)
+    _pump(root)
+    assert app.selected is None and app.placement_state == "locked"
+    assert app.depth_var.get() == CENTER_DEPTH and app.size_var.get() == "Full"
+    assert app.scene.preview_node is not None and app.scene.preview_node.span == 16
     app.name_var.set("Center sphere")
-    app.notes.insert("1.0", "An empty custom atlas can start at the center.")
-    assert app.place_at(CENTER_DEPTH, 0)
+    app.notes.insert("1.0", "An empty custom atlas can start with an editable axis note.")
     assert app.save_node()
     center = app.document.get(app.selected)
     _pump(root)
-    assert center.depth == CENTER_DEPTH and center.protocol is None and center.span == 1
+    assert center.depth == CENTER_DEPTH and center.protocol is None and center.span == 16
+    assert app.scene.node_anchor(center) == app.scene.layer_anchor(center.layer)
     assert app.scene.pick(*point(center)) == center.id
     assert set(app.scene.guides) == {center.position}
+    assert not app.scene.axis_markers[center.layer].GetVisibility()
     assert read_atlas(path) == app.document and not app.dirty
-    checks.append("Empty atlas retains Nodes mode and the custom design; a protocol-free center sphere can be created, saved and picked")
+
+    app.place_at(0, 4)
+    app.name_var.set("Adjacent sphere")
+    app.notes.insert("1.0", "Connected to the editable center node.")
+    assert app.save_node()
+    outer = app.document.get(app.selected)
+    _pump(root)
+    assert any(endpoint_ids == frozenset((center.id, outer.id))
+               for endpoint_ids in app.scene._connection_nodes.values())
+    click(center)
+    assert app.selected == center.id
+    assert app.notes.get("1.0", "end-1c") == "An empty custom atlas can start with an editable axis note."
+    app.notes.insert("end", "\nSaved like every other node.")
+    assert app.save_node()
+    center = app.document.get(center.id)
+    assert center.notes.endswith("Saved like every other node.") and read_atlas(path).get(center.id) == center
+    checks.append("clicking an empty center anchor creates a full-center note; it saves, picks, edits and connects like other nodes")
 
     root.geometry("1020x780")
     _pump(root)
     assert app.notes.winfo_height() >= 80
     assert not app.size_box.winfo_ismapped() and not app.size_label.winfo_ismapped()
     assert app.blocks_button.winfo_ismapped() and app.nodes_button.winfo_ismapped()
-    for button in (app.blocks_button, app.nodes_button, app.save_button):
+    assert app.connections_check.winfo_ismapped() and app.connections_check.instate(["!disabled"])
+    for button in (app.blocks_button, app.nodes_button, app.connections_check, app.save_button):
         assert button.winfo_rootx() + button.winfo_width() <= root.winfo_rootx() + root.winfo_width()
     assert app.canvas.find_withtag("node-halo") and app.selected == center.id and not app.dirty
     checks.append("Nodes controls, selected halo and note editor fit the minimum window with a clean saved selection")

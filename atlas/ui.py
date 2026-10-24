@@ -38,8 +38,10 @@ class AtlasApp:
         self._image_item: int | None = None
         self._label_hits: list[tuple[str, tuple]] = []
         self._axis_label_boxes: list[tuple] = []
+        self._axis_hits: list[tuple[LayerId, tuple]] = []
         self._hovered_node: str | None = None
         self.view_mode_var = tk.StringVar(value="Blocks")
+        self.connections_var = tk.BooleanVar(value=True)
         self._view_labels = {"blocks": True, "nodes": False}
         self.labels_var = tk.BooleanVar(value=True)
         self.filter_var = tk.StringVar(value="All layers")
@@ -110,6 +112,10 @@ class AtlasApp:
         self.nodes_button = ttk.Radiobutton(mode_buttons, text="Nodes", value="Nodes", variable=self.view_mode_var,
                                             style="View.Toolbutton", command=lambda: self.set_view_mode("nodes"))
         self.nodes_button.pack(side="left")
+        self.connections_check = ttk.Checkbutton(mode_buttons, text="Connections", variable=self.connections_var,
+                                                  command=self._connections_changed)
+        self.connections_check.pack(side="left", padx=(10, 0))
+        self.connections_check.state(["disabled"])
         self.filter_box = ttk.Combobox(view_header, textvariable=self.filter_var,
                                       values=("All layers",) + self.layer_values, state="readonly", width=16)
         self.filter_box.grid(row=0, column=1, padx=(8, 8))
@@ -289,10 +295,15 @@ class AtlasApp:
         self._view_labels[self.scene.mode] = self.labels_var.get()
         self.labels_var.set(self._view_labels[mode])
         self.scene.set_mode(mode)
+        self.connections_check.state(["!disabled"] if mode == "nodes" else ["disabled"])
         for widget in (self.size_label, self.size_box):
             widget.grid_remove() if mode == "nodes" else widget.grid()
         self.size_box.master.columnconfigure(2, weight=0 if mode == "nodes" else 1)
         self._changed()
+
+    def _connections_changed(self) -> None:
+        self.scene.set_connections_visible(self.connections_var.get())
+        self.request_render()
 
     def _addition_size(self) -> str:
         return "1/16" if self.scene.mode == "nodes" else self._last_size
@@ -715,6 +726,8 @@ class AtlasApp:
         self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{len(visible):02d} NODES" if node_view else f"{len(visible):02d} FILLED VOLUMES",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self._axis_label_boxes.clear()
+        self._axis_hits.clear()
+        selected_node = self.document.get(self.selected)
         for i, layer in enumerate(self.document.design.layers, 1):
             x, y, _ = self.scene.project((0.0, 0.0, self.document.design.z_base + i - 0.5))
             # Reference labels must not float through a solid in front of them.
@@ -727,9 +740,15 @@ class AtlasApp:
             label_x = x + 16 if node_view else x - 16
             self.canvas.create_text(label_x, y, text=axis_text, anchor="w" if node_view else "e", fill=color,
                                     font=(self.mono, 9), tags="overlay")
+            if node_view and selected_node is not None and selected_node.layer == layer.id:
+                self.canvas.create_text(x - 7, y - 7, text="00", anchor="se", fill=color,
+                                        font=(self.mono, 7), tags="overlay")
             text_width = self.mono_font.measure(axis_text)
-            self._axis_label_boxes.append((label_x - 4, y - 10, label_x + text_width + 4, y + 10) if node_view
-                                          else (label_x - text_width - 4, y - 10, label_x + 6, y + 10))
+            label_box = ((label_x - 4, y - 10, label_x + text_width + 4, y + 10) if node_view
+                         else (label_x - text_width - 4, y - 10, label_x + 6, y + 10))
+            self._axis_label_boxes.append(label_box)
+            if node_view:
+                self._axis_hits.append((layer.id, label_box))
         if node_view:
             if self.scene.preview_node is not None:
                 self._draw_node_halo(self.scene.preview_node, "preview-halo", theme.ACCENT if self.scene.preview_valid else theme.ERROR, preview=True)
@@ -739,7 +758,9 @@ class AtlasApp:
             self._draw_labels(labeled, width, height)
         elif self.labels_var.get():
             self._draw_labels(visible, width, height)
-        self.canvas.create_text(18, height - 44, anchor="sw", text="DRAG  ROTATE     WHEEL  ZOOM     CLICK  EDIT",
+        self.canvas.create_text(18, height - 44, anchor="sw",
+                                text="DRAG  ROTATE     WHEEL  ZOOM     CLICK  NODE / CENTER" if node_view else
+                                "DRAG  ROTATE     WHEEL  ZOOM     CLICK  EDIT",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self.canvas.create_text(18, height - 24, anchor="sw", text="SHIFT + DRAG  PAN     TAB  NEXT NOTE",
                                 fill="#6d879f", font=(self.mono, 8), tags="overlay")
@@ -827,6 +848,37 @@ class AtlasApp:
                 return node_id
         return self.scene.pick(x, y)
 
+    def _axis_layer_at(self, x: float, y: float) -> LayerId | None:
+        if self.scene.mode != "nodes":
+            return None
+        for layer_id, (x0, y0, x1, y1) in reversed(self._axis_hits):
+            if x0 <= x <= x1 and y0 <= y <= y1:
+                return layer_id
+        for layer in self.document.design.layers:
+            if self.scene.layer_filter not in (None, layer.id):
+                continue
+            px, py, depth = self.scene.project(self.scene.layer_anchor(layer.id))
+            if 0 <= depth <= 1 and (x - px) ** 2 + (y - py) ** 2 <= 100:
+                return layer.id
+        return None
+
+    def _edit_center_node(self, layer: LayerId) -> bool:
+        existing = self.scene.center_node(layer)
+        if existing is not None:
+            return self.select_node(existing.id)
+        if not self._allow_leave():
+            return False
+        if self.document.next_free(layer, CENTER_DEPTH, ANGULAR_SLOTS) is None:
+            self.editor_state.configure(
+                text="Center contains partial blocks. Free the center before adding its axis note.",
+                fg=theme.ERROR,
+            )
+            return False
+        self._load_editor(None, (layer, self._protocol_id(), CENTER_DEPTH), slot=0, size="Full")
+        self.editor_state.configure(text="Center node ready: add a title and notes, then Save node.", fg=theme.GOLD)
+        self.name_entry.focus_set()
+        return True
+
     def _press(self, event) -> str:
         self._cancel_hover()
         self.canvas.focus_set()
@@ -861,10 +913,13 @@ class AtlasApp:
                 self.begin_placement()
             else:
                 node_id = self._pick_at(event.x, event.y)
+                axis_layer = self._axis_layer_at(event.x, event.y) if node_id is None else None
                 if node_id == self.selected and node_id is not None:
                     self.begin_placement()
                 elif node_id:
                     self.select_node(node_id)
+                elif axis_layer is not None:
+                    self._edit_center_node(axis_layer)
                 elif self.selected is not None or self._placement_origin is None:
                     position = self._position_at(event.x, event.y)
                     if position is not None:
@@ -918,7 +973,8 @@ class AtlasApp:
             if self.scene.mode == "nodes" and hit != self._hovered_node:
                 self._hovered_node = hit
                 self.request_render()
-            self.canvas.configure(cursor="hand2" if hit or self.scene.pick_preview(x, y) else "fleur")
+            axis_layer = self._axis_layer_at(x, y)
+            self.canvas.configure(cursor="hand2" if hit or axis_layer is not None or self.scene.pick_preview(x, y) else "fleur")
             if self.placement_state == "placing" and self._pressed is None:
                 position = self._position_at(x, y)
                 if position is not None:

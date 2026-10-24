@@ -39,12 +39,58 @@ def node_position(node: Node, design: Design = Design()) -> Point:
     Both render modes share these coordinates, so changing the presentation
     does not alter a note's layer, occupied slots, or radial detail level.
     """
+    bottom = design.z_base + design.layer_index(node.layer) * LAYER_HEIGHT
+    if node.depth == CENTER_DEPTH and node.span == ANGULAR_SLOTS:
+        return 0.0, 0.0, bottom + LAYER_HEIGHT / 2
     inner = INNER_RADIUS + node.depth * RADIAL_WIDTH if node.depth != CENTER_DEPTH else 0.0
     outer = inner + RADIAL_WIDTH
     angle = -pi / 2 + (node.slot + node.span / 2) * 2 * pi / ANGULAR_SLOTS
     radius = (inner + outer) / 2
-    bottom = design.z_base + design.layer_index(node.layer) * LAYER_HEIGHT
     return radius * cos(angle), radius * sin(angle), bottom + LAYER_HEIGHT / 2
+
+
+def adjacent_node_pairs(nodes: tuple[Node, ...]) -> tuple[tuple[str, str], ...]:
+    """Return a sparse, deterministic graph of spatial neighbors per layer.
+
+    Notes connect to their neighbors around an occupied ring and to the
+    closest notes on the next occupied ring. Empty radial levels may be
+    skipped, but connections never cross layers.
+    """
+    by_layer: dict[object, dict[int, list[Node]]] = {}
+    for node in nodes:
+        by_layer.setdefault(node.layer, {}).setdefault(node.depth, []).append(node)
+
+    def angular_position(node: Node) -> float:
+        return (node.slot + node.span / 2) % ANGULAR_SLOTS
+
+    def angular_distance(left: Node, right: Node) -> float:
+        difference = abs(angular_position(left) - angular_position(right))
+        return min(difference, ANGULAR_SLOTS - difference)
+
+    pairs: set[tuple[str, str]] = set()
+
+    def connect(left: Node, right: Node) -> None:
+        if left.id != right.id:
+            pairs.add(tuple(sorted((left.id, right.id))))
+
+    for rings in by_layer.values():
+        ordered_rings: list[list[Node]] = []
+        for depth in sorted(rings):
+            ring = sorted(rings[depth], key=lambda node: (angular_position(node), node.id))
+            ordered_rings.append(ring)
+            if len(ring) == 2:
+                connect(*ring)
+            elif len(ring) > 2:
+                for index, node in enumerate(ring):
+                    connect(node, ring[(index + 1) % len(ring)])
+
+        for inner, outer in zip(ordered_rings, ordered_rings[1:]):
+            for node in inner:
+                connect(node, min(outer, key=lambda candidate: (angular_distance(node, candidate), candidate.id)))
+            for node in outer:
+                connect(node, min(inner, key=lambda candidate: (angular_distance(node, candidate), candidate.id)))
+
+    return tuple(sorted(pairs))
 
 
 def wedge_mesh(node: Node, segments: int | None = None, *, design: Design = Design()) -> Mesh:

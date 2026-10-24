@@ -1,7 +1,7 @@
 {
   "current_build": {
     "date": "2026-10-24",
-    "app_version": "0.5.0",
+    "app_version": "0.5.3",
     "environment": {
       "system": "Windows",
       "architecture": "AMD64",
@@ -10,8 +10,8 @@
       "vtk": "9.6.2",
       "numpy": "2.5.4"
     },
-    "core_tests_passed": 93,
-    "gui_workflow_checks_passed": 70,
+    "core_tests_passed": 96,
+    "gui_workflow_checks_passed": 72,
     "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
     "legacy_versions_tested": [
       1,
@@ -92,8 +92,17 @@
       "Hidden larger footprints continue to reserve all of their saved slots",
       "New nodes use a 1/16 footprint while Blocks retains the last chosen block size",
       "Switching views preserves dirty editor text, placement, selection, filters and camera",
-      "Custom layers, empty protocols, Center placement and Empty atlas work in both views"
+      "Custom layers, empty protocols, Center placement and Empty atlas work in both views",
+      "Clicking a layer's empty center anchor creates a full-center note that saves, picks, edits and connects like other nodes"
     ],
+    "connection_checks": [
+      "Layer anchors bound the spine with no extension beyond the first or last anchor",
+      "Sparse adjacency joins ring neighbors and nearest nodes on the next occupied ring",
+      "Connections remain within one layer and use that layer's configured color",
+      "Selected and moving-node connections are emphasized",
+      "Filters rebuild the visible graph and the Connections checkbox hides or shows it without changing data"
+    ],
+    "focus_check": "Both custom sliders compare raw Tk focus paths and tolerate transient combobox popdown windows",
     "nodes_view_preview": "docs/nodes-preview.png",
     "slider_compatibility": "Six radial positions including Center and all sixteen Start slot positions are available"
   },
@@ -121,6 +130,27 @@
     ]
   },
   "previous_builds": [
+    {
+      "date": "2026-10-24",
+      "app_version": "0.5.2",
+      "core_tests_passed": 95,
+      "gui_workflow_checks_passed": 72,
+      "atlas_file_version": 8
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.5.1",
+      "core_tests_passed": 94,
+      "gui_workflow_checks_passed": 71,
+      "atlas_file_version": 8
+    },
+    {
+      "date": "2026-10-24",
+      "app_version": "0.5.0",
+      "core_tests_passed": 93,
+      "gui_workflow_checks_passed": 70,
+      "atlas_file_version": 8
+    },
     {
       "date": "2026-10-24",
       "app_version": "0.4.2",

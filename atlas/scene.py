@@ -7,7 +7,7 @@ on demand, not a continuously running animation loop.
 from __future__ import annotations
 
 from enum import Enum
-from math import atan2, cos, exp, hypot, pi, sin
+from math import atan2, cos, exp, hypot, pi, sin, sqrt
 
 import vtkmodules.vtkRenderingOpenGL2  # noqa: F401: register OpenGL factories
 from vtkmodules.util.numpy_support import vtk_to_numpy
@@ -20,8 +20,8 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderWindow, vtkWindowToImageFilter,
 )
 
-from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, layout_meshes, node_position, wedge_mesh
-from .model import ANGULAR_SLOTS, BANDS, Design, LayerId, Node
+from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, adjacent_node_pairs, layout_meshes, node_position, wedge_mesh
+from .model import ANGULAR_SLOTS, BANDS, CENTER_DEPTH, Design, LayerId, Node
 
 
 class ProtocolFilter(Enum):
@@ -30,6 +30,7 @@ class ProtocolFilter(Enum):
 
 NO_PROTOCOL_FILTER = ProtocolFilter.UNASSIGNED
 NODE_RADIUS = .065
+AXIS_NODE_RADIUS = .055
 
 
 def rgb(hex_color: str, factor: float = 1.0) -> tuple[float, float, float]:
@@ -56,6 +57,8 @@ class Scene:
         self.design = design
         self.mode = "blocks"
         self._axis_actors: list[vtkActor] = []
+        self._axis_connection_actors: list[vtkActor] = []
+        self.axis_markers: dict[LayerId, vtkActor] = {}
         self.renderer = vtkRenderer()
         self.renderer.SetBackground(rgb("#080f1b"))
         self.renderer.SetBackground2(rgb("#14253b"))
@@ -75,6 +78,9 @@ class Scene:
         self._actor_ids: dict[str, str] = {}
         self.actors: dict[str, tuple[vtkActor, vtkActor]] = {}
         self.guides: dict[tuple[LayerId, int], vtkActor] = {}
+        self.connections: dict[tuple[str, str], vtkActor] = {}
+        self._connection_nodes: dict[tuple[str, str], frozenset[str]] = {}
+        self.connections_visible = True
         self.meshes: dict[str, Mesh] = {}
         sphere = vtkSphereSource()
         sphere.SetRadius(NODE_RADIUS)
@@ -83,6 +89,13 @@ class Scene:
         self._sphere_mapper = vtkPolyDataMapper()
         self._sphere_mapper.SetInputConnection(sphere.GetOutputPort())
         self._sphere_mapper.ScalarVisibilityOff()
+        axis_sphere = vtkSphereSource()
+        axis_sphere.SetRadius(AXIS_NODE_RADIUS)
+        axis_sphere.SetThetaResolution(20)
+        axis_sphere.SetPhiResolution(12)
+        self._axis_sphere_mapper = vtkPolyDataMapper()
+        self._axis_sphere_mapper.SetInputConnection(axis_sphere.GetOutputPort())
+        self._axis_sphere_mapper.ScalarVisibilityOff()
         self.preview_actor: vtkActor | None = None
         self.preview_node: Node | None = None
         self.preview_valid = True
@@ -106,7 +119,9 @@ class Scene:
         self._reference_axis()
         self.reset_camera()
 
-    def _line(self, start: tuple, end: tuple, width: float = 1.0) -> None:
+    def _line(self, start: tuple, end: tuple, width: float = 1.0, *,
+              color: str = "#476579", opacity: float = 1.0,
+              collection: list[vtkActor] | None = None) -> vtkActor:
         source = vtkLineSource()
         source.SetPoint1(*start)
         source.SetPoint2(*end)
@@ -114,21 +129,70 @@ class Scene:
         mapper.SetInputConnection(source.GetOutputPort())
         actor = vtkActor()
         actor.SetMapper(mapper)
-        actor.GetProperty().SetColor(rgb("#476579"))
-        actor.GetProperty().SetLineWidth(width)
-        actor.GetProperty().LightingOff()
+        prop = actor.GetProperty()
+        prop.SetColor(rgb(color))
+        prop.SetLineWidth(width)
+        prop.SetOpacity(opacity)
+        prop.LightingOff()
         actor.PickableOff()
         self.renderer.AddActor(actor)
-        self._axis_actors.append(actor)
+        (self._axis_actors if collection is None else collection).append(actor)
+        return actor
 
     def _reference_axis(self) -> None:
         for actor in self._axis_actors:
             self.renderer.RemoveActor(actor)
         self._axis_actors.clear()
-        self._line((0, 0, self.design.z_base - .3), (0, 0, -self.design.z_base + .3), 1.5)
-        for i in range(len(self.design.layers) + 1):
-            z = self.design.z_base + i
-            self._line((-0.10, 0, z), (0.10, 0, z))
+        self._axis_connection_actors.clear()
+        self.axis_markers.clear()
+        if self.mode == "blocks":
+            self._line((0, 0, self.design.z_base - .3), (0, 0, -self.design.z_base + .3), 1.5)
+            for i in range(len(self.design.layers) + 1):
+                z = self.design.z_base + i
+                self._line((-0.10, 0, z), (0.10, 0, z))
+            return
+
+        centers = [(layer, self.design.z_base + index + .5)
+                   for index, layer in enumerate(self.design.layers)]
+        for (lower, lower_z), (upper, upper_z) in zip(centers, centers[1:]):
+            midpoint = (lower_z + upper_z) / 2
+            self._axis_connection_actors.append(
+                self._line((0, 0, lower_z + AXIS_NODE_RADIUS), (0, 0, midpoint), 1.25,
+                           color=lower.color, opacity=.62))
+            self._axis_connection_actors.append(
+                self._line((0, 0, midpoint), (0, 0, upper_z - AXIS_NODE_RADIUS), 1.25,
+                           color=upper.color, opacity=.62))
+        for layer, z in centers:
+            self._line((AXIS_NODE_RADIUS, 0, z), (.14, 0, z), 1.0,
+                       color=layer.color, opacity=.72)
+            marker = vtkActor()
+            marker.SetMapper(self._axis_sphere_mapper)
+            marker.SetPosition(0, 0, z)
+            marker.PickableOff()
+            prop = marker.GetProperty()
+            prop.SetColor(rgb(layer.color))
+            prop.SetAmbient(.55)
+            prop.SetDiffuse(.55)
+            prop.SetSpecular(.4)
+            prop.SetSpecularPower(24)
+            self.renderer.AddActor(marker)
+            self._axis_actors.append(marker)
+            self.axis_markers[layer.id] = marker
+        self._style_axis()
+        for actor in self._axis_connection_actors:
+            actor.SetVisibility(self.connections_visible)
+
+    def _style_axis(self) -> None:
+        selected = next((node for node in self.nodes if node.id == self.selected), None)
+        for layer in self.design.layers:
+            marker = self.axis_markers.get(layer.id)
+            if marker is None:
+                continue
+            center_note = self.center_node(layer.id)
+            marker.SetVisibility(center_note is None or not self.is_visible(center_note))
+            active = selected is not None and selected.layer == layer.id
+            marker.SetScale(1.35 if active else 1.0)
+            marker.GetProperty().SetOpacity(1.0 if self.layer_filter in (None, layer.id) else .22)
 
     def set_design(self, design: Design) -> None:
         self.set_preview(None)
@@ -144,11 +208,116 @@ class Scene:
             return
         preview, valid = self.preview_node, self.preview_valid
         self.mode = mode
+        self._reference_axis()
         self.set_nodes(self.nodes)
         self.set_preview(preview, valid)
 
     def node_anchor(self, node: Node) -> tuple[float, float, float]:
         return node_position(node, self.design)
+
+    def layer_anchor(self, layer: LayerId) -> tuple[float, float, float]:
+        return 0.0, 0.0, self.design.z_base + self.design.layer_index(layer) + .5
+
+    def center_node(self, layer: LayerId) -> Node | None:
+        """Return the note that occupies a layer's complete center, if any."""
+        return next((node for node in self.nodes
+                     if node.layer == layer and node.depth == CENTER_DEPTH and node.span == ANGULAR_SLOTS), None)
+
+    @staticmethod
+    def _trimmed_segment(start: tuple[float, float, float], end: tuple[float, float, float],
+                         start_radius: float, end_radius: float) -> tuple[tuple, tuple] | None:
+        delta = tuple(end[index] - start[index] for index in range(3))
+        length = sqrt(sum(value * value for value in delta))
+        if length <= start_radius + end_radius:
+            return None
+        unit = tuple(value / length for value in delta)
+        return (tuple(start[index] + unit[index] * start_radius for index in range(3)),
+                tuple(end[index] - unit[index] * end_radius for index in range(3)))
+
+    def _clear_connections(self) -> None:
+        for actor in self.connections.values():
+            self.renderer.RemoveActor(actor)
+        self.connections.clear()
+        self._connection_nodes.clear()
+
+    def _connection_actor(self, segments: list[tuple[tuple, tuple]], color: str,
+                          emphasized: bool) -> vtkActor:
+        points = vtkPoints()
+        lines = vtkCellArray()
+        for start, end in segments:
+            first = points.InsertNextPoint(*start)
+            second = points.InsertNextPoint(*end)
+            lines.InsertNextCell(2)
+            lines.InsertCellPoint(first)
+            lines.InsertCellPoint(second)
+        data = vtkPolyData()
+        data.SetPoints(points)
+        data.SetLines(lines)
+        mapper = vtkPolyDataMapper()
+        mapper.SetInputData(data)
+        actor = vtkActor()
+        actor.SetMapper(mapper)
+        actor.PickableOff()
+        prop = actor.GetProperty()
+        prop.SetColor(rgb(color))
+        prop.SetOpacity(.78 if emphasized else .30)
+        prop.SetLineWidth(1.7 if emphasized else .9)
+        prop.LightingOff()
+        self.renderer.AddActor(actor)
+        return actor
+
+    def _connection_candidates(self) -> tuple[Node, ...]:
+        candidates = [node for node in self.nodes if self.is_visible(node)]
+        preview = self.preview_node
+        if self.preview_valid and preview is not None and self.is_visible(preview):
+            if self.selected is not None:
+                candidates = [node for node in candidates if node.id != self.selected]
+            candidates = [node for node in candidates if node.id != preview.id]
+            candidates.append(preview)
+        return tuple(candidates)
+
+    def _update_connections(self) -> None:
+        self._clear_connections()
+        if self.mode != "nodes" or not self.connections_visible:
+            return
+        nodes = self._connection_candidates()
+        by_id = {node.id: node for node in nodes}
+        buckets: dict[tuple[LayerId, bool], list[tuple[tuple, tuple, frozenset[str]]]] = {}
+
+        def add(layer_id: LayerId, start: tuple, end: tuple, node_ids: frozenset[str],
+                start_radius: float = NODE_RADIUS, end_radius: float = NODE_RADIUS) -> None:
+            segment = self._trimmed_segment(start, end, start_radius, end_radius)
+            if segment is None:
+                return
+            emphasized = self.selected in node_ids or "preview" in node_ids
+            buckets.setdefault((layer_id, emphasized), []).append((*segment, node_ids))
+
+        for left_id, right_id in adjacent_node_pairs(nodes):
+            left, right = by_id[left_id], by_id[right_id]
+            add(left.layer, self.node_anchor(left), self.node_anchor(right), frozenset((left_id, right_id)))
+
+        by_layer: dict[LayerId, list[Node]] = {}
+        for node in nodes:
+            by_layer.setdefault(node.layer, []).append(node)
+        for layer_id, layer_nodes in by_layer.items():
+            innermost = min(node.depth for node in layer_nodes)
+            for node in (candidate for candidate in layer_nodes if candidate.depth == innermost):
+                add(layer_id, self.layer_anchor(layer_id), self.node_anchor(node), frozenset((node.id,)),
+                    AXIS_NODE_RADIUS, NODE_RADIUS)
+
+        for (layer_id, emphasized), entries in buckets.items():
+            key = (repr(layer_id), "emphasized" if emphasized else "normal")
+            self.connections[key] = self._connection_actor(
+                [(start, end) for start, end, _ in entries],
+                self.design.layer(layer_id).color, emphasized)
+            self._connection_nodes[key] = frozenset().union(*(node_ids for _, _, node_ids in entries))
+
+    def set_connections_visible(self, visible: bool) -> None:
+        self.connections_visible = bool(visible)
+        for actor in self._axis_connection_actors:
+            actor.SetVisibility(self.connections_visible)
+        self._update_connections()
+        self.renderer.ResetCameraClippingRange()
 
     def _update_guides(self) -> None:
         for actor in self.guides.values():
@@ -266,6 +435,8 @@ class Scene:
             solid.GetProperty().SetColor(rgb(color, 1.10 if selected else 1.0))
             outline.GetProperty().SetColor(rgb("#fff0c2") if selected else rgb(color, 0.65))
             outline.GetProperty().SetLineWidth(2.0 if selected else 0.85)
+        self._style_axis()
+        self._update_connections()
 
     def set_preview(self, node: Node | None, valid: bool = True) -> None:
         self.preview_node, self.preview_valid = node, valid
@@ -311,6 +482,7 @@ class Scene:
                 pick_mapper.SetInputData(data)
                 self._preview_pick_actor.SetMapper(pick_mapper)
             self._preview_picker.AddPickList(self._preview_pick_actor)
+        self._update_connections()
         self.renderer.ResetCameraClippingRange()
 
     def pick_preview(self, x: float, y: float) -> bool:
@@ -334,6 +506,8 @@ class Scene:
             solid.SetVisibility(visible)
             outline.SetVisibility(visible and self.mode == "blocks")
         self._update_guides()
+        self._style_axis()
+        self._update_connections()
         self.renderer.ResetCameraClippingRange()
 
     def set_protocol_filter(self, protocol: str | ProtocolFilter | None) -> None:
@@ -429,6 +603,8 @@ class Scene:
         if radius >= (len(BANDS) + 1) * RADIAL_WIDTH:
             return None
         band = int(radius / RADIAL_WIDTH) - 1
+        if band == CENTER_DEPTH and span == ANGULAR_SLOTS and radius < 1e-8:
+            return CENTER_DEPTH, 0
         angle = (atan2(wy, wx) + pi / 2) % (2 * pi)
         angular_slot = angle / (2 * pi) * ANGULAR_SLOTS
         slot = round(angular_slot - span / 2) if self.mode == "nodes" else int(angular_slot)
