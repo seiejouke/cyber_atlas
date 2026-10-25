@@ -304,7 +304,7 @@ class ClusterManager:
         self.focus_button.state(["!disabled"] if expanded else ["disabled"])
         if self.app.scene.orbit_collision:
             self.summary.configure(text="Crowded: Focus cluster")
-        if children and not self.editing:
+        if children and not self.editing and self.app._node_move_origin is None:
             self.list_frame.grid(row=15, column=0, sticky="ew")
             self.list_title.configure(text=f"Subconcepts ({len(children)})")
             state = tuple((child.id, child.name) for child in children)
@@ -335,8 +335,8 @@ class ClusterManager:
                     continue
                 if selected:
                     radius = max(11, .065 * .7 * scene.height / (2 * scene.scale) + 5) if scene.heat_active else 11
-                    canvas.create_oval(x-radius, y-radius, x+radius, y+radius,
-                                       outline=theme.TEXT if scene.heat_active else theme.ACCENT, width=2, tags="overlay")
+                    self.app._draw_selection_corners(x, y, radius,
+                                                     theme.TEXT if scene.heat_active else theme.ACCENT, "child-halo")
                 label = child.name if len(child.name) <= 31 else child.name[:28] + "..."
                 if scene.heat_active:
                     label += f" ({scene.heat_metrics.get(child.id).own if child.id in scene.heat_metrics else 0})"

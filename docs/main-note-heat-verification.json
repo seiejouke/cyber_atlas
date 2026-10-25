@@ -1,0 +1,38 @@
+{
+  "status": "Source preview; awaiting approval for packaging",
+  "date": "2026-10-25",
+  "base_release_version": "0.9.0",
+  "atlas_file_version": 10,
+  "tested_platform": "Windows desktop",
+  "python": "3.12.3",
+  "core_tests_passed": 190,
+  "gui_workflow_checks_passed": 121,
+  "source_runtime_checks_passed": 34,
+  "gui_report": "main-note-heat-gui-results.json",
+  "runtime_report": "main-note-heat-runtime-results.json",
+  "focused_checks_after_final_label_layout_change": 13,
+  "main_note_count": "One for every saved concept; no copy or additional record is needed",
+  "subconcepts": "Each contributes its own main note and additional items to itself and its explicit parent",
+  "legacy_main_note_copies": "Exact main-note text copies remain saved but count once, including after renaming",
+  "palette": "Blue, cyan, pale neutral, yellow, orange, red; linear interpolation without a green segment",
+  "default_preset": "B - Balanced (1-16)",
+  "presets": {
+    "A - Compact (1-9)": 9,
+    "B - Balanced (1-16)": 16,
+    "C - Extended (1-32)": 32
+  },
+  "count_spacing": "Every integer tick uses the same horizontal increment, in all presets",
+  "saturation": "Only color saturates; exact counts remain visible",
+  "parent_indicator": "Neutral ring and child-count badge on every visible parent, collapsed or expanded",
+  "selection": "Corner marks, distinct from the parent indicator",
+  "spatial_connections_add_heat": false,
+  "preview_changes_saved_data": false,
+  "example": {
+    "main_nodes": 84,
+    "subconcepts": 8,
+    "additional_records": 495,
+    "selected_cluster_total": 4
+  },
+  "packages_built": false,
+  "packaging_requires_explicit_approval": true
+}

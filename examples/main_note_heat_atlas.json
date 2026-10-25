@@ -1,0 +1,3937 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 10,
+  "layout": "fixed-slots",
+  "center_depth": -1,
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "angular_slots": 16,
+  "design": {
+    "layers": [
+      {
+        "id": 1,
+        "name": "Physical",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 2,
+        "name": "Data Link",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 3,
+        "name": "Network",
+        "color": "#9c8bdb"
+      },
+      {
+        "id": 4,
+        "name": "Transport",
+        "color": "#70cbd8"
+      },
+      {
+        "id": 5,
+        "name": "Session",
+        "color": "#8ca9da"
+      },
+      {
+        "id": 6,
+        "name": "Presentation",
+        "color": "#cb96ba"
+      },
+      {
+        "id": 7,
+        "name": "Application",
+        "color": "#edbb69"
+      }
+    ],
+    "protocols": [],
+    "layer_caption": "OSI layer",
+    "protocol_caption": "Protocol",
+    "label_mode": "title"
+  },
+  "nodes": [
+    {
+      "id": "layer-1-concept-0",
+      "name": "Copper",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Copper. This saved concept counts automatically as one item.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-1",
+      "name": "Fiber",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Fiber. This saved concept counts automatically as one item.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-2",
+      "name": "Radio",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Radio. This saved concept counts automatically as one item.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-3",
+      "name": "Encoding",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Encoding. This saved concept counts automatically as one item.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-4",
+      "name": "Modulation",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Modulation. This saved concept counts automatically as one item.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-5",
+      "name": "Clocking",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Clocking. This saved concept counts automatically as one item.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-6",
+      "name": "Noise",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Noise. This saved concept counts automatically as one item.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-7",
+      "name": "Signal loss",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Signal loss. This saved concept counts automatically as one item.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-8",
+      "name": "Interfaces",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Interfaces. This saved concept counts automatically as one item.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-9",
+      "name": "Bandwidth",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Bandwidth. This saved concept counts automatically as one item.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-10",
+      "name": "Cabling",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Cabling. This saved concept counts automatically as one item.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-11",
+      "name": "Repeaters",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Repeaters. This saved concept counts automatically as one item.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-0",
+      "name": "Ethernet",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Ethernet. This saved concept counts automatically as one item.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-1",
+      "name": "Frames",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Frames. This saved concept counts automatically as one item.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-2",
+      "name": "MAC",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about MAC. This saved concept counts automatically as one item.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-3",
+      "name": "Switching",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Switching. This saved concept counts automatically as one item.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-4",
+      "name": "VLANs",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about VLANs. This saved concept counts automatically as one item.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-5",
+      "name": "Bridging",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Bridging. This saved concept counts automatically as one item.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-6",
+      "name": "ARP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about ARP. This saved concept counts automatically as one item.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-7",
+      "name": "Wi-Fi",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Wi-Fi. This saved concept counts automatically as one item.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-8",
+      "name": "STP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about STP. This saved concept counts automatically as one item.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-9",
+      "name": "MTU",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about MTU. This saved concept counts automatically as one item.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-10",
+      "name": "LLDP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about LLDP. This saved concept counts automatically as one item.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-11",
+      "name": "LACP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about LACP. This saved concept counts automatically as one item.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-0",
+      "name": "IPv4",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about IPv4. This saved concept counts automatically as one item.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-1",
+      "name": "Routing",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Routing. This saved concept counts automatically as one item.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-2",
+      "name": "Subnets",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Subnets. This saved concept counts automatically as one item.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-3",
+      "name": "ICMP",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about ICMP. This saved concept counts automatically as one item.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-4",
+      "name": "NAT",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about NAT. This saved concept counts automatically as one item.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-5",
+      "name": "IPv6",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about IPv6. This saved concept counts automatically as one item.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-6",
+      "name": "Gateways",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Gateways. This saved concept counts automatically as one item.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-7",
+      "name": "Route tables",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Route tables. This saved concept counts automatically as one item.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-8",
+      "name": "Forwarding",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Forwarding. This saved concept counts automatically as one item.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-9",
+      "name": "Tunnels",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Tunnels. This saved concept counts automatically as one item.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "multiplexing-strategy",
+      "name": "Multiplexing strategy",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Multiplexing strategy. This saved concept counts automatically as one item.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-11",
+      "name": "Multicast",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Multicast. This saved concept counts automatically as one item.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-0",
+      "name": "TCP",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about TCP. This saved concept counts automatically as one item.",
+      "slot": 0,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-1",
+      "name": "UDP",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about UDP. This saved concept counts automatically as one item.",
+      "slot": 4,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-2",
+      "name": "Ports",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Ports. This saved concept counts automatically as one item.",
+      "slot": 8,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-3",
+      "name": "Connections",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Connections. This saved concept counts automatically as one item.",
+      "slot": 12,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-4",
+      "name": "Congestion",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Congestion. This saved concept counts automatically as one item.",
+      "slot": 0,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-5",
+      "name": "Flow control",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Flow control. This saved concept counts automatically as one item.",
+      "slot": 4,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-6",
+      "name": "Reliability",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Reliability. This saved concept counts automatically as one item.",
+      "slot": 8,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-7",
+      "name": "Handshake",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Handshake. This saved concept counts automatically as one item.",
+      "slot": 12,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-8",
+      "name": "Retransmission",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Retransmission. This saved concept counts automatically as one item.",
+      "slot": 0,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-9",
+      "name": "Segments",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Segments. This saved concept counts automatically as one item.",
+      "slot": 4,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-10",
+      "name": "Sockets",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Sockets. This saved concept counts automatically as one item.",
+      "slot": 8,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-11",
+      "name": "Checksums",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Checksums. This saved concept counts automatically as one item.",
+      "slot": 12,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-0",
+      "name": "Sessions",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Sessions. This saved concept counts automatically as one item.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-1",
+      "name": "RPC",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about RPC. This saved concept counts automatically as one item.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-2",
+      "name": "Dialogs",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Dialogs. This saved concept counts automatically as one item.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-3",
+      "name": "Keepalive",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Keepalive. This saved concept counts automatically as one item.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-4",
+      "name": "Recovery",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Recovery. This saved concept counts automatically as one item.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-5",
+      "name": "Tokens",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Tokens. This saved concept counts automatically as one item.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-6",
+      "name": "Checkpoints",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Checkpoints. This saved concept counts automatically as one item.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-7",
+      "name": "State",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about State. This saved concept counts automatically as one item.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-8",
+      "name": "Negotiation",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Negotiation. This saved concept counts automatically as one item.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-9",
+      "name": "Synchronization",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Synchronization. This saved concept counts automatically as one item.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-10",
+      "name": "Timeouts",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Timeouts. This saved concept counts automatically as one item.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-11",
+      "name": "Resumption",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Resumption. This saved concept counts automatically as one item.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-0",
+      "name": "TLS",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about TLS. This saved concept counts automatically as one item.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-1",
+      "name": "Encoding",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Encoding. This saved concept counts automatically as one item.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-2",
+      "name": "Serialization",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Serialization. This saved concept counts automatically as one item.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-3",
+      "name": "Compression",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about Compression. This saved concept counts automatically as one item.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-4",
+      "name": "ASN.1",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about ASN.1. This saved concept counts automatically as one item.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-5",
+      "name": "Certificates",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about Certificates. This saved concept counts automatically as one item.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-6",
+      "name": "JSON",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about JSON. This saved concept counts automatically as one item.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-7",
+      "name": "UTF-8",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about UTF-8. This saved concept counts automatically as one item.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-8",
+      "name": "Formats",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Formats. This saved concept counts automatically as one item.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-9",
+      "name": "Encryption",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Encryption. This saved concept counts automatically as one item.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-10",
+      "name": "Decoding",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Decoding. This saved concept counts automatically as one item.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-11",
+      "name": "Representation",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about Representation. This saved concept counts automatically as one item.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-0",
+      "name": "HTTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about HTTP. This saved concept counts automatically as one item.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-1",
+      "name": "DNS",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about DNS. This saved concept counts automatically as one item.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-2",
+      "name": "SSH",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about SSH. This saved concept counts automatically as one item.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-3",
+      "name": "SMTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Main note about SMTP. This saved concept counts automatically as one item.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-4",
+      "name": "DHCP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about DHCP. This saved concept counts automatically as one item.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-5",
+      "name": "NTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about NTP. This saved concept counts automatically as one item.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-6",
+      "name": "IMAP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about IMAP. This saved concept counts automatically as one item.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-7",
+      "name": "SNMP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Main note about SNMP. This saved concept counts automatically as one item.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-8",
+      "name": "HTTPS",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about HTTPS. This saved concept counts automatically as one item.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-9",
+      "name": "FTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about FTP. This saved concept counts automatically as one item.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-10",
+      "name": "LDAP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about LDAP. This saved concept counts automatically as one item.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-11",
+      "name": "APIs",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Main note about APIs. This saved concept counts automatically as one item.",
+      "slot": 15,
+      "span": 1
+    }
+  ],
+  "subconcepts": [
+    {
+      "id": "multiplexing-strategy-orbital-0",
+      "parent_id": "multiplexing-strategy",
+      "name": "Time-division multiplexing",
+      "notes": "Main note about Time-division multiplexing. No additional entry is needed for this note to count.",
+      "orbit_slot": 0,
+      "relationship": "type_of"
+    },
+    {
+      "id": "multiplexing-strategy-orbital-1",
+      "parent_id": "multiplexing-strategy",
+      "name": "Statistical time-division multiplexing",
+      "notes": "Main note about Statistical time-division multiplexing. No additional entry is needed for this note to count.",
+      "orbit_slot": 2,
+      "relationship": "type_of"
+    },
+    {
+      "id": "multiplexing-strategy-orbital-2",
+      "parent_id": "multiplexing-strategy",
+      "name": "Frequency-division multiplexing",
+      "notes": "Main note about Frequency-division multiplexing. No additional entry is needed for this note to count.",
+      "orbit_slot": 4,
+      "relationship": "type_of"
+    },
+    {
+      "id": "layer-2-concept-0-orbital-0",
+      "parent_id": "layer-2-concept-0",
+      "name": "Gigabit Ethernet",
+      "notes": "Main note about Gigabit Ethernet. No additional entry is needed for this note to count.",
+      "orbit_slot": 0,
+      "relationship": "type_of"
+    },
+    {
+      "id": "layer-2-concept-0-orbital-1",
+      "parent_id": "layer-2-concept-0",
+      "name": "10 Gigabit Ethernet",
+      "notes": "Main note about 10 Gigabit Ethernet. No additional entry is needed for this note to count.",
+      "orbit_slot": 2,
+      "relationship": "type_of"
+    },
+    {
+      "id": "layer-7-concept-0-orbital-0",
+      "parent_id": "layer-7-concept-0",
+      "name": "HTTP/1.1",
+      "notes": "Main note about HTTP/1.1. No additional entry is needed for this note to count.",
+      "orbit_slot": 0,
+      "relationship": "type_of"
+    },
+    {
+      "id": "layer-7-concept-0-orbital-1",
+      "parent_id": "layer-7-concept-0",
+      "name": "HTTP/2",
+      "notes": "Main note about HTTP/2. No additional entry is needed for this note to count.",
+      "orbit_slot": 2,
+      "relationship": "type_of"
+    },
+    {
+      "id": "layer-7-concept-0-orbital-2",
+      "parent_id": "layer-7-concept-0",
+      "name": "HTTP/3",
+      "notes": "Main note about HTTP/3. No additional entry is needed for this note to count.",
+      "orbit_slot": 4,
+      "relationship": "type_of"
+    }
+  ],
+  "information_entries": [
+    {
+      "id": "layer-1-concept-1-extra-0",
+      "concept_id": "layer-1-concept-1",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Fiber, item 1."
+    },
+    {
+      "id": "layer-1-concept-2-extra-0",
+      "concept_id": "layer-1-concept-2",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Radio, item 1."
+    },
+    {
+      "id": "layer-1-concept-2-extra-1",
+      "concept_id": "layer-1-concept-2",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Radio, item 2."
+    },
+    {
+      "id": "layer-1-concept-3-extra-0",
+      "concept_id": "layer-1-concept-3",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Encoding, item 1."
+    },
+    {
+      "id": "layer-1-concept-3-extra-1",
+      "concept_id": "layer-1-concept-3",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Encoding, item 2."
+    },
+    {
+      "id": "layer-1-concept-3-extra-2",
+      "concept_id": "layer-1-concept-3",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Encoding, item 3."
+    },
+    {
+      "id": "layer-1-concept-4-extra-0",
+      "concept_id": "layer-1-concept-4",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Modulation, item 1."
+    },
+    {
+      "id": "layer-1-concept-4-extra-1",
+      "concept_id": "layer-1-concept-4",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Modulation, item 2."
+    },
+    {
+      "id": "layer-1-concept-4-extra-2",
+      "concept_id": "layer-1-concept-4",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Modulation, item 3."
+    },
+    {
+      "id": "layer-1-concept-4-extra-3",
+      "concept_id": "layer-1-concept-4",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Modulation, item 4."
+    },
+    {
+      "id": "layer-1-concept-5-extra-0",
+      "concept_id": "layer-1-concept-5",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Clocking, item 1."
+    },
+    {
+      "id": "layer-1-concept-5-extra-1",
+      "concept_id": "layer-1-concept-5",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Clocking, item 2."
+    },
+    {
+      "id": "layer-1-concept-5-extra-2",
+      "concept_id": "layer-1-concept-5",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Clocking, item 3."
+    },
+    {
+      "id": "layer-1-concept-5-extra-3",
+      "concept_id": "layer-1-concept-5",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Clocking, item 4."
+    },
+    {
+      "id": "layer-1-concept-5-extra-4",
+      "concept_id": "layer-1-concept-5",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Clocking, item 5."
+    },
+    {
+      "id": "layer-1-concept-6-extra-0",
+      "concept_id": "layer-1-concept-6",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Noise, item 1."
+    },
+    {
+      "id": "layer-1-concept-6-extra-1",
+      "concept_id": "layer-1-concept-6",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Noise, item 2."
+    },
+    {
+      "id": "layer-1-concept-6-extra-2",
+      "concept_id": "layer-1-concept-6",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Noise, item 3."
+    },
+    {
+      "id": "layer-1-concept-6-extra-3",
+      "concept_id": "layer-1-concept-6",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Noise, item 4."
+    },
+    {
+      "id": "layer-1-concept-6-extra-4",
+      "concept_id": "layer-1-concept-6",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Noise, item 5."
+    },
+    {
+      "id": "layer-1-concept-6-extra-5",
+      "concept_id": "layer-1-concept-6",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Noise, item 6."
+    },
+    {
+      "id": "layer-1-concept-7-extra-0",
+      "concept_id": "layer-1-concept-7",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Signal loss, item 1."
+    },
+    {
+      "id": "layer-1-concept-7-extra-1",
+      "concept_id": "layer-1-concept-7",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Signal loss, item 2."
+    },
+    {
+      "id": "layer-1-concept-7-extra-2",
+      "concept_id": "layer-1-concept-7",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Signal loss, item 3."
+    },
+    {
+      "id": "layer-1-concept-7-extra-3",
+      "concept_id": "layer-1-concept-7",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Signal loss, item 4."
+    },
+    {
+      "id": "layer-1-concept-7-extra-4",
+      "concept_id": "layer-1-concept-7",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Signal loss, item 5."
+    },
+    {
+      "id": "layer-1-concept-7-extra-5",
+      "concept_id": "layer-1-concept-7",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Signal loss, item 6."
+    },
+    {
+      "id": "layer-1-concept-7-extra-6",
+      "concept_id": "layer-1-concept-7",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Signal loss, item 7."
+    },
+    {
+      "id": "layer-1-concept-8-extra-0",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Interfaces, item 1."
+    },
+    {
+      "id": "layer-1-concept-8-extra-1",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Interfaces, item 2."
+    },
+    {
+      "id": "layer-1-concept-8-extra-2",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Interfaces, item 3."
+    },
+    {
+      "id": "layer-1-concept-8-extra-3",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Interfaces, item 4."
+    },
+    {
+      "id": "layer-1-concept-8-extra-4",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Interfaces, item 5."
+    },
+    {
+      "id": "layer-1-concept-8-extra-5",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Interfaces, item 6."
+    },
+    {
+      "id": "layer-1-concept-8-extra-6",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Interfaces, item 7."
+    },
+    {
+      "id": "layer-1-concept-8-extra-7",
+      "concept_id": "layer-1-concept-8",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Interfaces, item 8."
+    },
+    {
+      "id": "layer-1-concept-9-extra-0",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Bandwidth, item 1."
+    },
+    {
+      "id": "layer-1-concept-9-extra-1",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Bandwidth, item 2."
+    },
+    {
+      "id": "layer-1-concept-9-extra-2",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Bandwidth, item 3."
+    },
+    {
+      "id": "layer-1-concept-9-extra-3",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Bandwidth, item 4."
+    },
+    {
+      "id": "layer-1-concept-9-extra-4",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Bandwidth, item 5."
+    },
+    {
+      "id": "layer-1-concept-9-extra-5",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Bandwidth, item 6."
+    },
+    {
+      "id": "layer-1-concept-9-extra-6",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Bandwidth, item 7."
+    },
+    {
+      "id": "layer-1-concept-9-extra-7",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Bandwidth, item 8."
+    },
+    {
+      "id": "layer-1-concept-9-extra-8",
+      "concept_id": "layer-1-concept-9",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Bandwidth, item 9."
+    },
+    {
+      "id": "layer-1-concept-10-extra-0",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Cabling, item 1."
+    },
+    {
+      "id": "layer-1-concept-10-extra-1",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Cabling, item 2."
+    },
+    {
+      "id": "layer-1-concept-10-extra-2",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Cabling, item 3."
+    },
+    {
+      "id": "layer-1-concept-10-extra-3",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Cabling, item 4."
+    },
+    {
+      "id": "layer-1-concept-10-extra-4",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Cabling, item 5."
+    },
+    {
+      "id": "layer-1-concept-10-extra-5",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Cabling, item 6."
+    },
+    {
+      "id": "layer-1-concept-10-extra-6",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Cabling, item 7."
+    },
+    {
+      "id": "layer-1-concept-10-extra-7",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Cabling, item 8."
+    },
+    {
+      "id": "layer-1-concept-10-extra-8",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Cabling, item 9."
+    },
+    {
+      "id": "layer-1-concept-10-extra-9",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Cabling, item 10."
+    },
+    {
+      "id": "layer-1-concept-10-extra-10",
+      "concept_id": "layer-1-concept-10",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Cabling, item 11."
+    },
+    {
+      "id": "layer-1-concept-11-extra-0",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Repeaters, item 1."
+    },
+    {
+      "id": "layer-1-concept-11-extra-1",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Repeaters, item 2."
+    },
+    {
+      "id": "layer-1-concept-11-extra-2",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Repeaters, item 3."
+    },
+    {
+      "id": "layer-1-concept-11-extra-3",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Repeaters, item 4."
+    },
+    {
+      "id": "layer-1-concept-11-extra-4",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Repeaters, item 5."
+    },
+    {
+      "id": "layer-1-concept-11-extra-5",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Repeaters, item 6."
+    },
+    {
+      "id": "layer-1-concept-11-extra-6",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Repeaters, item 7."
+    },
+    {
+      "id": "layer-1-concept-11-extra-7",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Repeaters, item 8."
+    },
+    {
+      "id": "layer-1-concept-11-extra-8",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Repeaters, item 9."
+    },
+    {
+      "id": "layer-1-concept-11-extra-9",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Repeaters, item 10."
+    },
+    {
+      "id": "layer-1-concept-11-extra-10",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Repeaters, item 11."
+    },
+    {
+      "id": "layer-1-concept-11-extra-11",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 12",
+      "body": "Illustrative additional information about Repeaters, item 12."
+    },
+    {
+      "id": "layer-1-concept-11-extra-12",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 13",
+      "body": "Illustrative additional information about Repeaters, item 13."
+    },
+    {
+      "id": "layer-1-concept-11-extra-13",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 14",
+      "body": "Illustrative additional information about Repeaters, item 14."
+    },
+    {
+      "id": "layer-1-concept-11-extra-14",
+      "concept_id": "layer-1-concept-11",
+      "title": "Additional observation 15",
+      "body": "Illustrative additional information about Repeaters, item 15."
+    },
+    {
+      "id": "layer-2-concept-1-extra-0",
+      "concept_id": "layer-2-concept-1",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Frames, item 1."
+    },
+    {
+      "id": "layer-2-concept-2-extra-0",
+      "concept_id": "layer-2-concept-2",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about MAC, item 1."
+    },
+    {
+      "id": "layer-2-concept-2-extra-1",
+      "concept_id": "layer-2-concept-2",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about MAC, item 2."
+    },
+    {
+      "id": "layer-2-concept-3-extra-0",
+      "concept_id": "layer-2-concept-3",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Switching, item 1."
+    },
+    {
+      "id": "layer-2-concept-3-extra-1",
+      "concept_id": "layer-2-concept-3",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Switching, item 2."
+    },
+    {
+      "id": "layer-2-concept-3-extra-2",
+      "concept_id": "layer-2-concept-3",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Switching, item 3."
+    },
+    {
+      "id": "layer-2-concept-4-extra-0",
+      "concept_id": "layer-2-concept-4",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about VLANs, item 1."
+    },
+    {
+      "id": "layer-2-concept-4-extra-1",
+      "concept_id": "layer-2-concept-4",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about VLANs, item 2."
+    },
+    {
+      "id": "layer-2-concept-4-extra-2",
+      "concept_id": "layer-2-concept-4",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about VLANs, item 3."
+    },
+    {
+      "id": "layer-2-concept-4-extra-3",
+      "concept_id": "layer-2-concept-4",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about VLANs, item 4."
+    },
+    {
+      "id": "layer-2-concept-5-extra-0",
+      "concept_id": "layer-2-concept-5",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Bridging, item 1."
+    },
+    {
+      "id": "layer-2-concept-5-extra-1",
+      "concept_id": "layer-2-concept-5",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Bridging, item 2."
+    },
+    {
+      "id": "layer-2-concept-5-extra-2",
+      "concept_id": "layer-2-concept-5",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Bridging, item 3."
+    },
+    {
+      "id": "layer-2-concept-5-extra-3",
+      "concept_id": "layer-2-concept-5",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Bridging, item 4."
+    },
+    {
+      "id": "layer-2-concept-5-extra-4",
+      "concept_id": "layer-2-concept-5",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Bridging, item 5."
+    },
+    {
+      "id": "layer-2-concept-6-extra-0",
+      "concept_id": "layer-2-concept-6",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about ARP, item 1."
+    },
+    {
+      "id": "layer-2-concept-6-extra-1",
+      "concept_id": "layer-2-concept-6",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about ARP, item 2."
+    },
+    {
+      "id": "layer-2-concept-6-extra-2",
+      "concept_id": "layer-2-concept-6",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about ARP, item 3."
+    },
+    {
+      "id": "layer-2-concept-6-extra-3",
+      "concept_id": "layer-2-concept-6",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about ARP, item 4."
+    },
+    {
+      "id": "layer-2-concept-6-extra-4",
+      "concept_id": "layer-2-concept-6",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about ARP, item 5."
+    },
+    {
+      "id": "layer-2-concept-6-extra-5",
+      "concept_id": "layer-2-concept-6",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about ARP, item 6."
+    },
+    {
+      "id": "layer-2-concept-7-extra-0",
+      "concept_id": "layer-2-concept-7",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Wi-Fi, item 1."
+    },
+    {
+      "id": "layer-2-concept-7-extra-1",
+      "concept_id": "layer-2-concept-7",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Wi-Fi, item 2."
+    },
+    {
+      "id": "layer-2-concept-7-extra-2",
+      "concept_id": "layer-2-concept-7",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Wi-Fi, item 3."
+    },
+    {
+      "id": "layer-2-concept-7-extra-3",
+      "concept_id": "layer-2-concept-7",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Wi-Fi, item 4."
+    },
+    {
+      "id": "layer-2-concept-7-extra-4",
+      "concept_id": "layer-2-concept-7",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Wi-Fi, item 5."
+    },
+    {
+      "id": "layer-2-concept-7-extra-5",
+      "concept_id": "layer-2-concept-7",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Wi-Fi, item 6."
+    },
+    {
+      "id": "layer-2-concept-7-extra-6",
+      "concept_id": "layer-2-concept-7",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Wi-Fi, item 7."
+    },
+    {
+      "id": "layer-2-concept-8-extra-0",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about STP, item 1."
+    },
+    {
+      "id": "layer-2-concept-8-extra-1",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about STP, item 2."
+    },
+    {
+      "id": "layer-2-concept-8-extra-2",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about STP, item 3."
+    },
+    {
+      "id": "layer-2-concept-8-extra-3",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about STP, item 4."
+    },
+    {
+      "id": "layer-2-concept-8-extra-4",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about STP, item 5."
+    },
+    {
+      "id": "layer-2-concept-8-extra-5",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about STP, item 6."
+    },
+    {
+      "id": "layer-2-concept-8-extra-6",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about STP, item 7."
+    },
+    {
+      "id": "layer-2-concept-8-extra-7",
+      "concept_id": "layer-2-concept-8",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about STP, item 8."
+    },
+    {
+      "id": "layer-2-concept-9-extra-0",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about MTU, item 1."
+    },
+    {
+      "id": "layer-2-concept-9-extra-1",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about MTU, item 2."
+    },
+    {
+      "id": "layer-2-concept-9-extra-2",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about MTU, item 3."
+    },
+    {
+      "id": "layer-2-concept-9-extra-3",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about MTU, item 4."
+    },
+    {
+      "id": "layer-2-concept-9-extra-4",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about MTU, item 5."
+    },
+    {
+      "id": "layer-2-concept-9-extra-5",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about MTU, item 6."
+    },
+    {
+      "id": "layer-2-concept-9-extra-6",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about MTU, item 7."
+    },
+    {
+      "id": "layer-2-concept-9-extra-7",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about MTU, item 8."
+    },
+    {
+      "id": "layer-2-concept-9-extra-8",
+      "concept_id": "layer-2-concept-9",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about MTU, item 9."
+    },
+    {
+      "id": "layer-2-concept-10-extra-0",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about LLDP, item 1."
+    },
+    {
+      "id": "layer-2-concept-10-extra-1",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about LLDP, item 2."
+    },
+    {
+      "id": "layer-2-concept-10-extra-2",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about LLDP, item 3."
+    },
+    {
+      "id": "layer-2-concept-10-extra-3",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about LLDP, item 4."
+    },
+    {
+      "id": "layer-2-concept-10-extra-4",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about LLDP, item 5."
+    },
+    {
+      "id": "layer-2-concept-10-extra-5",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about LLDP, item 6."
+    },
+    {
+      "id": "layer-2-concept-10-extra-6",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about LLDP, item 7."
+    },
+    {
+      "id": "layer-2-concept-10-extra-7",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about LLDP, item 8."
+    },
+    {
+      "id": "layer-2-concept-10-extra-8",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about LLDP, item 9."
+    },
+    {
+      "id": "layer-2-concept-10-extra-9",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about LLDP, item 10."
+    },
+    {
+      "id": "layer-2-concept-10-extra-10",
+      "concept_id": "layer-2-concept-10",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about LLDP, item 11."
+    },
+    {
+      "id": "layer-2-concept-11-extra-0",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about LACP, item 1."
+    },
+    {
+      "id": "layer-2-concept-11-extra-1",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about LACP, item 2."
+    },
+    {
+      "id": "layer-2-concept-11-extra-2",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about LACP, item 3."
+    },
+    {
+      "id": "layer-2-concept-11-extra-3",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about LACP, item 4."
+    },
+    {
+      "id": "layer-2-concept-11-extra-4",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about LACP, item 5."
+    },
+    {
+      "id": "layer-2-concept-11-extra-5",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about LACP, item 6."
+    },
+    {
+      "id": "layer-2-concept-11-extra-6",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about LACP, item 7."
+    },
+    {
+      "id": "layer-2-concept-11-extra-7",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about LACP, item 8."
+    },
+    {
+      "id": "layer-2-concept-11-extra-8",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about LACP, item 9."
+    },
+    {
+      "id": "layer-2-concept-11-extra-9",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about LACP, item 10."
+    },
+    {
+      "id": "layer-2-concept-11-extra-10",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about LACP, item 11."
+    },
+    {
+      "id": "layer-2-concept-11-extra-11",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 12",
+      "body": "Illustrative additional information about LACP, item 12."
+    },
+    {
+      "id": "layer-2-concept-11-extra-12",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 13",
+      "body": "Illustrative additional information about LACP, item 13."
+    },
+    {
+      "id": "layer-2-concept-11-extra-13",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 14",
+      "body": "Illustrative additional information about LACP, item 14."
+    },
+    {
+      "id": "layer-2-concept-11-extra-14",
+      "concept_id": "layer-2-concept-11",
+      "title": "Additional observation 15",
+      "body": "Illustrative additional information about LACP, item 15."
+    },
+    {
+      "id": "layer-3-concept-1-extra-0",
+      "concept_id": "layer-3-concept-1",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Routing, item 1."
+    },
+    {
+      "id": "layer-3-concept-2-extra-0",
+      "concept_id": "layer-3-concept-2",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Subnets, item 1."
+    },
+    {
+      "id": "layer-3-concept-2-extra-1",
+      "concept_id": "layer-3-concept-2",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Subnets, item 2."
+    },
+    {
+      "id": "layer-3-concept-3-extra-0",
+      "concept_id": "layer-3-concept-3",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about ICMP, item 1."
+    },
+    {
+      "id": "layer-3-concept-3-extra-1",
+      "concept_id": "layer-3-concept-3",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about ICMP, item 2."
+    },
+    {
+      "id": "layer-3-concept-3-extra-2",
+      "concept_id": "layer-3-concept-3",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about ICMP, item 3."
+    },
+    {
+      "id": "layer-3-concept-4-extra-0",
+      "concept_id": "layer-3-concept-4",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about NAT, item 1."
+    },
+    {
+      "id": "layer-3-concept-4-extra-1",
+      "concept_id": "layer-3-concept-4",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about NAT, item 2."
+    },
+    {
+      "id": "layer-3-concept-4-extra-2",
+      "concept_id": "layer-3-concept-4",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about NAT, item 3."
+    },
+    {
+      "id": "layer-3-concept-4-extra-3",
+      "concept_id": "layer-3-concept-4",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about NAT, item 4."
+    },
+    {
+      "id": "layer-3-concept-5-extra-0",
+      "concept_id": "layer-3-concept-5",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about IPv6, item 1."
+    },
+    {
+      "id": "layer-3-concept-5-extra-1",
+      "concept_id": "layer-3-concept-5",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about IPv6, item 2."
+    },
+    {
+      "id": "layer-3-concept-5-extra-2",
+      "concept_id": "layer-3-concept-5",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about IPv6, item 3."
+    },
+    {
+      "id": "layer-3-concept-5-extra-3",
+      "concept_id": "layer-3-concept-5",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about IPv6, item 4."
+    },
+    {
+      "id": "layer-3-concept-5-extra-4",
+      "concept_id": "layer-3-concept-5",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about IPv6, item 5."
+    },
+    {
+      "id": "layer-3-concept-6-extra-0",
+      "concept_id": "layer-3-concept-6",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Gateways, item 1."
+    },
+    {
+      "id": "layer-3-concept-6-extra-1",
+      "concept_id": "layer-3-concept-6",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Gateways, item 2."
+    },
+    {
+      "id": "layer-3-concept-6-extra-2",
+      "concept_id": "layer-3-concept-6",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Gateways, item 3."
+    },
+    {
+      "id": "layer-3-concept-6-extra-3",
+      "concept_id": "layer-3-concept-6",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Gateways, item 4."
+    },
+    {
+      "id": "layer-3-concept-6-extra-4",
+      "concept_id": "layer-3-concept-6",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Gateways, item 5."
+    },
+    {
+      "id": "layer-3-concept-6-extra-5",
+      "concept_id": "layer-3-concept-6",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Gateways, item 6."
+    },
+    {
+      "id": "layer-3-concept-7-extra-0",
+      "concept_id": "layer-3-concept-7",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Route tables, item 1."
+    },
+    {
+      "id": "layer-3-concept-7-extra-1",
+      "concept_id": "layer-3-concept-7",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Route tables, item 2."
+    },
+    {
+      "id": "layer-3-concept-7-extra-2",
+      "concept_id": "layer-3-concept-7",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Route tables, item 3."
+    },
+    {
+      "id": "layer-3-concept-7-extra-3",
+      "concept_id": "layer-3-concept-7",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Route tables, item 4."
+    },
+    {
+      "id": "layer-3-concept-7-extra-4",
+      "concept_id": "layer-3-concept-7",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Route tables, item 5."
+    },
+    {
+      "id": "layer-3-concept-7-extra-5",
+      "concept_id": "layer-3-concept-7",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Route tables, item 6."
+    },
+    {
+      "id": "layer-3-concept-7-extra-6",
+      "concept_id": "layer-3-concept-7",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Route tables, item 7."
+    },
+    {
+      "id": "layer-3-concept-8-extra-0",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Forwarding, item 1."
+    },
+    {
+      "id": "layer-3-concept-8-extra-1",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Forwarding, item 2."
+    },
+    {
+      "id": "layer-3-concept-8-extra-2",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Forwarding, item 3."
+    },
+    {
+      "id": "layer-3-concept-8-extra-3",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Forwarding, item 4."
+    },
+    {
+      "id": "layer-3-concept-8-extra-4",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Forwarding, item 5."
+    },
+    {
+      "id": "layer-3-concept-8-extra-5",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Forwarding, item 6."
+    },
+    {
+      "id": "layer-3-concept-8-extra-6",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Forwarding, item 7."
+    },
+    {
+      "id": "layer-3-concept-8-extra-7",
+      "concept_id": "layer-3-concept-8",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Forwarding, item 8."
+    },
+    {
+      "id": "layer-3-concept-9-extra-0",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Tunnels, item 1."
+    },
+    {
+      "id": "layer-3-concept-9-extra-1",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Tunnels, item 2."
+    },
+    {
+      "id": "layer-3-concept-9-extra-2",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Tunnels, item 3."
+    },
+    {
+      "id": "layer-3-concept-9-extra-3",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Tunnels, item 4."
+    },
+    {
+      "id": "layer-3-concept-9-extra-4",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Tunnels, item 5."
+    },
+    {
+      "id": "layer-3-concept-9-extra-5",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Tunnels, item 6."
+    },
+    {
+      "id": "layer-3-concept-9-extra-6",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Tunnels, item 7."
+    },
+    {
+      "id": "layer-3-concept-9-extra-7",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Tunnels, item 8."
+    },
+    {
+      "id": "layer-3-concept-9-extra-8",
+      "concept_id": "layer-3-concept-9",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Tunnels, item 9."
+    },
+    {
+      "id": "layer-3-concept-11-extra-0",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Multicast, item 1."
+    },
+    {
+      "id": "layer-3-concept-11-extra-1",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Multicast, item 2."
+    },
+    {
+      "id": "layer-3-concept-11-extra-2",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Multicast, item 3."
+    },
+    {
+      "id": "layer-3-concept-11-extra-3",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Multicast, item 4."
+    },
+    {
+      "id": "layer-3-concept-11-extra-4",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Multicast, item 5."
+    },
+    {
+      "id": "layer-3-concept-11-extra-5",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Multicast, item 6."
+    },
+    {
+      "id": "layer-3-concept-11-extra-6",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Multicast, item 7."
+    },
+    {
+      "id": "layer-3-concept-11-extra-7",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Multicast, item 8."
+    },
+    {
+      "id": "layer-3-concept-11-extra-8",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Multicast, item 9."
+    },
+    {
+      "id": "layer-3-concept-11-extra-9",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Multicast, item 10."
+    },
+    {
+      "id": "layer-3-concept-11-extra-10",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Multicast, item 11."
+    },
+    {
+      "id": "layer-3-concept-11-extra-11",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 12",
+      "body": "Illustrative additional information about Multicast, item 12."
+    },
+    {
+      "id": "layer-3-concept-11-extra-12",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 13",
+      "body": "Illustrative additional information about Multicast, item 13."
+    },
+    {
+      "id": "layer-3-concept-11-extra-13",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 14",
+      "body": "Illustrative additional information about Multicast, item 14."
+    },
+    {
+      "id": "layer-3-concept-11-extra-14",
+      "concept_id": "layer-3-concept-11",
+      "title": "Additional observation 15",
+      "body": "Illustrative additional information about Multicast, item 15."
+    },
+    {
+      "id": "layer-4-concept-1-extra-0",
+      "concept_id": "layer-4-concept-1",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about UDP, item 1."
+    },
+    {
+      "id": "layer-4-concept-2-extra-0",
+      "concept_id": "layer-4-concept-2",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Ports, item 1."
+    },
+    {
+      "id": "layer-4-concept-2-extra-1",
+      "concept_id": "layer-4-concept-2",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Ports, item 2."
+    },
+    {
+      "id": "layer-4-concept-3-extra-0",
+      "concept_id": "layer-4-concept-3",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Connections, item 1."
+    },
+    {
+      "id": "layer-4-concept-3-extra-1",
+      "concept_id": "layer-4-concept-3",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Connections, item 2."
+    },
+    {
+      "id": "layer-4-concept-3-extra-2",
+      "concept_id": "layer-4-concept-3",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Connections, item 3."
+    },
+    {
+      "id": "layer-4-concept-4-extra-0",
+      "concept_id": "layer-4-concept-4",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Congestion, item 1."
+    },
+    {
+      "id": "layer-4-concept-4-extra-1",
+      "concept_id": "layer-4-concept-4",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Congestion, item 2."
+    },
+    {
+      "id": "layer-4-concept-4-extra-2",
+      "concept_id": "layer-4-concept-4",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Congestion, item 3."
+    },
+    {
+      "id": "layer-4-concept-4-extra-3",
+      "concept_id": "layer-4-concept-4",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Congestion, item 4."
+    },
+    {
+      "id": "layer-4-concept-5-extra-0",
+      "concept_id": "layer-4-concept-5",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Flow control, item 1."
+    },
+    {
+      "id": "layer-4-concept-5-extra-1",
+      "concept_id": "layer-4-concept-5",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Flow control, item 2."
+    },
+    {
+      "id": "layer-4-concept-5-extra-2",
+      "concept_id": "layer-4-concept-5",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Flow control, item 3."
+    },
+    {
+      "id": "layer-4-concept-5-extra-3",
+      "concept_id": "layer-4-concept-5",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Flow control, item 4."
+    },
+    {
+      "id": "layer-4-concept-5-extra-4",
+      "concept_id": "layer-4-concept-5",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Flow control, item 5."
+    },
+    {
+      "id": "layer-4-concept-6-extra-0",
+      "concept_id": "layer-4-concept-6",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Reliability, item 1."
+    },
+    {
+      "id": "layer-4-concept-6-extra-1",
+      "concept_id": "layer-4-concept-6",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Reliability, item 2."
+    },
+    {
+      "id": "layer-4-concept-6-extra-2",
+      "concept_id": "layer-4-concept-6",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Reliability, item 3."
+    },
+    {
+      "id": "layer-4-concept-6-extra-3",
+      "concept_id": "layer-4-concept-6",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Reliability, item 4."
+    },
+    {
+      "id": "layer-4-concept-6-extra-4",
+      "concept_id": "layer-4-concept-6",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Reliability, item 5."
+    },
+    {
+      "id": "layer-4-concept-6-extra-5",
+      "concept_id": "layer-4-concept-6",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Reliability, item 6."
+    },
+    {
+      "id": "layer-4-concept-7-extra-0",
+      "concept_id": "layer-4-concept-7",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Handshake, item 1."
+    },
+    {
+      "id": "layer-4-concept-7-extra-1",
+      "concept_id": "layer-4-concept-7",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Handshake, item 2."
+    },
+    {
+      "id": "layer-4-concept-7-extra-2",
+      "concept_id": "layer-4-concept-7",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Handshake, item 3."
+    },
+    {
+      "id": "layer-4-concept-7-extra-3",
+      "concept_id": "layer-4-concept-7",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Handshake, item 4."
+    },
+    {
+      "id": "layer-4-concept-7-extra-4",
+      "concept_id": "layer-4-concept-7",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Handshake, item 5."
+    },
+    {
+      "id": "layer-4-concept-7-extra-5",
+      "concept_id": "layer-4-concept-7",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Handshake, item 6."
+    },
+    {
+      "id": "layer-4-concept-7-extra-6",
+      "concept_id": "layer-4-concept-7",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Handshake, item 7."
+    },
+    {
+      "id": "layer-4-concept-8-extra-0",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Retransmission, item 1."
+    },
+    {
+      "id": "layer-4-concept-8-extra-1",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Retransmission, item 2."
+    },
+    {
+      "id": "layer-4-concept-8-extra-2",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Retransmission, item 3."
+    },
+    {
+      "id": "layer-4-concept-8-extra-3",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Retransmission, item 4."
+    },
+    {
+      "id": "layer-4-concept-8-extra-4",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Retransmission, item 5."
+    },
+    {
+      "id": "layer-4-concept-8-extra-5",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Retransmission, item 6."
+    },
+    {
+      "id": "layer-4-concept-8-extra-6",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Retransmission, item 7."
+    },
+    {
+      "id": "layer-4-concept-8-extra-7",
+      "concept_id": "layer-4-concept-8",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Retransmission, item 8."
+    },
+    {
+      "id": "layer-4-concept-9-extra-0",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Segments, item 1."
+    },
+    {
+      "id": "layer-4-concept-9-extra-1",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Segments, item 2."
+    },
+    {
+      "id": "layer-4-concept-9-extra-2",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Segments, item 3."
+    },
+    {
+      "id": "layer-4-concept-9-extra-3",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Segments, item 4."
+    },
+    {
+      "id": "layer-4-concept-9-extra-4",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Segments, item 5."
+    },
+    {
+      "id": "layer-4-concept-9-extra-5",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Segments, item 6."
+    },
+    {
+      "id": "layer-4-concept-9-extra-6",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Segments, item 7."
+    },
+    {
+      "id": "layer-4-concept-9-extra-7",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Segments, item 8."
+    },
+    {
+      "id": "layer-4-concept-9-extra-8",
+      "concept_id": "layer-4-concept-9",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Segments, item 9."
+    },
+    {
+      "id": "layer-4-concept-10-extra-0",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Sockets, item 1."
+    },
+    {
+      "id": "layer-4-concept-10-extra-1",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Sockets, item 2."
+    },
+    {
+      "id": "layer-4-concept-10-extra-2",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Sockets, item 3."
+    },
+    {
+      "id": "layer-4-concept-10-extra-3",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Sockets, item 4."
+    },
+    {
+      "id": "layer-4-concept-10-extra-4",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Sockets, item 5."
+    },
+    {
+      "id": "layer-4-concept-10-extra-5",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Sockets, item 6."
+    },
+    {
+      "id": "layer-4-concept-10-extra-6",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Sockets, item 7."
+    },
+    {
+      "id": "layer-4-concept-10-extra-7",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Sockets, item 8."
+    },
+    {
+      "id": "layer-4-concept-10-extra-8",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Sockets, item 9."
+    },
+    {
+      "id": "layer-4-concept-10-extra-9",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Sockets, item 10."
+    },
+    {
+      "id": "layer-4-concept-10-extra-10",
+      "concept_id": "layer-4-concept-10",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Sockets, item 11."
+    },
+    {
+      "id": "layer-4-concept-11-extra-0",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Checksums, item 1."
+    },
+    {
+      "id": "layer-4-concept-11-extra-1",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Checksums, item 2."
+    },
+    {
+      "id": "layer-4-concept-11-extra-2",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Checksums, item 3."
+    },
+    {
+      "id": "layer-4-concept-11-extra-3",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Checksums, item 4."
+    },
+    {
+      "id": "layer-4-concept-11-extra-4",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Checksums, item 5."
+    },
+    {
+      "id": "layer-4-concept-11-extra-5",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Checksums, item 6."
+    },
+    {
+      "id": "layer-4-concept-11-extra-6",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Checksums, item 7."
+    },
+    {
+      "id": "layer-4-concept-11-extra-7",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Checksums, item 8."
+    },
+    {
+      "id": "layer-4-concept-11-extra-8",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Checksums, item 9."
+    },
+    {
+      "id": "layer-4-concept-11-extra-9",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Checksums, item 10."
+    },
+    {
+      "id": "layer-4-concept-11-extra-10",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Checksums, item 11."
+    },
+    {
+      "id": "layer-4-concept-11-extra-11",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 12",
+      "body": "Illustrative additional information about Checksums, item 12."
+    },
+    {
+      "id": "layer-4-concept-11-extra-12",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 13",
+      "body": "Illustrative additional information about Checksums, item 13."
+    },
+    {
+      "id": "layer-4-concept-11-extra-13",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 14",
+      "body": "Illustrative additional information about Checksums, item 14."
+    },
+    {
+      "id": "layer-4-concept-11-extra-14",
+      "concept_id": "layer-4-concept-11",
+      "title": "Additional observation 15",
+      "body": "Illustrative additional information about Checksums, item 15."
+    },
+    {
+      "id": "layer-5-concept-1-extra-0",
+      "concept_id": "layer-5-concept-1",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about RPC, item 1."
+    },
+    {
+      "id": "layer-5-concept-2-extra-0",
+      "concept_id": "layer-5-concept-2",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Dialogs, item 1."
+    },
+    {
+      "id": "layer-5-concept-2-extra-1",
+      "concept_id": "layer-5-concept-2",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Dialogs, item 2."
+    },
+    {
+      "id": "layer-5-concept-3-extra-0",
+      "concept_id": "layer-5-concept-3",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Keepalive, item 1."
+    },
+    {
+      "id": "layer-5-concept-3-extra-1",
+      "concept_id": "layer-5-concept-3",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Keepalive, item 2."
+    },
+    {
+      "id": "layer-5-concept-3-extra-2",
+      "concept_id": "layer-5-concept-3",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Keepalive, item 3."
+    },
+    {
+      "id": "layer-5-concept-4-extra-0",
+      "concept_id": "layer-5-concept-4",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Recovery, item 1."
+    },
+    {
+      "id": "layer-5-concept-4-extra-1",
+      "concept_id": "layer-5-concept-4",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Recovery, item 2."
+    },
+    {
+      "id": "layer-5-concept-4-extra-2",
+      "concept_id": "layer-5-concept-4",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Recovery, item 3."
+    },
+    {
+      "id": "layer-5-concept-4-extra-3",
+      "concept_id": "layer-5-concept-4",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Recovery, item 4."
+    },
+    {
+      "id": "layer-5-concept-5-extra-0",
+      "concept_id": "layer-5-concept-5",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Tokens, item 1."
+    },
+    {
+      "id": "layer-5-concept-5-extra-1",
+      "concept_id": "layer-5-concept-5",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Tokens, item 2."
+    },
+    {
+      "id": "layer-5-concept-5-extra-2",
+      "concept_id": "layer-5-concept-5",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Tokens, item 3."
+    },
+    {
+      "id": "layer-5-concept-5-extra-3",
+      "concept_id": "layer-5-concept-5",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Tokens, item 4."
+    },
+    {
+      "id": "layer-5-concept-5-extra-4",
+      "concept_id": "layer-5-concept-5",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Tokens, item 5."
+    },
+    {
+      "id": "layer-5-concept-6-extra-0",
+      "concept_id": "layer-5-concept-6",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Checkpoints, item 1."
+    },
+    {
+      "id": "layer-5-concept-6-extra-1",
+      "concept_id": "layer-5-concept-6",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Checkpoints, item 2."
+    },
+    {
+      "id": "layer-5-concept-6-extra-2",
+      "concept_id": "layer-5-concept-6",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Checkpoints, item 3."
+    },
+    {
+      "id": "layer-5-concept-6-extra-3",
+      "concept_id": "layer-5-concept-6",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Checkpoints, item 4."
+    },
+    {
+      "id": "layer-5-concept-6-extra-4",
+      "concept_id": "layer-5-concept-6",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Checkpoints, item 5."
+    },
+    {
+      "id": "layer-5-concept-6-extra-5",
+      "concept_id": "layer-5-concept-6",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Checkpoints, item 6."
+    },
+    {
+      "id": "layer-5-concept-7-extra-0",
+      "concept_id": "layer-5-concept-7",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about State, item 1."
+    },
+    {
+      "id": "layer-5-concept-7-extra-1",
+      "concept_id": "layer-5-concept-7",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about State, item 2."
+    },
+    {
+      "id": "layer-5-concept-7-extra-2",
+      "concept_id": "layer-5-concept-7",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about State, item 3."
+    },
+    {
+      "id": "layer-5-concept-7-extra-3",
+      "concept_id": "layer-5-concept-7",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about State, item 4."
+    },
+    {
+      "id": "layer-5-concept-7-extra-4",
+      "concept_id": "layer-5-concept-7",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about State, item 5."
+    },
+    {
+      "id": "layer-5-concept-7-extra-5",
+      "concept_id": "layer-5-concept-7",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about State, item 6."
+    },
+    {
+      "id": "layer-5-concept-7-extra-6",
+      "concept_id": "layer-5-concept-7",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about State, item 7."
+    },
+    {
+      "id": "layer-5-concept-8-extra-0",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Negotiation, item 1."
+    },
+    {
+      "id": "layer-5-concept-8-extra-1",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Negotiation, item 2."
+    },
+    {
+      "id": "layer-5-concept-8-extra-2",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Negotiation, item 3."
+    },
+    {
+      "id": "layer-5-concept-8-extra-3",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Negotiation, item 4."
+    },
+    {
+      "id": "layer-5-concept-8-extra-4",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Negotiation, item 5."
+    },
+    {
+      "id": "layer-5-concept-8-extra-5",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Negotiation, item 6."
+    },
+    {
+      "id": "layer-5-concept-8-extra-6",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Negotiation, item 7."
+    },
+    {
+      "id": "layer-5-concept-8-extra-7",
+      "concept_id": "layer-5-concept-8",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Negotiation, item 8."
+    },
+    {
+      "id": "layer-5-concept-9-extra-0",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Synchronization, item 1."
+    },
+    {
+      "id": "layer-5-concept-9-extra-1",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Synchronization, item 2."
+    },
+    {
+      "id": "layer-5-concept-9-extra-2",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Synchronization, item 3."
+    },
+    {
+      "id": "layer-5-concept-9-extra-3",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Synchronization, item 4."
+    },
+    {
+      "id": "layer-5-concept-9-extra-4",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Synchronization, item 5."
+    },
+    {
+      "id": "layer-5-concept-9-extra-5",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Synchronization, item 6."
+    },
+    {
+      "id": "layer-5-concept-9-extra-6",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Synchronization, item 7."
+    },
+    {
+      "id": "layer-5-concept-9-extra-7",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Synchronization, item 8."
+    },
+    {
+      "id": "layer-5-concept-9-extra-8",
+      "concept_id": "layer-5-concept-9",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Synchronization, item 9."
+    },
+    {
+      "id": "layer-5-concept-10-extra-0",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Timeouts, item 1."
+    },
+    {
+      "id": "layer-5-concept-10-extra-1",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Timeouts, item 2."
+    },
+    {
+      "id": "layer-5-concept-10-extra-2",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Timeouts, item 3."
+    },
+    {
+      "id": "layer-5-concept-10-extra-3",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Timeouts, item 4."
+    },
+    {
+      "id": "layer-5-concept-10-extra-4",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Timeouts, item 5."
+    },
+    {
+      "id": "layer-5-concept-10-extra-5",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Timeouts, item 6."
+    },
+    {
+      "id": "layer-5-concept-10-extra-6",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Timeouts, item 7."
+    },
+    {
+      "id": "layer-5-concept-10-extra-7",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Timeouts, item 8."
+    },
+    {
+      "id": "layer-5-concept-10-extra-8",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Timeouts, item 9."
+    },
+    {
+      "id": "layer-5-concept-10-extra-9",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Timeouts, item 10."
+    },
+    {
+      "id": "layer-5-concept-10-extra-10",
+      "concept_id": "layer-5-concept-10",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Timeouts, item 11."
+    },
+    {
+      "id": "layer-5-concept-11-extra-0",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Resumption, item 1."
+    },
+    {
+      "id": "layer-5-concept-11-extra-1",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Resumption, item 2."
+    },
+    {
+      "id": "layer-5-concept-11-extra-2",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Resumption, item 3."
+    },
+    {
+      "id": "layer-5-concept-11-extra-3",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Resumption, item 4."
+    },
+    {
+      "id": "layer-5-concept-11-extra-4",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Resumption, item 5."
+    },
+    {
+      "id": "layer-5-concept-11-extra-5",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Resumption, item 6."
+    },
+    {
+      "id": "layer-5-concept-11-extra-6",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Resumption, item 7."
+    },
+    {
+      "id": "layer-5-concept-11-extra-7",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Resumption, item 8."
+    },
+    {
+      "id": "layer-5-concept-11-extra-8",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Resumption, item 9."
+    },
+    {
+      "id": "layer-5-concept-11-extra-9",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Resumption, item 10."
+    },
+    {
+      "id": "layer-5-concept-11-extra-10",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Resumption, item 11."
+    },
+    {
+      "id": "layer-5-concept-11-extra-11",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 12",
+      "body": "Illustrative additional information about Resumption, item 12."
+    },
+    {
+      "id": "layer-5-concept-11-extra-12",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 13",
+      "body": "Illustrative additional information about Resumption, item 13."
+    },
+    {
+      "id": "layer-5-concept-11-extra-13",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 14",
+      "body": "Illustrative additional information about Resumption, item 14."
+    },
+    {
+      "id": "layer-5-concept-11-extra-14",
+      "concept_id": "layer-5-concept-11",
+      "title": "Additional observation 15",
+      "body": "Illustrative additional information about Resumption, item 15."
+    },
+    {
+      "id": "layer-6-concept-1-extra-0",
+      "concept_id": "layer-6-concept-1",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Encoding, item 1."
+    },
+    {
+      "id": "layer-6-concept-2-extra-0",
+      "concept_id": "layer-6-concept-2",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Serialization, item 1."
+    },
+    {
+      "id": "layer-6-concept-2-extra-1",
+      "concept_id": "layer-6-concept-2",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Serialization, item 2."
+    },
+    {
+      "id": "layer-6-concept-3-extra-0",
+      "concept_id": "layer-6-concept-3",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Compression, item 1."
+    },
+    {
+      "id": "layer-6-concept-3-extra-1",
+      "concept_id": "layer-6-concept-3",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Compression, item 2."
+    },
+    {
+      "id": "layer-6-concept-3-extra-2",
+      "concept_id": "layer-6-concept-3",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Compression, item 3."
+    },
+    {
+      "id": "layer-6-concept-4-extra-0",
+      "concept_id": "layer-6-concept-4",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about ASN.1, item 1."
+    },
+    {
+      "id": "layer-6-concept-4-extra-1",
+      "concept_id": "layer-6-concept-4",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about ASN.1, item 2."
+    },
+    {
+      "id": "layer-6-concept-4-extra-2",
+      "concept_id": "layer-6-concept-4",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about ASN.1, item 3."
+    },
+    {
+      "id": "layer-6-concept-4-extra-3",
+      "concept_id": "layer-6-concept-4",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about ASN.1, item 4."
+    },
+    {
+      "id": "layer-6-concept-5-extra-0",
+      "concept_id": "layer-6-concept-5",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Certificates, item 1."
+    },
+    {
+      "id": "layer-6-concept-5-extra-1",
+      "concept_id": "layer-6-concept-5",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Certificates, item 2."
+    },
+    {
+      "id": "layer-6-concept-5-extra-2",
+      "concept_id": "layer-6-concept-5",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Certificates, item 3."
+    },
+    {
+      "id": "layer-6-concept-5-extra-3",
+      "concept_id": "layer-6-concept-5",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Certificates, item 4."
+    },
+    {
+      "id": "layer-6-concept-5-extra-4",
+      "concept_id": "layer-6-concept-5",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Certificates, item 5."
+    },
+    {
+      "id": "layer-6-concept-6-extra-0",
+      "concept_id": "layer-6-concept-6",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about JSON, item 1."
+    },
+    {
+      "id": "layer-6-concept-6-extra-1",
+      "concept_id": "layer-6-concept-6",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about JSON, item 2."
+    },
+    {
+      "id": "layer-6-concept-6-extra-2",
+      "concept_id": "layer-6-concept-6",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about JSON, item 3."
+    },
+    {
+      "id": "layer-6-concept-6-extra-3",
+      "concept_id": "layer-6-concept-6",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about JSON, item 4."
+    },
+    {
+      "id": "layer-6-concept-6-extra-4",
+      "concept_id": "layer-6-concept-6",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about JSON, item 5."
+    },
+    {
+      "id": "layer-6-concept-6-extra-5",
+      "concept_id": "layer-6-concept-6",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about JSON, item 6."
+    },
+    {
+      "id": "layer-6-concept-7-extra-0",
+      "concept_id": "layer-6-concept-7",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about UTF-8, item 1."
+    },
+    {
+      "id": "layer-6-concept-7-extra-1",
+      "concept_id": "layer-6-concept-7",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about UTF-8, item 2."
+    },
+    {
+      "id": "layer-6-concept-7-extra-2",
+      "concept_id": "layer-6-concept-7",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about UTF-8, item 3."
+    },
+    {
+      "id": "layer-6-concept-7-extra-3",
+      "concept_id": "layer-6-concept-7",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about UTF-8, item 4."
+    },
+    {
+      "id": "layer-6-concept-7-extra-4",
+      "concept_id": "layer-6-concept-7",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about UTF-8, item 5."
+    },
+    {
+      "id": "layer-6-concept-7-extra-5",
+      "concept_id": "layer-6-concept-7",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about UTF-8, item 6."
+    },
+    {
+      "id": "layer-6-concept-7-extra-6",
+      "concept_id": "layer-6-concept-7",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about UTF-8, item 7."
+    },
+    {
+      "id": "layer-6-concept-8-extra-0",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Formats, item 1."
+    },
+    {
+      "id": "layer-6-concept-8-extra-1",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Formats, item 2."
+    },
+    {
+      "id": "layer-6-concept-8-extra-2",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Formats, item 3."
+    },
+    {
+      "id": "layer-6-concept-8-extra-3",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Formats, item 4."
+    },
+    {
+      "id": "layer-6-concept-8-extra-4",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Formats, item 5."
+    },
+    {
+      "id": "layer-6-concept-8-extra-5",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Formats, item 6."
+    },
+    {
+      "id": "layer-6-concept-8-extra-6",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Formats, item 7."
+    },
+    {
+      "id": "layer-6-concept-8-extra-7",
+      "concept_id": "layer-6-concept-8",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Formats, item 8."
+    },
+    {
+      "id": "layer-6-concept-9-extra-0",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Encryption, item 1."
+    },
+    {
+      "id": "layer-6-concept-9-extra-1",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Encryption, item 2."
+    },
+    {
+      "id": "layer-6-concept-9-extra-2",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Encryption, item 3."
+    },
+    {
+      "id": "layer-6-concept-9-extra-3",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Encryption, item 4."
+    },
+    {
+      "id": "layer-6-concept-9-extra-4",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Encryption, item 5."
+    },
+    {
+      "id": "layer-6-concept-9-extra-5",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Encryption, item 6."
+    },
+    {
+      "id": "layer-6-concept-9-extra-6",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Encryption, item 7."
+    },
+    {
+      "id": "layer-6-concept-9-extra-7",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Encryption, item 8."
+    },
+    {
+      "id": "layer-6-concept-9-extra-8",
+      "concept_id": "layer-6-concept-9",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Encryption, item 9."
+    },
+    {
+      "id": "layer-6-concept-10-extra-0",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Decoding, item 1."
+    },
+    {
+      "id": "layer-6-concept-10-extra-1",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Decoding, item 2."
+    },
+    {
+      "id": "layer-6-concept-10-extra-2",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Decoding, item 3."
+    },
+    {
+      "id": "layer-6-concept-10-extra-3",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Decoding, item 4."
+    },
+    {
+      "id": "layer-6-concept-10-extra-4",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Decoding, item 5."
+    },
+    {
+      "id": "layer-6-concept-10-extra-5",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Decoding, item 6."
+    },
+    {
+      "id": "layer-6-concept-10-extra-6",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Decoding, item 7."
+    },
+    {
+      "id": "layer-6-concept-10-extra-7",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Decoding, item 8."
+    },
+    {
+      "id": "layer-6-concept-10-extra-8",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Decoding, item 9."
+    },
+    {
+      "id": "layer-6-concept-10-extra-9",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Decoding, item 10."
+    },
+    {
+      "id": "layer-6-concept-10-extra-10",
+      "concept_id": "layer-6-concept-10",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Decoding, item 11."
+    },
+    {
+      "id": "layer-6-concept-11-extra-0",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about Representation, item 1."
+    },
+    {
+      "id": "layer-6-concept-11-extra-1",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about Representation, item 2."
+    },
+    {
+      "id": "layer-6-concept-11-extra-2",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about Representation, item 3."
+    },
+    {
+      "id": "layer-6-concept-11-extra-3",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about Representation, item 4."
+    },
+    {
+      "id": "layer-6-concept-11-extra-4",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about Representation, item 5."
+    },
+    {
+      "id": "layer-6-concept-11-extra-5",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about Representation, item 6."
+    },
+    {
+      "id": "layer-6-concept-11-extra-6",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about Representation, item 7."
+    },
+    {
+      "id": "layer-6-concept-11-extra-7",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about Representation, item 8."
+    },
+    {
+      "id": "layer-6-concept-11-extra-8",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about Representation, item 9."
+    },
+    {
+      "id": "layer-6-concept-11-extra-9",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about Representation, item 10."
+    },
+    {
+      "id": "layer-6-concept-11-extra-10",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about Representation, item 11."
+    },
+    {
+      "id": "layer-6-concept-11-extra-11",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 12",
+      "body": "Illustrative additional information about Representation, item 12."
+    },
+    {
+      "id": "layer-6-concept-11-extra-12",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 13",
+      "body": "Illustrative additional information about Representation, item 13."
+    },
+    {
+      "id": "layer-6-concept-11-extra-13",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 14",
+      "body": "Illustrative additional information about Representation, item 14."
+    },
+    {
+      "id": "layer-6-concept-11-extra-14",
+      "concept_id": "layer-6-concept-11",
+      "title": "Additional observation 15",
+      "body": "Illustrative additional information about Representation, item 15."
+    },
+    {
+      "id": "layer-7-concept-0-extra-0",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about HTTP, item 1."
+    },
+    {
+      "id": "layer-7-concept-0-extra-1",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about HTTP, item 2."
+    },
+    {
+      "id": "layer-7-concept-0-extra-2",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about HTTP, item 3."
+    },
+    {
+      "id": "layer-7-concept-0-extra-3",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about HTTP, item 4."
+    },
+    {
+      "id": "layer-7-concept-0-extra-4",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about HTTP, item 5."
+    },
+    {
+      "id": "layer-7-concept-0-extra-5",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about HTTP, item 6."
+    },
+    {
+      "id": "layer-7-concept-0-extra-6",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about HTTP, item 7."
+    },
+    {
+      "id": "layer-7-concept-0-extra-7",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about HTTP, item 8."
+    },
+    {
+      "id": "layer-7-concept-0-extra-8",
+      "concept_id": "layer-7-concept-0",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about HTTP, item 9."
+    },
+    {
+      "id": "layer-7-concept-1-extra-0",
+      "concept_id": "layer-7-concept-1",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about DNS, item 1."
+    },
+    {
+      "id": "layer-7-concept-2-extra-0",
+      "concept_id": "layer-7-concept-2",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about SSH, item 1."
+    },
+    {
+      "id": "layer-7-concept-2-extra-1",
+      "concept_id": "layer-7-concept-2",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about SSH, item 2."
+    },
+    {
+      "id": "layer-7-concept-3-extra-0",
+      "concept_id": "layer-7-concept-3",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about SMTP, item 1."
+    },
+    {
+      "id": "layer-7-concept-3-extra-1",
+      "concept_id": "layer-7-concept-3",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about SMTP, item 2."
+    },
+    {
+      "id": "layer-7-concept-3-extra-2",
+      "concept_id": "layer-7-concept-3",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about SMTP, item 3."
+    },
+    {
+      "id": "layer-7-concept-4-extra-0",
+      "concept_id": "layer-7-concept-4",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about DHCP, item 1."
+    },
+    {
+      "id": "layer-7-concept-4-extra-1",
+      "concept_id": "layer-7-concept-4",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about DHCP, item 2."
+    },
+    {
+      "id": "layer-7-concept-4-extra-2",
+      "concept_id": "layer-7-concept-4",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about DHCP, item 3."
+    },
+    {
+      "id": "layer-7-concept-4-extra-3",
+      "concept_id": "layer-7-concept-4",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about DHCP, item 4."
+    },
+    {
+      "id": "layer-7-concept-5-extra-0",
+      "concept_id": "layer-7-concept-5",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about NTP, item 1."
+    },
+    {
+      "id": "layer-7-concept-5-extra-1",
+      "concept_id": "layer-7-concept-5",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about NTP, item 2."
+    },
+    {
+      "id": "layer-7-concept-5-extra-2",
+      "concept_id": "layer-7-concept-5",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about NTP, item 3."
+    },
+    {
+      "id": "layer-7-concept-5-extra-3",
+      "concept_id": "layer-7-concept-5",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about NTP, item 4."
+    },
+    {
+      "id": "layer-7-concept-5-extra-4",
+      "concept_id": "layer-7-concept-5",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about NTP, item 5."
+    },
+    {
+      "id": "layer-7-concept-6-extra-0",
+      "concept_id": "layer-7-concept-6",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about IMAP, item 1."
+    },
+    {
+      "id": "layer-7-concept-6-extra-1",
+      "concept_id": "layer-7-concept-6",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about IMAP, item 2."
+    },
+    {
+      "id": "layer-7-concept-6-extra-2",
+      "concept_id": "layer-7-concept-6",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about IMAP, item 3."
+    },
+    {
+      "id": "layer-7-concept-6-extra-3",
+      "concept_id": "layer-7-concept-6",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about IMAP, item 4."
+    },
+    {
+      "id": "layer-7-concept-6-extra-4",
+      "concept_id": "layer-7-concept-6",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about IMAP, item 5."
+    },
+    {
+      "id": "layer-7-concept-6-extra-5",
+      "concept_id": "layer-7-concept-6",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about IMAP, item 6."
+    },
+    {
+      "id": "layer-7-concept-7-extra-0",
+      "concept_id": "layer-7-concept-7",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about SNMP, item 1."
+    },
+    {
+      "id": "layer-7-concept-7-extra-1",
+      "concept_id": "layer-7-concept-7",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about SNMP, item 2."
+    },
+    {
+      "id": "layer-7-concept-7-extra-2",
+      "concept_id": "layer-7-concept-7",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about SNMP, item 3."
+    },
+    {
+      "id": "layer-7-concept-7-extra-3",
+      "concept_id": "layer-7-concept-7",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about SNMP, item 4."
+    },
+    {
+      "id": "layer-7-concept-7-extra-4",
+      "concept_id": "layer-7-concept-7",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about SNMP, item 5."
+    },
+    {
+      "id": "layer-7-concept-7-extra-5",
+      "concept_id": "layer-7-concept-7",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about SNMP, item 6."
+    },
+    {
+      "id": "layer-7-concept-7-extra-6",
+      "concept_id": "layer-7-concept-7",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about SNMP, item 7."
+    },
+    {
+      "id": "layer-7-concept-8-extra-0",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about HTTPS, item 1."
+    },
+    {
+      "id": "layer-7-concept-8-extra-1",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about HTTPS, item 2."
+    },
+    {
+      "id": "layer-7-concept-8-extra-2",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about HTTPS, item 3."
+    },
+    {
+      "id": "layer-7-concept-8-extra-3",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about HTTPS, item 4."
+    },
+    {
+      "id": "layer-7-concept-8-extra-4",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about HTTPS, item 5."
+    },
+    {
+      "id": "layer-7-concept-8-extra-5",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about HTTPS, item 6."
+    },
+    {
+      "id": "layer-7-concept-8-extra-6",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about HTTPS, item 7."
+    },
+    {
+      "id": "layer-7-concept-8-extra-7",
+      "concept_id": "layer-7-concept-8",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about HTTPS, item 8."
+    },
+    {
+      "id": "layer-7-concept-9-extra-0",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about FTP, item 1."
+    },
+    {
+      "id": "layer-7-concept-9-extra-1",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about FTP, item 2."
+    },
+    {
+      "id": "layer-7-concept-9-extra-2",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about FTP, item 3."
+    },
+    {
+      "id": "layer-7-concept-9-extra-3",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about FTP, item 4."
+    },
+    {
+      "id": "layer-7-concept-9-extra-4",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about FTP, item 5."
+    },
+    {
+      "id": "layer-7-concept-9-extra-5",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about FTP, item 6."
+    },
+    {
+      "id": "layer-7-concept-9-extra-6",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about FTP, item 7."
+    },
+    {
+      "id": "layer-7-concept-9-extra-7",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about FTP, item 8."
+    },
+    {
+      "id": "layer-7-concept-9-extra-8",
+      "concept_id": "layer-7-concept-9",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about FTP, item 9."
+    },
+    {
+      "id": "layer-7-concept-10-extra-0",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about LDAP, item 1."
+    },
+    {
+      "id": "layer-7-concept-10-extra-1",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about LDAP, item 2."
+    },
+    {
+      "id": "layer-7-concept-10-extra-2",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about LDAP, item 3."
+    },
+    {
+      "id": "layer-7-concept-10-extra-3",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about LDAP, item 4."
+    },
+    {
+      "id": "layer-7-concept-10-extra-4",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about LDAP, item 5."
+    },
+    {
+      "id": "layer-7-concept-10-extra-5",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about LDAP, item 6."
+    },
+    {
+      "id": "layer-7-concept-10-extra-6",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about LDAP, item 7."
+    },
+    {
+      "id": "layer-7-concept-10-extra-7",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about LDAP, item 8."
+    },
+    {
+      "id": "layer-7-concept-10-extra-8",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about LDAP, item 9."
+    },
+    {
+      "id": "layer-7-concept-10-extra-9",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about LDAP, item 10."
+    },
+    {
+      "id": "layer-7-concept-10-extra-10",
+      "concept_id": "layer-7-concept-10",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about LDAP, item 11."
+    },
+    {
+      "id": "layer-7-concept-11-extra-0",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 1",
+      "body": "Illustrative additional information about APIs, item 1."
+    },
+    {
+      "id": "layer-7-concept-11-extra-1",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 2",
+      "body": "Illustrative additional information about APIs, item 2."
+    },
+    {
+      "id": "layer-7-concept-11-extra-2",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 3",
+      "body": "Illustrative additional information about APIs, item 3."
+    },
+    {
+      "id": "layer-7-concept-11-extra-3",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 4",
+      "body": "Illustrative additional information about APIs, item 4."
+    },
+    {
+      "id": "layer-7-concept-11-extra-4",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 5",
+      "body": "Illustrative additional information about APIs, item 5."
+    },
+    {
+      "id": "layer-7-concept-11-extra-5",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 6",
+      "body": "Illustrative additional information about APIs, item 6."
+    },
+    {
+      "id": "layer-7-concept-11-extra-6",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 7",
+      "body": "Illustrative additional information about APIs, item 7."
+    },
+    {
+      "id": "layer-7-concept-11-extra-7",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 8",
+      "body": "Illustrative additional information about APIs, item 8."
+    },
+    {
+      "id": "layer-7-concept-11-extra-8",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 9",
+      "body": "Illustrative additional information about APIs, item 9."
+    },
+    {
+      "id": "layer-7-concept-11-extra-9",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 10",
+      "body": "Illustrative additional information about APIs, item 10."
+    },
+    {
+      "id": "layer-7-concept-11-extra-10",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 11",
+      "body": "Illustrative additional information about APIs, item 11."
+    },
+    {
+      "id": "layer-7-concept-11-extra-11",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 12",
+      "body": "Illustrative additional information about APIs, item 12."
+    },
+    {
+      "id": "layer-7-concept-11-extra-12",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 13",
+      "body": "Illustrative additional information about APIs, item 13."
+    },
+    {
+      "id": "layer-7-concept-11-extra-13",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 14",
+      "body": "Illustrative additional information about APIs, item 14."
+    },
+    {
+      "id": "layer-7-concept-11-extra-14",
+      "concept_id": "layer-7-concept-11",
+      "title": "Additional observation 15",
+      "body": "Illustrative additional information about APIs, item 15."
+    }
+  ]
+}

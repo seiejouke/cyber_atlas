@@ -23,7 +23,7 @@ from vtkmodules.vtkRenderingCore import (
 from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, adjacent_node_pairs, layout_meshes, node_position, wedge_mesh
 from .model import ANGULAR_SLOTS, BANDS, CENTER_DEPTH, Design, LayerId, Node
 from .orbit_scene import OrbitScene
-from .heat import InformationHeat, heat_color, information_heat
+from .heat import DEFAULT_HEAT_MAX, HEAT_PRESETS, InformationHeat, heat_color, information_heat
 
 
 class ProtocolFilter(Enum):
@@ -95,6 +95,7 @@ class Scene(OrbitScene):
         self._connection_nodes: dict[tuple[str, str], frozenset[str]] = {}
         self.connections_visible = True
         self.heat_enabled = False
+        self.heat_ceiling = DEFAULT_HEAT_MAX
         self.heat_metrics: dict[str, InformationHeat] = {}
         self.meshes: dict[str, Mesh] = {}
         sphere = vtkSphereSource()
@@ -299,11 +300,17 @@ class Scene(OrbitScene):
         self.heat_enabled = bool(enabled)
         self.set_selected(self.selected)
 
+    def set_heat_ceiling(self, ceiling: int) -> None:
+        if ceiling not in HEAT_PRESETS.values():
+            raise ValueError("Choose a heat ceiling of 9, 16 or 32.")
+        self.heat_ceiling = ceiling
+        self.set_selected(self.selected)
+
     def concept_color(self, concept_id: str, layer: LayerId) -> str:
         if not self.heat_active:
             return self.design.layer(layer).color
         metric = self.heat_metrics.get(concept_id, InformationHeat())
-        return heat_color(metric.own if self.focused_parent is not None else metric.blended)
+        return heat_color(metric.blended, self.heat_ceiling)
 
     def _style_node(self, node: Node, actor: vtkActor) -> None:
         selected = node.id == self.selected

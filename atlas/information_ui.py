@@ -1,10 +1,10 @@
-"""Recorded-entry editor and the two information-heat presentations."""
-from math import expm1, log1p
+"""Automatic main-note heat, optional entries, presets and parent indicators."""
+from collections import Counter
 import tkinter as tk
 from tkinter import messagebox, ttk
 
 from . import theme
-from .heat import CLUSTER_SUPPORT_LIMIT, HEAT_STOPS, InformationHeat, heat_color
+from .heat import DEFAULT_HEAT_PRESET, HEAT_PRESETS, InformationHeat, heat_color, is_main_note_copy
 from .model import AtlasError, InformationEntry
 
 
@@ -16,14 +16,22 @@ class InformationManager:
         self.entry_ids = []
         self._loaded = ("", "")
         self._headers = []
+        self.indicator_boxes = []
+        self.parent_counts = Counter()
         self.color_mode = tk.StringVar(value="Layer colors")
+        self.heat_range = tk.StringVar(value=DEFAULT_HEAT_PRESET)
         self.bar = ttk.Frame(app.canvas.master, style="Panel.TFrame", padding=(10, 5))
         ttk.Label(self.bar, text="Color", style="Muted.TLabel").pack(side="left", padx=(0, 8))
         self.color_box = ttk.Combobox(self.bar, textvariable=self.color_mode, state="readonly", width=19,
                                      values=("Layer colors", "Information heat"))
         self.color_box.pack(side="left")
         self.color_box.bind("<<ComboboxSelected>>", self.change_color)
-        ttk.Label(self.bar, text="Recorded entries", style="Muted.TLabel").pack(side="right")
+        self.range_controls = ttk.Frame(self.bar, style="Panel.TFrame")
+        ttk.Label(self.range_controls, text="Heat range", style="Muted.TLabel").pack(side="left", padx=(14, 6))
+        self.range_box = ttk.Combobox(self.range_controls, textvariable=self.heat_range, state="readonly", width=23,
+                                      values=tuple(HEAT_PRESETS))
+        self.range_box.pack(side="left")
+        self.range_box.bind("<<ComboboxSelected>>", self.change_range)
         self.legend = tk.Canvas(app.canvas.master, bg=theme.PANEL, height=54, highlightthickness=0)
         self._attach_header(app.editor_form, 8)
         self._attach_header(app.clusters.form, 6)
@@ -34,9 +42,9 @@ class InformationManager:
         header = ttk.Frame(parent, style="Panel.TFrame")
         header.grid(row=row, column=0, sticky="ew")
         header.columnconfigure(0, weight=1)
-        caption = ttk.Label(header, text="Personal notes", style="Muted.TLabel")
+        caption = ttk.Label(header, text="Main note", style="Muted.TLabel")
         caption.grid(row=0, column=0, sticky="w")
-        button = ttk.Button(header, text="Entries (0)", style="Inline.TButton", command=self.open)
+        button = ttk.Button(header, text="Additional entries (0)", style="Inline.TButton", command=self.open)
         button.grid(row=0, column=1, sticky="e")
         panel = ttk.Frame(header, style="Panel.TFrame")
         panel.columnconfigure(1, weight=1)
@@ -44,7 +52,7 @@ class InformationManager:
         sample.grid(row=0, column=0)
         summary = ttk.Label(panel, style="Muted.TLabel", justify="left")
         summary.grid(row=0, column=1, sticky="w", padx=(5, 0))
-        notes_caption = ttk.Label(header, text="Personal notes", style="Muted.TLabel")
+        notes_caption = ttk.Label(header, text="Main note", style="Muted.TLabel")
         self._headers.append((button, panel, sample, summary, caption, notes_caption))
 
     def selected_id(self):
@@ -57,76 +65,104 @@ class InformationManager:
         self.app.scene.set_heat_enabled(self.color_mode.get() == "Information heat")
         self.app.request_render()
 
+    def change_range(self, _event=None):
+        ceiling = HEAT_PRESETS.get(self.heat_range.get())
+        if ceiling is not None:
+            self.app.scene.set_heat_ceiling(ceiling)
+            self.app.request_render()
+
     def sync(self):
         app, scene = self.app, self.app.scene
         available = scene.mode == "nodes" and app._template_origin is None
         self.bar.grid(row=1, column=0, sticky="ew") if available else self.bar.grid_remove()
         self.legend.grid(row=4, column=0, sticky="ew") if scene.heat_active else self.legend.grid_remove()
+        self.range_controls.pack(side="left") if scene.heat_active else self.range_controls.pack_forget()
         identity = self.selected_id()
         metric = scene.heat_metrics.get(identity, InformationHeat())
-        cluster_total = metric.own + sum(scene.heat_metrics.get(child.id, InformationHeat()).own
-                                       for child in app.document.children(identity))
         inspecting = (app._node_move_origin is None and not app.clusters.moving
                       and app.placement_state != "placing")
         for button, panel, sample, summary, caption, notes_caption in self._headers:
-            button.configure(text=f"Entries ({metric.own})")
+            button.configure(text=f"Additional entries ({max(0, metric.own - 1)})")
             button.state(["!disabled"] if self.concept(identity) and app._template_origin is None else ["disabled"])
             if available and scene.heat_active and inspecting and self.concept(identity):
-                caption.configure(text="Recorded information")
+                caption.configure(text="Information heat")
                 panel.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(3, 3))
                 notes_caption.grid(row=2, column=0, columnspan=2, sticky="w")
-                summary.configure(text=f"Own entries: {metric.own}\nSupport: {metric.support:g} / 4\nCluster entries: {cluster_total}")
+                summary.configure(text=f"Main note: 1\nAdditional entries: {metric.own - 1}\n"
+                                  f"From subconcepts: +{metric.support}\nTotal information: {metric.blended}")
                 self._sample(sample, identity, metric)
             else:
-                caption.configure(text="Personal notes")
+                caption.configure(text="Main note")
                 panel.grid_remove()
                 notes_caption.grid_remove()
 
     def _sample(self, canvas, identity, metric):
         canvas.delete("all")
-        canvas.create_oval(14, 14, 52, 52, fill=heat_color(metric.own), outline="")
-        if self.app.document.children(identity):
-            canvas.create_oval(9, 9, 57, 57, outline=theme.BORDER, width=2)
-            if metric.support:
-                canvas.create_arc(9, 9, 57, 57, start=90, extent=-360 * metric.support / CLUSTER_SUPPORT_LIMIT,
-                                  style="arc", outline=theme.GOLD, width=2)
-        canvas.create_oval(5, 5, 61, 61, outline=theme.TEXT, width=1)
+        canvas.create_oval(14, 14, 52, 52, fill=heat_color(metric.blended, self.app.scene.heat_ceiling), outline="")
+        count = len(self.app.document.children(identity))
+        if count:
+            canvas.create_oval(9, 9, 57, 57, outline="#a8bdcc", width=1)
+            self._badge(canvas, 54, 12, count, ())
+
+    def _badge(self, canvas, x, y, count, tags):
+        radius = 8
+        canvas.create_oval(x-radius, y-radius, x+radius, y+radius, fill=theme.PANEL,
+                           outline="#a8bdcc", width=1, tags=tags)
+        canvas.create_text(x, y, text=str(count), fill=theme.TEXT, font=(self.app.mono, 8),
+                           tags=(*tags, "suborbital-count"))
+        return x-radius, y-radius, x+radius, y+radius
+
+    def draw_parent_indicators(self):
+        """Persistent, non-pickable decorations; only the count badge selects its parent."""
+        self.indicator_boxes.clear()
+        self.parent_counts = Counter(child.parent_id for child in self.app.document.subconcepts)
+        app, scene = self.app, self.app.scene
+        if scene.mode != "nodes" or app._template_origin is not None:
+            return
+        counts = self.parent_counts
+        for node in app.document.nodes:
+            if not counts[node.id] or not scene.is_visible(node):
+                continue
+            actor = scene.actors[node.id][0]
+            if not actor.GetVisibility():
+                continue
+            x, y, depth = scene.project(scene.node_anchor(node))
+            if not (0 <= depth <= 1 and 0 < x < scene.width and 0 < y < scene.height):
+                continue
+            if scene.pick(x, y) != node.id:
+                continue
+            radius = max(7, .065 * actor.GetScale()[0] * scene.height / (2 * scene.scale) + 4)
+            bounds = x-radius, y-radius, x+radius, y+radius
+            app.canvas.create_oval(*bounds, outline="#a8bdcc", width=1,
+                                   tags=("overlay", "suborbital-ring", f"suborbital-ring:{node.id}"))
+            box = self._badge(app.canvas, x + radius*.8 + 3, y - radius*.8 - 3, counts[node.id],
+                              ("overlay", "suborbital-badge", f"suborbital-badge:{node.id}"))
+            self.indicator_boxes.extend((bounds, box))
+            app._label_hits.append((node.id, box))
 
     def draw(self):
-        scene, canvas = self.app.scene, self.app.canvas
+        scene = self.app.scene
         if not scene.heat_active:
             return
         legend = self.legend
         legend.delete("all")
         width = max(300, legend.winfo_width())
-        left, right = 138, width - 20
-        legend.create_text(10, 13, text="Recorded entries", anchor="w", fill=theme.TEXT,
+        left, right = 128, width - 22
+        ceiling = scene.heat_ceiling
+        legend.create_text(10, 13, text="Information count", anchor="w", fill=theme.TEXT,
                            font=(self.app.family, 9))
         for step in range(100):
             start = left + (right-left) * step / 100
             end = left + (right-left) * (step+1) / 100
-            value = expm1(log1p(32) * (step + .5) / 100)
-            legend.create_rectangle(start, 9, end+1, 16, fill=heat_color(value), outline="")
-        for count, _ in HEAT_STOPS:
-            x = left + (right-left) * log1p(count) / log1p(32)
-            legend.create_text(x, 26, text=f"{count}{'+' if count == 32 else ''}", fill=theme.MUTED,
-                               font=(self.app.mono, 8))
-        focused = scene.focused_parent is not None
-        caption = ("Focus: fill = own entries; rim = support (max 4)." if focused else
-                   "Overview: own entries + capped support. Fixed scale.")
+            value = 1 + (ceiling-1) * step / 99
+            legend.create_rectangle(start, 9, end+1, 16, fill=heat_color(value, ceiling), outline="")
+        for count in range(1, ceiling + 1):
+            x = left + (right-left) * (count-1) / (ceiling-1)
+            legend.create_line(x, 18, x, 21, fill=theme.MUTED, tags="heat-tick")
+            legend.create_text(x, 28, text=str(count), fill=theme.MUTED,
+                               font=(self.app.mono, 7 if ceiling == 32 and width < 800 else 8), tags="heat-count")
+        caption = f"Main note + additional entries + subconcepts. Equal steps; red at {ceiling}+. Ring = suborbitals."
         legend.create_text(10, 45, text=caption, anchor="w", fill=theme.MUTED, font=(self.app.family, 8))
-        if focused:
-            parent = scene.orbit_parent()
-            if parent is not None and scene.is_visible(parent):
-                x, y, depth = scene.project(scene.node_anchor(parent))
-                if 0 <= depth <= 1 and scene.pick(x, y) == parent.id:
-                    metric = scene.heat_metrics.get(parent.id, InformationHeat())
-                    radius = .065 * scene.height / (2 * scene.scale) + 3
-                    bounds = x-radius, y-radius, x+radius, y+radius
-                    canvas.create_oval(*bounds, outline=theme.BORDER, width=2, tags=("overlay", "support-rim"))
-                    if metric.support:
-                        canvas.create_arc(*bounds, start=90, extent=-360 * metric.support / CLUSTER_SUPPORT_LIMIT,
-                                          style="arc", outline=theme.GOLD, width=2, tags=("overlay", "support-arc"))
 
     def open(self):
         if self.app._template_origin is not None:
@@ -140,7 +176,7 @@ class InformationManager:
             return False
         self.owner_id, self.entry_id = identity, None
         dialog = self.dialog = tk.Toplevel(self.app.root)
-        dialog.title(f"Information entries - {owner.name}")
+        dialog.title(f"Additional entries - {owner.name}")
         dialog.transient(self.app.root)
         dialog.geometry("760x590")
         dialog.minsize(640, 480)
@@ -154,7 +190,7 @@ class InformationManager:
         outer.rowconfigure(2, weight=1)
         self.dialog_summary = ttk.Label(outer, text="", style="Muted.TLabel", wraplength=700)
         self.dialog_summary.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 10))
-        ttk.Label(outer, text="Saved entries", style="Muted.TLabel").grid(row=1, column=0, sticky="w")
+        ttk.Label(outer, text="Stored entries", style="Muted.TLabel").grid(row=1, column=0, sticky="w")
         ttk.Label(outer, text="Entry title", style="Muted.TLabel").grid(row=1, column=1, sticky="w")
         listing = ttk.Frame(outer)
         listing.grid(row=2, column=0, sticky="nsew", padx=(0, 12))
@@ -190,9 +226,6 @@ class InformationManager:
         buttons = ttk.Frame(outer)
         buttons.grid(row=4, column=0, columnspan=2, sticky="ew")
         ttk.Button(buttons, text="New entry", command=self.new).pack(side="left")
-        self.copy_button = ttk.Button(buttons, text="Use notes as one entry", command=self.use_notes)
-        self.copy_button.pack(side="left", padx=5)
-        self.copy_button.state(["!disabled"] if owner.notes.strip() else ["disabled"])
         ttk.Button(buttons, text="Close", command=self.close).pack(side="right")
         self.delete_button = ttk.Button(buttons, text="Delete entry", command=self.delete)
         self.delete_button.pack(side="right", padx=5)
@@ -223,19 +256,24 @@ class InformationManager:
         self.body.insert("1.0", entry.body if entry else "")
         self.body.edit_reset()
         self._loaded = self.state()
-        self.status.configure(text="Each saved entry counts once. Personal notes are kept separately.")
+        self.status.configure(text="Your main note already counts as one. Each saved additional entry adds one more.")
+        if entry is not None and is_main_note_copy(entry, self.concept(self.owner_id)):
+            self.status.configure(text="This saved main-note copy already counts in the main note. Its contents are preserved.")
         self.delete_button.state(["!disabled"] if entry else ["disabled"])
 
     def refresh_list(self):
         entries = self.app.document.entries_for(self.owner_id)
         self.entry_ids = [entry.id for entry in entries]
+        owner = self.concept(self.owner_id)
+        copies = sum(is_main_note_copy(entry, owner) for entry in entries)
         self.listbox.delete(0, "end")
         for entry in entries:
-            self.listbox.insert("end", entry.title)
+            self.listbox.insert("end", entry.title + (" [main-note copy]" if is_main_note_copy(entry, owner) else ""))
         if self.entry_id in self.entry_ids:
             self.listbox.selection_set(self.entry_ids.index(self.entry_id))
-        self.dialog_summary.configure(text=f"{self.concept(self.owner_id).name} / {len(entries)} recorded entries. "
-                                     "Add one explanation, observation or example per entry.")
+        self.dialog_summary.configure(text=f"{owner.name} / 1 main note + {len(entries)-copies} additional entries. "
+                                     + ("Saved main-note copies are preserved and counted once. " if copies else "")
+                                     + "The main note counts automatically; add extra explanations or examples here.")
 
     def allow_leave(self):
         if not self.dirty:
@@ -284,7 +322,8 @@ class InformationManager:
         self._loaded = self.state()
         self.delete_button.state(["!disabled"])
         self.refresh_list()
-        self.status.configure(text="Saved. Editing this entry keeps its count at one.")
+        self.status.configure(text="Saved main-note copy; it already counts in the main note." if is_main_note_copy(entry, self.concept(self.owner_id))
+                              else "Saved. This additional entry counts once.")
         self.app.request_render()
         return True
 
@@ -298,15 +337,6 @@ class InformationManager:
         self._load(None)
         self.refresh_list()
         self.app.request_render()
-        return True
-
-    def use_notes(self):
-        owner = self.concept(self.owner_id)
-        if not owner.notes.strip() or not self.new():
-            return False
-        self.title.set(owner.name)
-        self.body.insert("1.0", owner.notes)
-        self.status.configure(text="Notes copied into one draft entry. Save entry to count it; the original notes are kept.")
         return True
 
     def close(self):

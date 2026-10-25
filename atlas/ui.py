@@ -1273,6 +1273,7 @@ class AtlasApp:
                          else (label_x - text_width - 4, y - 10, label_x + 6, y + 10))
             self._axis_label_boxes.append(label_box)
         if node_view:
+            self.information.draw_parent_indicators()
             if self.scene.preview_node is not None:
                 self._draw_node_halo(self.scene.preview_node, "preview-halo", theme.ACCENT if self.scene.preview_valid else theme.ERROR, preview=True)
             elif not self.clusters.editing and (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
@@ -1322,14 +1323,25 @@ class AtlasApp:
         if self.scene.heat_active and not preview:
             color = theme.TEXT
             radius += 5
+        if not preview:
+            self._draw_selection_corners(x, y, radius + 3, color, tag)
+            return
         self.canvas.create_oval(x - radius - 3, y - radius - 3, x + radius + 3, y + radius + 3,
                                 outline=theme.BORDER if self.scene.heat_active and not preview else
                                 "#345866" if color == theme.ACCENT else "#68464c", width=1, tags=("overlay", tag))
         self.canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
                                 outline=color, width=2, tags=("overlay", tag))
 
+    def _draw_selection_corners(self, x, y, radius, color, tag):
+        for sx, sy in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
+            cx, cy = x + sx*radius, y + sy*radius
+            self.canvas.create_line(cx - sx*5, cy, cx, cy, cx, cy - sy*5,
+                                    fill=color, width=2, tags=("overlay", tag))
+
     def _draw_labels(self, nodes: list[Node], width: int, height: int) -> None:
         boxes: list[tuple[float, float, float, float]] = list(self._axis_label_boxes)
+        if self.scene.mode == "nodes":
+            boxes.extend(self.information.indicator_boxes)
         ordered = sorted(nodes, key=lambda n: n.id != self.selected)
         for node in ordered:
             anchor = self.scene.node_anchor(node) if self.scene.mode == "nodes" else self.scene.meshes[node.id].label_anchor
@@ -1347,7 +1359,7 @@ class AtlasApp:
             if self.scene.heat_active:
                 metric = self.scene.heat_metrics.get(node.id)
                 if metric is not None:
-                    text += f"\n{metric.own} entries" + (f" / +{metric.support:g} support" if metric.support else "")
+                    text += f"\n{metric.blended} total" + (f" ({metric.own} own + {metric.support} from subconcepts)" if metric.support else "")
             max_label_width = min(300, width - 50) if design.label_mode != "title" else 176
             lines = text.splitlines()
             for i, line in enumerate(lines):
@@ -1359,7 +1371,8 @@ class AtlasApp:
             box_height = 23 + 17 * (len(lines) - 1)
             total_width = text_width + 14
             right = x >= width * 0.5
-            gap = max(12, .065 * self.scene.height / (2 * self.scene.scale) + 16) if self.scene.heat_active else 12
+            decorated = self.scene.mode == "nodes" and (self.scene.heat_active or node.id in self.information.parent_counts)
+            gap = max(12, .065 * self.scene.actors[node.id][0].GetScale()[0] * self.scene.height / (2 * self.scene.scale) + 16) if decorated else 12
             shifts = [(gap, -25), (gap, 8), (gap, -49), (-total_width - gap, -25), (-total_width - gap, 8)]
             if not right:
                 shifts = [(-total_width - gap, -25), (-total_width - gap, 8), (-total_width - gap, -49), (gap, -25), (gap, 8)]

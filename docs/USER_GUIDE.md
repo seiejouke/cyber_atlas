@@ -93,51 +93,68 @@ example. See the [implemented cluster screenshots](../README.md#orbital-clusters
 
 ## Information heat
 
-Information heat and recorded entries are included in Cyber Atlas 0.9.0 for
-Windows and Linux. Saved atlases use format 10, which requires version 0.9.0
-or newer.
-Existing atlases load with their notes and coordinates preserved; the first
-save keeps the previous saved file as the normal backup.
+**Source preview:** automatic main-note counts, linear presets and persistent
+parent rings are implemented in source and await a packaged update. The current
+0.9.0 Windows and Linux downloads still count only separately recorded entries.
+The display changes below do not require a new atlas file format or rewriting
+existing notes. Format-10 files still require Cyber Atlas 0.9.0 or newer.
 
 In **Nodes**, choose **Color → Information heat**. The full atlas uses one
-cool-to-warm fill per node, combining its own recorded entries with a capped
-contribution from explicit subconcepts. Select a parent, **Expand** its orbit,
-then choose **Focus cluster** to see each node's own-information fill and a
-separate amber support rim around the parent.
-The inspector always shows own entries, support and the cluster's total entries.
+cool-to-warm fill per node. Every saved concept starts at **1**, representing
+its existing **Main note**, including a saved concept whose text is still empty.
+Optional additional entries add one each. A parent's total also includes the
+own information of each direct subconcept; spatial neighbors and layer guides
+contribute nothing. Editing the usual main note does not add another item.
+
+**Heat range** starts at **B - Balanced (1-16)**. Compact reaches red at 9,
+Balanced at 16, and Extended at 32. Counts are equally spaced and every item
+changes the color until the selected ceiling. Blue transitions to cyan, through
+pale neutral tones into yellow, then orange and red; there is no green band.
+Above the ceiling the color stays red and the exact count remains visible.
+Changing filters never changes the counts or scale. The range and color choices
+last for the current session.
+
+A thin neutral ring means a node has saved suborbitals. Its small badge shows
+how many. The indicator is visible on unselected parents and stays visible when
+the orbit is collapsed. A selected concept uses corner marks, so selection is
+distinct from the suborbital indicator. In **Focus cluster**, the parent keeps
+the same total-information fill and indicator as in the overview.
+The inspector shows the main note, additional entries, contribution from
+subconcepts, and the exact total. One main note plus three ordinary suborbitals
+therefore totals **4**; each of those suborbitals starts at **1**.
 **Show atlas** restores the overview. **Layer colors** restores the original
 palette. These controls do not change saved coordinates or sphere sizes based
 on information quantity; Blocks retains its existing footprints.
 
-![Implemented heat overview containing 84 concepts and 527 recorded entries](information-heat-overview.png)
+![Actual source heat overview with automatic main-note counts and parent-ring badges](main-note-heat-overview.png)
 
-Select a saved concept or subconcept and choose **Entries**. Each entry needs a
+Select a saved concept or subconcept and choose **Additional entries**. Each entry needs a
 title and information body, such as one explanation, observation or worked
-example. **Save entry** stores it independently of personal notes; editing an
+example. **Save entry** stores it independently of the main note; editing an
 entry keeps its count at one. **New entry**, the saved-entry list and **Delete
 entry** manage that concept's information. Closing a changed entry offers
 Save, Discard or Cancel; failed writes preserve the draft.
 
-Existing personal notes do not automatically become entries. **Use notes as
-one entry** copies them into one draft; saving counts it once and keeps the
-original notes. Identical entries within one concept are rejected. Entry counts
-measure recorded items, not demonstrated mastery or automatic semantic novelty.
+The main note counts automatically, so no copy step is needed. Exact saved
+copies made by the previous **Use notes as one entry** action are preserved,
+labelled **[main-note copy]**, and counted once with the main note. If a saved
+copy becomes different information, it counts as an additional item. Identical
+additional entries within one concept are rejected. These counts measure saved
+items, not demonstrated mastery or automatic semantic novelty.
 
-![Implemented Firewall focus with own-information fills, a support rim and exact counts](information-heat-cluster.png)
+![Actual source focus with one main note, three suborbitals and a persistent parent indicator](main-note-heat-cluster.png)
 
-Each child's contribution is 25% of its own entry count, capped at one equivalent
-entry per child and four per parent. For example, children with 4, 2, 10 and 0
-entries provide 1 + 0.5 + 1 + 0 = 2.5 support. Empty children, spatial neighbors
-and layer guides provide zero. Support is not passed back down to children.
-The palette has fixed anchors at 0, 1, 2, 4, 8, 16 and 32+; high counts saturate
-at the warmest color while exact counts remain visible. Filtering does not
-change the scale or the underlying values.
+Only explicit, saved subconcepts add to their parent. Unsaved creation drafts
+do not count, and a parent's heat is never passed back down to its children.
+Counts are not limited by the color ceiling. Deleting the last subconcept
+removes the parent's ring and its contribution immediately. During a parent
+move, the child list gives its space to the main-note field at small window sizes.
 
 Information entries are included in JSON exports and backups. Deleting a
 concept removes its owned entries; deleting a cluster includes its children
-and their entries. The [example atlas](../examples/information_heat_atlas.json)
+and their entries. The [main-note example atlas](../examples/main_note_heat_atlas.json)
 contains illustrative information for exploring the display.
-See the [release verification report](information-heat-verification.json).
+See the [source verification report](main-note-heat-verification.json).
 
 ## First use
 

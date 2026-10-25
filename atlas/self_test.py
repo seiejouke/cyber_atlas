@@ -130,7 +130,9 @@ def run(app, report_path: Path) -> int:
                 "Blocks retains its parent mesh and exposes the saved subconcept list")
         app.set_view_mode("nodes")
         manager = app.information
-        require(manager.open(), "Bundled information-entry editor opens for the selected parent")
+        require(manager.open() and app.scene.heat_metrics[parent.id].blended == 2
+                and app.scene.heat_metrics[child.id].own == 1,
+                "Existing main notes heat the parent and subconcept before any additional entry is created")
         manager.title.set("Bundled parent information")
         manager.body.insert("1.0", "One recorded explanation")
         if not manager.save() or not manager.close():
@@ -140,33 +142,39 @@ def run(app, report_path: Path) -> int:
             raise AssertionError("Bundled child entry editor could not open")
         manager.title.set("Bundled child information")
         manager.body.insert("1.0", "One supporting observation")
-        require(manager.save() and app.scene.heat_metrics[parent.id].own == 1
-                and app.scene.heat_metrics[parent.id].support == .25
-                and app.scene.heat_metrics[child.id].own == 1
+        require(manager.save() and app.scene.heat_metrics[parent.id].own == 2
+                and app.scene.heat_metrics[parent.id].support == 2
+                and app.scene.heat_metrics[child.id].own == 2
                 and app.scene.heat_metrics[child.id].support == 0,
-                "Independent child entries add bounded support only to their explicit parent")
+                "Main notes and additional entries heat each concept and its explicit parent")
         manager.body.insert("end", "\nAn edited observation")
         require(manager.save() and len(app.document.entries_for(child.id)) == 1,
                 "Editing recorded information preserves its identity and entry count")
         manager.close()
         app.clusters.parent_note()
-        app.scene.clear_orbit_focus()
+        app.scene.collapse_orbit()
         manager.color_mode.set("Information heat")
         manager.change_color()
         pump()
         from .heat import heat_color
         actor = app.scene.actors[parent.id][0]
         color = tuple(round(channel * 255) for channel in actor.GetProperty().GetColor())
-        expected = heat_color(1.25)
+        expected = heat_color(4)
         require(app.scene.heat_active and color == tuple(int(expected[i:i+2], 16) for i in (1, 3, 5))
                 and actor.GetScale() == (1, 1, 1),
-                "Bundled heat overview uses recorded counts and support without resizing spheres")
+                "Bundled heat overview automatically counts main notes without resizing spheres")
+        ticks = manager.legend.find_withtag("heat-tick")
+        positions = [manager.legend.coords(item)[0] for item in ticks]
+        gaps = [b-a for a, b in zip(positions, positions[1:])]
+        require(app.scene.heat_ceiling == 16 and len(ticks) == 16 and max(gaps)-min(gaps) < 1e-6
+                and app.canvas.find_withtag(f"suborbital-ring:{parent.id}"),
+                "Balanced defaults to sixteen equally spaced counts; collapsed parents keep their suborbital ring")
         app.clusters.explore()
         pump()
-        arcs = app.canvas.find_withtag("support-arc")
-        require(app.scene.focused_parent == parent.id and len(arcs) == 1
-                and float(app.canvas.itemcget(arcs[0], "extent")) == -22.5,
-                "Focused clusters render the exact bounded support rim with bundled VTK and Tk")
+        rings = app.canvas.find_withtag(f"suborbital-ring:{parent.id}")
+        require(app.scene.focused_parent == parent.id and len(rings) == 1
+                and app.scene.concept_color(parent.id, parent.layer) == heat_color(4),
+                "Focused clusters retain total heat and a neutral parent ring with bundled VTK and Tk")
         saved_heat = app.path.read_bytes()
         write_atlas(export, app.document, backup=False)
         manager.color_mode.set("Layer colors")

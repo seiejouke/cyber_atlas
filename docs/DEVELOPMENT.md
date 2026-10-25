@@ -151,7 +151,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The desktop build includes **184 core tests** covering chosen angular
+The current source includes **190 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -162,8 +162,10 @@ design editing, view switching, JSON import/export and unsaved drafts. Movement
 checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
-self-test, release validation, verified downloads, safe update handoffs, and orbital relationships. All **184 core tests and 116 GUI workflow checks passed** on Windows with Python
-3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
+self-test, release validation, verified downloads, safe update handoffs, and orbital relationships. All **190 core tests and 121 GUI workflow checks passed** on Windows with Python
+3.12.3, Tk 8.6 and VTK 9.6.2. The source-preview report is
+[`main-note-heat-verification.json`](main-note-heat-verification.json); the
+packaged-release reports remain separate in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
 configuration are included.
@@ -218,26 +220,38 @@ owned records; design reassignment preserves them. Versions 1–9 load without
 inventing entries or changing existing notes. Normal atomic saves retain the
 previous file as the backup.
 
-`heat.information_heat` counts entries once, then adds direct-child support
-with weight 0.25, a per-child cap of 1, and a per-parent cap of 4. Spatial
-adjacency and reference guides are not inputs. `heat_color` uses fixed bounded
-anchors and logarithmic interpolation. `Scene` caches metrics on document
-changes, independently of filtering, and uses blended fills in the overview
-and own-information fills in cluster focus. The Tk overlay draws the support
-arc and neutral selection halo separately.
+The source preview gives each saved concept one main-note item automatically,
+then adds its additional records and each direct child's own count. Exact
+main-note text copies stay saved but do not
+double-count the main note. Spatial adjacency and reference guides are not
+inputs. Numeric totals have no heat ceiling; only the color saturates.
+
+`heat_color` interpolates linearly through fixed blue, cyan, neutral, yellow,
+orange and red anchors. The neutral stop prevents a green hue between cyan
+and yellow. Presets rescale that same palette to 9, 16 or 32, with Balanced 16
+as the initial choice. `Scene` caches metrics on document changes independently
+of filtering. Overview and focus both use total-information fills.
+
+The Tk overlay draws neutral parent rings and count badges before labels.
+They persist when collapsed and do not affect VTK geometry, spatial topology
+or heat. Visibility checks suppress filtered and occluded indicators; badge
+clicks select their parent. Selection uses corner marks instead of a ring.
 
 `information_ui.InformationManager` provides a modal entry editor, independent
 draft handling, inspector counts, palette controls and legend. Entry commits
-preserve dirty personal-note fields. Its color setting lasts for the session.
+preserve dirty main-note fields. Color and range settings last for the session.
 Blocks continues to use layer colors and the original meshes.
 
-Run `python tools/capture_information.py` on a graphical desktop to generate the
-84-concept example and capture both implemented views. `--example-only` writes
-the illustrative atlas without opening a GUI. Core tests and real GUI checks
-cover entry ownership, migration, bounded support, preview colors, filtering,
-failed saves, export/import and minimum window sizes. Release 0.9.0 includes
-this feature in Windows and Linux packages. Bundled runtime checks also exercise
-entry saving, editing, bounded support, the focus rim and format-10 export.
+Run `python tools/capture_information.py --main-notes` on a graphical desktop
+to generate the 84-concept main-note example and capture both actual source
+views. Add `--example-only` to write the example without opening a GUI.
+The default invocation still captures the earlier recorded-entry example.
+Core and GUI checks cover automatic counts, saved-copy compatibility, exact
+totals, green-free gradual colors, every equally spaced tick, all three presets,
+ring persistence and removal, filtering, failed saves, export/import and minimum
+windows. Runtime self-checks also cover main notes, the default linear scale
+and collapsed-parent rings. No packages were built for this source preview;
+version 0.9.0 downloads retain the earlier entry-only heat behavior.
 
 ## Update distribution
 

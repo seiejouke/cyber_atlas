@@ -44,11 +44,15 @@ Try the [editable orbital-cluster example](examples/orbital_cluster_atlas.json).
 
 ## Information heat
 
-In **Nodes**, choose **Color → Information heat** to see recorded-entry counts with bounded subconcept support. **Focus cluster** separates each node's own-information fill from an amber support rim around the parent. Use **Entries** to add or edit recorded information independently of personal notes.
+**Source preview — awaiting a packaged update.** The improvements below are implemented in source. The current 0.9.0 downloads still use the earlier entry-only heat calculation.
 
-![Firewall cluster with own-information fills, a parent-support rim and exact entry counts](docs/information-heat-cluster.png)
+In **Nodes**, choose **Color → Information heat**. Each saved concept's main note counts automatically, and its suborbitals add their own information to the parent. **Balanced (1–16)** is the initial preset; every additional item changes the color until red, using blue → cyan → pale neutral → yellow → orange → red with equally spaced counts. Compact and Extended presets are also available. A neutral ring and count badge identify parents even when their suborbitals are collapsed.
 
-See the [guide](docs/USER_GUIDE.md#information-heat) or try the [populated example atlas](examples/information_heat_atlas.json). Saved atlases use format 10 and require Cyber Atlas 0.9.0 or newer; existing files load with notes and coordinates preserved, and the first save retains the previous file as a backup.
+![Actual source interface with automatic main-note heat, Balanced preset and collapsed-parent indicators](docs/main-note-heat-overview.png)
+
+![Actual source interface showing one main note plus three suborbitals, with the parent ring retained in focus](docs/main-note-heat-cluster.png)
+
+See the [guide](docs/USER_GUIDE.md#information-heat) or try the [main-note heat example](examples/main_note_heat_atlas.json). Existing notes, suborbitals and additional records are preserved; exact copies made by the old main-note copy action count once. No file-format migration is needed for this display change.
 
 ## Project scope and vision
 
@@ -244,7 +248,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.9.0 on 25 October 2026. Planned capabilities below describe the intended system.*
+*Implementation status checked against v0.9.0 and the marked source preview on 25 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -256,7 +260,8 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Windows and Linux release packaging | **Implemented** |
 | Opt-in release checks and verified update downloads | **Implemented** |
 | Node connections between footprints sharing an edge; gaps remain unconnected | **Implemented** |
-| Recorded information entries, heat colors and bounded cluster-support rims | **Implemented** |
+| Recorded information entries and heat colors | **Implemented** |
+| Automatic main-note heat, linear presets and persistent parent indicators | **Implemented in source; awaiting a packaged update** |
 | Distinct-information-based node scaling | **Planned** |
 | Dual-shell mastery visualization | **Planned** |
 | Node-associated question bank and assessment history | **Planned** |
