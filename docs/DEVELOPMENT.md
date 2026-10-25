@@ -281,7 +281,7 @@ After a Windows build, test the real upgrade helper without replacing an
 existing user installation:
 
 ```powershell
-.\.venv\Scripts\python.exe tools\test_windows_updater.py --previous-zip dist\CyberAtlas-0.8.1-windows-x64.zip
+.\.venv\Scripts\python.exe tools\test_windows_updater.py --previous-zip dist\CyberAtlas-0.9.0-windows-x64.zip
 ```
 
 This compiles isolated installers with a separate AppId, upgrades the old binary,

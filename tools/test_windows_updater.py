@@ -24,7 +24,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from atlas import __version__, updates
-from atlas.model import example_atlas
+from atlas.model import InformationEntry, Subconcept, example_atlas
 from atlas.storage import write_atlas
 from tools.build_windows import check_executable, find_compiler
 
@@ -72,7 +72,7 @@ def close_window(pid):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--previous-zip", type=Path, required=True)
-    parser.add_argument("--previous-version", default="0.8.1")
+    parser.add_argument("--previous-version", default="0.9.0")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("Run this integration check on Windows.")
@@ -112,7 +112,15 @@ def main():
                 installers.append(directory / "installers" / f"Update-test-{version}.exe")
             application = directory / "Installed app"
             user_data = directory / "Saved notes" / "atlas.json"
-            write_atlas(user_data, example_atlas(), backup=False)
+            fixture = example_atlas()
+            if args.previous_version not in ("0.7.1", "0.7.2", "0.8.0", "0.8.1"):
+                owner = fixture.nodes[0]
+                child = Subconcept("upgrade-child", owner.id, "Saved upgrade subconcept", "Independent saved child notes", 0)
+                fixture = fixture.with_child(child)
+                fixture = fixture.with_entry(InformationEntry("upgrade-main-copy", owner.id, owner.name, owner.notes))
+                fixture = fixture.with_entry(InformationEntry("upgrade-child-copy", child.id, child.name, child.notes))
+                fixture = fixture.with_entry(InformationEntry("upgrade-extra", child.id, "Additional observation", "Distinct saved information"))
+            write_atlas(user_data, fixture, backup=False)
             if args.previous_version in ("0.7.1", "0.7.2", "0.8.0", "0.8.1"):
                 previous_data = json.loads(user_data.read_text(encoding="utf-8"))
                 previous_data.pop("information_entries", None)
@@ -185,7 +193,7 @@ def main():
                     finally:
                         kernel.CloseHandle(handle)
                     assert user_data.read_bytes() == saved
-                    checks.append("The updated app reopens with the original atlas path; closing it preserves saved notes byte for byte")
+                    checks.append("The updated app reopens with the original atlas path; closing it preserves notes, subconcepts and information records byte for byte")
                     report = check_executable(executable, directory / "updated-runtime.json", directory)
                     result["updated_runtime_checks"] = report["checks_passed"]
                     checks.append(f"The upgraded executable passes {report['checks_passed']} frozen runtime checks")
