@@ -9,6 +9,7 @@ Run the commands below from the repository root.
 Implement ordinary changes and run the checks appropriate to each change.
 Build installers and portable packages, bump the release version, or publish
 an update only when the maintainer explicitly requests or approves that update.
+This applies to Windows, Linux, macOS, and any future platform.
 Several improvements can be collected into one release. Repository instructions
 in [AGENTS.md](../AGENTS.md) record this workflow for coding agents.
 
