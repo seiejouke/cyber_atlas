@@ -2,17 +2,6 @@ name: Build Linux packages
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/linux-release.yml
-      - packaging/linux.spec
-      - packaging/io.github.seiejouke.CyberAtlas.desktop
-      - tools/build_linux.py
-      - requirements*.txt
-      - main.py
-      - atlas/**
-      - tests/**
 
 permissions:
   contents: read

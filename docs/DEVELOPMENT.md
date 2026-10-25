@@ -4,6 +4,14 @@
 
 Run the commands below from the repository root.
 
+## Development and release workflow
+
+Implement ordinary changes and run the checks appropriate to each change.
+Build installers and portable packages, bump the release version, or publish
+an update only when the maintainer explicitly requests or approves that update.
+Several improvements can be collected into one release. Repository instructions
+in [AGENTS.md](../AGENTS.md) record this workflow for coding agents.
+
 ## Run from source
 
 Use a 64-bit CPython installation. This build was tested with **Python 3.12.3**
@@ -275,8 +283,9 @@ The build does not sign or publish the application.
 ## Build the Linux release
 
 The **Build Linux packages** GitHub Actions workflow builds on Ubuntu 22.04
-x86_64 with Python 3.12.3. It runs automatically when the application or Linux
-packaging changes, and can also be started manually from the Actions tab.
+x86_64 with Python 3.12.3. After an update is approved for packaging, start it
+manually from the Actions tab using **Run workflow**. Code pushes do not start
+package builds.
 The build uses pinned actions and verifies downloaded AppImage tool hashes.
 
 For a local build, install the dependencies listed in
