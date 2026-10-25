@@ -45,22 +45,28 @@ def registration(identity):
 
 
 def close_window(pid):
-    """Close only the restarted test app, using its normal save/close handler."""
+    """Close the restarted main window; return whether WM_CLOSE was posted."""
     user32 = ctypes.windll.user32
     user32.GetWindowThreadProcessId.argtypes = (wintypes.HWND, ctypes.POINTER(wintypes.DWORD))
     user32.PostMessageW.argtypes = (wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM)
     callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
     user32.IsWindowVisible.argtypes = (wintypes.HWND,)
+    user32.GetWindowTextW.argtypes = (wintypes.HWND, wintypes.LPWSTR, ctypes.c_int)
+    posted = []
     user32.EnumWindows.argtypes = (callback_type, wintypes.LPARAM)
 
     def visit(window, parameter):
         found = wintypes.DWORD()
         user32.GetWindowThreadProcessId(window, ctypes.byref(found))
         if found.value == pid and user32.IsWindowVisible(window):
-            user32.PostMessageW(window, 0x0010, 0, 0)  # WM_CLOSE
+            title = ctypes.create_unicode_buffer(256)
+            user32.GetWindowTextW(window, title, len(title))
+            if title.value == "Cyber Atlas":
+                posted.append(bool(user32.PostMessageW(window, 0x0010, 0, 0)))  # WM_CLOSE
         return True
 
     user32.EnumWindows(callback_type(visit), 0)
+    return any(posted)
 
 
 def main():
@@ -162,7 +168,6 @@ def main():
                     assert registration(test_id)["DisplayVersion"] == __version__
                     assert digest(executable) == digest(ROOT / "dist/CyberAtlas/CyberAtlas.exe")
                     checks.append("The real update helper upgrades the older binary and installer registration to the new version")
-                    time.sleep(3)
                     kernel = ctypes.windll.kernel32
                     kernel.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
                     kernel.OpenProcess.restype = wintypes.HANDLE
@@ -171,7 +176,11 @@ def main():
                     handle = kernel.OpenProcess(0x00100000, False, restarted)
                     assert handle and kernel.WaitForSingleObject(handle, 0) == 258, "Restarted app did not stay open"
                     try:
-                        close_window(restarted)
+                        deadline = time.monotonic() + 45
+                        while not close_window(restarted):
+                            assert kernel.WaitForSingleObject(handle, 0) == 258, "Restarted app exited before its main window appeared"
+                            assert time.monotonic() < deadline, "Restarted app did not display its main window"
+                            time.sleep(.2)
                         assert kernel.WaitForSingleObject(handle, 15000) == 0, "Test app did not close normally"
                     finally:
                         kernel.CloseHandle(handle)

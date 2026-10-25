@@ -12,11 +12,11 @@ For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
 
-On Linux x86_64, download `cyber-atlas_0.8.1_amd64.deb` for Ubuntu/Debian-based
+On Linux x86_64, download `cyber-atlas_0.9.0_amd64.deb` for Ubuntu/Debian-based
 desktops and install it with your package installer. Open **Cyber Atlas** from
 the application menu. Python, Tk and VTK are included.
 
-For other compatible Linux desktops, download `CyberAtlas-0.8.1-x86_64.AppImage`.
+For other compatible Linux desktops, download `CyberAtlas-0.9.0-x86_64.AppImage`.
 In the file's properties, allow it to run as a program, then open it. The AppImage
 is portable; it does not install an application-menu entry automatically.
 
@@ -91,18 +91,19 @@ preserves every child ID, parent link, local position, relationship and note.
 Import `examples/orbital_cluster_atlas.json` for an editable four-child Firewall
 example. See the [implemented cluster screenshots](../README.md#orbital-clusters).
 
-## Information heat (source preview)
+## Information heat
 
-This feature is available in the source version and awaits a packaged release.
-The current 0.8.1 installers do not include it. Its saved atlases use format 10,
-which requires this source version or a future package supporting that format.
+Information heat and recorded entries are included in Cyber Atlas 0.9.0 for
+Windows and Linux. Saved atlases use format 10, which requires version 0.9.0
+or newer.
 Existing atlases load with their notes and coordinates preserved; the first
 save keeps the previous saved file as the normal backup.
 
 In **Nodes**, choose **Color → Information heat**. The full atlas uses one
 cool-to-warm fill per node, combining its own recorded entries with a capped
-contribution from explicit subconcepts. Choose **Focus cluster** to see each
-node's own-information fill and a separate amber support rim around the parent.
+contribution from explicit subconcepts. Select a parent, **Expand** its orbit,
+then choose **Focus cluster** to see each node's own-information fill and a
+separate amber support rim around the parent.
 The inspector always shows own entries, support and the cluster's total entries.
 **Show atlas** restores the overview. **Layer colors** restores the original
 palette. These controls do not change saved coordinates or sphere sizes based
@@ -136,7 +137,7 @@ Information entries are included in JSON exports and backups. Deleting a
 concept removes its owned entries; deleting a cluster includes its children
 and their entries. The [example atlas](../examples/information_heat_atlas.json)
 contains illustrative information for exploring the display.
-See the [source verification report](information-heat-verification.json).
+See the [release verification report](information-heat-verification.json).
 
 ## First use
 
@@ -427,9 +428,9 @@ older applications do not support the new file format.
 
 Version 10 adds `information_entries`, with stable IDs, concept ownership,
 titles and bodies. Versions 1–9 load with an empty entry list and retain their
-existing personal notes. Format 10 is currently supported by the source preview;
-the packaged 0.8.1 release supports formats through 9. Keep the original file
-or its backup when using both versions.
+existing personal notes. Format 10 requires Cyber Atlas 0.9.0 or newer.
+Older applications support formats through 9; keep the original file or a
+separate export when returning to an older application.
 
 A legacy ring with more than 16 notes cannot fit this grid. Import/loading
 stops with a message identifying the ring, without dropping notes or changing

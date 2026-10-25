@@ -8,21 +8,21 @@ Your notes work offline and stay on your computer. You can export and import atl
 
 See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [developer guide](docs/DEVELOPMENT.md) for source setup and builds.
 
-![Nodes view showing a 3D atlas, note editor and Move node control](docs/nodes-preview.png)
+![Information heat overview of a populated atlas with recorded-entry counts and bounded subconcept support](docs/information-heat-overview.png)
 
 ![Blocks outline view of a web application architecture, with Authentication selected and its notes visible](docs/preview.png)
 
 ## Install Cyber Atlas
 
-Choose a package for **version 0.8.1**. Each **Download** link downloads the selected file.
+Choose a package for **version 0.9.0**. Each **Download** link downloads the selected file.
 
 | Platform | Package | Installation |
 | --- | --- | --- |
-| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.1/CyberAtlas-0.8.1-Setup.exe)** | Open it and follow the installer. |
-| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.1/cyber-atlas_0.8.1_amd64.deb)** | Open it with your software installer. |
-| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.1/CyberAtlas-0.8.1-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
+| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.0/CyberAtlas-0.9.0-Setup.exe)** | Open it and follow the installer. |
+| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.0/cyber-atlas_0.9.0_amd64.deb)** | Open it with your software installer. |
+| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.0/CyberAtlas-0.9.0-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
 
-See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.8.1) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
+See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.0) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
 
 ---
 
@@ -42,15 +42,19 @@ Try the [editable orbital-cluster example](examples/orbital_cluster_atlas.json).
 
 ![Implemented Blocks view retaining the Firewall footprint and selectable child list](docs/orbital-cluster-blocks.png)
 
-## Information heat — source preview
+## Information heat
 
-The source version adds **Information heat** to Nodes view: the atlas overview blends recorded-entry counts with bounded subconcept support; **Focus cluster** separates own-information fills from support rims. Use **Entries** to manage recorded information independently of personal notes. See the [guide and actual screenshots](docs/USER_GUIDE.md#information-heat-source-preview) or try the [populated example atlas](examples/information_heat_atlas.json). This feature awaits a packaged release and uses atlas format 10; the current 0.8.1 installers cannot open format-10 files.
+In **Nodes**, choose **Color → Information heat** to see recorded-entry counts with bounded subconcept support. **Focus cluster** separates each node's own-information fill from an amber support rim around the parent. Use **Entries** to add or edit recorded information independently of personal notes.
+
+![Firewall cluster with own-information fills, a parent-support rim and exact entry counts](docs/information-heat-cluster.png)
+
+See the [guide](docs/USER_GUIDE.md#information-heat) or try the [populated example atlas](examples/information_heat_atlas.json). Saved atlases use format 10 and require Cyber Atlas 0.9.0 or newer; existing files load with notes and coordinates preserved, and the first save retains the previous file as a backup.
 
 ## Project scope and vision
 
 This section contains the complete illustrated design philosophy. The current
-release provides the spatial notebook foundation; information and mastery
-measurements, assessments, source integration and historical
+release provides the spatial notebook, recorded information and bounded heat views;
+mastery measurements, assessments, source integration and historical
 playback remain planned capabilities. The implementation table below records
 what is available today.
 
@@ -65,7 +69,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.8.1 · **Updated:** 25 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.9.0 · **Updated:** 25 October 2026
 
 ### Product vision
 
@@ -240,7 +244,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.8.1 on 25 October 2026. Planned capabilities below describe the intended system.*
+*Implementation status checked against v0.9.0 on 25 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -252,7 +256,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Windows and Linux release packaging | **Implemented** |
 | Opt-in release checks and verified update downloads | **Implemented** |
 | Node connections between footprints sharing an edge; gaps remain unconnected | **Implemented** |
-| Recorded information entries, heat colors and bounded cluster-support rims | **Implemented in source; awaiting a packaged release** |
+| Recorded information entries, heat colors and bounded cluster-support rims | **Implemented** |
 | Distinct-information-based node scaling | **Planned** |
 | Dual-shell mastery visualization | **Planned** |
 | Node-associated question bank and assessment history | **Planned** |
@@ -275,5 +279,5 @@ The ultimate objective is not to maximize the quantity of notes. It is to help l
 ---
 
 **Project:** [seiejouke/cyber_atlas](https://github.com/seiejouke/cyber_atlas)  
-**Reference release:** [v0.8.1](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.8.1)\
+**Reference release:** [v0.9.0](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.0)\
 **Document:** Conceptual product specification; not a claim of scientific efficacy or completed functionality.

@@ -151,7 +151,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The desktop build includes **152 core tests** covering chosen angular
+The desktop build includes **184 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -162,7 +162,7 @@ design editing, view switching, JSON import/export and unsaved drafts. Movement
 checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
-self-test, release validation, verified downloads, safe update handoffs, and orbital relationships. All **152 core tests and 102 GUI workflow checks passed** on Windows with Python
+self-test, release validation, verified downloads, safe update handoffs, and orbital relationships. All **184 core tests and 116 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
@@ -208,7 +208,7 @@ and are rendered separately. Spatial pairs and guides do not establish semantic
 relationships or information counts. Heat uses explicit entries and
 parent–subconcept data, as described below.
 
-## Recorded information and heat (unreleased source)
+## Recorded information and heat
 
 Schema 10 stores `InformationEntry` records separately from `Node.notes` and
 `Subconcept.notes`. Entries have an immutable concept owner, stable ID, title
@@ -235,8 +235,9 @@ Run `python tools/capture_information.py` on a graphical desktop to generate the
 84-concept example and capture both implemented views. `--example-only` writes
 the illustrative atlas without opening a GUI. Core tests and real GUI checks
 cover entry ownership, migration, bounded support, preview colors, filtering,
-failed saves, export/import and minimum window sizes. These changes have not
-been packaged; release versions and installed downloads remain at 0.8.1.
+failed saves, export/import and minimum window sizes. Release 0.9.0 includes
+this feature in Windows and Linux packages. Bundled runtime checks also exercise
+entry saving, editing, bounded support, the focus rim and format-10 export.
 
 ## Update distribution
 
@@ -300,8 +301,8 @@ installer check is skipped.
 Outputs in `dist/`:
 
 - `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
-- `CyberAtlas-0.8.1-windows-x64.zip`: complete folder for ZIP distribution.
-- `CyberAtlas-0.8.1-Setup.exe`: installer for the current Windows account.
+- `CyberAtlas-0.9.0-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.9.0-Setup.exe`: installer for the current Windows account.
 - `SHA256SUMS.txt`: hashes for the distributable files.
 - `packaged-test-results.json`: results from the bundled executable.
 - `installed-test-results.json`: results from running the installed executable.
@@ -342,8 +343,8 @@ Cyber Atlas installation. A normal local build does not install the package.
 
 Outputs and reports are in `dist/linux/`:
 
-- `cyber-atlas_0.8.1_amd64.deb`
-- `CyberAtlas-0.8.1-x86_64.AppImage`
+- `cyber-atlas_0.9.0_amd64.deb`
+- `CyberAtlas-0.9.0-x86_64.AppImage`
 - `SHA256SUMS-linux.txt`
 - `linux-build-report.json` and runtime/installation test reports
 

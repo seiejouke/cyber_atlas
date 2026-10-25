@@ -28,11 +28,17 @@
     "Orbital child notes save independently without changing the parent footprint",
     "Bundled VTK renders and selects an orbital child with its own editor",
     "Blocks retains its parent mesh and exposes the saved subconcept list",
+    "Bundled information-entry editor opens for the selected parent",
+    "Independent child entries add bounded support only to their explicit parent",
+    "Editing recorded information preserves its identity and entry count",
+    "Bundled heat overview uses recorded counts and support without resizing spheres",
+    "Focused clusters render the exact bounded support rim with bundled VTK and Tk",
+    "Format-10 export preserves entries, notes and positions; color changes never write atlas data",
     "Editor fits the minimum window size",
     "No Tk callback errors"
   ],
   "passed": true,
-  "checks_passed": 27,
-  "app_version": "0.8.1",
+  "checks_passed": 33,
+  "app_version": "0.9.0",
   "paths_redacted": true
 }

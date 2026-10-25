@@ -1,9 +1,7 @@
 {
-  "status": "Unreleased source preview; no package built",
+  "status": "Published Windows and Linux release",
   "date": "2026-10-25",
-  "base_release_version": "0.8.1",
   "atlas_file_version": 10,
-  "tested_platform": "Windows desktop",
   "python": "3.12.3",
   "core_tests_passed": 184,
   "gui_workflow_checks_passed": 116,
@@ -126,11 +124,22 @@
     "close cancel and save-on-close"
   ],
   "backward_loading": "Versions 1-9 load without inventing entries; first save retains the prior file as the normal backup",
-  "older_app_compatibility": "Packaged 0.8.1 reads formats through 9; format-10 files require the source preview or a future compatible package",
+  "older_app_compatibility": "Format-10 files require Cyber Atlas 0.9.0 or newer; retain an original file or export for older applications",
   "example": {
     "main_nodes": 84,
     "subconcepts": 4,
     "information_entries": 527
   },
-  "packaging_requires_explicit_approval": true
+  "packaging_requires_explicit_approval": true,
+  "app_version": "0.9.0",
+  "source_commit": "ae12853b5337be5ad56b0ec240bb5cc6f02dfbbd",
+  "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.0",
+  "tested_platforms": [
+    "Windows desktop",
+    "Ubuntu 22.04 with Xvfb/Mesa",
+    "Ubuntu 24.04.2 under WSLg"
+  ],
+  "windows_runtime_checks": 33,
+  "linux_runtime_checks": 32,
+  "previous_release_version": "0.8.1"
 }
