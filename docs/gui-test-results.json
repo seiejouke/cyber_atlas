@@ -1,5 +1,5 @@
 {
-  "passed": 74,
+  "passed": 81,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -70,6 +70,13 @@
     "both views support custom layers and an empty protocol list without adding entries or changing the saved atlas",
     "the radial slider creates a full center note; empty-space clicks do nothing and the saved center sphere edits and connects normally",
     "Nodes controls, selected halo and note editor fit the minimum window with a clean saved selection",
+    "Move node unlocks position controls and previews a wrapping footprint; Cancel move restores coordinates without writing",
+    "Escape cancels only the move, keeping title and note edits made before and during movement",
+    "moves reject hidden reservations across the entire footprint; rotation and zoom preserve the draft and filtered destinations still preview",
+    "unsaved moves survive view switches and save failures; Save move keeps identity, text, size and neighbors, writes a backup and updates both views",
+    "switching notes during movement honors Save, Discard and Cancel; movement can also be cancelled from Blocks",
+    "moving between Center and rings preserves full and partial block sizes and applies the same overlap rules",
+    "movement stays unavailable for new nodes and read-only templates; template cancellation restores a clean move and controls fit the minimum window",
     "template previews use real read-only atlas nodes; Cancel restores the document, editor, view and camera without writing",
     "Use template atomically saves the selected ordinary Atlas and returns to the existing node editor",
     "minimum-window layout remains usable",

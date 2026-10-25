@@ -23,7 +23,7 @@ from atlas.storage import read_atlas, write_atlas
 from atlas.ui import AtlasApp
 from atlas.scene import NO_PROTOCOL_FILTER
 from atlas.templates import find_template
-from node_view_checks import check_node_view
+from node_view_checks import check_node_moves, check_node_view
 from template_view_checks import check_template_browser
 
 
@@ -1039,6 +1039,7 @@ def main(report_path=None):
             check_clear_lists(root, app, path, checks)
             check_immediate_protocol_clear(root, app, path, checks)
             check_node_view(root, app, path, checks)
+            check_node_moves(root, app, path, checks)
             check_template_browser(root, app, path, pump, checks)
 
             root.geometry("1020x780")

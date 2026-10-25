@@ -93,9 +93,14 @@ test_first_save_of_v5_preserves_original_backup_and_all_notes (test_storage.Stor
 test_malformed_json_rejected (test_storage.StorageTests.test_malformed_json_rejected) ... ok
 test_overfull_legacy_ring_load_leaves_file_untouched (test_storage.StorageTests.test_overfull_legacy_ring_load_leaves_file_untouched) ... ok
 test_unicode_notes_roundtrip (test_storage.StorageTests.test_unicode_notes_roundtrip) ... ok
+test_catalog_has_general_topics_and_blank_start (test_templates.TemplateTests.test_catalog_has_general_topics_and_blank_start) ... ok
+test_every_template_uses_the_normal_atlas_schema (test_templates.TemplateTests.test_every_template_uses_the_normal_atlas_schema) ... ok
+test_template_node_ids_are_stable_and_unique_across_catalog (test_templates.TemplateTests.test_template_node_ids_are_stable_and_unique_across_catalog) ... ok
+test_topics_have_varied_axis_and_node_counts (test_templates.TemplateTests.test_topics_have_varied_axis_and_node_counts) ... ok
+test_unknown_template_key_is_rejected (test_templates.TemplateTests.test_unknown_template_key_is_rejected) ... ok
 test_raw_focus_path_tolerates_combobox_popdown_and_destroyed_window (test_theme.ThemeTests.test_raw_focus_path_tolerates_combobox_popdown_and_destroyed_window) ... ok
 
 ----------------------------------------------------------------------
-Ran 96 tests in 0.189s
+Ran 101 tests in 0.197s
 
 OK

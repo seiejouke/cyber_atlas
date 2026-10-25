@@ -63,7 +63,7 @@ system packages or trying to compile VTK as a first step.
 
 The first launch creates a local atlas containing the 14 starter notes from
 the HTML concept. Blocks support coordinate editing; clicking a sphere in
-Nodes edits only its title and personal notes.
+Nodes opens its title and personal notes. **Move node** unlocks its position controls.
 
 Click **Templates** to preview a general-purpose example in the actual Nodes
 renderer. The built-in topics are Blank atlas, Python, TypeScript, Web
@@ -150,9 +150,17 @@ In **Nodes**, press **New node**, choose its layer and protocol from the
 dropdowns, and choose its radial position and start slot with the sliders. The
 preview updates immediately; **Create node** saves a valid position. Occupied
 positions turn red and disable creation. Clicking empty space does nothing.
-Clicking a saved sphere only opens its title and personal notes for editing;
-its coordinate controls remain read-only. Drag and wheel continue to rotate,
-pan and zoom the view.
+Clicking a saved sphere opens its title and personal notes for editing. Choose
+**Move node** above the editor to change its **Layer**, radial **Position** and
+**Start slot**. A live outline previews the destination; occupied positions turn
+red and disable **Save move**, including reservations hidden by filters. The
+preview remains visible when its destination is outside the current layer filter.
+**Save move** saves the new position and any text edits. **Cancel move** or
+**Escape** restores the starting coordinates while keeping title and note edits.
+Moves keep the same node ID, protocol and block size, including when moving
+between Center and a ring. A full-size node still needs an entirely free ring.
+An unsaved move survives switching between Blocks and Nodes; both views show
+the saved position. Drag and wheel continue to rotate, pan and zoom the view.
 
 In **Blocks**, the spatial workflow remains:
 **Add here -> choose size -> move the preview -> left-click to lock -> write your note -> Save node.**
@@ -179,9 +187,9 @@ and **Full** occupies all sixteen. Sizes can be mixed. Start slot is numbered
 red stops mark starts that would overlap another block at the chosen size.
 Wrapping footprints highlight both ends and show **Slots 16 → 01**.
 
-In Nodes, dragging this slider updates the creation preview and **Create node**
-saves it. In Blocks, releasing a valid slot locks the preview. Releasing on a
-blocked slot keeps it red and disables saving. Left/Right step one slot;
+In Nodes, dragging this slider updates the creation or movement preview;
+**Create node** or **Save move** saves it. In Blocks, releasing a valid slot
+locks the preview. Releasing on a blocked slot keeps it red and disables saving. Left/Right step one slot;
 Home/End select the first/last slot.
 
 Existing blocks stay fixed. Deleting leaves an empty gap that can be reused.
@@ -244,10 +252,11 @@ saved volume is visible.
 | Pan | Shift + drag, or middle-button drag |
 | Zoom | Mouse wheel; `+` / `-` with viewport focused |
 | Edit a node's title and notes | Click a saved sphere or its label |
+| Move a saved node | In Nodes, select a sphere, choose Move node, adjust layer/position/start slot, then Save move |
 | Create a node | New node, then use the dropdowns and sliders; Create node saves it |
 | Lock a moving block | In Blocks, left-click a valid location |
 | Pick up a locked draft or selected block | In Blocks, left-click the block again |
-| Cancel a move | In Blocks, Escape restores its last locked position |
+| Cancel a move | Cancel move or Escape restores a Nodes move's starting coordinates and keeps text edits; other Blocks moves use Escape to restore the last locked position |
 | Place a new block | In Blocks, Add here, then click to lock on the selected layer |
 | Choose block size | Block size dropdown in Blocks view; Save node commits a resize |
 | Set the start slot | Drag the slider or use Left/Right and Home/End; Nodes previews, Blocks locks on release |
@@ -266,8 +275,8 @@ saved volume is visible.
 
 ## Saving and recovery
 
-**Save node immediately writes the atlas to disk.** Apply design, confirmed
-Remove protocols, deletions and successful imports also save immediately.
+**Save node, Save note and Save move immediately write the atlas to disk.**
+Apply design, confirmed Remove protocols, deletions and successful imports also save immediately.
 Text still being typed is a draft: it is
 not saved on every keystroke. Before selecting another note, creating a new
 one, importing, or closing, the app asks whether to save a changed draft.
@@ -360,9 +369,9 @@ so filtering never allows accidental overlaps.
 
 Nodes uses these same coordinates and occupancy rules, with a uniform sphere
 at each note's position instead of its curved block mesh. Spheres do not grow
-with saved block sizes. New nodes are positioned only with the editor's
-dropdowns and sliders. Viewport clicks select saved nodes for title and note
-editing without moving them. A full Center note sits on the layer axis.
+with saved block sizes. New nodes and moves use the editor's dropdowns and
+sliders. Viewport clicks select saved nodes; **Move node** explicitly unlocks
+their position controls. A full Center note sits on the layer axis.
 Connections join neighbors on the same ring and nearest neighbors on the next
 occupied ring, never across layers.
 
@@ -424,15 +433,17 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The Blocks/Nodes build includes **96 core tests** covering chosen angular
+The Blocks/Nodes build includes **101 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
 clearing and rebuilding lists, legacy migration and storage. The desktop smoke test exercises
 the actual Tk controls, VTK rendering and picking, Center, Blocks placement,
-Nodes control-only creation and note editing, deleting, protocol filtering,
-design editing, view switching, JSON import/export and unsaved drafts. All
-**96 core tests and 72 GUI workflow checks passed** on Windows with Python
+Nodes creation, note editing and movement, deleting, protocol filtering,
+design editing, view switching, JSON import/export and unsaved drafts. Movement
+checks include cancellation that preserves text edits, hidden reservations,
+save failures, Center transitions and the minimum window layout. All
+**101 core tests and 81 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and launch instructions

@@ -293,3 +293,188 @@ def check_node_view(root, app, path, checks):
         assert button.winfo_rootx() + button.winfo_width() <= root.winfo_rootx() + root.winfo_width()
     assert app.canvas.find_withtag("node-halo") and app.selected == center.id and not app.dirty
     checks.append("Nodes controls, selected halo and note editor fit the minimum window with a clean saved selection")
+
+
+def check_node_moves(root, app, path, checks):
+    """Move saved spheres through the real controls without changing their footprint."""
+    design = Design(
+        (Layer("move-base", "Base", "#65b6a1"), Layer("move-top", "Top", "#edbb69")),
+        (Protocol("visible", "Visible"), Protocol("hidden", "Hidden")),
+    )
+    wide = Node("move-wide", "Wide node", "move-base", "visible", 2, "Original notes", slot=2, span=4)
+    blocker = Node("move-blocker", "Hidden reservation", "move-base", "hidden", 2, slot=9, span=2)
+    neighbor = Node("move-neighbor", "Neighbor", "move-top", "visible", 1, slot=11)
+    center = Node("move-center", "Center", "move-base", None, CENTER_DEPTH, slot=0, span=16)
+    fixture = Atlas((wide, blocker, neighbor, center), design)
+    assert app.apply_design(fixture)
+    app.set_view_mode("nodes")
+    app._load_editor(wide)
+    _pump(root)
+    original_bytes = path.read_bytes()
+    original_form = app._form_state()
+    assert app.move_button.winfo_ismapped() and app.move_button.cget("text") == "Move node"
+    app.move_button.invoke()
+    assert app.editor_heading.cget("text") == "MOVE NODE"
+    assert app.layer_box.instate(["readonly"]) and app.protocol_box.instate(["disabled"])
+    assert app.scale_widget.enabled and app.slot_slider.enabled
+    assert app.save_button.cget("text") == "Save move" and not app.dirty
+    app.depth_var.set(4)
+    app.slot_slider.focus_force()
+    app.slot_slider.event_generate("<End>")
+    _pump(root)
+    assert app.slot_var.get() == "16" and app.scene.preview_node.span == wide.span
+    assert app.scene.preview_node.depth == 4 and app.scene.preview_node.slot == 15
+    assert app.scene.preview_valid and app.canvas.find_withtag("preview-halo")
+    assert app.document == fixture and path.read_bytes() == original_bytes
+    app.move_button.invoke()
+    assert app._form_state() == original_form and not app.dirty
+    assert app.scene.preview_node is None and not app.scale_widget.enabled
+    checks.append("Move node unlocks position controls and previews a wrapping footprint; Cancel move restores coordinates without writing")
+
+    app.name_var.set("Title edited before moving")
+    app.notes.insert("end", "\nText edited before moving.")
+    app.move_button.invoke()
+    app.layer_var.set(app._layer_displays[neighbor.layer])
+    app.depth_var.set(3)
+    app.slot_var.set("14")
+    app.notes.insert("end", "\nText edited during moving.")
+    app.name_entry.focus_force()
+    app.name_entry.event_generate("<Escape>")
+    _pump(root)
+    assert app._node_move_origin is None and app._form_state()[1:6] == original_form[1:6]
+    assert app.name_var.get() == "Title edited before moving"
+    assert app.notes.get("1.0", "end-1c").endswith("Text edited during moving.") and app.dirty
+    assert path.read_bytes() == original_bytes and app.scene.preview_node is None
+    assert app.save_node()
+    edited = app.document.get(wide.id)
+    assert (edited.layer, edited.depth, edited.slot, edited.span) == (wide.layer, wide.depth, wide.slot, wide.span)
+    checks.append("Escape cancels only the move, keeping title and note edits made before and during movement")
+
+    original = app.document
+    original_bytes = path.read_bytes()
+    app.protocol_filter_var.set("Visible")
+    app._filter_changed()
+    app.move_button.invoke()
+    app.slot_var.set("07")  # The start is free, but this four-slot footprint reaches the hidden blocker.
+    assert not app.scene.is_visible(blocker)
+    assert not app.scene.preview_valid and app.scene.preview_node.slot == 6
+    assert app.save_button.instate(["disabled"]) and app.slot_slider.find_withtag("blocked")
+    assert not app.save_node() and app.document == original and path.read_bytes() == original_bytes
+    with patch("atlas.ui.messagebox.askyesnocancel", return_value=True):
+        assert not app.select_node(neighbor.id)
+    assert app.selected == wide.id and app._node_move_origin is not None
+    app.filter_var.set(app._layer_displays[wide.layer])
+    app._filter_changed()
+    app.layer_box.set(app._layer_displays[neighbor.layer])
+    app.layer_box.event_generate("<<ComboboxSelected>>")
+    app.depth_var.set(3)
+    app.slot_var.set("16")
+    assert not app.scene.is_visible(app.scene.preview_node)  # The move preview remains visible beyond the filter.
+    assert app.scene.preview_actor is not None and app.scene.preview_valid
+    form = app._form_state()
+    camera = (app.scene.yaw, app.scene.elevation, app.scene.scale, tuple(app.scene.target))
+    app.canvas.event_generate("<ButtonPress-1>", x=80, y=80)
+    app.canvas.event_generate("<B1-Motion>", x=110, y=95)
+    app.canvas.event_generate("<ButtonRelease-1>", x=110, y=95)
+    app.canvas.event_generate("<MouseWheel>", delta=120)
+    _pump(root)
+    assert app._form_state() == form and app.selected == wide.id
+    assert (app.scene.yaw, app.scene.elevation, app.scene.scale, tuple(app.scene.target)) != camera
+    assert app.document == original and path.read_bytes() == original_bytes
+    checks.append("moves reject hidden reservations across the entire footprint; rotation and zoom preserve the draft and filtered destinations still preview")
+
+    with patch("atlas.ui.messagebox.askyesnocancel", return_value=None) as prompt:
+        assert not app.select_node(neighbor.id)
+    assert prompt.called and app.selected == wide.id and app._form_state() == form
+    with patch("atlas.ui.write_atlas", side_effect=OSError("Simulated move save failure")), \
+         patch("atlas.ui.messagebox.showerror"):
+        assert not app.save_node()
+    assert app._node_move_origin is not None and app._form_state() == form
+    assert app.document == original and path.read_bytes() == original_bytes
+    app.blocks_button.invoke()
+    assert app._form_state() == form and app._node_move_origin is not None
+    assert app.size_box.instate(["disabled"]) and app.move_button.cget("text") == "Cancel move"
+    app.nodes_button.invoke()
+    assert app._form_state() == form and app.scene.preview_node.slot == 15
+    app.save_button.invoke()
+    moved = app.document.get(wide.id)
+    assert app._node_move_origin is None and not app.dirty
+    assert (moved.layer, moved.depth, moved.slot, moved.span) == (neighbor.layer, 3, 15, wide.span)
+    assert (moved.name, moved.notes, moved.protocol) == (edited.name, edited.notes, edited.protocol)
+    assert [node.id for node in app.document.nodes] == [node.id for node in original.nodes]
+    assert all(app.document.get(node.id) == node for node in original.nodes if node.id != wide.id)
+    assert read_atlas(path) == app.document and read_atlas(path.with_suffix(".json.bak")) == original
+    assert app.scene.layer_filter is None and app.scene.is_visible(moved)
+    app.set_view_mode("blocks")
+    assert app.scene.meshes[moved.id].center == app.scene.node_anchor(moved)
+    app.set_view_mode("nodes")
+    assert app.scene.actors[moved.id][0].GetPosition() == app.scene.node_anchor(moved)
+    checks.append("unsaved moves survive view switches and save failures; Save move keeps identity, text, size and neighbors, writes a backup and updates both views")
+
+    original = app.document
+    original_bytes = path.read_bytes()
+    app.move_button.invoke()
+    app.depth_var.set(4)
+    app.set_view_mode("blocks")
+    app.move_button.invoke()
+    assert app._node_move_origin is None and not app.dirty and app.depth_var.get() == moved.depth
+    assert not app.move_button.winfo_manager() and app.size_box.instate(["readonly"])
+    app.set_view_mode("nodes")
+    app.move_button.invoke()
+    app.depth_var.set(4)
+    with patch("atlas.ui.messagebox.askyesnocancel", return_value=False):
+        assert app.select_node(neighbor.id)
+    assert app._node_move_origin is None and app.document == original and path.read_bytes() == original_bytes
+    app.move_button.invoke()
+    app.depth_var.set(4)
+    with patch("atlas.ui.messagebox.askyesnocancel", return_value=True):
+        assert app.select_node(moved.id)
+    assert app.document.get(neighbor.id).depth == 4 and app._node_move_origin is None
+    checks.append("switching notes during movement honors Save, Discard and Cancel; movement can also be cancelled from Blocks")
+
+    app._load_editor(center)
+    app.move_button.invoke()
+    assert not app.slot_slider.enabled
+    app.depth_var.set(2)
+    assert app.size_var.get() == "Full" and app.slot_slider.enabled
+    assert app.save_button.instate(["disabled"])  # A full ring would overlap both saved blocks.
+    app.depth_var.set(0)
+    assert app.scene.preview_node.span == 16 and app.save_button.instate(["!disabled"])
+    assert app.save_node()
+    ring = app.document.get(center.id)
+    assert ring.depth == 0 and ring.span == 16
+    app.move_button.invoke()
+    app.depth_var.set(CENTER_DEPTH)
+    assert not app.slot_slider.enabled and app.scene.preview_node.span == 16
+    assert app.save_node() and app.document.get(center.id) == center
+    assert app.scene.node_anchor(app.document.get(center.id)) == app.scene.layer_anchor(center.layer)
+    app._load_editor(app.document.get(wide.id))
+    app.move_button.invoke()
+    app.depth_var.set(CENTER_DEPTH)
+    assert app.size_var.get() == "1/4" and app.slot_slider.enabled
+    assert app.scene.preview_node.span == 4
+    app.move_button.invoke()
+    checks.append("moving between Center and rings preserves full and partial block sizes and applies the same overlap rules")
+
+    original_bytes = path.read_bytes()
+    app.move_button.invoke()  # An unchanged move is a clean draft, including when previewing templates.
+    app.open_templates()
+    _pump(root)
+    assert app._node_move_origin is None and not app.move_node() and not app.save_node()
+    assert path.read_bytes() == original_bytes
+    app.cancel_templates()
+    assert app._node_move_origin is not None and app.editor_heading.cget("text") == "MOVE NODE"
+    assert not app.dirty and path.read_bytes() == original_bytes
+    app.move_button.invoke()
+    app.new_node()
+    assert app.selected is None and not app.move_button.winfo_manager() and not app.move_node()
+    app._load_editor(app.document.get(wide.id))
+    app.move_button.invoke()
+    root.geometry("1020x780")
+    _pump(root)
+    assert app.notes.winfo_height() >= 80
+    for button in (app.move_button, app.save_button):
+        assert button.winfo_ismapped()
+        assert button.winfo_rootx() + button.winfo_width() <= root.winfo_rootx() + root.winfo_width()
+    app.move_button.invoke()
+    checks.append("movement stays unavailable for new nodes and read-only templates; template cancellation restores a clean move and controls fit the minimum window")

@@ -46,6 +46,7 @@ def apply(root: tk.Tk) -> tuple[str, str]:
               foreground=[("disabled", "#546778")])
     style.configure("Primary.TButton", background="#163c49", foreground=ACCENT, bordercolor="#397a87")
     style.configure("Compact.TButton", padding=(8, 2))
+    style.configure("Inline.TButton", padding=(8, 0))
     style.map("Primary.TButton", background=[("active", "#20505d"), ("pressed", "#235967")])
     # Radio buttons use the Toolbutton layout to form a compact view selector.
     style.layout("View.Toolbutton", style.layout("Toolbutton"))

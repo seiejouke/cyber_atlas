@@ -1,6 +1,6 @@
 {
   "current_build": {
-    "date": "2026-10-24",
+    "date": "2026-10-25",
     "app_version": "0.7.0",
     "environment": {
       "system": "Windows",
@@ -11,7 +11,7 @@
       "numpy": "2.5.4"
     },
     "core_tests_passed": 101,
-    "gui_workflow_checks_passed": 74,
+    "gui_workflow_checks_passed": 81,
     "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
     "legacy_versions_tested": [
       1,
@@ -91,12 +91,22 @@
       "Sphere and label clicks select saved nodes for title and note editing without moving them",
       "Hidden larger footprints continue to reserve all of their saved slots",
       "New nodes use dropdowns and sliders only; occupied positions disable Create node",
-      "Saved-node coordinate dropdowns and sliders are read-only while Blocks retains spatial placement",
+      "Saved-node coordinates stay read-only until Move node unlocks layer, position and start slot",
       "New radial nodes use a 1/16 footprint while full Center nodes sit on the layer axis",
       "Switching views preserves dirty editor text, current draft, selection, filters and camera",
       "Custom layers, empty protocols, Center creation and Empty atlas work in both views"
     ],
-    "nodes_interaction": "New node uses dropdowns and sliders with a live validity preview; viewport clicks only select saved spheres for title and note editing",
+    "nodes_interaction": "New node and Move node use dropdowns and sliders with a live validity preview; viewport clicks select saved spheres and dragging rotates the camera",
+    "node_move_checks": [
+      "Move node previews the existing block footprint without writing until Save move",
+      "Cancel move and Escape restore starting coordinates while keeping title and note edits",
+      "Entire footprints are checked against hidden reservations; invalid moves cannot save",
+      "Filtered destinations still preview; saving clears a filter that would hide the moved node",
+      "View switches and failed saves preserve the move draft; success preserves identity, text, size and neighbors and writes a backup",
+      "Switching notes honors Save, Discard and Cancel; templates remain read-only",
+      "Center and ring transitions retain full and partial sizes and obey occupancy rules",
+      "Move controls and the notes area fit the minimum window"
+    ],
     "connection_checks": [
       "Layer anchors bound the spine with no extension beyond the first or last anchor",
       "Sparse adjacency joins ring neighbors and nearest nodes on the next occupied ring",

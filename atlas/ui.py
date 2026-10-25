@@ -25,6 +25,7 @@ class AtlasApp:
         self.selected: str | None = None
         self.placement_state = "locked"
         self._placement_origin: Node | None = None
+        self._node_move_origin: Node | None = None
         self._floating_position: tuple[int, int] | None = None
         self._loading = False
         self._loaded_form: tuple = ()
@@ -141,9 +142,14 @@ class AtlasApp:
         self.editor_form = form
         form.columnconfigure(0, weight=1)
         form.rowconfigure(9, weight=1)
-        self.editor_heading = ttk.Label(form, text="NODE EDITOR", style="Muted.TLabel",
+        editor_header = ttk.Frame(form, style="Panel.TFrame")
+        editor_header.grid(row=0, column=0, sticky="ew")
+        editor_header.columnconfigure(0, weight=1)
+        self.editor_heading = ttk.Label(editor_header, text="NODE EDITOR", style="Muted.TLabel",
                                         font=(self.mono, 9))
         self.editor_heading.grid(row=0, column=0, sticky="w")
+        self.move_button = ttk.Button(editor_header, text="Move node", style="Inline.TButton", command=self.move_node)
+        self.move_button.grid(row=0, column=1, sticky="e")
         self.coordinate_label = tk.Label(form, text="", bg=theme.PANEL, fg=theme.ACCENT,
                                          font=self.coordinate_font, anchor="w")
         self.coordinate_label.grid(row=1, column=0, sticky="w", pady=(3, 4))
@@ -336,6 +342,7 @@ class AtlasApp:
             "loaded_form": self._loaded_form,
             "placement_state": self.placement_state,
             "placement_origin": self._placement_origin,
+            "node_move_origin": self._node_move_origin,
             "floating_position": self._floating_position,
             "last_size": self._last_size,
             "mode": self.scene.mode,
@@ -376,6 +383,7 @@ class AtlasApp:
         self._active_template = template
         self._loading = True
         self.selected = None
+        self._node_move_origin = None
         self.placement_state = "locked"
         self._floating_position = None
         self.document = template.atlas
@@ -425,6 +433,7 @@ class AtlasApp:
         self.selected = origin["selected"]
         self.placement_state = origin["placement_state"]
         self._placement_origin = origin["placement_origin"]
+        self._node_move_origin = origin["node_move_origin"]
         self._floating_position = origin["floating_position"]
         self._last_size = origin["last_size"]
         self.scene.set_preview(None)
@@ -572,7 +581,7 @@ class AtlasApp:
         self.labels_var.set(self._view_labels[mode])
         if mode == "nodes":
             saved = self.document.get(self.selected)
-            if saved is not None:
+            if saved is not None and self._node_move_origin is None:
                 self._loading = True
                 self.layer_var.set(self._layer_displays[saved.layer])
                 self.protocol_var.set(self._protocol_displays[saved.protocol])
@@ -594,14 +603,48 @@ class AtlasApp:
     def _update_coordinate_controls(self) -> None:
         node_edit = self.scene.mode == "nodes" and self.selected is not None
         creating = self.scene.mode == "nodes" and self.selected is None
-        state = "disabled" if node_edit else "readonly"
+        moving = self._node_move_origin is not None
+        state = "disabled" if node_edit and not moving else "readonly"
         self.layer_box.configure(state=state)
-        self.protocol_box.configure(state=state)
-        self.scale_widget.set_enabled(not node_edit)
-        self.slot_slider.set_enabled(not node_edit and not (creating and self.depth_var.get() == CENTER_DEPTH))
-        self.editor_heading.configure(text="CREATE NODE" if creating else "EDIT NOTE" if node_edit else "NODE EDITOR")
-        self.save_button.configure(text="Create node" if creating else "Save note" if node_edit else "Save node")
+        self.protocol_box.configure(state="disabled" if node_edit or moving else "readonly")
+        self.size_box.configure(state="disabled" if moving else "readonly")
+        self.scale_widget.set_enabled(not node_edit or moving)
+        fixed_center = self.depth_var.get() == CENTER_DEPTH and (
+            creating or moving and BLOCK_SIZES[self.size_var.get()] == ANGULAR_SLOTS)
+        self.slot_slider.set_enabled((not node_edit or moving) and not fixed_center)
+        self.editor_heading.configure(text="MOVE NODE" if moving else "CREATE NODE" if creating else "EDIT NOTE" if node_edit else "NODE EDITOR")
+        self.save_button.configure(text="Save move" if moving else "Create node" if creating else "Save note" if node_edit else "Save node")
         self.add_button.configure(text="New node" if self.scene.mode == "nodes" else "Add here")
+        self.move_button.configure(text="Cancel move" if moving else "Move node")
+        self.move_button.grid() if node_edit or moving else self.move_button.grid_remove()
+
+    def move_node(self) -> bool:
+        if self._template_origin is not None:
+            return False
+        if self._node_move_origin is not None:
+            self.cancel_node_move()
+            return True
+        if self.scene.mode != "nodes" or self.document.get(self.selected) is None:
+            return False
+        self.slot_slider.cancel_drag()
+        self._cancel_hover()
+        self._node_move_origin = self._preview_candidate()
+        self._changed()
+        self.layer_box.focus_set()
+        return True
+
+    def cancel_node_move(self) -> None:
+        origin = self._node_move_origin
+        if origin is None:
+            return
+        self.slot_slider.cancel_drag()
+        self._cancel_hover()
+        self._node_move_origin = None
+        self.placement_state = "locked"
+        self._floating_position = None
+        self._placement_origin = origin
+        self._restore_coordinates(origin)
+        self._changed()
 
     def _connections_changed(self) -> None:
         self.scene.set_connections_visible(self.connections_var.get())
@@ -686,6 +729,9 @@ class AtlasApp:
         if self._template_origin is not None:
             self.cancel_templates()
             return "break"
+        if self._node_move_origin is not None:
+            self.cancel_node_move()
+            return "break"
         return self.cancel_placement()
 
     def _form_state(self) -> tuple:
@@ -723,18 +769,23 @@ class AtlasApp:
         footprint = " / All slots" if span == ANGULAR_SLOTS else (
             f" / Slots {slot + 1:02d}{' → ' if end < slot else '–'}{end + 1:02d}" if span > 1 else ""
         )
-        self.slot_label.configure(text="Start slot: fixed at Center" if creating_node and depth == CENTER_DEPTH else
+        fixed_center = depth == CENTER_DEPTH and (creating_node or self._node_move_origin is not None and span == ANGULAR_SLOTS)
+        self.slot_label.configure(text="Start slot: fixed at Center" if fixed_center else
                                   f"Start slot {slot + 1:02d} / 16 · {slot * 360 / ANGULAR_SLOTS:g}°{footprint}")
         self.slot_slider.set_context(span, self.document.free_starts(layer, depth, span, exclude_id=self.selected))
         self._update_coordinate_controls()
         placing = self.placement_state == "placing"
+        moving = self._node_move_origin is not None
         valid = self._refresh_preview()
-        self.save_button.state(["disabled"] if placing or (creating_node and not valid) else ["!disabled"])
+        self.save_button.state(["disabled"] if placing or ((creating_node or moving) and not valid) else ["!disabled"])
         noun = "node" if self.scene.mode == "nodes" else "block"
-        if creating_node:
+        if moving:
+            text = "Placing: click to lock (Esc cancels move)." if placing else (
+                "Moving: choose a layer, position and start slot. Save move to keep; Esc cancels.")
+        elif creating_node:
             text = "Creating: choose a layer, protocol, position and start slot." if valid else "Position occupied: choose another start slot or position."
         elif self.scene.mode == "nodes":
-            text = "Editing note: coordinates are fixed. Save note to keep changes." if self.dirty else "Saved: click a sphere to edit its title and notes."
+            text = "Editing note: Save note to keep changes. Move node to change position." if self.dirty else "Saved: edit this note or choose Move node."
         else:
             text = "Placing: click to lock (Esc cancels)" if placing else (
                 f"Locked: click {noun} to move. Save node to keep." if self.dirty or not self.selected
@@ -761,7 +812,8 @@ class AtlasApp:
         valid = candidate.slot in self.document.free_starts(candidate.layer, candidate.depth, candidate.span, exclude_id=self.selected)
         existing = self.document.get(self.selected)
         changed = self.placement_state == "placing" or existing is None or (candidate.position, candidate.slot, candidate.span) != (existing.position, existing.slot, existing.span)
-        self.scene.set_preview(candidate if changed and self.scene.is_visible(candidate) else None, valid)
+        visible = self.scene.is_visible(candidate) or self._node_move_origin is not None
+        self.scene.set_preview(candidate if changed and visible else None, valid)
         return valid
 
     def _restore_preview(self) -> None:
@@ -812,14 +864,17 @@ class AtlasApp:
             self.placement_state = "locked"
             origin = self._placement_origin
             if origin is not None:
-                self._loading = True
-                self.layer_var.set(self._layer_displays[origin.layer])
-                self.depth_var.set(origin.depth)
-                self.slot_var.set(f"{origin.slot + 1:02d}")
-                self.size_var.set(next(label for label, span in BLOCK_SIZES.items() if span == origin.span))
-                self._loading = False
+                self._restore_coordinates(origin)
             self._changed()
         return "break"
+
+    def _restore_coordinates(self, origin: Node) -> None:
+        self._loading = True
+        self.layer_var.set(self._layer_displays[origin.layer])
+        self.depth_var.set(origin.depth)
+        self.slot_var.set(f"{origin.slot + 1:02d}")
+        self.size_var.set(next(label for label, span in BLOCK_SIZES.items() if span == origin.span))
+        self._loading = False
 
     def _size_changed(self, _event=None) -> None:
         self._last_size = self.size_var.get()
@@ -839,6 +894,7 @@ class AtlasApp:
                      *, slot: int | None = None, size: str | None = None, placing: bool = False) -> None:
         self.slot_slider.cancel_drag()
         self._cancel_hover()
+        self._node_move_origin = None
         self.placement_state = "placing" if placing else "locked"
         self._floating_position = None
         self._loading = True
@@ -912,19 +968,22 @@ class AtlasApp:
         if self.placement_state == "placing":
             self.editor_state.configure(text="Placing: click a valid location to lock before saving.", fg=theme.GOLD)
             return False
-        if self.scene.mode == "nodes" and self.selected is None and not self._refresh_preview():
+        moving = self._node_move_origin is not None
+        creating_node = self.scene.mode == "nodes" and self.selected is None
+        if (creating_node or moving) and not self._refresh_preview():
             self.editor_state.configure(text="Position occupied: choose another start slot or position.", fg=theme.ERROR)
             return False
         try:
             existing = self.document.get(self.selected)
-            if self.scene.mode == "nodes" and existing is not None:
+            if self.scene.mode == "nodes" and existing is not None and not moving:
                 values = dict(name=self.name_var.get().strip(), notes=self.notes.get("1.0", "end-1c"))
                 layer = existing.layer
             else:
                 layer = self._layer_id()
                 values = dict(name=self.name_var.get().strip(), layer=layer, protocol=self._protocol_id(),
                               depth=self.depth_var.get(), notes=self.notes.get("1.0", "end-1c"),
-                              slot=int(self.slot_var.get()) - 1, span=BLOCK_SIZES[self.size_var.get()])
+                              slot=int(self.slot_var.get()) - 1,
+                              span=self._node_move_origin.span if moving else BLOCK_SIZES[self.size_var.get()])
             node = replace(existing, **values) if existing else Node.create(**values)
             candidate = self.document.with_node(node)
         except (AtlasError, ValueError) as exc:
@@ -1135,7 +1194,8 @@ class AtlasApp:
                                 fill="#6d879f", font=(self.mono, 8), tags="overlay")
         if self._template_origin is None:
             self.canvas.create_text(18, height - 64, anchor="sw",
-                                    text="CREATE WITH EDITOR CONTROLS" if node_view and self.selected is None else
+                                    text="MOVING: EDITOR CONTROLS / ESC CANCEL" if self._node_move_origin is not None else
+                                    "CREATE WITH EDITOR CONTROLS" if node_view and self.selected is None else
                                     "EDITING: COORDINATES LOCKED" if node_view else
                                     "PLACING: CLICK TO LOCK / ESC CANCEL" if self.placement_state == "placing" else
                                     "LOCKED: CLICK BLOCK TO MOVE",
