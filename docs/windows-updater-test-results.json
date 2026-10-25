@@ -4,13 +4,13 @@
     "Older Windows release installs under a separate test AppId; the real application registration is unchanged",
     "The background helper waits for the old process before applying the installer",
     "The real update helper upgrades the older binary and installer registration to the new version",
-    "The updated app reopens with the original atlas path; closing it preserves saved notes byte for byte",
-    "The upgraded executable passes 33 frozen runtime checks",
+    "The updated app reopens with the original atlas path; closing it preserves notes, subconcepts and information records byte for byte",
+    "The upgraded executable passes 34 frozen runtime checks",
     "Uninstall removes the test registration, preserves the atlas, and leaves the real Cyber Atlas installation unchanged"
   ],
-  "previous_version": "0.8.1",
-  "version": "0.9.0",
-  "updated_runtime_checks": 33,
+  "previous_version": "0.9.0",
+  "version": "0.9.1",
+  "updated_runtime_checks": 34,
   "checks_passed": 6,
-  "app_version": "0.9.0"
+  "app_version": "0.9.1"
 }

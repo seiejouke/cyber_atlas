@@ -8,21 +8,21 @@ Your notes work offline and stay on your computer. You can export and import atl
 
 See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [developer guide](docs/DEVELOPMENT.md) for source setup and builds.
 
-![Information heat overview of a populated atlas with recorded-entry counts and bounded subconcept support](docs/information-heat-overview.png)
+![Information heat overview with automatic main-note counts, a gradual blue-to-red scale and rings around parents](docs/main-note-heat-overview.png)
 
 ![Blocks outline view of a web application architecture, with Authentication selected and its notes visible](docs/preview.png)
 
 ## Install Cyber Atlas
 
-Choose a package for **version 0.9.0**. Each **Download** link downloads the selected file.
+Choose a package for **version 0.9.1**. Each **Download** link downloads the selected file.
 
 | Platform | Package | Installation |
 | --- | --- | --- |
-| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.0/CyberAtlas-0.9.0-Setup.exe)** | Open it and follow the installer. |
-| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.0/cyber-atlas_0.9.0_amd64.deb)** | Open it with your software installer. |
-| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.0/CyberAtlas-0.9.0-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
+| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.1/CyberAtlas-0.9.1-Setup.exe)** | Open it and follow the installer. |
+| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.1/cyber-atlas_0.9.1_amd64.deb)** | Open it with your software installer. |
+| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.1/CyberAtlas-0.9.1-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
 
-See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.0) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
+See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.1) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
 
 ---
 
@@ -44,20 +44,18 @@ Try the [editable orbital-cluster example](examples/orbital_cluster_atlas.json).
 
 ## Information heat
 
-**Source preview — awaiting a packaged update.** The improvements below are implemented in source. The current 0.9.0 downloads still use the earlier entry-only heat calculation.
-
 In **Nodes**, choose **Color → Information heat**. Each saved concept's main note counts automatically, and its suborbitals add their own information to the parent. **Balanced (1–16)** is the initial preset; every additional item changes the color until red, using blue → cyan → pale neutral → yellow → orange → red with equally spaced counts. Compact and Extended presets are also available. A neutral ring and count badge identify parents even when their suborbitals are collapsed.
 
-![Actual source interface with automatic main-note heat, Balanced preset and collapsed-parent indicators](docs/main-note-heat-overview.png)
+![Cyber Atlas interface with automatic main-note heat, Balanced preset and collapsed-parent indicators](docs/main-note-heat-overview.png)
 
-![Actual source interface showing one main note plus three suborbitals, with the parent ring retained in focus](docs/main-note-heat-cluster.png)
+![Cyber Atlas interface showing one main note plus three suborbitals, with the parent ring retained in focus](docs/main-note-heat-cluster.png)
 
 See the [guide](docs/USER_GUIDE.md#information-heat) or try the [main-note heat example](examples/main_note_heat_atlas.json). Existing notes, suborbitals and additional records are preserved; exact copies made by the old main-note copy action count once. No file-format migration is needed for this display change.
 
 ## Project scope and vision
 
 This section contains the complete illustrated design philosophy. The current
-release provides the spatial notebook, recorded information and bounded heat views;
+release provides the spatial notebook, automatic main-note counts and information heat;
 mastery measurements, assessments, source integration and historical
 playback remain planned capabilities. The implementation table below records
 what is available today.
@@ -73,7 +71,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.9.0 · **Updated:** 25 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.9.1 · **Updated:** 25 October 2026
 
 ### Product vision
 
@@ -248,7 +246,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.9.0 and the marked source preview on 25 October 2026. Planned capabilities below describe the intended system.*
+*Implementation status checked against v0.9.1 on 25 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -261,7 +259,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Opt-in release checks and verified update downloads | **Implemented** |
 | Node connections between footprints sharing an edge; gaps remain unconnected | **Implemented** |
 | Recorded information entries and heat colors | **Implemented** |
-| Automatic main-note heat, linear presets and persistent parent indicators | **Implemented in source; awaiting a packaged update** |
+| Automatic main-note heat, linear presets and persistent parent indicators | **Implemented** |
 | Distinct-information-based node scaling | **Planned** |
 | Dual-shell mastery visualization | **Planned** |
 | Node-associated question bank and assessment history | **Planned** |
@@ -284,5 +282,5 @@ The ultimate objective is not to maximize the quantity of notes. It is to help l
 ---
 
 **Project:** [seiejouke/cyber_atlas](https://github.com/seiejouke/cyber_atlas)  
-**Reference release:** [v0.9.0](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.0)\
+**Reference release:** [v0.9.1](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.1)\
 **Document:** Conceptual product specification; not a claim of scientific efficacy or completed functionality.

@@ -1,9 +1,7 @@
 {
-  "status": "Source preview; awaiting approval for packaging",
+  "status": "Published Windows and Linux release",
   "date": "2026-10-25",
-  "base_release_version": "0.9.0",
   "atlas_file_version": 10,
-  "tested_platform": "Windows desktop",
   "python": "3.12.3",
   "core_tests_passed": 190,
   "gui_workflow_checks_passed": 121,
@@ -33,6 +31,23 @@
     "additional_records": 495,
     "selected_cluster_total": 4
   },
-  "packages_built": false,
-  "packaging_requires_explicit_approval": true
+  "packages_built": true,
+  "packaging_requires_explicit_approval": true,
+  "app_version": "0.9.1",
+  "source_commit": "fde62fd8f207e701534115aceb50f2bb04474290",
+  "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.1",
+  "previous_release_version": "0.9.0",
+  "tested_platforms": [
+    "Windows desktop",
+    "Ubuntu 22.04 with Xvfb/Mesa",
+    "Ubuntu 24.04.2 under WSLg"
+  ],
+  "windows_runtime_checks": 34,
+  "linux_runtime_checks": 33,
+  "windows_updater_lifecycle_checks": 6,
+  "packaged_runtime_report": "packaged-test-results.json",
+  "windows_updater_report": "windows-updater-test-results.json",
+  "linux_build_report": "linux-build-report.json",
+  "linux_workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40238980544",
+  "older_app_compatibility": "File format remains 10, readable by 0.9.0; that version retains its earlier entry-only display calculation"
 }

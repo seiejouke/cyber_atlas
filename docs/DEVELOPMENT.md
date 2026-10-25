@@ -163,7 +163,7 @@ checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, and orbital relationships. All **190 core tests and 121 GUI workflow checks passed** on Windows with Python
-3.12.3, Tk 8.6 and VTK 9.6.2. The source-preview report is
+3.12.3, Tk 8.6 and VTK 9.6.2. The release verification report is
 [`main-note-heat-verification.json`](main-note-heat-verification.json); the
 packaged-release reports remain separate in `docs/`.
 
@@ -220,7 +220,7 @@ owned records; design reassignment preserves them. Versions 1–9 load without
 inventing entries or changing existing notes. Normal atomic saves retain the
 previous file as the backup.
 
-The source preview gives each saved concept one main-note item automatically,
+The heat model gives each saved concept one main-note item automatically,
 then adds its additional records and each direct child's own count. Exact
 main-note text copies stay saved but do not
 double-count the main note. Spatial adjacency and reference guides are not
@@ -243,15 +243,18 @@ preserve dirty main-note fields. Color and range settings last for the session.
 Blocks continues to use layer colors and the original meshes.
 
 Run `python tools/capture_information.py --main-notes` on a graphical desktop
-to generate the 84-concept main-note example and capture both actual source
+to generate the 84-concept main-note example and capture both application
 views. Add `--example-only` to write the example without opening a GUI.
 The default invocation still captures the earlier recorded-entry example.
 Core and GUI checks cover automatic counts, saved-copy compatibility, exact
 totals, green-free gradual colors, every equally spaced tick, all three presets,
 ring persistence and removal, filtering, failed saves, export/import and minimum
 windows. Runtime self-checks also cover main notes, the default linear scale
-and collapsed-parent rings. No packages were built for this source preview;
-version 0.9.0 downloads retain the earlier entry-only heat behavior.
+and collapsed-parent rings. Version 0.9.1 includes these improvements in the
+Windows installer and ZIP and the Linux Debian package and AppImage. Windows
+passed 34 bundled runtime checks; Linux passed 33 per format. An isolated real
+0.9.0-to-0.9.1 Windows update passed six lifecycle checks, preserving notes,
+suborbitals and saved information records byte for byte.
 
 ## Update distribution
 
@@ -315,8 +318,8 @@ installer check is skipped.
 Outputs in `dist/`:
 
 - `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
-- `CyberAtlas-0.9.0-windows-x64.zip`: complete folder for ZIP distribution.
-- `CyberAtlas-0.9.0-Setup.exe`: installer for the current Windows account.
+- `CyberAtlas-0.9.1-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.9.1-Setup.exe`: installer for the current Windows account.
 - `SHA256SUMS.txt`: hashes for the distributable files.
 - `packaged-test-results.json`: results from the bundled executable.
 - `installed-test-results.json`: results from running the installed executable.
@@ -357,8 +360,8 @@ Cyber Atlas installation. A normal local build does not install the package.
 
 Outputs and reports are in `dist/linux/`:
 
-- `cyber-atlas_0.9.0_amd64.deb`
-- `CyberAtlas-0.9.0-x86_64.AppImage`
+- `cyber-atlas_0.9.1_amd64.deb`
+- `CyberAtlas-0.9.1-x86_64.AppImage`
 - `SHA256SUMS-linux.txt`
 - `linux-build-report.json` and runtime/installation test reports
 

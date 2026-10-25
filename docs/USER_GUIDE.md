@@ -12,11 +12,11 @@ For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
 
-On Linux x86_64, download `cyber-atlas_0.9.0_amd64.deb` for Ubuntu/Debian-based
+On Linux x86_64, download `cyber-atlas_0.9.1_amd64.deb` for Ubuntu/Debian-based
 desktops and install it with your package installer. Open **Cyber Atlas** from
 the application menu. Python, Tk and VTK are included.
 
-For other compatible Linux desktops, download `CyberAtlas-0.9.0-x86_64.AppImage`.
+For other compatible Linux desktops, download `CyberAtlas-0.9.1-x86_64.AppImage`.
 In the file's properties, allow it to run as a program, then open it. The AppImage
 is portable; it does not install an application-menu entry automatically.
 
@@ -93,11 +93,10 @@ example. See the [implemented cluster screenshots](../README.md#orbital-clusters
 
 ## Information heat
 
-**Source preview:** automatic main-note counts, linear presets and persistent
-parent rings are implemented in source and await a packaged update. The current
-0.9.0 Windows and Linux downloads still count only separately recorded entries.
-The display changes below do not require a new atlas file format or rewriting
-existing notes. Format-10 files still require Cyber Atlas 0.9.0 or newer.
+Automatic main-note counts, linear presets and persistent parent rings are
+included in Cyber Atlas 0.9.1 for Windows and Linux. These display changes do
+not require a new atlas file format or rewriting existing notes. Format-10
+files require Cyber Atlas 0.9.0 or newer.
 
 In **Nodes**, choose **Color → Information heat**. The full atlas uses one
 cool-to-warm fill per node. Every saved concept starts at **1**, representing
@@ -126,7 +125,7 @@ therefore totals **4**; each of those suborbitals starts at **1**.
 palette. These controls do not change saved coordinates or sphere sizes based
 on information quantity; Blocks retains its existing footprints.
 
-![Actual source heat overview with automatic main-note counts and parent-ring badges](main-note-heat-overview.png)
+![Information heat overview with automatic main-note counts and parent-ring badges](main-note-heat-overview.png)
 
 Select a saved concept or subconcept and choose **Additional entries**. Each entry needs a
 title and information body, such as one explanation, observation or worked
@@ -142,7 +141,7 @@ copy becomes different information, it counts as an additional item. Identical
 additional entries within one concept are rejected. These counts measure saved
 items, not demonstrated mastery or automatic semantic novelty.
 
-![Actual source focus with one main note, three suborbitals and a persistent parent indicator](main-note-heat-cluster.png)
+![Cluster focus with one main note, three suborbitals and a persistent parent indicator](main-note-heat-cluster.png)
 
 Only explicit, saved subconcepts add to their parent. Unsaved creation drafts
 do not count, and a parent's heat is never passed back down to its children.
@@ -154,7 +153,7 @@ Information entries are included in JSON exports and backups. Deleting a
 concept removes its owned entries; deleting a cluster includes its children
 and their entries. The [main-note example atlas](../examples/main_note_heat_atlas.json)
 contains illustrative information for exploring the display.
-See the [source verification report](main-note-heat-verification.json).
+See the [release verification report](main-note-heat-verification.json).
 
 ## First use
 

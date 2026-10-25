@@ -1,7 +1,7 @@
 {
   "current_build": {
     "date": "2026-10-25",
-    "app_version": "0.9.0",
+    "app_version": "0.9.1",
     "environment": {
       "system": "Windows",
       "architecture": "AMD64",
@@ -10,8 +10,8 @@
       "vtk": "9.6.2",
       "numpy": "2.5.4"
     },
-    "core_tests_passed": 184,
-    "gui_workflow_checks_passed": 116,
+    "core_tests_passed": 190,
+    "gui_workflow_checks_passed": 121,
     "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
     "legacy_versions_tested": [
       1,
@@ -24,7 +24,7 @@
       8,
       9
     ],
-    "legacy_migration": "Versions 1-5 use consecutive 1/16 slots; versions 6-9 retain exact slots and sizes. Versions 1-6 receive the OSI design preset; later versions retain their design and assignments. Versions 1-9 load without inventing information entries or altering personal notes. Saving writes schema 10 and retains the previous file as the normal backup.",
+    "legacy_migration": "Versions 1-5 use consecutive 1/16 slots; versions 6-9 retain exact slots and sizes. Versions 1-6 receive the OSI design preset; later versions retain their design and assignments. Versions 1-9 load without inventing information entries or altering personal notes. Saving writes schema 10 and retains the previous file as the normal backup. Version 10 remains unchanged; exact main-note copies are retained and deduplicated only for heat counting.",
     "untested_platforms": [
       "macOS",
       "physical Arch/Sway desktop"
@@ -134,49 +134,49 @@
       "pyinstaller_hooks_contrib": "2026.9",
       "inno_setup": "7.1.0",
       "signed": false,
-      "installer": "CyberAtlas-0.9.0-Setup.exe",
-      "zip": "CyberAtlas-0.9.0-windows-x64.zip",
-      "packaged_runtime_checks_passed": 33,
+      "installer": "CyberAtlas-0.9.1-Setup.exe",
+      "zip": "CyberAtlas-0.9.1-windows-x64.zip",
+      "packaged_runtime_checks_passed": 34,
       "installed_runtime_checks_passed": null,
       "installer_lifecycle_checks_passed": null,
       "test_isolation": "New temporary atlases; packaged executable tested with Python, virtual-environment and Tcl/Tk environment overrides removed and only System32 on PATH",
       "installer_checks": "Cyber Atlas is already installed for this account; the existing installation was preserved.",
       "limitations": "Tested on this Windows desktop. The real installation was preserved; a separate temporary installation verified install/upgrade/restart/remove. No separate clean Windows machine was tested.",
-      "source_commit": "ae12853b5337be5ad56b0ec240bb5cc6f02dfbbd",
+      "source_commit": "fde62fd8f207e701534115aceb50f2bb04474290",
       "updater_integration_checks_passed": 6,
-      "updater_installed_runtime_checks_passed": 33,
-      "updater_upgrade_path": "0.8.1 to 0.9.0 using an isolated AppId and the real helper; schema-9 atlas reopened and preserved byte for byte"
+      "updater_installed_runtime_checks_passed": 34,
+      "updater_upgrade_path": "0.9.0 to 0.9.1 using an isolated AppId and the real helper; schema-10 atlas containing notes, suborbitals and main-note copies preserved byte for byte"
     },
     "linux_release": {
       "architecture": "x86_64",
-      "source_commit": "ae12853b5337be5ad56b0ec240bb5cc6f02dfbbd",
+      "source_commit": "fde62fd8f207e701534115aceb50f2bb04474290",
       "build_baseline": "Ubuntu 22.04, glibc 2.35, Python 3.12.3",
-      "workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40230134906",
-      "core_tests_passed": 184,
-      "packaged_runtime_checks_passed": 32,
-      "appimage_runtime_checks_passed": 32,
-      "installed_runtime_checks_passed": 32,
+      "workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40238980544",
+      "core_tests_passed": 190,
+      "packaged_runtime_checks_passed": 33,
+      "appimage_runtime_checks_passed": 33,
+      "installed_runtime_checks_passed": 33,
       "installer_lifecycle_checks_passed": 4,
       "additional_desktop": "Ubuntu 24.04.2 under WSLg with XWayland",
-      "additional_desktop_deb_checks_passed": 32,
-      "additional_desktop_appimage_checks_passed": 32,
+      "additional_desktop_deb_checks_passed": 33,
+      "additional_desktop_appimage_checks_passed": 33,
       "appimage_launch": "Normal FUSE launch as well as extract-and-run on the headless runner",
       "artifacts": [
         {
-          "name": "cyber-atlas_0.9.0_amd64.deb",
-          "bytes": 80934702,
-          "sha256": "dd898bc6c67d2f33e060505db63194c5664f8579dd7e64d6762d27d34ae76f15"
+          "name": "cyber-atlas_0.9.1_amd64.deb",
+          "bytes": 80837968,
+          "sha256": "aa6a419e794cfd07fb57577086a8b04af2dba4d5413c347256e2c7c32937cc29"
         },
         {
-          "name": "CyberAtlas-0.9.0-x86_64.AppImage",
-          "bytes": 97778168,
-          "sha256": "cadfb841bde85cfc647fcfa0126a776805ce11c6d263fbc2939d933e46e7ae16"
+          "name": "CyberAtlas-0.9.1-x86_64.AppImage",
+          "bytes": 97782264,
+          "sha256": "2cd2295435927e5c3709595ff8feb166f36ca6a3522618946aa920e7a94f0be9"
         }
       ],
       "limitations": "Requires glibc 2.35 or newer, compatible C++ libraries and host OpenGL/X11 or XWayland. Other distributions and native Wayland without XWayland have not been tested."
     },
-    "source_commit": "ae12853b5337be5ad56b0ec240bb5cc6f02dfbbd",
-    "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.0",
+    "source_commit": "fde62fd8f207e701534115aceb50f2bb04474290",
+    "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.1",
     "block_outline_checks": [
       "Outlined edges can be picked through nearer empty interiors; a selected opaque block occludes those same edges",
       "Outline keeps only the selection solid; clicking an unfilled block selects it without writing the atlas",
@@ -237,42 +237,50 @@
       "exclusions": "Empty gaps, corner-only contact, other layers and layer-marker spokes",
       "filtering": "Topology is computed before filtering; hidden endpoints remove edges without replacement",
       "orbital_relationships": "Explicit parent-child data remains separate from spatial pairs and guides",
-      "heat": "Spatial pairs and guides never contribute; only explicit direct subconcepts add bounded support"
+      "heat": "Spatial pairs and guides never contribute; explicit direct subconcepts contribute their full own-information counts"
     },
     "information_heat_checks": [
-      "Heat overview uses own entries plus capped direct-child support; adjacent spatial notes do not add heat or change node sizes",
-      "Cluster focus switches to own-information fills and the exact support arc; filtering and Show atlas retain fixed counts and colors",
-      "Child entries save independently, update bounded parent support and preserve unsaved personal-note drafts",
+      "Existing notes count automatically; adding a saved subconcept warms itself and its parent without creating extra entry records",
+      "Old main-note copies stay saved and count once; the editor labels them and distinct edited information adds heat without rewriting the main note",
+      "Heat totals include one main note, additional entries and direct-child information; spatial neighbors do not add heat or change sphere sizes",
+      "Balanced is the default; all three presets have every integer count equally spaced and never modify saved atlas data",
+      "Unselected parents retain neutral rings and child-count badges while childless nodes use distinct selection corner marks",
+      "Overview, focus and collapsed clusters retain total heat and the parent indicator; filters hide rings without changing counts",
+      "Child entries save independently, warm their parent by one and preserve unsaved main-note drafts",
       "Editing an entry keeps its count; validation, failed writes and Cancel preserve the complete information draft and saved atlas",
-      "Existing notes can explicitly become one recorded entry without changing their original text; identical copies cannot inflate counts",
+      "Main notes count automatically and need no copy step; optional additional entries remain independent and reject duplicates",
       "Entry deletion updates counts without removing notes; JSON export and import preserve every entry ID, owner and body",
       "Read-only templates cannot edit entries; cancellation restores the original atlas and information metrics without writing",
-      "Heat controls and information editors fit minimum windows; Blocks and layer colors preserve the existing geometry and saved entries"
+      "Heat controls and information editors fit minimum windows; Blocks and layer colors preserve the existing geometry and saved entries",
+      "Adding and removing the last subconcept immediately updates the parent ring and heat; Blocks never receives sphere overlays"
     ],
     "information_heat": {
-      "entry_storage": "Independent stable-ID records with concept owners, titles and bodies; existing personal notes stay separate",
-      "overview": "Own entries + bounded direct-child support",
-      "focus": "Own-information fill + separate amber parent-support rim; neutral selection halo",
-      "support_weight": 0.25,
-      "per_child_cap": 1,
-      "per_parent_cap": 4,
-      "fixed_color_anchors": [
-        0,
-        1,
-        2,
-        4,
-        8,
-        16,
-        32
-      ],
+      "main_note": "One automatic item for each saved concept, including a named concept with empty note text",
+      "additional_entries": "Stable-ID records count individually; exact main-note text copies remain stored but count once with the main note",
+      "subconcept_contribution": "Each explicit direct child adds its full own-information count to its parent",
+      "overview_and_focus": "Same total-information fill in both views",
+      "support_weight": 1,
+      "numeric_count_cap": null,
+      "color_saturation_only": true,
+      "default_preset": "B - Balanced (1-16)",
+      "presets": {
+        "A - Compact (1-9)": 9,
+        "B - Balanced (1-16)": 16,
+        "C - Extended (1-32)": 32
+      },
+      "palette": "Blue, cyan, pale neutral, yellow, orange, red; linear interpolation without a green segment",
+      "count_spacing": "Every integer tick uses the same horizontal increment, in all presets",
+      "parent_indicator": "Neutral ring and child-count badge on every visible parent, collapsed or expanded",
+      "selection": "Corner marks, distinct from the parent indicator",
       "spatial_or_guide_heat": false,
       "fixed_node_sizes": true,
       "palette_setting": "Session-only; Nodes view",
-      "report": "docs/information-heat-verification.json",
+      "report": "docs/main-note-heat-verification.json",
       "example": {
         "main_nodes": 84,
-        "subconcepts": 4,
-        "information_entries": 527
+        "subconcepts": 8,
+        "additional_records": 495,
+        "selected_cluster_total": 4
       }
     }
   },
@@ -300,6 +308,283 @@
     ]
   },
   "previous_builds": [
+    {
+      "date": "2026-10-25",
+      "app_version": "0.9.0",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 184,
+      "gui_workflow_checks_passed": 116,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "legacy_migration": "Versions 1-5 use consecutive 1/16 slots; versions 6-9 retain exact slots and sizes. Versions 1-6 receive the OSI design preset; later versions retain their design and assignments. Versions 1-9 load without inventing information entries or altering personal notes. Saving writes schema 10 and retains the previous file as the normal backup.",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ],
+      "empty_atlas_checks": [
+        "Cancellation preserves document and draft",
+        "Write failure preserves active atlas",
+        "Confirmed reset saves an empty atlas with the previous saved document backed up",
+        "Repeating reset on an empty atlas preserves its backup"
+      ],
+      "placement_checks": [
+        "Add here starts explicit Placing mode; Save requires a locked location",
+        "Left click locks and cancels queued hover callbacks",
+        "Locked drafts stay fixed through motion and unrelated empty clicks",
+        "Clicking a locked draft or selected saved block picks it up",
+        "Occupied drops remain Placing with a red preview",
+        "Escape restores the last locked location and preserves notes",
+        "Relocating a saved block preserves its ID and requires Save to update disk",
+        "Dragging rotates while Placing without locking or saving"
+      ],
+      "slot_slider_checks": [
+        "16 snapping positions with aligned landmark labels",
+        "Live preview during drag; valid release locks and stops mouse following",
+        "Footprint highlights for every size, including wrapping from 16 to 01",
+        "Arrow keys and Home/End clamp to the slider endpoints",
+        "Blocked starts account for footprint width and exclude the selected saved block",
+        "Invalid releases cannot lock or save; Escape restores the prior lock and ignores a later release",
+        "Both sliders and the notes area fit the minimum window size"
+      ],
+      "atlas_file_version": 10,
+      "design_checks": [
+        "Add, rename, reorder and recolor layers with stable IDs and equal spacing",
+        "Add, rename and remove protocols with stable IDs",
+        "Editable layer/protocol captions and three block label styles",
+        "Dynamic axis, legend, filters, geometry, picking and camera",
+        "Cancel, validation errors and write failures preserve the saved atlas",
+        "Removing used entries requires explicit reassignment; overlaps reject the operation atomically",
+        "Custom design roundtrip through saved/exported JSON",
+        "Empty atlas preserves the design and backs up the saved blocks",
+        "A custom-only single-layer atlas can save its first block without preset entries"
+      ],
+      "design_editor_preview": "docs/design-editor.png",
+      "clear_list_checks": [
+        "Remove list clears layers in the draft and requires valid layer reassignments before Apply",
+        "Remove protocols saves immediately after confirmation; blocks become unassigned with unchanged notes and geometry",
+        "No protocol is an unassigned state; an empty protocol list remains valid",
+        "Immediate removal updates editor and filters and preserves camera position",
+        "Pending layer/caption edits stay in the design draft; cancelling does not undo confirmed protocol removal",
+        "Write failure preserves saved assignments and the draft; clearing unsaved additions does not replace the backup",
+        "New blocks, Empty atlas, export/import and save-on-close work without protocols",
+        "Controls fit the minimum window size"
+      ],
+      "radial_controls": "One discrete radial slider; Inward and Outward buttons removed",
+      "optional_protocol_checks": [
+        "Schema 8 stores unassigned protocol as null and an empty protocol list as []",
+        "Protocol addition does not automatically assign existing blocks",
+        "Explicit assignment/unassignment and No protocol filtering",
+        "A user protocol named No protocol remains selectable separately from the unassigned state",
+        "Version 7 custom designs migrate without changing protocol assignments"
+      ],
+      "view_modes": "Blocks is the default; Nodes is an alternative session-only view of the same atlas data",
+      "nodes_view_checks": [
+        "Layer-colored spheres use the midpoint of each saved radial and angular footprint",
+        "Occupied layer/depth rings have faint, unpickable orbital guides",
+        "Selected and hovered nodes retain labels while the Labels option controls all other labels",
+        "Sphere and label clicks select saved nodes for title and note editing without moving them",
+        "Hidden larger footprints continue to reserve all of their saved slots",
+        "New nodes use dropdowns and sliders only; occupied positions disable Create node",
+        "Saved-node coordinates stay read-only until Move node unlocks layer, position and start slot",
+        "New radial nodes use a 1/16 footprint while full Center nodes sit on the layer axis",
+        "Switching views preserves dirty editor text, current draft, selection, filters and camera",
+        "Custom layers, empty protocols, Center creation and Empty atlas work in both views"
+      ],
+      "nodes_interaction": "New node and Move node use dropdowns and sliders with a live validity preview; viewport clicks select saved spheres and dragging rotates the camera",
+      "node_move_checks": [
+        "Move node previews the existing block footprint without writing until Save move",
+        "Cancel move and Escape restore starting coordinates while keeping title and note edits",
+        "Entire footprints are checked against hidden reservations; invalid moves cannot save",
+        "Filtered destinations still preview; saving clears a filter that would hide the moved node",
+        "View switches and failed saves preserve the move draft; success preserves identity, text, size and neighbors and writes a backup",
+        "Switching notes honors Save, Discard and Cancel; templates remain read-only",
+        "Center and ring transitions retain full and partial sizes and obey occupancy rules",
+        "Move controls and the notes area fit the minimum window"
+      ],
+      "connection_checks": [
+        "VTK renders exactly the edge-sharing spatial pairs; gaps, corners, other layers and marker spokes have no edges",
+        "protocol and layer filters hide existing edges without reconnecting across hidden concepts or writing data",
+        "valid move drafts update strict adjacency; invalid drafts and cancellation retain saved edges and notes",
+        "explicit orbital relationships remain separate from spatial adjacency and survive reversible cluster focus",
+        "Connections and Blocks/Nodes toggles restore the same graph without moving nodes or changing the camera",
+        "deleting a bridging node leaves a gap; real center notes connect only to footprints on the immediately adjacent band"
+      ],
+      "template_checks": [
+        "Blank, Python, TypeScript, Web application, Solar system and Project planning use ordinary Atlas documents",
+        "The existing Nodes renderer provides every template preview without thumbnail graphics",
+        "Preview is read-only and never writes to disk",
+        "Cancel restores the document, editor, filters, view mode and camera",
+        "Use template saves atomically and keeps the previous saved atlas as the normal backup",
+        "Empty atlases leave the spatial view unobstructed"
+      ],
+      "focus_check": "Both custom sliders compare raw Tk focus paths and tolerate transient combobox popdown windows",
+      "nodes_view_preview": "docs/nodes-preview.png",
+      "slider_compatibility": "Six radial positions including Center and all sixteen Start slot positions are available",
+      "windows_release": {
+        "architecture": "x64",
+        "pyinstaller": "6.22.3",
+        "pyinstaller_hooks_contrib": "2026.9",
+        "inno_setup": "7.1.0",
+        "signed": false,
+        "installer": "CyberAtlas-0.9.0-Setup.exe",
+        "zip": "CyberAtlas-0.9.0-windows-x64.zip",
+        "packaged_runtime_checks_passed": 33,
+        "installed_runtime_checks_passed": null,
+        "installer_lifecycle_checks_passed": null,
+        "test_isolation": "New temporary atlases; packaged executable tested with Python, virtual-environment and Tcl/Tk environment overrides removed and only System32 on PATH",
+        "installer_checks": "Cyber Atlas is already installed for this account; the existing installation was preserved.",
+        "limitations": "Tested on this Windows desktop. The real installation was preserved; a separate temporary installation verified install/upgrade/restart/remove. No separate clean Windows machine was tested.",
+        "source_commit": "ae12853b5337be5ad56b0ec240bb5cc6f02dfbbd",
+        "updater_integration_checks_passed": 6,
+        "updater_installed_runtime_checks_passed": 33,
+        "updater_upgrade_path": "0.8.1 to 0.9.0 using an isolated AppId and the real helper; schema-9 atlas reopened and preserved byte for byte"
+      },
+      "linux_release": {
+        "architecture": "x86_64",
+        "source_commit": "ae12853b5337be5ad56b0ec240bb5cc6f02dfbbd",
+        "build_baseline": "Ubuntu 22.04, glibc 2.35, Python 3.12.3",
+        "workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40230134906",
+        "core_tests_passed": 184,
+        "packaged_runtime_checks_passed": 32,
+        "appimage_runtime_checks_passed": 32,
+        "installed_runtime_checks_passed": 32,
+        "installer_lifecycle_checks_passed": 4,
+        "additional_desktop": "Ubuntu 24.04.2 under WSLg with XWayland",
+        "additional_desktop_deb_checks_passed": 32,
+        "additional_desktop_appimage_checks_passed": 32,
+        "appimage_launch": "Normal FUSE launch as well as extract-and-run on the headless runner",
+        "artifacts": [
+          {
+            "name": "cyber-atlas_0.9.0_amd64.deb",
+            "bytes": 80934702,
+            "sha256": "dd898bc6c67d2f33e060505db63194c5664f8579dd7e64d6762d27d34ae76f15"
+          },
+          {
+            "name": "CyberAtlas-0.9.0-x86_64.AppImage",
+            "bytes": 97778168,
+            "sha256": "cadfb841bde85cfc647fcfa0126a776805ce11c6d263fbc2939d933e46e7ae16"
+          }
+        ],
+        "limitations": "Requires glibc 2.35 or newer, compatible C++ libraries and host OpenGL/X11 or XWayland. Other distributions and native Wayland without XWayland have not been tested."
+      },
+      "source_commit": "ae12853b5337be5ad56b0ec240bb5cc6f02dfbbd",
+      "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.0",
+      "block_outline_checks": [
+        "Outlined edges can be picked through nearer empty interiors; a selected opaque block occludes those same edges",
+        "Outline keeps only the selection solid; clicking an unfilled block selects it without writing the atlas",
+        "Hover highlights an outlined block on another layer and reveals its label even with Labels off; leaving clears the highlight",
+        "Solid/Outline switches preserve camera, saved geometry, unsaved text and an active placement draft",
+        "Layer and protocol filters remove outlined blocks from both edge and interior picking, including a filtered selection",
+        "Outline appearance survives Nodes and template previews; appearance controls stay out of Nodes view"
+      ],
+      "update_workflow_checks": [
+        "Updates checks GitHub on a worker thread only after the user opens Updates; Later never starts a download and editing stays responsive",
+        "An installed or newer development version is never offered an older package",
+        "Only Download update fetches a package; verified downloads wait for Restart and update before starting an installer",
+        "Cancelling the unsaved-notes prompt or a failed save prevents installation; a successful save precedes the installer and retains the atlas path",
+        "Offline checks show an actionable message and leave the editor and saved atlas available",
+        "Dismissing a pending automatic check prevents its result from reopening the update window",
+        "Daily automatic checks require an explicit saved opt-in, run at most once per day, and stay quiet when the app is current"
+      ],
+      "update_behavior": {
+        "automatic_checks_default": false,
+        "automatic_check_interval_hours": 24,
+        "download_requires_click": true,
+        "apply_requires_click": true,
+        "download_verification": "Exact size and SHA-256 from GitHub release asset metadata",
+        "download_type": "Full package",
+        "existing_users": "0.7.1 and earlier need one manual upgrade to get Updates",
+        "platforms": {
+          "windows_installer": "In-place update and restart to the same atlas after save/discard/cancel",
+          "linux_appimage": "Replace writable AppImage, retain .previous backup, restart same atlas; rollback if spawn fails",
+          "linux_deb": "Open verified package in the system installer",
+          "portable_zip_and_source": "Open the release page for manual update"
+        }
+      },
+      "orbital_cluster_checks": [
+        "Orbital children have independent notes and stable free local slots; adding them preserves every grid node and reservation",
+        "Picking an orbit sphere opens its own notes; Cancel and failed saves preserve the child draft and prevent navigation",
+        "Orbit moves reject occupied slots; Escape restores the saved position while keeping text; Save changes only the chosen child",
+        "Blocks keeps the parent footprint and selectable child list; switching views preserves child notes and Explore restores the Nodes orbit",
+        "Parent moves carry the whole orbit without changing child records; layer and protocol filters apply to the complete cluster",
+        "Focus hides unrelated nodes without moving them; Show atlas and Collapse restore the normal view without writing",
+        "JSON export/import, child deletion and template previews preserve cluster identities, parent links and independent note contents",
+        "Cluster editors and controls fit the minimum window; parent deletion requires confirmation and backs up all child notes"
+      ],
+      "orbital_clusters": {
+        "levels": 1,
+        "slots_per_parent": 8,
+        "expanded_clusters": 1,
+        "relationship": "type_of",
+        "independent_child_notes": true,
+        "occupies_grid_slots": false,
+        "placement": "Stable local positions on the parent's plane; parent moves translate the orbit",
+        "blocks_view": "Root footprint and selectable child list",
+        "focus": "Temporary isolation with restored camera",
+        "limits": "No nesting or conversion of existing grid nodes into children"
+      },
+      "spatial_connections": {
+        "angular": "Same-band footprints share a boundary, including slot 16/01",
+        "radial": "Consecutive bands with overlapping angular slots",
+        "exclusions": "Empty gaps, corner-only contact, other layers and layer-marker spokes",
+        "filtering": "Topology is computed before filtering; hidden endpoints remove edges without replacement",
+        "orbital_relationships": "Explicit parent-child data remains separate from spatial pairs and guides",
+        "heat": "Spatial pairs and guides never contribute; only explicit direct subconcepts add bounded support"
+      },
+      "information_heat_checks": [
+        "Heat overview uses own entries plus capped direct-child support; adjacent spatial notes do not add heat or change node sizes",
+        "Cluster focus switches to own-information fills and the exact support arc; filtering and Show atlas retain fixed counts and colors",
+        "Child entries save independently, update bounded parent support and preserve unsaved personal-note drafts",
+        "Editing an entry keeps its count; validation, failed writes and Cancel preserve the complete information draft and saved atlas",
+        "Existing notes can explicitly become one recorded entry without changing their original text; identical copies cannot inflate counts",
+        "Entry deletion updates counts without removing notes; JSON export and import preserve every entry ID, owner and body",
+        "Read-only templates cannot edit entries; cancellation restores the original atlas and information metrics without writing",
+        "Heat controls and information editors fit minimum windows; Blocks and layer colors preserve the existing geometry and saved entries"
+      ],
+      "information_heat": {
+        "entry_storage": "Independent stable-ID records with concept owners, titles and bodies; existing personal notes stay separate",
+        "overview": "Own entries + bounded direct-child support",
+        "focus": "Own-information fill + separate amber parent-support rim; neutral selection halo",
+        "support_weight": 0.25,
+        "per_child_cap": 1,
+        "per_parent_cap": 4,
+        "fixed_color_anchors": [
+          0,
+          1,
+          2,
+          4,
+          8,
+          16,
+          32
+        ],
+        "spatial_or_guide_heat": false,
+        "fixed_node_sizes": true,
+        "palette_setting": "Session-only; Nodes view",
+        "report": "docs/information-heat-verification.json",
+        "example": {
+          "main_nodes": 84,
+          "subconcepts": 4,
+          "information_entries": 527
+        }
+      }
+    },
     {
       "date": "2026-10-25",
       "app_version": "0.8.1",
