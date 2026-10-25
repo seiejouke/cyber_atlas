@@ -97,6 +97,7 @@ def check_executable(executable: Path, report_path: Path, work: Path, *, test_di
     if not report.get("frozen") or not report.get("passed"):
         raise RuntimeError(f"Packaged application failed its self-test: {report_path}")
     print(f"Packaged application: {report['checks_passed']} checks passed.", flush=True)
+    return report
 
 
 def check_installer(installer: Path, work: Path):
@@ -133,9 +134,9 @@ def check_installer(installer: Path, work: Path):
             if not registered() or not (application / "CyberAtlas.exe").is_file():
                 raise RuntimeError("The installer did not register the application and create the executable.")
             checks.append("Per-user silent installation succeeds in a path containing spaces")
-            check_executable(application / "CyberAtlas.exe", ROOT / "dist" / "installed-test-results.json",
-                             work, test_directory=user_data)
-            checks.append("Installed executable passes all 16 bundled runtime checks")
+            runtime = check_executable(application / "CyberAtlas.exe", ROOT / "dist" / "installed-test-results.json",
+                                       work, test_directory=user_data)
+            checks.append(f"Installed executable passes all {runtime['checks_passed']} bundled runtime checks")
             saved = (user_data / "atlas.json").read_bytes()
             subprocess.run(command, cwd=directory, check=True, timeout=120)
             if (user_data / "atlas.json").read_bytes() != saved:
@@ -190,6 +191,8 @@ def main():
         "Upgrading or removing this application folder leaves your atlas in place.\n\n"
         "To move a node: Nodes > select a sphere > Move node > adjust controls > Save move.\n"
         "Cancel move or Escape restores the starting position and keeps text edits.\n\n"
+        "Blocks starts in Outline appearance: only the selected block is filled.\n"
+        "Hover outlines for labels, or choose Solid to fill every block.\n\n"
         "Requires Windows 10/11 x64 with a working OpenGL graphics driver.\n"
         "This build is unsigned.\n", encoding="utf-8")
     report_path = destination / "packaged-test-results.json"

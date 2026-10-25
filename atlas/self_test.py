@@ -39,6 +39,14 @@ def run(app, report_path: Path) -> int:
         fixture = Atlas((moving, blocker), design)
         require(app.apply_design(fixture), "Custom atlas saves with the bundled storage module")
         app._load_editor(moving)
+        pump()
+        require(app.scene.block_appearance == "outline"
+                and app.scene.actors[moving.id][0].GetVisibility()
+                and not app.scene.actors[blocker.id][0].GetVisibility(),
+                "Outline renders the selected block solid and the other block as an outline")
+        x, y, _ = app.scene.project(app.scene.meshes[blocker.id].label_anchor)
+        require(app.scene.pick(x, y) == blocker.id,
+                "Unfilled blocks remain selectable using bundled VTK picking")
         app.set_view_mode("nodes")
         pump()
         x, y, _ = app.scene.project(app.scene.node_anchor(moving))

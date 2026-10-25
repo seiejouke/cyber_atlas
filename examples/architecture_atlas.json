@@ -1,0 +1,204 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 8,
+  "layout": "fixed-slots",
+  "center_depth": -1,
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "angular_slots": 16,
+  "design": {
+    "layers": [
+      {
+        "id": "operations",
+        "name": "Operations",
+        "color": "#65b6a1"
+      },
+      {
+        "id": "data",
+        "name": "Data",
+        "color": "#70cbd8"
+      },
+      {
+        "id": "services",
+        "name": "Services",
+        "color": "#9c8bdb"
+      },
+      {
+        "id": "api",
+        "name": "API",
+        "color": "#cb96ba"
+      },
+      {
+        "id": "interface",
+        "name": "Interface",
+        "color": "#edbb69"
+      }
+    ],
+    "protocols": [
+      {
+        "id": "component",
+        "name": "Component"
+      }
+    ],
+    "layer_caption": "System area",
+    "protocol_caption": "Element type",
+    "label_mode": "title"
+  },
+  "nodes": [
+    {
+      "id": "deployment",
+      "name": "Deployment",
+      "layer": "operations",
+      "protocol": "component",
+      "depth": 0,
+      "notes": "Ship small changes through staging. Keep a tested rollback available.",
+      "slot": 8,
+      "span": 4
+    },
+    {
+      "id": "monitoring",
+      "name": "Monitoring",
+      "layer": "operations",
+      "protocol": "component",
+      "depth": 1,
+      "notes": "Watch request latency, error rates, and queue depth. Record actionable alerts.",
+      "slot": 4,
+      "span": 2
+    },
+    {
+      "id": "recovery",
+      "name": "Recovery",
+      "layer": "operations",
+      "protocol": "component",
+      "depth": 2,
+      "notes": "Document backup ownership and rehearse restoring the database.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "postgresql",
+      "name": "PostgreSQL",
+      "layer": "data",
+      "protocol": "component",
+      "depth": 0,
+      "notes": "Store accounts, permissions, orders, and other transactional records.",
+      "slot": 7,
+      "span": 4
+    },
+    {
+      "id": "redis-cache",
+      "name": "Redis cache",
+      "layer": "data",
+      "protocol": "component",
+      "depth": 1,
+      "notes": "Cache frequently read data. Decide expiry and invalidation rules.",
+      "slot": 11,
+      "span": 2
+    },
+    {
+      "id": "object-storage",
+      "name": "Object storage",
+      "layer": "data",
+      "protocol": "component",
+      "depth": 2,
+      "notes": "Store uploaded files separately from application records.",
+      "slot": 5,
+      "span": 2
+    },
+    {
+      "id": "billing",
+      "name": "Billing",
+      "layer": "services",
+      "protocol": "component",
+      "depth": 0,
+      "notes": "Keep pricing and payment rules explicit and covered by tests.",
+      "slot": 9,
+      "span": 4
+    },
+    {
+      "id": "notifications",
+      "name": "Notifications",
+      "layer": "services",
+      "protocol": "component",
+      "depth": 1,
+      "notes": "Deliver email and in-app updates. Track retries and user preferences.",
+      "slot": 5,
+      "span": 2
+    },
+    {
+      "id": "background-jobs",
+      "name": "Background jobs",
+      "layer": "services",
+      "protocol": "component",
+      "depth": 2,
+      "notes": "Run durable asynchronous work with bounded retries.",
+      "slot": 12,
+      "span": 2
+    },
+    {
+      "id": "authentication",
+      "name": "Authentication",
+      "layer": "api",
+      "protocol": "component",
+      "depth": 1,
+      "notes": "Sign-in and access control\n\nValidate credentials and create a session.\nCheck permissions on every protected request.\n\nNext step\nTest expired sessions and role changes.",
+      "slot": 9,
+      "span": 2
+    },
+    {
+      "id": "rest-api",
+      "name": "REST API",
+      "layer": "api",
+      "protocol": "component",
+      "depth": 0,
+      "notes": "Define predictable endpoints, response formats, and error handling.",
+      "slot": 6,
+      "span": 4
+    },
+    {
+      "id": "validation",
+      "name": "Validation",
+      "layer": "api",
+      "protocol": "component",
+      "depth": 2,
+      "notes": "Validate inputs at the boundary before invoking business rules.",
+      "slot": 4,
+      "span": 1
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "layer": "interface",
+      "protocol": "component",
+      "depth": 0,
+      "notes": "Give users an overview of the information and actions they need most.",
+      "slot": 8,
+      "span": 4
+    },
+    {
+      "id": "design-system",
+      "name": "Design system",
+      "layer": "interface",
+      "protocol": "component",
+      "depth": 1,
+      "notes": "Collect reusable components, colors, spacing, and interaction patterns.",
+      "slot": 4,
+      "span": 2
+    },
+    {
+      "id": "accessibility",
+      "name": "Accessibility",
+      "layer": "interface",
+      "protocol": "component",
+      "depth": 2,
+      "notes": "Check keyboard navigation, focus states, contrast, and screen-reader labels.",
+      "slot": 11,
+      "span": 2
+    }
+  ]
+}

@@ -25,6 +25,7 @@ from atlas.scene import NO_PROTOCOL_FILTER
 from atlas.templates import find_template
 from node_view_checks import check_node_moves, check_node_view
 from template_view_checks import check_template_browser
+from block_view_checks import check_block_view
 
 
 def pump(root, steps=5):
@@ -340,6 +341,9 @@ def main(report_path=None):
             pump(root, 12)
             assert not app.dirty
             assert len(app.scene.actors) == len(doc.nodes) == 14
+            assert app.scene.block_appearance == "outline"
+            assert sum(solid.GetVisibility() for solid, _ in app.scene.actors.values()) == 1
+            app.set_block_appearance("solid")
             checks.append("initial render: 14 occupied meshes, no empty-cell actors")
 
             slider = app.scale_widget
@@ -1041,6 +1045,7 @@ def main(report_path=None):
             check_node_view(root, app, path, checks)
             check_node_moves(root, app, path, checks)
             check_template_browser(root, app, path, pump, checks)
+            check_block_view(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)
@@ -1075,7 +1080,7 @@ def capture_preview(destination, *, design_editor=False, nodes_view=False):
     """Optional screenshot of the actual UI; Pillow is only needed for capture."""
     from PIL import ImageGrab
 
-    example = "custom_design_atlas.json" if design_editor else "nodes_view_atlas.json" if nodes_view else "fixed_slots_atlas.json"
+    example = "custom_design_atlas.json" if design_editor else "nodes_view_atlas.json" if nodes_view else "architecture_atlas.json"
     doc = read_atlas(Path(__file__).resolve().parents[1] / "examples" / example)
     with TemporaryDirectory() as folder:
         root = tk.Tk()
@@ -1084,15 +1089,12 @@ def capture_preview(destination, *, design_editor=False, nodes_view=False):
             root.geometry("1300x860+30+30")
             if nodes_view:
                 app.set_view_mode("nodes")
-            elif not design_editor:
-                app.filter_var.set("2  Data Link")
-                app._filter_changed()
-            app.scene.elevation = pi / 7 if nodes_view else pi / 4
-            app.scene.target = [0.0, 0.0, 0.0 if design_editor or nodes_view else -2.0]
-            app.scene.scale = 5.5 if nodes_view else 3.0 if design_editor else 2.0
+            app.scene.elevation = pi / 7 if nodes_view else pi / 4 if design_editor else 24 * pi / 180
+            app.scene.target = [0.0, 0.0, 0.0] if design_editor or nodes_view else [-.196, .196, -.621]
+            app.scene.scale = 5.5 if nodes_view else 3.0 if design_editor else 4.56
             app.scene._apply_camera()
-            app.select_node("control" if design_editor else "orbit-2-3" if nodes_view else "switch")
-            app._set_status("Nodes view / 42 editable example notes" if nodes_view else "Preview / Mixed 1/8 and 1/16 blocks with empty space")
+            app.select_node("control" if design_editor else "orbit-2-3" if nodes_view else "authentication")
+            app._set_status("Nodes view / 42 editable example notes" if nodes_view else "Web application architecture / 5 layers / 15 editable concepts")
             app.request_render()
             pump(root, 12)
             capture_widget = root

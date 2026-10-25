@@ -1,5 +1,5 @@
 {
-  "passed": 81,
+  "passed": 87,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -79,6 +79,12 @@
     "movement stays unavailable for new nodes and read-only templates; template cancellation restores a clean move and controls fit the minimum window",
     "template previews use real read-only atlas nodes; Cancel restores the document, editor, view and camera without writing",
     "Use template atomically saves the selected ordinary Atlas and returns to the existing node editor",
+    "Outlined edges can be picked through nearer empty interiors; a selected opaque block occludes those same edges",
+    "Outline keeps only the selection solid; clicking an unfilled block selects it without writing the atlas",
+    "Hover highlights an outlined block on another layer and reveals its label even with Labels off; leaving clears the highlight",
+    "Solid/Outline switches preserve camera, saved geometry, unsaved text and an active placement draft",
+    "Layer and protocol filters remove outlined blocks from both edge and interior picking, including a filtered selection",
+    "Outline appearance survives Nodes and template previews; appearance controls stay out of Nodes view",
     "minimum-window layout remains usable",
     "no Tk callback errors",
     "close cancel and save-on-close"

@@ -153,10 +153,10 @@ def check_install(package: Path, work: Path, destination: Path):
     try:
         subprocess.run(["sudo", "-n", "dpkg", "-i", str(package)], check=True)
         checks.append("Debian package installs and creates the application launcher")
-        check_application(["/usr/bin/cyber-atlas"], destination / "linux-installed-test-results.json", work,
-                          test_directory=saved_data.parent)
+        runtime = check_application(["/usr/bin/cyber-atlas"], destination / "linux-installed-test-results.json", work,
+                                    test_directory=saved_data.parent)
         original = saved_data.read_bytes()
-        checks.append("Installed launcher passes all 16 rendering and storage checks")
+        checks.append(f"Installed launcher passes all {runtime['checks_passed']} rendering and storage checks")
         subprocess.run(["sudo", "-n", "dpkg", "-i", str(package)], check=True)
         if saved_data.read_bytes() != original:
             raise RuntimeError("Upgrade changed saved user data")
@@ -194,11 +194,12 @@ def main():
             "Python, Tk and VTK are included. A working X11 or XWayland desktop and OpenGL driver are required.\n"
             "Built on Ubuntu 22.04; requires glibc 2.35 or newer and a compatible C++ runtime.\n"
             "Notes are saved in $XDG_DATA_HOME/CyberAtlas/atlas.json or ~/.local/share/CyberAtlas/atlas.json.\n"
+            "Blocks starts in Outline appearance; select a block to fill it, or choose Solid to fill all blocks.\n"
             "Logs are stored beside the atlas in logs/. Removing the application leaves your notes in place.\n", encoding="utf-8")
-        check_application([str(bundle / "CyberAtlas")], destination / "linux-packaged-test-results.json", work)
+        packaged = check_application([str(bundle / "CyberAtlas")], destination / "linux-packaged-test-results.json", work)
         package = make_deb(bundle, work, destination)
         appimage = make_appimage(bundle, work, destination)
-        check_application([str(appimage), "--appimage-extract-and-run"], destination / "linux-appimage-test-results.json", work)
+        portable = check_application([str(appimage), "--appimage-extract-and-run"], destination / "linux-appimage-test-results.json", work)
         if arguments.test_install:
             check_install(package, work, destination)
     artifacts = [package, appimage]
@@ -208,7 +209,7 @@ def main():
         "passed": True, "version": __version__, "platform": platform.platform(),
         "glibc": platform.libc_ver(), "python": platform.python_version(), "vtk": metadata.version("vtk"),
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-        "packaged_checks": 16, "appimage_checks": 16,
+        "packaged_checks": packaged["checks_passed"], "appimage_checks": portable["checks_passed"],
         "installer_checked": arguments.test_install,
         "files": [{"name": path.name, "bytes": path.stat().st_size, "sha256": digest(path)} for path in artifacts],
     }

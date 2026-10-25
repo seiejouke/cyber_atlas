@@ -56,6 +56,8 @@ class Scene:
     def __init__(self, design: Design = Design()) -> None:
         self.design = design
         self.mode = "blocks"
+        self.block_appearance = "outline"
+        self.hovered: str | None = None
         self._axis_actors: list[vtkActor] = []
         self._axis_connection_actors: list[vtkActor] = []
         self.axis_markers: dict[LayerId, vtkActor] = {}
@@ -75,6 +77,13 @@ class Scene:
         self.capture.ShouldRerenderOff()
         self.picker = vtkCellPicker()
         self.picker.SetTolerance(0.0005)
+        self._outline_picker = vtkCellPicker()
+        self._outline_picker.SetTolerance(.005)
+        self._outline_picker.PickFromListOn()
+        self._block_picker = vtkCellPicker()
+        self._block_picker.SetTolerance(.0005)
+        self._block_picker.PickFromListOn()
+        self._block_pick_actors: dict[str, vtkActor] = {}
         self._actor_ids: dict[str, str] = {}
         self.actors: dict[str, tuple[vtkActor, vtkActor]] = {}
         self.guides: dict[tuple[LayerId, int], vtkActor] = {}
@@ -208,9 +217,63 @@ class Scene:
             return
         preview, valid = self.preview_node, self.preview_valid
         self.mode = mode
+        self.hovered = None
         self._reference_axis()
         self.set_nodes(self.nodes)
         self.set_preview(preview, valid)
+
+    def set_block_appearance(self, appearance: str) -> None:
+        if appearance not in ("solid", "outline"):
+            raise ValueError("Choose Solid or Outline.")
+        self.block_appearance = appearance
+        self._style_blocks()
+
+    def set_hovered(self, node_id: str | None) -> None:
+        if self.hovered != node_id:
+            self.hovered = node_id
+            self._style_blocks()
+
+    def _style_blocks(self) -> None:
+        if self.mode != "blocks":
+            return
+        wire = self.block_appearance == "outline"
+        selected = next((node for node in self.nodes if node.id == self.selected and self.is_visible(node)), None)
+        self._outline_picker.InitializePickList()
+        self._block_picker.InitializePickList()
+        for node in self.nodes:
+            solid, outline = self.actors[node.id]
+            visible = self.is_visible(node)
+            picked = node.id == self.selected
+            hovered = node.id == self.hovered
+            active = selected is not None and node.layer == selected.layer
+            color = self.design.layer(node.layer).color
+            solid.SetVisibility(visible and (not wire or picked))
+            outline.SetVisibility(visible)
+            outline.SetPickable(wire)
+            prop = outline.GetProperty()
+            if picked:
+                prop.SetColor(rgb("#fff0c2"))
+                prop.SetOpacity(1.0)
+                prop.SetLineWidth(2.3 if wire else 2.0)
+            elif wire:
+                prop.SetColor(rgb("#70cbd8") if hovered else rgb(color, 1.1 if active else 1.0))
+                prop.SetOpacity(1.0 if hovered else .95 if active else .58)
+                prop.SetLineWidth(2.0 if hovered else 1.45 if active else 1.0)
+            else:
+                prop.SetColor(rgb(color, .65))
+                prop.SetOpacity(1.0)
+                prop.SetLineWidth(.85)
+            proxy = self._block_pick_actors[node.id]
+            proxy.SetVisibility(visible)
+            if visible:
+                self._block_picker.AddPickList(proxy)
+                self._outline_picker.AddPickList(outline)
+        # In Outline, only the selected solid can occlude other geometry.
+        self.picker.InitializePickList()
+        self.picker.SetPickFromList(wire)
+        if wire and selected is not None:
+            self.picker.AddPickList(self.actors[selected.id][0])
+        self.renderer.ResetCameraClippingRange()
 
     def node_anchor(self, node: Node) -> tuple[float, float, float]:
         return node_position(node, self.design)
@@ -357,6 +420,10 @@ class Scene:
             self.renderer.RemoveActor(solid)
             self.renderer.RemoveActor(outline)
         self.actors.clear()
+        self._block_pick_actors.clear()
+        self._outline_picker.InitializePickList()
+        self._block_picker.InitializePickList()
+        self.picker.PickFromListOff()
         self.meshes = layout_meshes(nodes, self.design)
         self._actor_ids.clear()
         self.nodes = nodes
@@ -396,6 +463,9 @@ class Scene:
             mapper.ScalarVisibilityOff()
             actor = vtkActor()
             actor.SetMapper(mapper)
+            proxy = vtkActor()
+            proxy.SetMapper(mapper)
+            self._block_pick_actors[node.id] = proxy
             prop = actor.GetProperty()
             prop.SetAmbient(0.30)
             prop.SetDiffuse(0.68)
@@ -422,6 +492,8 @@ class Scene:
             self.actors[node.id] = actor, outline
             self.meshes[node.id] = mesh
             self._actor_ids[actor.GetAddressAsString("")] = node.id
+            self._actor_ids[outline.GetAddressAsString("")] = node.id
+            self._actor_ids[proxy.GetAddressAsString("")] = node.id
         self.set_selected(self.selected)
         self.set_layer_filter(self.layer_filter)
 
@@ -437,6 +509,7 @@ class Scene:
             outline.GetProperty().SetLineWidth(2.0 if selected else 0.85)
         self._style_axis()
         self._update_connections()
+        self._style_blocks()
 
     def set_preview(self, node: Node | None, valid: bool = True) -> None:
         self.preview_node, self.preview_valid = node, valid
@@ -508,6 +581,7 @@ class Scene:
         self._update_guides()
         self._style_axis()
         self._update_connections()
+        self._style_blocks()
         self.renderer.ResetCameraClippingRange()
 
     def set_protocol_filter(self, protocol: str | ProtocolFilter | None) -> None:
@@ -613,11 +687,39 @@ class Scene:
     def pick(self, x: float, y: float) -> str | None:
         if not (0 <= x < self.width and 0 <= y < self.height):
             return None
+        if self.mode == "blocks" and self.block_appearance == "outline":
+            # Edges win over the empty interiors of nearer outlined blocks.
+            # A selected, opaque surface still hides edges behind it.
+            filled = self.picker.Pick(x, self.height - 1 - y, 0, self.renderer)
+            if self._outline_picker.Pick(x, self.height - 1 - y, 0, self.renderer):
+                edge_depth = self.project(self._outline_picker.GetPickPosition())[2]
+                if not filled or edge_depth <= self.project(self.picker.GetPickPosition())[2] + 1e-5:
+                    return self._actor_ids.get(self._outline_picker.GetActor().GetAddressAsString(""))
+            if filled:
+                return self.selected
+            if self._block_picker.Pick(x, self.height - 1 - y, 0, self.renderer):
+                return self._actor_ids.get(self._block_picker.GetActor().GetAddressAsString(""))
+            return None
         if self.picker.Pick(x, self.height - 1 - y, 0, self.renderer):
             actor = self.picker.GetActor()
             if actor is not None:
                 return self._actor_ids.get(actor.GetAddressAsString(""))
         return None
+
+    def label_visible(self, node: Node, x: float, y: float) -> bool:
+        if self.mode == "blocks" and self.block_appearance == "outline":
+            if node.id == self.hovered:
+                return True
+            if not self.occludes(x, y):
+                return True
+            anchor_depth = self.project(self.meshes[node.id].label_anchor)[2]
+            return self.project(self.picker.GetPickPosition())[2] >= anchor_depth - 1e-5
+        return self.pick(x, y) == node.id
+
+    def occludes(self, x: float, y: float) -> bool:
+        """Whether a rendered solid covers this pixel; empty outlines do not."""
+        return (0 <= x < self.width and 0 <= y < self.height
+                and bool(self.picker.Pick(x, self.height - 1 - y, 0, self.renderer)))
 
     def close(self) -> None:
         if not self.closed:

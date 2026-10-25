@@ -8,7 +8,7 @@ See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [develo
 
 ![Nodes view showing a 3D atlas, note editor and Move node control](docs/nodes-preview.png)
 
-![Blocks view showing notes arranged as colored volumes](docs/preview.png)
+![Blocks outline view of a web application architecture, with Authentication selected and its notes visible](docs/preview.png)
 
 ## Install Cyber Atlas
 

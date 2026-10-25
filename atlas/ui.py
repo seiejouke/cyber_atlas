@@ -45,6 +45,7 @@ class AtlasApp:
         self._active_template: AtlasTemplate | None = None
         self._listed_templates: list[AtlasTemplate] = []
         self.view_mode_var = tk.StringVar(value="Blocks")
+        self.block_appearance_var = tk.StringVar(value="Outline")
         self.connections_var = tk.BooleanVar(value=True)
         self._view_labels = {"blocks": True, "nodes": False}
         self.labels_var = tk.BooleanVar(value=True)
@@ -111,7 +112,7 @@ class AtlasApp:
         left = tk.Frame(content, bg=theme.PANEL, highlightthickness=1, highlightbackground=theme.BORDER)
         left.grid(row=0, column=0, sticky="nsew", padx=(0, 14))
         left.columnconfigure(0, weight=1)
-        left.rowconfigure(1, weight=1)
+        left.rowconfigure(2, weight=1)
         view_header = tk.Frame(left, bg=theme.PANEL, padx=14, pady=9)
         view_header.grid(row=0, column=0, sticky="ew")
         view_header.columnconfigure(0, weight=1)
@@ -135,8 +136,22 @@ class AtlasApp:
         self.protocol_filter_box.grid(row=0, column=2, padx=(0, 8))
         ttk.Checkbutton(view_header, text="Labels", variable=self.labels_var,
                         command=self.request_render).grid(row=0, column=3)
+        self.block_bar = tk.Frame(left, bg=theme.PANEL, padx=14, pady=7)
+        self.block_bar.grid(row=1, column=0, sticky="ew")
+        tk.Label(self.block_bar, text="APPEARANCE", bg=theme.PANEL, fg=theme.MUTED,
+                 font=(self.mono, 8)).pack(side="left", padx=(0, 12))
+        appearance_buttons = ttk.Frame(self.block_bar, style="Panel.TFrame")
+        appearance_buttons.pack(side="left")
+        self.solid_button = ttk.Radiobutton(appearance_buttons, text="Solid", value="Solid",
+            variable=self.block_appearance_var, style="View.Toolbutton", command=lambda: self.set_block_appearance("solid"))
+        self.solid_button.pack(side="left")
+        self.outline_button = ttk.Radiobutton(appearance_buttons, text="Outline", value="Outline",
+            variable=self.block_appearance_var, style="View.Toolbutton", command=lambda: self.set_block_appearance("outline"))
+        self.outline_button.pack(side="left")
+        self.block_context = tk.Label(self.block_bar, text="", bg=theme.PANEL, fg=theme.MUTED, font=(self.mono, 9))
+        self.block_context.pack(side="right")
         self.canvas = tk.Canvas(left, bg=theme.BG, highlightthickness=0, takefocus=True, cursor="fleur")
-        self.canvas.grid(row=1, column=0, sticky="nsew")
+        self.canvas.grid(row=2, column=0, sticky="nsew")
         self.canvas.create_text(180, 180, text="Building the atlas...", fill=theme.MUTED, tags="overlay")
 
         right = tk.Frame(content, bg=theme.PANEL, highlightthickness=1, highlightbackground=theme.BORDER)
@@ -655,6 +670,13 @@ class AtlasApp:
         self.scene.set_connections_visible(self.connections_var.get())
         self.request_render()
 
+    def set_block_appearance(self, appearance: str) -> None:
+        if self._template_origin is not None:
+            return
+        self.scene.set_block_appearance(appearance)
+        self.block_appearance_var.set(appearance.title())
+        self.request_render()
+
     def _addition_size(self) -> str:
         return "1/16" if self.scene.mode == "nodes" else self._last_size
 
@@ -825,6 +847,7 @@ class AtlasApp:
         if not self._closed:
             self._cancel_hover()
             self._hovered_node = None
+            self.scene.set_hovered(None)
             if self._template_origin is not None:
                 self.scene.set_preview(None)
                 self.request_render()
@@ -905,6 +928,7 @@ class AtlasApp:
         self._loading = True
         self.selected = node.id if node else None
         self._hovered_node = None
+        self.scene.set_hovered(None)
         protocols = self.document.design.protocols
         default_protocol = "SSH" if "SSH" in self._protocol_displays else protocols[0].id if protocols else None
         layer, protocol, depth = node.coordinate if node else coordinate or (self.document.design.layers[-1].id, default_protocol, 2)
@@ -1143,6 +1167,15 @@ class AtlasApp:
         self._render_job = None
         if self._closed:
             return
+        if self.scene.mode == "blocks":
+            if not self.block_bar.winfo_manager():
+                self.block_bar.grid()
+            selected = self.document.get(self.selected)
+            layer = self.document.design.layer(selected.layer) if selected is not None else None
+            self.block_context.configure(text=f"{layer.name} selected" if layer else "No selection",
+                                         fg=layer.color if layer else theme.MUTED)
+        elif self.block_bar.winfo_manager():
+            self.block_bar.grid_remove()
         width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
         if width < 10 or height < 10:
             return
@@ -1159,14 +1192,15 @@ class AtlasApp:
         node_view = self.scene.mode == "nodes"
         self.canvas.create_text(18, 18, anchor="nw", text="SPATIAL VIEW", fill=theme.MUTED,
                                 font=(self.mono, 8), tags="overlay")
-        self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{len(visible):02d} NODES" if node_view else f"{len(visible):02d} FILLED VOLUMES",
+        count_label = "NODES" if node_view else "BLOCKS" if self.scene.block_appearance == "outline" else "FILLED VOLUMES"
+        self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{len(visible):02d} {count_label}",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self._axis_label_boxes.clear()
         selected_node = self.document.get(self.selected)
         for i, layer in enumerate(self.document.design.layers, 1):
             x, y, _ = self.scene.project((0.0, 0.0, self.document.design.z_base + i - 0.5))
             # Reference labels must not float through a solid in front of them.
-            if not node_view and self.scene.pick(x - 24, y) is not None:
+            if not node_view and self.scene.occludes(x - 24, y):
                 continue
             color = layer.color if self.scene.layer_filter in (None, layer.id) else "#41566a"
             axis_text = f"L{i} {layer.name}"
@@ -1188,6 +1222,11 @@ class AtlasApp:
             elif (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
                 self._draw_node_halo(selected, "node-halo", theme.ACCENT)
             labeled = visible if self.labels_var.get() else [node for node in visible if node.id in (self.selected, self._hovered_node)]
+            self._draw_labels(labeled, width, height)
+        elif self.scene.block_appearance == "outline":
+            layer = selected_node.layer if selected_node is not None and self.scene.is_visible(selected_node) else None
+            labeled = [node for node in visible if node.id in (self.selected, self._hovered_node)
+                       or self.labels_var.get() and (layer is None or node.layer == layer)]
             self._draw_labels(labeled, width, height)
         elif self.labels_var.get():
             self._draw_labels(visible, width, height)
@@ -1235,7 +1274,7 @@ class AtlasApp:
                 continue
             selected = node.id == self.selected
             # Hidden surfaces don't get floating labels through other volumes.
-            if not selected and self.scene.pick(x, y) != node.id:
+            if not selected and not self.scene.label_visible(node, x, y):
                 continue
             design = self.document.design
             text = design.block_label(node)
@@ -1382,8 +1421,9 @@ class AtlasApp:
         self._hover_job = None
         if not self._closed:
             hit = self._pick_at(x, y)
-            if self.scene.mode == "nodes" and hit != self._hovered_node:
+            if hit != self._hovered_node:
                 self._hovered_node = hit
+                self.scene.set_hovered(hit)
                 self.request_render()
             self.canvas.configure(cursor="hand2" if hit or (self.scene.mode == "blocks" and self.scene.pick_preview(x, y)) else "fleur")
             if self.scene.mode == "blocks" and self.placement_state == "placing" and self._pressed is None:

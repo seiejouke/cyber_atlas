@@ -59,6 +59,17 @@ then selects and edits like any other node. The vertical spine stops at the
 first and last center nodes.
 Connections are derived from saved positions and are not stored in JSON.
 
+Blocks starts in **Outline** appearance: the selected block is solid and the
+other blocks have colored outlines. Blocks on the selected layer have brighter
+outlines and labels; hovering another block highlights it and reveals its label.
+Click an outline, its interior, or a label to select the block. The selected
+solid hides geometry behind it. Choose **Solid** in the Appearance bar to fill
+all visible blocks. Appearance changes preserve notes, placement drafts and
+the camera; they last for the current session and do not change the JSON file.
+
+Import [the architecture example](../examples/architecture_atlas.json) to explore
+15 concepts across Interface, API, Services, Data and Operations layers.
+
 Switching views preserves the camera, filters, notes and current draft. The
 view choice lasts for the current session and does not change saved or exported
 atlas data.

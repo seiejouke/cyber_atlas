@@ -65,7 +65,11 @@ so the center meets band 00 and neighboring bands share boundaries.
 Equally sized blocks at the same layer and radial position have equal volumes.
 Outer blocks have larger volumes because their circumference is longer,
 while their radial thickness stays equal. Empty slots have no mesh or grid.
-Only the current draft/hover placement receives a temporary outline.
+Blocks defaults to colored outlines, with only the selected volume filled.
+Solid appearance restores the filled view. Outline edges take selection
+priority over empty interiors; unrendered solid meshes keep interiors
+selectable. Filters apply to both picking paths, and the selected solid still
+occludes geometry behind it. Appearance is session state, outside atlas JSON.
 
 The JSON saves each block's `slot` (0-15) and `span` (1, 2, 4, 8 or 16).
 The UI displays start slots as 01-16. Geometry depends on these coordinates,
@@ -149,7 +153,7 @@ design editing, view switching, JSON import/export and unsaved drafts. Movement
 checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
-self-test. All **105 core tests and 81 GUI workflow checks passed** on Windows with Python
+self-test. All **105 core tests and 87 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
