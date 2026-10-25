@@ -1184,11 +1184,15 @@ if __name__ == "__main__":
     parser.add_argument("--nodes-preview", type=Path, help="Capture the actual Nodes view (requires Pillow).")
     parser.add_argument("--templates-only", action="store_true", help="Run only the template browser workflow checks.")
     parser.add_argument("--template-gallery", type=Path, help="Capture the template library, Python and Solar System views into a directory.")
+    parser.add_argument("--screenshots-only", action="store_true", help="Capture the requested previews without running workflow checks.")
     args = parser.parse_args()
-    if args.templates_only:
-        check_templates_only()
-    else:
-        main(args.report)
+    if args.screenshots_only and not any((args.preview, args.design_preview, args.nodes_preview, args.template_gallery)):
+        parser.error("--screenshots-only requires a preview or template gallery destination")
+    if not args.screenshots_only:
+        if args.templates_only:
+            check_templates_only()
+        else:
+            main(args.report)
     if args.preview:
         capture_preview(args.preview)
     if args.design_preview:
