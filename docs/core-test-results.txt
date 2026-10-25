@@ -1,3 +1,16 @@
+test_consecutive_angular_slots_share_an_edge (test_adjacency.AdjacencyTests.test_consecutive_angular_slots_share_an_edge) ... ok
+test_consecutive_bands_require_angular_overlap (test_adjacency.AdjacencyTests.test_consecutive_bands_require_angular_overlap) ... ok
+test_corner_contact_is_not_an_edge (test_adjacency.AdjacencyTests.test_corner_contact_is_not_an_edge) ... ok
+test_different_layers_never_connect (test_adjacency.AdjacencyTests.test_different_layers_never_connect) ... ok
+test_empty_and_single_node_have_no_edges (test_adjacency.AdjacencyTests.test_empty_and_single_node_have_no_edges) ... ok
+test_empty_angular_slots_break_connections (test_adjacency.AdjacencyTests.test_empty_angular_slots_break_connections) ... ok
+test_empty_radial_bands_break_connections (test_adjacency.AdjacencyTests.test_empty_radial_bands_break_connections) ... ok
+test_full_center_connects_only_to_the_immediately_outer_band (test_adjacency.AdjacencyTests.test_full_center_connects_only_to_the_immediately_outer_band) ... ok
+test_last_and_first_slots_are_neighbors (test_adjacency.AdjacencyTests.test_last_and_first_slots_are_neighbors) ... ok
+test_pair_order_is_stable_for_custom_layers_and_mixed_footprints (test_adjacency.AdjacencyTests.test_pair_order_is_stable_for_custom_layers_and_mixed_footprints) ... ok
+test_partial_center_sectors_meeting_only_at_origin_are_not_adjacent (test_adjacency.AdjacencyTests.test_partial_center_sectors_meeting_only_at_origin_are_not_adjacent) ... ok
+test_two_shared_boundaries_produce_one_undirected_edge (test_adjacency.AdjacencyTests.test_two_shared_boundaries_produce_one_undirected_edge) ... ok
+test_wrapping_large_block_connects_only_at_its_boundaries (test_adjacency.AdjacencyTests.test_wrapping_large_block_connects_only_at_its_boundaries) ... ok
 test_cannot_hide_children_in_an_older_file_version (test_clusters.ClusterTests.test_cannot_hide_children_in_an_older_file_version) ... ok
 test_child_move_rejects_an_occupied_slot_atomically (test_clusters.ClusterTests.test_child_move_rejects_an_occupied_slot_atomically) ... ok
 test_children_can_share_local_slots_on_different_parents (test_clusters.ClusterTests.test_children_can_share_local_slots_on_different_parents) ... ok
@@ -86,11 +99,11 @@ test_layer_merge_collision_is_atomic_even_without_protocols (test_design_draft.D
 test_pending_groups_keep_names_and_counts (test_design_draft.DesignDraftTests.test_pending_groups_keep_names_and_counts) ... ok
 test_repeated_clearing_retains_the_latest_removed_names (test_design_draft.DesignDraftTests.test_repeated_clearing_retains_the_latest_removed_names) ... ok
 test_single_remove_still_requires_safe_reassignment (test_design_draft.DesignDraftTests.test_single_remove_still_requires_safe_reassignment) ... ok
-test_adjacency_is_sparse_and_never_crosses_layers (test_node_positions.NodePositionTests.test_adjacency_is_sparse_and_never_crosses_layers) ... ok
 test_all_radial_levels_are_equally_spaced_including_center (test_node_positions.NodePositionTests.test_all_radial_levels_are_equally_spaced_including_center) ... ok
 test_custom_layer_order_controls_height_without_rewriting_note (test_node_positions.NodePositionTests.test_custom_layer_order_controls_height_without_rewriting_note) ... ok
 test_full_center_note_uses_the_layer_axis (test_node_positions.NodePositionTests.test_full_center_note_uses_the_layer_axis) ... ok
 test_node_positions_share_saved_block_centers (test_node_positions.NodePositionTests.test_node_positions_share_saved_block_centers) ... ok
+test_separated_footprints_remain_isolated (test_node_positions.NodePositionTests.test_separated_footprints_remain_isolated) ... ok
 test_wrapping_footprints_keep_their_midpoint (test_node_positions.NodePositionTests.test_wrapping_footprints_keep_their_midpoint) ... ok
 test_adding_protocols_does_not_automatically_assign_existing_blocks (test_optional_protocols.OptionalProtocolTests.test_adding_protocols_does_not_automatically_assign_existing_blocks) ... ok
 test_clear_and_reload_keeps_backup_of_original_protocol_assignments (test_optional_protocols.OptionalProtocolTests.test_clear_and_reload_keeps_backup_of_original_protocol_assignments) ... ok
@@ -152,6 +165,6 @@ test_versions_compare_numerically_and_only_newer_versions_are_offered (test_upda
 test_windows_handoff_uses_data_not_shell_interpolation_and_preserves_the_atlas_path (test_updates.UpdateTests.test_windows_handoff_uses_data_not_shell_interpolation_and_preserves_the_atlas_path) ... ok
 
 ----------------------------------------------------------------------
-Ran 152 tests in 0.369s
+Ran 165 tests in 0.377s
 
 OK

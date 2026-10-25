@@ -1,6 +1,6 @@
 {
-  "app_version": "0.8.0",
+  "app_version": "0.8.1",
   "skipped": "Cyber Atlas is already installed for this account; the existing installation was preserved.",
-  "isolated_upgrade_runtime_checks": 25,
+  "isolated_upgrade_runtime_checks": 27,
   "see": "windows-updater-test-results.json"
 }

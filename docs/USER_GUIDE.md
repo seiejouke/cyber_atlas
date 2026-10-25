@@ -12,11 +12,11 @@ For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
 
-On Linux x86_64, download `cyber-atlas_0.8.0_amd64.deb` for Ubuntu/Debian-based
+On Linux x86_64, download `cyber-atlas_0.8.1_amd64.deb` for Ubuntu/Debian-based
 desktops and install it with your package installer. Open **Cyber Atlas** from
 the application menu. Python, Tk and VTK are included.
 
-For other compatible Linux desktops, download `CyberAtlas-0.8.0-x86_64.AppImage`.
+For other compatible Linux desktops, download `CyberAtlas-0.8.1-x86_64.AppImage`.
 In the file's properties, allow it to run as a program, then open it. The AppImage
 is portable; it does not install an application-menu entry automatically.
 
@@ -375,7 +375,7 @@ Version 8 introduced an empty protocol list (`"protocols": []`) and unassigned
 blocks (`"protocol": null`). Existing version 7 files load with their saved
 protocol assignments intact. Version 9 adds a separate `subconcepts` list;
 existing grid coordinates remain unchanged, and the first save retains the old
-file as the normal backup. Files saved by 0.8.0 require that version or newer;
+file as the normal backup. Files using schema 9 require version 0.8.0 or newer;
 older applications do not support the new file format.
 
 A legacy ring with more than 16 notes cannot fit this grid. Import/loading

@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "version": "0.8.0",
+  "version": "0.8.1",
   "platform": "Linux x86_64 (glibc 2.35)",
   "glibc": [
     "glibc",
@@ -8,22 +8,22 @@
   ],
   "python": "3.12.3",
   "vtk": "9.6.2",
-  "commit": "a068d3354c1727d5fa62b675c63c36dfe9abb383",
-  "packaged_checks": 24,
-  "appimage_checks": 24,
+  "commit": "d4829eb54ae62e3d970e538e44527020c1a8c1c2",
+  "packaged_checks": 26,
+  "appimage_checks": 26,
   "installer_checked": true,
   "files": [
     {
-      "name": "cyber-atlas_0.8.0_amd64.deb",
-      "bytes": 80924868,
-      "sha256": "faf78f60542a25866f9b52619822d6df1b90f6be9087ff77d4045efc631a8cc2"
+      "name": "cyber-atlas_0.8.1_amd64.deb",
+      "bytes": 80891544,
+      "sha256": "dcf126faac0fdf0dba3d27d881bab322be45b911d360579f6409abd4c5399e97"
     },
     {
-      "name": "CyberAtlas-0.8.0-x86_64.AppImage",
+      "name": "CyberAtlas-0.8.1-x86_64.AppImage",
       "bytes": 97753592,
-      "sha256": "d5e13efcff80bd3ab1373bfc10eeb90c34c9381eba8c320b46e0ba9b973ecb74"
+      "sha256": "f46d9053738ee14ef1c04d1662fb88ec3ff8bced2f746ba1be8c069d978dce27"
     }
   ],
-  "app_version": "0.8.0",
+  "app_version": "0.8.1",
   "machine_details_redacted": true
 }

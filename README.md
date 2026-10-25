@@ -14,15 +14,15 @@ See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [develo
 
 ## Install Cyber Atlas
 
-Choose a package for **version 0.8.0**. Each **Download** link downloads the selected file.
+Choose a package for **version 0.8.1**. Each **Download** link downloads the selected file.
 
 | Platform | Package | Installation |
 | --- | --- | --- |
-| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.0/CyberAtlas-0.8.0-Setup.exe)** | Open it and follow the installer. |
-| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.0/cyber-atlas_0.8.0_amd64.deb)** | Open it with your software installer. |
-| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.0/CyberAtlas-0.8.0-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
+| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.1/CyberAtlas-0.8.1-Setup.exe)** | Open it and follow the installer. |
+| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.1/cyber-atlas_0.8.1_amd64.deb)** | Open it with your software installer. |
+| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.8.1/CyberAtlas-0.8.1-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
 
-See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.8.0) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
+See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.8.1) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
 
 ---
 
@@ -61,7 +61,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.8.0 · **Updated:** 25 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.8.1 · **Updated:** 25 October 2026
 
 ### Product vision
 
@@ -236,7 +236,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.8.0 on 25 October 2026. Planned capabilities below describe the intended system.*
+*Implementation status checked against v0.8.1 on 25 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -270,5 +270,5 @@ The ultimate objective is not to maximize the quantity of notes. It is to help l
 ---
 
 **Project:** [seiejouke/cyber_atlas](https://github.com/seiejouke/cyber_atlas)  
-**Reference release:** [v0.8.0](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.8.0)  
+**Reference release:** [v0.8.1](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.8.1)\
 **Document:** Conceptual product specification; not a claim of scientific efficacy or completed functionality.

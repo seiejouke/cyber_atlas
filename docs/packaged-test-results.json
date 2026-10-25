@@ -12,6 +12,8 @@
     "Outline renders the selected block solid and the other block as an outline",
     "Unfilled blocks remain selectable using bundled VTK picking",
     "VTK renders and picks a sphere using bundled native libraries",
+    "Separated footprints have no spatial edges or automatic layer-marker spokes",
+    "Only edge-sharing move previews connect; cancellation restores the isolated graph",
     "Move preview rejects overlapping footprints",
     "Move controls render a valid live preview",
     "Escape restores coordinates and keeps unsaved note text",
@@ -30,7 +32,7 @@
     "No Tk callback errors"
   ],
   "passed": true,
-  "checks_passed": 25,
-  "app_version": "0.8.0",
+  "checks_passed": 27,
+  "app_version": "0.8.1",
   "paths_redacted": true
 }
