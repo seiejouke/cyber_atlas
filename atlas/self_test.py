@@ -128,6 +128,56 @@ def run(app, report_path: Path) -> int:
         pump()
         require(not app.scene.orbit_actors and app.clusters.child_list.size() == 1,
                 "Blocks retains its parent mesh and exposes the saved subconcept list")
+        app.set_view_mode("nodes")
+        manager = app.information
+        require(manager.open(), "Bundled information-entry editor opens for the selected parent")
+        manager.title.set("Bundled parent information")
+        manager.body.insert("1.0", "One recorded explanation")
+        if not manager.save() or not manager.close():
+            raise AssertionError("Bundled parent entry could not save")
+        app.clusters.select_child(child.id)
+        if not manager.open():
+            raise AssertionError("Bundled child entry editor could not open")
+        manager.title.set("Bundled child information")
+        manager.body.insert("1.0", "One supporting observation")
+        require(manager.save() and app.scene.heat_metrics[parent.id].own == 1
+                and app.scene.heat_metrics[parent.id].support == .25
+                and app.scene.heat_metrics[child.id].own == 1
+                and app.scene.heat_metrics[child.id].support == 0,
+                "Independent child entries add bounded support only to their explicit parent")
+        manager.body.insert("end", "\nAn edited observation")
+        require(manager.save() and len(app.document.entries_for(child.id)) == 1,
+                "Editing recorded information preserves its identity and entry count")
+        manager.close()
+        app.clusters.parent_note()
+        app.scene.clear_orbit_focus()
+        manager.color_mode.set("Information heat")
+        manager.change_color()
+        pump()
+        from .heat import heat_color
+        actor = app.scene.actors[parent.id][0]
+        color = tuple(round(channel * 255) for channel in actor.GetProperty().GetColor())
+        expected = heat_color(1.25)
+        require(app.scene.heat_active and color == tuple(int(expected[i:i+2], 16) for i in (1, 3, 5))
+                and actor.GetScale() == (1, 1, 1),
+                "Bundled heat overview uses recorded counts and support without resizing spheres")
+        app.clusters.explore()
+        pump()
+        arcs = app.canvas.find_withtag("support-arc")
+        require(app.scene.focused_parent == parent.id and len(arcs) == 1
+                and float(app.canvas.itemcget(arcs[0], "extent")) == -22.5,
+                "Focused clusters render the exact bounded support rim with bundled VTK and Tk")
+        saved_heat = app.path.read_bytes()
+        write_atlas(export, app.document, backup=False)
+        manager.color_mode.set("Layer colors")
+        manager.change_color()
+        app.set_view_mode("blocks")
+        pump()
+        reopened = read_atlas(export)
+        require(reopened == app.document and len(reopened.information_entries) == 2
+                and reopened.get(parent.id) == parent and reopened.child(child.id) == child
+                and app.path.read_bytes() == saved_heat and not app.scene.heat_active,
+                "Format-10 export preserves entries, notes and positions; color changes never write atlas data")
         root = app.root
         root.geometry("1020x780")
         pump()

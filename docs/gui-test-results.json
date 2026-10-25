@@ -1,5 +1,5 @@
 {
-  "passed": 108,
+  "passed": 116,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -106,6 +106,14 @@
     "Focus hides unrelated nodes without moving them; Show atlas and Collapse restore the normal view without writing",
     "JSON export/import, child deletion and template previews preserve cluster identities, parent links and independent note contents",
     "Cluster editors and controls fit the minimum window; parent deletion requires confirmation and backs up all child notes",
+    "Heat overview uses own entries plus capped direct-child support; adjacent spatial notes do not add heat or change node sizes",
+    "Cluster focus switches to own-information fills and the exact support arc; filtering and Show atlas retain fixed counts and colors",
+    "Child entries save independently, update bounded parent support and preserve unsaved personal-note drafts",
+    "Editing an entry keeps its count; validation, failed writes and Cancel preserve the complete information draft and saved atlas",
+    "Existing notes can explicitly become one recorded entry without changing their original text; identical copies cannot inflate counts",
+    "Entry deletion updates counts without removing notes; JSON export and import preserve every entry ID, owner and body",
+    "Read-only templates cannot edit entries; cancellation restores the original atlas and information metrics without writing",
+    "Heat controls and information editors fit minimum windows; Blocks and layer colors preserve the existing geometry and saved entries",
     "minimum-window layout remains usable",
     "no Tk callback errors",
     "close cancel and save-on-close"

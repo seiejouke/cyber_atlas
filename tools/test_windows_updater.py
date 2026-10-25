@@ -66,7 +66,7 @@ def close_window(pid):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--previous-zip", type=Path, required=True)
-    parser.add_argument("--previous-version", default="0.8.0")
+    parser.add_argument("--previous-version", default="0.8.1")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("Run this integration check on Windows.")
