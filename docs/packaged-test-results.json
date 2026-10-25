@@ -1,0 +1,25 @@
+{
+  "frozen": true,
+  "executable": "C:\\Users\\Jouke\\cyber_atlas\\dist\\CyberAtlas\\CyberAtlas.exe",
+  "python": "3.12.3",
+  "checks": [
+    "Startup renders every saved block",
+    "Bundled application icon loads",
+    "Custom atlas saves with the bundled storage module",
+    "VTK renders and picks a sphere using bundled native libraries",
+    "Move preview rejects overlapping footprints",
+    "Move controls render a valid live preview",
+    "Escape restores coordinates and keeps unsaved note text",
+    "Save move commits a valid position",
+    "Saved coordinates, identity, size and text roundtrip through JSON",
+    "Blocks uses the moved sphere's saved coordinates",
+    "Saving preserves the previous atlas as a backup",
+    "Portable JSON export reopens without Python on PATH",
+    "Built-in templates preview in read-only Nodes view",
+    "Template cancellation restores the atlas without writing",
+    "Editor fits the minimum window size",
+    "No Tk callback errors"
+  ],
+  "passed": true,
+  "checks_passed": 16
+}

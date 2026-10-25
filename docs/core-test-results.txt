@@ -82,6 +82,10 @@ test_no_protocol_required_for_new_blocks_and_free_slot_queries (test_optional_pr
 test_old_versions_do_not_accept_unassigned_references (test_optional_protocols.OptionalProtocolTests.test_old_versions_do_not_accept_unassigned_references) ... ok
 test_unassigned_blocks_roundtrip_with_json_null (test_optional_protocols.OptionalProtocolTests.test_unassigned_blocks_roundtrip_with_json_null) ... ok
 test_version_seven_keeps_custom_design_and_protocol_assignments (test_optional_protocols.OptionalProtocolTests.test_version_seven_keeps_custom_design_and_protocol_assignments) ... ok
+test_missing_dependencies_produce_a_visible_error_before_creating_an_atlas (test_runtime.DesktopRuntimeTests.test_missing_dependencies_produce_a_visible_error_before_creating_an_atlas) ... ok
+test_self_test_refuses_default_or_existing_user_data (test_runtime.DesktopRuntimeTests.test_self_test_refuses_default_or_existing_user_data) ... ok
+test_unwritable_log_directory_does_not_prevent_error_reporting (test_runtime.DesktopRuntimeTests.test_unwritable_log_directory_does_not_prevent_error_reporting) ... ok
+test_windowed_errors_show_a_dialog_and_write_a_log_without_stderr (test_runtime.DesktopRuntimeTests.test_windowed_errors_show_a_dialog_and_write_a_log_without_stderr) ... ok
 test_backup_retains_previous_document (test_storage.StorageTests.test_backup_retains_previous_document) ... ok
 test_byte_order_mark_supported (test_storage.StorageTests.test_byte_order_mark_supported) ... ok
 test_corrupt_atlas_does_not_replace_good_backup (test_storage.StorageTests.test_corrupt_atlas_does_not_replace_good_backup) ... ok
@@ -101,6 +105,6 @@ test_unknown_template_key_is_rejected (test_templates.TemplateTests.test_unknown
 test_raw_focus_path_tolerates_combobox_popdown_and_destroyed_window (test_theme.ThemeTests.test_raw_focus_path_tolerates_combobox_popdown_and_destroyed_window) ... ok
 
 ----------------------------------------------------------------------
-Ran 101 tests in 0.197s
+Ran 105 tests in 0.258s
 
 OK

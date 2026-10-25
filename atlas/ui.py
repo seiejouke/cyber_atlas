@@ -73,6 +73,11 @@ class AtlasApp:
     def _build(self) -> None:
         root = self.root
         root.title("Cyber Atlas")
+        icon_directory = Path(__file__).resolve().parent.parent / "assets"
+        icon_path = icon_directory / "CyberAtlas.png"
+        if icon_path.is_file():
+            self._window_icon = tk.PhotoImage(master=root, file=str(icon_path))
+            root.iconphoto(True, self._window_icon)
         width = min(1300, max(1020, root.winfo_screenwidth() - 90))
         height = min(860, max(780, root.winfo_screenheight() - 110))
         root.geometry(f"{width}x{height}")

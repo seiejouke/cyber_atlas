@@ -13,6 +13,17 @@ layers, protocols, colors, field names and block labels are editable.
 
 ## Start here
 
+For the Windows desktop build, run **CyberAtlas-0.7.0-Setup.exe** from `dist/`.
+It installs for your Windows account, adds a Start menu shortcut and includes
+Python, Tk and VTK. You can also extract the complete
+**CyberAtlas-0.7.0-windows-x64.zip** and open `CyberAtlas.exe`; keep its
+`_internal` folder beside it. Both builds use the same saved atlas location
+described below. Updating or uninstalling the application preserves your atlas.
+This build is unsigned. Windows 10/11 x64 and a working OpenGL graphics driver
+are required.
+
+To run from source instead:
+
 Use a 64-bit CPython installation. This build was tested with **Python 3.12.3**
 on Windows; the original build also ran on Python 3.13 on Linux.
 You need Tkinter and a working graphical desktop/OpenGL driver.
@@ -433,7 +444,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The Blocks/Nodes build includes **101 core tests** covering chosen angular
+The Blocks/Nodes build includes **105 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -442,12 +453,52 @@ the actual Tk controls, VTK rendering and picking, Center, Blocks placement,
 Nodes creation, note editing and movement, deleting, protocol filtering,
 design editing, view switching, JSON import/export and unsaved drafts. Movement
 checks include cancellation that preserves text edits, hidden reservations,
-save failures, Center transitions and the minimum window layout. All
-**101 core tests and 81 GUI workflow checks passed** on Windows with Python
+save failures, Center transitions and the minimum window layout. Core tests
+also cover error reporting without a console and safeguards for the packaged
+self-test. All **105 core tests and 81 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
-The minimum window size is 1020 x 780. Source code and launch instructions
-are included; this is not a packaged `.exe`.
+The minimum window size is 1020 x 780. Source code and Windows packaging
+configuration are included.
+
+## Build the Windows release
+
+On Windows x64, use the project virtual environment and install the build tools:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-build.txt
+.\.venv\Scripts\python.exe tools\build_windows.py
+```
+
+The build needs Inno Setup 6/7. It finds `ISCC.exe` on PATH, in its normal
+installation folder, or in `build/tools/InnoSetup/`. You can pass
+`--iscc "C:\path\to\ISCC.exe"`, or use `--skip-installer` to build only the
+application folder and ZIP.
+
+The script runs the core tests, generates the icon and executable version
+information, bundles the runtime, includes third-party license notices, and
+tests the actual executable with Python and Tcl/Tk environment overrides removed.
+It checks native rendering and picking, saving, moving, cancellation, templates,
+backups and the minimum window layout. The test uses a fresh temporary atlas.
+The installer is also checked by installing to a temporary folder, running the
+installed executable, upgrading it and uninstalling it while preserving saved
+test data. An existing Cyber Atlas installation is left in place and this
+installer check is skipped.
+
+Outputs in `dist/`:
+
+- `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
+- `CyberAtlas-0.7.0-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.7.0-Setup.exe`: installer for the current Windows account.
+- `SHA256SUMS.txt`: hashes for the distributable files.
+- `packaged-test-results.json`: results from the bundled executable.
+- `installed-test-results.json`: results from running the installed executable.
+- `installer-test-results.json`: installation, upgrade and removal checks.
+
+Application logs are written to `logs/cyber-atlas.log` beside the active atlas
+file. For the default atlas this is `%LOCALAPPDATA%\CyberAtlas\logs`.
+Logs rotate and startup failures also display a dialog in the windowed build.
+The build does not sign or publish the application.
 
 ## References
 

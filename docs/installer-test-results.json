@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks_passed": 4,
+  "checks": [
+    "Per-user silent installation succeeds in a path containing spaces",
+    "Installed executable passes all 16 bundled runtime checks",
+    "Reinstalling upgrades the same application without changing saved test data",
+    "Uninstall removes the executable and per-user registration while preserving saved test data"
+  ]
+}

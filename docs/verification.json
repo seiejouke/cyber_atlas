@@ -10,7 +10,7 @@
       "vtk": "9.6.2",
       "numpy": "2.5.4"
     },
-    "core_tests_passed": 101,
+    "core_tests_passed": 105,
     "gui_workflow_checks_passed": 81,
     "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
     "legacy_versions_tested": [
@@ -124,7 +124,22 @@
     ],
     "focus_check": "Both custom sliders compare raw Tk focus paths and tolerate transient combobox popdown windows",
     "nodes_view_preview": "docs/nodes-preview.png",
-    "slider_compatibility": "Six radial positions including Center and all sixteen Start slot positions are available"
+    "slider_compatibility": "Six radial positions including Center and all sixteen Start slot positions are available",
+    "windows_release": {
+      "architecture": "x64",
+      "pyinstaller": "6.22.3",
+      "pyinstaller_hooks_contrib": "2026.9",
+      "inno_setup": "7.1.0",
+      "signed": false,
+      "installer": "CyberAtlas-0.7.0-Setup.exe",
+      "zip": "CyberAtlas-0.7.0-windows-x64.zip",
+      "packaged_runtime_checks_passed": 16,
+      "installed_runtime_checks_passed": 16,
+      "installer_lifecycle_checks_passed": 4,
+      "test_isolation": "New temporary atlases; packaged executable tested with Python, virtual-environment and Tcl/Tk environment overrides removed and only System32 on PATH",
+      "installer_checks": "Per-user install, installed executable, same-version upgrade and uninstall; saved test data preserved and test registration removed",
+      "limitations": "Tested on this Windows desktop; a separate clean machine without Python has not been tested"
+    }
   },
   "original_build": {
     "environment": {
