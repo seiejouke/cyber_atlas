@@ -221,8 +221,8 @@ installer check is skipped.
 Outputs in `dist/`:
 
 - `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
-- `CyberAtlas-0.7.1-windows-x64.zip`: complete folder for ZIP distribution.
-- `CyberAtlas-0.7.1-Setup.exe`: installer for the current Windows account.
+- `CyberAtlas-0.7.2-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.7.2-Setup.exe`: installer for the current Windows account.
 - `SHA256SUMS.txt`: hashes for the distributable files.
 - `packaged-test-results.json`: results from the bundled executable.
 - `installed-test-results.json`: results from running the installed executable.
@@ -262,8 +262,8 @@ Cyber Atlas installation. A normal local build does not install the package.
 
 Outputs and reports are in `dist/linux/`:
 
-- `cyber-atlas_0.7.1_amd64.deb`
-- `CyberAtlas-0.7.1-x86_64.AppImage`
+- `cyber-atlas_0.7.2_amd64.deb`
+- `CyberAtlas-0.7.2-x86_64.AppImage`
 - `SHA256SUMS-linux.txt`
 - `linux-build-report.json` and runtime/installation test reports
 

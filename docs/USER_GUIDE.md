@@ -12,11 +12,11 @@ For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
 
-On Linux x86_64, download `cyber-atlas_0.7.1_amd64.deb` for Ubuntu/Debian-based
+On Linux x86_64, download `cyber-atlas_0.7.2_amd64.deb` for Ubuntu/Debian-based
 desktops and install it with your package installer. Open **Cyber Atlas** from
 the application menu. Python, Tk and VTK are included.
 
-For other compatible Linux desktops, download `CyberAtlas-0.7.1-x86_64.AppImage`.
+For other compatible Linux desktops, download `CyberAtlas-0.7.2-x86_64.AppImage`.
 In the file's properties, allow it to run as a program, then open it. The AppImage
 is portable; it does not install an application-menu entry automatically.
 

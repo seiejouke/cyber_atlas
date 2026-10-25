@@ -12,12 +12,12 @@ See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [develo
 
 ## Install Cyber Atlas
 
-Choose a package for **version 0.7.1**. Each **Download** link downloads the selected file.
+Choose a package for **version 0.7.2**. Each **Download** link downloads the selected file.
 
 | Platform | Package | Installation |
 | --- | --- | --- |
-| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.7.1/CyberAtlas-0.7.1-Setup.exe)** | Open it and follow the installer. |
-| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.7.1/cyber-atlas_0.7.1_amd64.deb)** | Open it with your software installer. |
-| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.7.1/CyberAtlas-0.7.1-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
+| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.7.2/CyberAtlas-0.7.2-Setup.exe)** | Open it and follow the installer. |
+| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.7.2/cyber-atlas_0.7.2_amd64.deb)** | Open it with your software installer. |
+| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.7.2/CyberAtlas-0.7.2-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
 
-See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.7.1) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
+See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.7.2) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
