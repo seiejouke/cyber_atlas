@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Cyber Atlas
+Comment=Organize notes in a three-dimensional knowledge map
+Exec=cyber-atlas
+Icon=cyber-atlas
+Terminal=false
+Categories=Education;Office;
+Keywords=notes;knowledge;atlas;
