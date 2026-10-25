@@ -1,6 +1,6 @@
 {
   "frozen": true,
-  "executable": "dist/CyberAtlas/CyberAtlas.exe",
+  "executable": "CyberAtlas.exe",
   "python": "3.12.3",
   "checks": [
     "Startup renders every saved block",
@@ -22,10 +22,15 @@
     "Portable JSON export reopens without Python on PATH",
     "Built-in templates preview in read-only Nodes view",
     "Template cancellation restores the atlas without writing",
+    "Bundled cluster editor opens for an existing parent",
+    "Orbital child notes save independently without changing the parent footprint",
+    "Bundled VTK renders and selects an orbital child with its own editor",
+    "Blocks retains its parent mesh and exposes the saved subconcept list",
     "Editor fits the minimum window size",
     "No Tk callback errors"
   ],
   "passed": true,
-  "checks_passed": 21,
+  "checks_passed": 25,
+  "app_version": "0.8.0",
   "paths_redacted": true
 }

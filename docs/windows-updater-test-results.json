@@ -5,11 +5,12 @@
     "The background helper waits for the old process before applying the installer",
     "The real update helper upgrades the older binary and installer registration to the new version",
     "The updated app reopens with the original atlas path; closing it preserves saved notes byte for byte",
-    "The upgraded executable passes 21 frozen runtime checks",
+    "The upgraded executable passes 25 frozen runtime checks",
     "Uninstall removes the test registration, preserves the atlas, and leaves the real Cyber Atlas installation unchanged"
   ],
-  "previous_version": "0.7.1",
-  "version": "0.7.2",
-  "updated_runtime_checks": 21,
-  "checks_passed": 6
+  "previous_version": "0.7.2",
+  "version": "0.8.0",
+  "updated_runtime_checks": 25,
+  "checks_passed": 6,
+  "app_version": "0.8.0"
 }
