@@ -142,7 +142,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The desktop build includes **133 core tests** covering chosen angular
+The desktop build includes **152 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -153,11 +153,36 @@ design editing, view switching, JSON import/export and unsaved drafts. Movement
 checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
-self-test, release validation, verified downloads, and safe update handoffs. All **133 core tests and 94 GUI workflow checks passed** on Windows with Python
+self-test, release validation, verified downloads, safe update handoffs, and orbital relationships. All **152 core tests and 102 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
 configuration are included.
+
+## Orbital cluster architecture
+
+Schema 9 retains the existing `nodes` grid and adds a separate `subconcepts`
+list. `Subconcept` stores its stable ID, grid parent ID, name, notes, local slot
+(0–7), and `type_of` relationship. Atlas validation rejects orphan parents,
+nested clusters, duplicate concept IDs and occupied local slots. The total
+limit of 10,000 concepts and 16 MiB file limit include children. Versions 1–8
+migrate without moving existing grid nodes; first save keeps the original backup.
+
+`geometry.orbit_position` places children at stable offsets in their parent's
+horizontal plane. `orbit_scene.OrbitScene` adds independent actors, spokes,
+ring, picking, filter inheritance and reversible focus to the existing renderer.
+`cluster_ui.ClusterManager` owns the child editor, list, preview and consent
+flow. The ordinary selected grid node remains the parent; child edits do not
+reuse or overwrite its text fields. Design reassignment and protocol removal
+preserve the child collection. Parent deletion requires explicit cluster deletion.
+
+The first release has one local ring, eight slots and one expanded cluster.
+Focus hides unrelated geometry without moving saved nodes; Show atlas restores
+the camera. Blocks keeps the root mesh and exposes the child list. No source
+integration, information scaling, mastery scores or nested orbits are inferred.
+
+Run `python tools/capture_clusters.py` on a graphical desktop to refresh the real
+cluster screenshots from an isolated example atlas.
 
 ## Update distribution
 
@@ -187,7 +212,7 @@ After a Windows build, test the real upgrade helper without replacing an
 existing user installation:
 
 ```powershell
-.\.venv\Scripts\python.exe tools\test_windows_updater.py --previous-zip dist\CyberAtlas-0.7.1-windows-x64.zip
+.\.venv\Scripts\python.exe tools\test_windows_updater.py --previous-zip dist\CyberAtlas-0.7.2-windows-x64.zip
 ```
 
 This compiles isolated installers with a separate AppId, upgrades the old binary,

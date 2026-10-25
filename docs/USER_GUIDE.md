@@ -53,6 +53,44 @@ require your choice. Offline or failed checks leave the application usable.
 Users of 0.7.1 or earlier need one manual upgrade to receive this update checker.
 The first implementation downloads the full package and upgrades it in place.
 
+## Orbital subconcepts
+
+Select a saved node and choose **+ Subconcept** in the cluster bar above the
+viewport. Give the child a title and its own notes, choose an available local
+orbit position, and **Save note**. The relationship is **Is a type of**: for
+example, Firewall can contain Packet filtering and Stateful inspection.
+
+One parent supports up to eight children on one ring. Children inherit the
+parent's layer and protocol; they do not reserve additional grid slots. Adding
+a child fills a free local position without moving its siblings. Nested orbits
+and converting existing grid nodes into children are not included in this version.
+
+In **Nodes**, **Expand** opens the orbit and frames the cluster. Click a child
+sphere or label to edit its independent notes. **Move in orbit** unlocks its
+local position. Occupied positions cannot be saved. **Cancel move** or Escape
+restores the saved position while keeping text edits; **Save note** commits the
+new position. Switching notes or leaving a changed child asks Save/Discard/Cancel.
+
+**Focus cluster** temporarily hides unrelated nodes and frames the orbit.
+**Show atlas** restores the previous camera and surrounding nodes. **Collapse**
+hides the orbit. Saved grid positions remain unchanged. Moving the parent uses
+the normal movement controls and carries all its children along. Layer and
+protocol filters apply to the complete cluster.
+
+In **Blocks**, the existing parent footprint remains visible. The editor lists
+its children under **Subconcepts**, with a scrollbar for larger clusters. Select
+a child to edit its notes, or **Explore in Nodes** to see its orbit. A parent's
+position controls are collapsed while its child list is displayed; in Nodes
+choose **Move node**, or in Blocks click the selected block to place it elsewhere.
+
+Deleting a child preserves its parent and siblings. Deleting a parent explicitly
+asks to delete the whole cluster, including all child notes. The normal
+previous-version backup includes the complete cluster. JSON export/import also
+preserves every child ID, parent link, local position, relationship and note.
+
+Import `examples/orbital_cluster_atlas.json` for an editable four-child Firewall
+example. See the [implemented cluster screenshots](../README.md#orbital-clusters).
+
 ## First use
 
 The first launch creates a local atlas containing the 14 starter notes from
@@ -314,19 +352,22 @@ duplicate IDs and overlapping blocks are rejected without partially importing
 a document.
 
 The importer supports the earlier HTML prototype's JSON versions 1, 2 and 3,
-as well as desktop versions 4–8. Older files retain every note's ID,
+as well as desktop versions 4–9. Older files retain every note's ID,
 layer, protocol, depth, notes and list order. Versions 1–5 become compact
 1/16 blocks in consecutive slots at each layer/depth; versions 6–7 retain
 their exact sizes and slots. Versions 1–6 receive the OSI design preset;
 version 7 keeps its custom design. Legacy integer node IDs become strings.
-The next save or export writes version 8
+The next save or export writes version 9
 with the design and explicit size/slot coordinates; the first save retains
 the original file as the normal previous-version backup. Empty atlases can
 be imported/exported with their custom design.
 
-Version 8 supports an empty protocol list (`"protocols": []`) and unassigned
+Version 8 introduced an empty protocol list (`"protocols": []`) and unassigned
 blocks (`"protocol": null`). Existing version 7 files load with their saved
-protocol assignments intact.
+protocol assignments intact. Version 9 adds a separate `subconcepts` list;
+existing grid coordinates remain unchanged, and the first save retains the old
+file as the normal backup. Files saved by 0.8.0 require that version or newer;
+older applications do not support the new file format.
 
 A legacy ring with more than 16 notes cannot fit this grid. Import/loading
 stops with a message identifying the ring, without dropping notes or changing

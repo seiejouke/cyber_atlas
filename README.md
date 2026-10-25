@@ -2,6 +2,8 @@
 
 **Cyber Atlas** is a desktop notebook that organizes knowledge in a 3D map. Explore your notes as nodes or blocks, arrange them into custom layers, and add your own explanations. Start with a built-in template or create an empty atlas.
 
+Group related types into **orbital subconcepts**, each with its own notes. Nodes view expands the cluster; Blocks view keeps the parent and its child list.
+
 Your notes work offline and stay on your computer. You can export and import atlases as JSON files. Use **Updates** to check for new releases; optional daily checks contact GitHub, and downloads start only when you choose them.
 
 See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [developer guide](docs/DEVELOPMENT.md) for source setup and builds.
@@ -24,11 +26,27 @@ See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/r
 
 ---
 
+## Orbital clusters
+
+Select a saved node and choose **+ Subconcept** to create a related type with
+independent notes. Each parent supports one ring of eight stable local positions.
+**Expand** and **Focus cluster** make the children easy to explore; **Show atlas**
+returns to the surrounding map. Moving the parent carries its children along.
+
+![Implemented Nodes view with the Firewall cluster expanded and Stateful inspection notes selected](docs/orbital-cluster.png)
+
+In Blocks view, select a child in **Subconcepts** to edit its notes, or choose
+**Explore in Nodes** to open the orbit. Children share their parent's layer and
+protocol filters and are included in JSON exports and backups.
+Try the [editable orbital-cluster example](examples/orbital_cluster_atlas.json).
+
+![Implemented Blocks view retaining the Firewall footprint and selectable child list](docs/orbital-cluster-blocks.png)
+
 ## Project scope and vision
 
 This section contains the complete illustrated design philosophy. The current
 release provides the spatial notebook foundation; information and mastery
-measurements, assessments, source integration, local concept orbits and historical
+measurements, assessments, source integration and historical
 playback remain planned capabilities. The implementation table below records
 what is available today.
 
@@ -43,7 +61,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.7.2 · **Updated:** 25 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.8.0 · **Updated:** 25 October 2026
 
 ### Product vision
 
@@ -218,7 +236,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.7.2 on 25 October 2026. Planned capabilities below describe the intended system.*
+*Implementation status checked against v0.8.0 on 25 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -237,7 +255,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Adaptive simplification and decomposition suggestions | **Planned** |
 | Historical playback and timeline | **Planned** |
 | Interactive comparative study notes | **Planned** |
-| Orbital subconcept clusters | **Planned** |
+| Orbital subconcept clusters | **Implemented** — one ring of eight stable positions, independent notes, Nodes expansion and Blocks child list |
 
 The present alpha establishes the spatial notebook. The envisioned learning mechanisms, including mastery estimates and the proposed memory benefits of spatial association, still require implementation and validation with actual learners.
 
@@ -252,5 +270,5 @@ The ultimate objective is not to maximize the quantity of notes. It is to help l
 ---
 
 **Project:** [seiejouke/cyber_atlas](https://github.com/seiejouke/cyber_atlas)  
-**Reference release:** [v0.7.2](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.7.2)  
+**Reference release:** [v0.8.0](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.8.0)  
 **Document:** Conceptual product specification; not a claim of scientific efficacy or completed functionality.

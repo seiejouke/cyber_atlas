@@ -8,10 +8,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import ceil, cos, pi, sin
 
-from .model import ANGULAR_SLOTS, CENTER_DEPTH, Design, Node
+from .model import ANGULAR_SLOTS, CENTER_DEPTH, Design, Node, ORBIT_SLOTS
 
 LAYER_HEIGHT = 1.0
 RADIAL_WIDTH = 0.80
+ORBIT_RADIUS = .36
 INNER_RADIUS = RADIAL_WIDTH
 Z_BASE = -3.5
 ARC_SEGMENTS = 128  # Resolution of a full circle, shared by the ring's blocks.
@@ -47,6 +48,13 @@ def node_position(node: Node, design: Design = Design()) -> Point:
     angle = -pi / 2 + (node.slot + node.span / 2) * 2 * pi / ANGULAR_SLOTS
     radius = (inner + outer) / 2
     return radius * cos(angle), radius * sin(angle), bottom + LAYER_HEIGHT / 2
+
+
+def orbit_position(parent: Node, slot: int, design: Design = Design()) -> Point:
+    """Stable offsets on the parent's layer, independent of its grid footprint."""
+    x, y, z = node_position(parent, design)
+    angle = pi / 2 - slot * 2 * pi / ORBIT_SLOTS
+    return x + ORBIT_RADIUS * cos(angle), y + ORBIT_RADIUS * sin(angle), z
 
 
 def adjacent_node_pairs(nodes: tuple[Node, ...]) -> tuple[tuple[str, str], ...]:

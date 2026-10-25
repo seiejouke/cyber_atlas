@@ -27,6 +27,7 @@ from node_view_checks import check_node_moves, check_node_view
 from template_view_checks import check_template_browser
 from block_view_checks import check_block_view
 from update_view_checks import check_updates
+from cluster_view_checks import check_clusters
 
 
 def pump(root, steps=5):
@@ -778,7 +779,7 @@ def main(report_path=None):
             with patch("atlas.ui.filedialog.asksaveasfilename", return_value=str(export)):
                 app.export_json()
             assert read_atlas(export) == app.document
-            assert json.loads(export.read_text())["version"] == 8
+            assert json.loads(export.read_text())["version"] == 9
             legacy = Path(folder) / "legacy.json"
             legacy.write_text(json.dumps({"type": "cyber-knowledge-atlas", "version": 3,
                                          "nodes": [{**n.to_dict(), "id": int(n.id)} for n in doc.nodes]}))
@@ -1038,7 +1039,7 @@ def main(report_path=None):
             assert app.save_node()
             assert app.document.nodes[0].coordinate == ("custom-only", "custom-only", 2)
             pump(root)
-            assert app.scene.design == minimal_design and len(app.scene._axis_actors) == 3
+            assert app.scene.design == minimal_design and len(app.scene._axis_actors) == 3, (app.scene.design, app.scene.mode, len(app.scene._axis_actors))
             checks.append("a single custom layer and protocol work without any OSI preset entries")
 
             check_clear_lists(root, app, path, checks)
@@ -1048,6 +1049,7 @@ def main(report_path=None):
             check_template_browser(root, app, path, pump, checks)
             check_block_view(root, app, path, pump, checks)
             check_updates(root, app, path, pump, checks)
+            check_clusters(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)

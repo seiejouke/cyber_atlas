@@ -17,6 +17,7 @@ class PendingAssignment:
 class DesignDraft:
     def __init__(self, atlas: Atlas):
         self.nodes = atlas.nodes
+        self.subconcepts = atlas.subconcepts
         self.layers = atlas.design.layers
         self.protocols = atlas.design.protocols
         self._settings = atlas.design
@@ -99,4 +100,4 @@ class DesignDraft:
         return replace(self._settings, layers=self.layers, protocols=self.protocols)
 
     def to_atlas(self, **settings) -> Atlas:
-        return Atlas(self.nodes, replace(self.design, **settings))
+        return Atlas(self.nodes, replace(self.design, **settings), self.subconcepts)

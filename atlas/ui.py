@@ -68,6 +68,9 @@ class AtlasApp:
         self._bind()
         first = document.get("11") or (document.nodes[0] if document.nodes else None)
         self._load_editor(first)
+        from .cluster_ui import ClusterManager
+        self.clusters = ClusterManager(self)
+        self.scene.set_subconcepts(document.subconcepts)
         self._set_status(f"Local atlas  /  {self.path}")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self.root.after(80, self.request_render)
@@ -387,6 +390,9 @@ class AtlasApp:
             self.cancel_placement()
         if not self._allow_leave():
             return
+        if self.clusters.editing:
+            self._load_editor(self.document.get(self.selected))
+        self.scene.collapse_orbit()
         # A discarded draft remains in the fields until the next editor load.
         # Normalize it before taking the state we promise to restore on Cancel.
         if self.dirty:
@@ -416,6 +422,7 @@ class AtlasApp:
         self.scene.set_mode("nodes")
         self.scene.set_design(template.atlas.design)
         self.scene.set_nodes(template.atlas.nodes)
+        self.scene.set_subconcepts(template.atlas.subconcepts)
         self.scene.set_selected(None)
         self.scene.set_layer_filter(None)
         self.scene.set_protocol_filter(None)
@@ -464,6 +471,7 @@ class AtlasApp:
         self.scene.set_preview(None)
         self.scene.set_design(self.document.design)
         self.scene.set_nodes(self.document.nodes)
+        self.scene.set_subconcepts(self.document.subconcepts)
         self.scene.set_mode(origin["mode"])
         self.scene.set_connections_visible(origin["connections"])
         self.scene.set_layer_filter(origin["layer_filter"])
@@ -654,6 +662,8 @@ class AtlasApp:
         self.slot_slider.cancel_drag()
         self._cancel_hover()
         self._node_move_origin = self._preview_candidate()
+        if self.scene.focused_parent is not None:
+            self.scene.clear_orbit_focus()
         self._changed()
         self.layer_box.focus_set()
         return True
@@ -761,6 +771,12 @@ class AtlasApp:
         if self._template_origin is not None:
             self.cancel_templates()
             return "break"
+        if self.clusters.editing:
+            if self.clusters.moving and self.clusters.child_id:
+                self.clusters.move()
+            else:
+                self.clusters.parent_note()
+            return "break"
         if self._node_move_origin is not None:
             self.cancel_node_move()
             return "break"
@@ -772,6 +788,8 @@ class AtlasApp:
 
     @property
     def dirty(self) -> bool:
+        if hasattr(self, "clusters") and self.clusters.editing:
+            return self.clusters.dirty
         return bool(self._loaded_form) and self._form_state() != self._loaded_form
 
     def _changed(self) -> None:
@@ -925,6 +943,10 @@ class AtlasApp:
 
     def _load_editor(self, node: Node | None, coordinate: tuple[LayerId, str | None, int] | None = None,
                      *, slot: int | None = None, size: str | None = None, placing: bool = False) -> None:
+        if hasattr(self, "clusters"):
+            self.clusters.close_editor()
+            if self.scene.expanded_parent != (node.id if node else None):
+                self.scene.collapse_orbit()
         self.slot_slider.cancel_drag()
         self._cancel_hover()
         self._node_move_origin = None
@@ -961,6 +983,8 @@ class AtlasApp:
         self.request_render()
 
     def _allow_leave(self) -> bool:
+        if hasattr(self, "clusters") and self.clusters.editing:
+            return self.clusters.allow_leave()
         if not self.dirty:
             return True
         answer = messagebox.askyesnocancel("Unsaved note", "Save this note before continuing?", parent=self.root)
@@ -969,7 +993,9 @@ class AtlasApp:
     def select_node(self, node_id: str) -> bool:
         if self._template_origin is not None:
             return False
-        if node_id == self.selected:
+        if self.document.child(node_id) is not None:
+            return self.clusters.select_child(node_id)
+        if node_id == self.selected and not self.clusters.editing:
             return True
         node = self.document.get(node_id)
         if node is None or not self._allow_leave():
@@ -993,12 +1019,15 @@ class AtlasApp:
                 self.scene.protocol_filter = None
             self._refresh_design_controls()
         self.scene.set_nodes(document.nodes)
+        self.scene.set_subconcepts(document.subconcepts)
         self._set_status(f"Saved {datetime.now():%H:%M:%S}  /  {self.path}")
         return True
 
     def save_node(self) -> bool:
         if self._template_origin is not None:
             return False
+        if self.clusters.editing:
+            return self.clusters.save()
         if self.placement_state == "placing":
             self.editor_state.configure(text="Placing: click a valid location to lock before saving.", fg=theme.GOLD)
             return False
@@ -1090,12 +1119,16 @@ class AtlasApp:
     def delete_node(self) -> bool:
         if self._template_origin is not None:
             return False
+        if self.clusters.editing:
+            return self.clusters.delete()
         node = self.document.get(self.selected)
         if node is None:
             return False
-        if not messagebox.askyesno("Delete volume", f"Delete '{node.name}'?\n\nIts volume and notes will be removed. Any unsaved edits to this note will be discarded.", parent=self.root):
+        children = self.document.children(node.id)
+        warning = f"\n\nThis also deletes all {len(children)} subconcepts and their notes." if children else ""
+        if not messagebox.askyesno("Delete cluster" if children else "Delete volume", f"Delete '{node.name}'?{warning}\n\nIts volume and notes will be removed. Any unsaved edits to this note will be discarded.", parent=self.root):
             return False
-        if not self._commit(self.document.without_node(node.id)):
+        if not self._commit(self.document.without_node(node.id, remove_children=bool(children))):
             return False
         visible = [n for n in self.document.nodes if self.scene.is_visible(n)]
         self._load_editor(visible[0] if visible else None)
@@ -1172,6 +1205,7 @@ class AtlasApp:
         self._render_job = None
         if self._closed:
             return
+        self.clusters.sync()
         if self.scene.mode == "blocks":
             if not self.block_bar.winfo_manager():
                 self.block_bar.grid()
@@ -1193,16 +1227,20 @@ class AtlasApp:
         self.canvas.tag_lower(self._image_item)
         self.canvas.delete("overlay")
         self._label_hits.clear()
-        visible = [n for n in self.document.nodes if self.scene.is_visible(n)]
+        visible = [n for n in self.document.nodes if self.scene.is_visible(n)
+                   and (self.scene.mode != "nodes" or self.scene.actors[n.id][0].GetVisibility())]
         node_view = self.scene.mode == "nodes"
         self.canvas.create_text(18, 18, anchor="nw", text="SPATIAL VIEW", fill=theme.MUTED,
                                 font=(self.mono, 8), tags="overlay")
         count_label = "NODES" if node_view else "BLOCKS" if self.scene.block_appearance == "outline" else "FILLED VOLUMES"
-        self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{len(visible):02d} {count_label}",
+        count = len(visible) + (len(self.scene.orbit_actors) if node_view else 0)
+        self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{count:02d} {count_label}",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self._axis_label_boxes.clear()
         selected_node = self.document.get(self.selected)
         for i, layer in enumerate(self.document.design.layers, 1):
+            if self.scene.focused_parent is not None:
+                break
             x, y, _ = self.scene.project((0.0, 0.0, self.document.design.z_base + i - 0.5))
             # Reference labels must not float through a solid in front of them.
             if not node_view and self.scene.occludes(x - 24, y):
@@ -1224,7 +1262,7 @@ class AtlasApp:
         if node_view:
             if self.scene.preview_node is not None:
                 self._draw_node_halo(self.scene.preview_node, "preview-halo", theme.ACCENT if self.scene.preview_valid else theme.ERROR, preview=True)
-            elif (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
+            elif not self.clusters.editing and (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
                 self._draw_node_halo(selected, "node-halo", theme.ACCENT)
             labeled = visible if self.labels_var.get() else [node for node in visible if node.id in (self.selected, self._hovered_node)]
             self._draw_labels(labeled, width, height)
@@ -1243,7 +1281,9 @@ class AtlasApp:
                                 fill="#6d879f", font=(self.mono, 8), tags="overlay")
         if self._template_origin is None:
             self.canvas.create_text(18, height - 64, anchor="sw",
-                                    text="MOVING: EDITOR CONTROLS / ESC CANCEL" if self._node_move_origin is not None else
+                                    text="ORBIT MOVE / ESC CANCEL" if self.clusters.editing and self.clusters.moving else
+                                    "SUBCONCEPT: USE MOVE IN ORBIT" if self.clusters.editing else
+                                    "MOVING: EDITOR CONTROLS / ESC CANCEL" if self._node_move_origin is not None else
                                     "CREATE WITH EDITOR CONTROLS" if node_view and self.selected is None else
                                     "EDITING: COORDINATES LOCKED" if node_view else
                                     "PLACING: CLICK TO LOCK / ESC CANCEL" if self.placement_state == "placing" else
@@ -1253,6 +1293,7 @@ class AtlasApp:
             text = "No nodes match these filters." if node_view else "No volumes match these filters."
             self.canvas.create_text(width / 2, height / 2 - 20, text=text, fill=theme.TEXT,
                                     font=(self.family, 16), tags="overlay")
+        self.clusters.draw()
 
     def _draw_node_halo(self, node: Node, tag: str, color: str, *, preview: bool = False) -> None:
         x, y, depth = self.scene.project(self.scene.node_anchor(node))
@@ -1355,7 +1396,7 @@ class AtlasApp:
         if self._pressed is not None and not self._moved and event.num == 1:
             if self._template_origin is not None:
                 pass
-            elif self.scene.mode == "nodes":
+            elif self.scene.mode == "nodes" or self.clusters.editing:
                 node_id = self._pick_at(event.x, event.y)
                 if node_id is not None:
                     self.select_node(node_id)

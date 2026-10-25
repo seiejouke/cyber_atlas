@@ -1,5 +1,5 @@
 {
-  "passed": 94,
+  "passed": 102,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -92,6 +92,14 @@
     "Offline checks show an actionable message and leave the editor and saved atlas available",
     "Dismissing a pending automatic check prevents its result from reopening the update window",
     "Daily automatic checks require an explicit saved opt-in, run at most once per day, and stay quiet when the app is current",
+    "Orbital children have independent notes and stable free local slots; adding them preserves every grid node and reservation",
+    "Picking an orbit sphere opens its own notes; Cancel and failed saves preserve the child draft and prevent navigation",
+    "Orbit moves reject occupied slots; Escape restores the saved position while keeping text; Save changes only the chosen child",
+    "Blocks keeps the parent footprint and selectable child list; switching views preserves child notes and Explore restores the Nodes orbit",
+    "Parent moves carry the whole orbit without changing child records; layer and protocol filters apply to the complete cluster",
+    "Focus hides unrelated nodes without moving them; Show atlas and Collapse restore the normal view without writing",
+    "JSON export/import, child deletion and template previews preserve cluster identities, parent links and independent note contents",
+    "Cluster editors and controls fit the minimum window; parent deletion requires confirmation and backs up all child notes",
     "minimum-window layout remains usable",
     "no Tk callback errors",
     "close cancel and save-on-close"

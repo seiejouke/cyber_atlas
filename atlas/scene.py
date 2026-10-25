@@ -22,6 +22,7 @@ from vtkmodules.vtkRenderingCore import (
 
 from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, adjacent_node_pairs, layout_meshes, node_position, wedge_mesh
 from .model import ANGULAR_SLOTS, BANDS, CENTER_DEPTH, Design, LayerId, Node
+from .orbit_scene import OrbitScene
 
 
 class ProtocolFilter(Enum):
@@ -52,7 +53,7 @@ def polydata(mesh: Mesh) -> vtkPolyData:
     return result
 
 
-class Scene:
+class Scene(OrbitScene):
     def __init__(self, design: Design = Design()) -> None:
         self.design = design
         self.mode = "blocks"
@@ -118,6 +119,7 @@ class Scene:
         self.protocol_filter: str | ProtocolFilter | None = None
         self.width, self.height = 800, 650
         self.closed = False
+        self._init_orbits()
         for position, intensity in (((0, 0, 1), 0.80), ((-1, 0.6, 0.7), 0.45)):
             light = vtkLight()
             light.SetLightTypeToCameraLight()
@@ -215,6 +217,8 @@ class Scene:
             raise ValueError("View mode must be 'blocks' or 'nodes'.")
         if self.mode == mode:
             return
+        if mode != "nodes" and self.focused_parent is not None:
+            self.clear_orbit_focus()
         preview, valid = self.preview_node, self.preview_valid
         self.mode = mode
         self.hovered = None
@@ -380,6 +384,7 @@ class Scene:
         for actor in self._axis_connection_actors:
             actor.SetVisibility(self.connections_visible)
         self._update_connections()
+        self._sync_orbits()
         self.renderer.ResetCameraClippingRange()
 
     def _update_guides(self) -> None:
@@ -510,6 +515,7 @@ class Scene:
         self._style_axis()
         self._update_connections()
         self._style_blocks()
+        self._sync_orbits()
 
     def set_preview(self, node: Node | None, valid: bool = True) -> None:
         self.preview_node, self.preview_valid = node, valid
@@ -556,6 +562,7 @@ class Scene:
                 self._preview_pick_actor.SetMapper(pick_mapper)
             self._preview_picker.AddPickList(self._preview_pick_actor)
         self._update_connections()
+        self._sync_orbits()
         self.renderer.ResetCameraClippingRange()
 
     def pick_preview(self, x: float, y: float) -> bool:
@@ -573,6 +580,10 @@ class Scene:
 
     def set_layer_filter(self, layer: LayerId | None) -> None:
         self.layer_filter = layer
+        if self.focused_parent is not None:
+            parent = next((node for node in self.nodes if node.id == self.focused_parent), None)
+            if parent is None or not self.is_visible(parent):
+                self.clear_orbit_focus()
         for node in self.nodes:
             solid, outline = self.actors[node.id]
             visible = self.is_visible(node)
@@ -582,6 +593,7 @@ class Scene:
         self._style_axis()
         self._update_connections()
         self._style_blocks()
+        self._sync_orbits()
         self.renderer.ResetCameraClippingRange()
 
     def set_protocol_filter(self, protocol: str | ProtocolFilter | None) -> None:

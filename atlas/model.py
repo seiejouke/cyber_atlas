@@ -20,7 +20,8 @@ MAX_NODES = 10_000
 ANGULAR_SLOTS = 16
 BLOCK_SIZES = {"1/16": 1, "1/8": 2, "1/4": 4, "1/2": 8, "Full": 16}
 SCHEMA = "cyber-knowledge-atlas"
-VERSION = 8
+VERSION = 9
+ORBIT_SLOTS = 8
 LAYOUT = "fixed-slots"
 NO_PROTOCOL_LABEL = "No protocol"
 
@@ -209,9 +210,39 @@ def validate_occupancy(nodes: tuple[Node, ...], layer_names: dict[LayerId, str])
 
 
 @dataclass(frozen=True, slots=True)
+class Subconcept:
+    """A concept in a stable local orbit; it has no grid footprint of its own."""
+    id: str
+    parent_id: str
+    name: str
+    notes: str = ""
+    orbit_slot: int = 0
+    relationship: str = "type_of"
+
+    def __post_init__(self) -> None:
+        _text(self.id, "Subconcept ID", 100)
+        _text(self.parent_id, "Parent ID", 100)
+        _text(self.name, "Subconcept name", 120)
+        if not isinstance(self.notes, str) or len(self.notes) > 100_000 or "\x00" in self.notes:
+            raise AtlasError("Subconcept notes must be text without null characters, at most 100,000 characters.")
+        if type(self.orbit_slot) is not int or not 0 <= self.orbit_slot < ORBIT_SLOTS:
+            raise AtlasError("Choose an orbit position from 1 to 8.")
+        if self.relationship != "type_of":
+            raise AtlasError("This version supports the Is a type of relationship.")
+
+    @classmethod
+    def create(cls, parent_id: str, name: str, notes: str = "", *, orbit_slot: int = 0) -> Subconcept:
+        return cls(uuid4().hex, parent_id, name.strip(), notes, orbit_slot)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {key: getattr(self, key) for key in ("id", "parent_id", "name", "notes", "orbit_slot", "relationship")}
+
+
+@dataclass(frozen=True, slots=True)
 class Atlas:
     nodes: tuple[Node, ...] = ()
     design: Design = Design()
+    subconcepts: tuple[Subconcept, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.design, Design):
@@ -229,6 +260,22 @@ class Atlas:
                 raise AtlasError(f"Duplicate node ID: {node.id}")
             ids.add(node.id)
         validate_occupancy(self.nodes, {layer.id: layer.name for layer in self.design.layers})
+        if not isinstance(self.subconcepts, tuple) or not all(isinstance(child, Subconcept) for child in self.subconcepts):
+            raise AtlasError("An atlas contains a tuple of valid subconcepts.")
+        if len(self.nodes) + len(self.subconcepts) > MAX_NODES:
+            raise AtlasError(f"An atlas can contain at most {MAX_NODES:,} concepts including children.")
+        parents = set(ids)
+        occupied_orbits = set()
+        for child in self.subconcepts:
+            if child.id in ids:
+                raise AtlasError(f"Duplicate concept ID: {child.id}")
+            if child.parent_id not in parents:
+                raise AtlasError("Each subconcept needs an existing grid node as its parent; nested orbits are not supported.")
+            position = child.parent_id, child.orbit_slot
+            if position in occupied_orbits:
+                raise AtlasError("That orbit position already contains a subconcept.")
+            ids.add(child.id)
+            occupied_orbits.add(position)
 
     def get(self, node_id: str | None) -> Node | None:
         return next((n for n in self.nodes if n.id == node_id), None)
@@ -254,22 +301,41 @@ class Atlas:
         return next(((start + step) % ANGULAR_SLOTS for step in range(ANGULAR_SLOTS)
                      if (start + step) % ANGULAR_SLOTS in free), None)
 
-    def without_node(self, node_id: str) -> Atlas:
+    def children(self, parent_id: str | None) -> tuple[Subconcept, ...]:
+        return tuple(sorted((child for child in self.subconcepts if child.parent_id == parent_id), key=lambda child: child.orbit_slot))
+
+    def child(self, child_id: str | None) -> Subconcept | None:
+        return next((child for child in self.subconcepts if child.id == child_id), None)
+
+    def with_child(self, child: Subconcept) -> Atlas:
+        old = self.child(child.id)
+        children = tuple(child if entry.id == child.id else entry for entry in self.subconcepts) if old else self.subconcepts + (child,)
+        return replace(self, subconcepts=children)
+
+    def without_child(self, child_id: str) -> Atlas:
+        if self.child(child_id) is None:
+            raise AtlasError("The selected subconcept no longer exists.")
+        return replace(self, subconcepts=tuple(child for child in self.subconcepts if child.id != child_id))
+
+    def without_node(self, node_id: str, *, remove_children: bool = False) -> Atlas:
         if self.get(node_id) is None:
             raise AtlasError("The selected node no longer exists.")
-        return replace(self, nodes=tuple(n for n in self.nodes if n.id != node_id))
+        if self.children(node_id) and not remove_children:
+            raise AtlasError("This node has subconcepts. Confirm deleting the whole cluster first.")
+        return replace(self, nodes=tuple(n for n in self.nodes if n.id != node_id),
+                       subconcepts=tuple(child for child in self.subconcepts if child.parent_id != node_id))
 
     def with_design(self, design: Design, layer_moves: dict | None = None, protocol_moves: dict | None = None) -> Atlas:
         """Apply explicit reassignments atomically; overlaps and orphan IDs fail."""
         layer_moves, protocol_moves = layer_moves or {}, protocol_moves or {}
         return Atlas(tuple(replace(n, layer=layer_moves.get(n.layer, n.layer),
-                                   protocol=protocol_moves.get(n.protocol, n.protocol)) for n in self.nodes), design)
+                                   protocol=protocol_moves.get(n.protocol, n.protocol)) for n in self.nodes), design, self.subconcepts)
 
     def without_protocols(self) -> Atlas:
         """Clear optional metadata while preserving blocks and all geometry."""
         if not self.design.protocols:
             return self
-        return Atlas(tuple(replace(n, protocol=None) for n in self.nodes), replace(self.design, protocols=()))
+        return Atlas(tuple(replace(n, protocol=None) for n in self.nodes), replace(self.design, protocols=()), self.subconcepts)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -278,6 +344,7 @@ class Atlas:
             "angular_slots": ANGULAR_SLOTS,
             "design": self.design.to_dict(),
             "nodes": [n.to_dict() for n in self.nodes],
+            "subconcepts": [child.to_dict() for child in self.subconcepts],
         }
 
     @classmethod
@@ -285,8 +352,10 @@ class Atlas:
         if not isinstance(data, dict) or data.get("type") != SCHEMA:
             raise AtlasError("This is not a Cyber Atlas JSON document.")
         version = data.get("version")
-        if type(version) is not int or version not in (1, 2, 3, 4, 5, 6, 7, 8):
-            raise AtlasError("Supported atlas file versions are 1 through 8.")
+        if type(version) is not int or not 1 <= version <= VERSION:
+            raise AtlasError("Supported atlas file versions are 1 through 9.")
+        if version < 9 and data.get("subconcepts", []) != []:
+            raise AtlasError("Subconcepts require atlas file version 9.")
         if version == 4 and (
             data.get("sector_order") != list(PROTOCOLS) or data.get("radial_bands") != list(BANDS)
         ):
@@ -329,7 +398,20 @@ class Atlas:
         design = Design.from_dict(data.get("design")) if version >= 7 else Design()
         if version == 7 and not design.protocols:
             raise AtlasError("Empty protocol lists require atlas file version 8.")
-        return cls(tuple(nodes), design)
+        children = []
+        if version >= 9:
+            raw_children = data.get("subconcepts")
+            if not isinstance(raw_children, list) or len(raw_children) + len(nodes) > MAX_NODES:
+                raise AtlasError("The file needs a valid subconcept list within the concept limit.")
+            for index, raw in enumerate(raw_children, 1):
+                if not isinstance(raw, dict):
+                    raise AtlasError(f"Subconcept {index} must be an object.")
+                try:
+                    children.append(Subconcept(raw["id"], raw["parent_id"], raw["name"], raw.get("notes", ""),
+                                               raw["orbit_slot"], raw["relationship"]))
+                except KeyError as exc:
+                    raise AtlasError(f"Subconcept {index} is missing {exc.args[0]!r}.") from exc
+        return cls(tuple(nodes), design, tuple(children))
 
 
 def example_atlas() -> Atlas:

@@ -101,6 +101,25 @@ def run(app, report_path: Path) -> int:
         app.cancel_templates()
         require(app.path.read_bytes() == before and not app.dirty,
                 "Template cancellation restores the atlas without writing")
+        parent = app.document.get(app.selected)
+        require(app.clusters.add(), "Bundled cluster editor opens for an existing parent")
+        app.clusters.name.set("Bundled subconcept")
+        app.clusters.notes.insert("1.0", "Independent bundled child notes")
+        require(app.clusters.save() and read_atlas(app.path) == app.document
+                and app.document.get(parent.id) == parent,
+                "Orbital child notes save independently without changing the parent footprint")
+        child = app.document.child(app.clusters.child_id)
+        app.clusters.explore()
+        pump()
+        from .geometry import orbit_position
+        x, y, _ = app.scene.project(orbit_position(parent, child.orbit_slot, app.document.design))
+        require(app.scene.pick(x, y) == child.id and app.select_node(child.id),
+                "Bundled VTK renders and selects an orbital child with its own editor")
+        app.set_view_mode("blocks")
+        app.clusters.parent_note()
+        pump()
+        require(not app.scene.orbit_actors and app.clusters.child_list.size() == 1,
+                "Blocks retains its parent mesh and exposes the saved subconcept list")
         root = app.root
         root.geometry("1020x780")
         pump()

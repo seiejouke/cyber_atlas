@@ -1,0 +1,172 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 9,
+  "layout": "fixed-slots",
+  "center_depth": -1,
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "angular_slots": 16,
+  "design": {
+    "layers": [
+      {
+        "id": 1,
+        "name": "Physical",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 2,
+        "name": "Data Link",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 3,
+        "name": "Network",
+        "color": "#9c8bdb"
+      },
+      {
+        "id": 4,
+        "name": "Transport",
+        "color": "#70cbd8"
+      },
+      {
+        "id": 5,
+        "name": "Session",
+        "color": "#8ca9da"
+      },
+      {
+        "id": 6,
+        "name": "Presentation",
+        "color": "#cb96ba"
+      },
+      {
+        "id": 7,
+        "name": "Application",
+        "color": "#edbb69"
+      }
+    ],
+    "protocols": [
+      {
+        "id": "Ethernet",
+        "name": "Ethernet"
+      },
+      {
+        "id": "ARP",
+        "name": "ARP"
+      },
+      {
+        "id": "IPv4",
+        "name": "IPv4"
+      },
+      {
+        "id": "IPv6",
+        "name": "IPv6"
+      },
+      {
+        "id": "ICMP",
+        "name": "ICMP"
+      },
+      {
+        "id": "TCP",
+        "name": "TCP"
+      },
+      {
+        "id": "UDP",
+        "name": "UDP"
+      },
+      {
+        "id": "DNS",
+        "name": "DNS"
+      },
+      {
+        "id": "HTTP",
+        "name": "HTTP"
+      },
+      {
+        "id": "HTTPS",
+        "name": "HTTPS"
+      },
+      {
+        "id": "SSH",
+        "name": "SSH"
+      },
+      {
+        "id": "FTP",
+        "name": "FTP"
+      },
+      {
+        "id": "SMB",
+        "name": "SMB"
+      },
+      {
+        "id": "TLS",
+        "name": "TLS"
+      },
+      {
+        "id": "DHCP",
+        "name": "DHCP"
+      },
+      {
+        "id": "Wi-Fi",
+        "name": "Wi-Fi"
+      },
+      {
+        "id": "Other",
+        "name": "Other"
+      }
+    ],
+    "layer_caption": "OSI layer",
+    "protocol_caption": "Protocol",
+    "label_mode": "title"
+  },
+  "nodes": [
+    {
+      "id": "firewall",
+      "name": "Firewall",
+      "layer": 3,
+      "protocol": "IPv4",
+      "depth": 1,
+      "notes": "Compare firewall types and collect your own examples.",
+      "slot": 5,
+      "span": 1
+    }
+  ],
+  "subconcepts": [
+    {
+      "id": "firewall-type-0",
+      "parent_id": "firewall",
+      "name": "Packet filtering",
+      "notes": "Your notes about packet filtering.",
+      "orbit_slot": 0,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-1",
+      "parent_id": "firewall",
+      "name": "Stateful inspection",
+      "notes": "Your notes about stateful inspection.",
+      "orbit_slot": 2,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-2",
+      "parent_id": "firewall",
+      "name": "Application proxy",
+      "notes": "Your notes about application proxy.",
+      "orbit_slot": 4,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-3",
+      "parent_id": "firewall",
+      "name": "Next-generation firewall",
+      "notes": "Your notes about next-generation firewall.",
+      "orbit_slot": 6,
+      "relationship": "type_of"
+    }
+  ]
+}

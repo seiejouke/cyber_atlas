@@ -66,7 +66,7 @@ def close_window(pid):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--previous-zip", type=Path, required=True)
-    parser.add_argument("--previous-version", default="0.7.1")
+    parser.add_argument("--previous-version", default="0.7.2")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("Run this integration check on Windows.")
@@ -107,6 +107,11 @@ def main():
             application = directory / "Installed app"
             user_data = directory / "Saved notes" / "atlas.json"
             write_atlas(user_data, example_atlas(), backup=False)
+            if args.previous_version in ("0.7.1", "0.7.2"):
+                previous_data = json.loads(user_data.read_text(encoding="utf-8"))
+                previous_data["version"] = 8
+                previous_data.pop("subconcepts", None)
+                user_data.write_text(json.dumps(previous_data), encoding="utf-8")
             saved = user_data.read_bytes()
             try:
                 subprocess.run([str(installers[0]), "/CURRENTUSER", "/VERYSILENT", "/SUPPRESSMSGBOXES", "/SP-",
