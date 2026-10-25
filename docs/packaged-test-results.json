@@ -6,6 +6,8 @@
     "Startup renders every saved block",
     "Bundled application icon loads",
     "Custom atlas saves with the bundled storage module",
+    "Outline renders the selected block solid and the other block as an outline",
+    "Unfilled blocks remain selectable using bundled VTK picking",
     "VTK renders and picks a sphere using bundled native libraries",
     "Move preview rejects overlapping footprints",
     "Move controls render a valid live preview",
@@ -21,5 +23,5 @@
     "No Tk callback errors"
   ],
   "passed": true,
-  "checks_passed": 16
+  "checks_passed": 18
 }

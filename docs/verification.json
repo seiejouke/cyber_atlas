@@ -1,7 +1,7 @@
 {
   "current_build": {
     "date": "2026-10-25",
-    "app_version": "0.7.0",
+    "app_version": "0.7.1",
     "environment": {
       "system": "Windows",
       "architecture": "AMD64",
@@ -11,7 +11,7 @@
       "numpy": "2.5.4"
     },
     "core_tests_passed": 105,
-    "gui_workflow_checks_passed": 81,
+    "gui_workflow_checks_passed": 87,
     "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
     "legacy_versions_tested": [
       1,
@@ -131,43 +131,54 @@
       "pyinstaller_hooks_contrib": "2026.9",
       "inno_setup": "7.1.0",
       "signed": false,
-      "installer": "CyberAtlas-0.7.0-Setup.exe",
-      "zip": "CyberAtlas-0.7.0-windows-x64.zip",
-      "packaged_runtime_checks_passed": 16,
-      "installed_runtime_checks_passed": 16,
-      "installer_lifecycle_checks_passed": 4,
+      "installer": "CyberAtlas-0.7.1-Setup.exe",
+      "zip": "CyberAtlas-0.7.1-windows-x64.zip",
+      "packaged_runtime_checks_passed": 18,
+      "installed_runtime_checks_passed": null,
+      "installer_lifecycle_checks_passed": null,
       "test_isolation": "New temporary atlases; packaged executable tested with Python, virtual-environment and Tcl/Tk environment overrides removed and only System32 on PATH",
-      "installer_checks": "Per-user install, installed executable, same-version upgrade and uninstall; saved test data preserved and test registration removed",
-      "limitations": "Tested on this Windows desktop; a separate clean machine without Python has not been tested"
+      "installer_checks": "Cyber Atlas is already installed for this account; the existing installation was preserved.",
+      "limitations": "Packaged executable tested on this Windows desktop. Installer lifecycle checks skipped because Cyber Atlas is already installed for this account; no separate clean Windows machine was tested.",
+      "source_commit": "1af158fe1d78cdb6c81508384538ae8545c4adfa"
     },
     "linux_release": {
       "architecture": "x86_64",
-      "source_commit": "1e3e1505dcde19cdbdae35cd1111f53951456d82",
+      "source_commit": "1af158fe1d78cdb6c81508384538ae8545c4adfa",
       "build_baseline": "Ubuntu 22.04, glibc 2.35, Python 3.12.3",
-      "workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40185964098",
+      "workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40194017191",
       "core_tests_passed": 105,
-      "packaged_runtime_checks_passed": 16,
-      "appimage_runtime_checks_passed": 16,
-      "installed_runtime_checks_passed": 16,
+      "packaged_runtime_checks_passed": 18,
+      "appimage_runtime_checks_passed": 18,
+      "installed_runtime_checks_passed": 18,
       "installer_lifecycle_checks_passed": 4,
       "additional_desktop": "Ubuntu 24.04.2 under WSLg with XWayland",
-      "additional_desktop_deb_checks_passed": 16,
-      "additional_desktop_appimage_checks_passed": 16,
+      "additional_desktop_deb_checks_passed": 18,
+      "additional_desktop_appimage_checks_passed": 18,
       "appimage_launch": "Normal FUSE launch as well as extract-and-run on the headless runner",
       "artifacts": [
         {
-          "name": "cyber-atlas_0.7.0_amd64.deb",
-          "bytes": 80953268,
-          "sha256": "c2e1ae5a39eeb7800922cef58dbb4f8f18c49b308db739fbc5c21efb7eff9d60"
+          "name": "cyber-atlas_0.7.1_amd64.deb",
+          "bytes": 80742990,
+          "sha256": "1166826d5fcb4be444f05d62fa559d4e85e6bf3028a39b4c59888b881511de63"
         },
         {
-          "name": "CyberAtlas-0.7.0-x86_64.AppImage",
+          "name": "CyberAtlas-0.7.1-x86_64.AppImage",
           "bytes": 97708536,
-          "sha256": "f11732c75e85d960cbcecc87c60bcab5c143b313c317267e6cc0b024eb627b70"
+          "sha256": "cc452811a3faeea93b4d5b774146a0e9755d7f03c9bf7fa932d28009ed5294c6"
         }
       ],
       "limitations": "Requires glibc 2.35 or newer, compatible C++ libraries and host OpenGL/X11 or XWayland. Other distributions and native Wayland without XWayland have not been tested."
-    }
+    },
+    "source_commit": "1af158fe1d78cdb6c81508384538ae8545c4adfa",
+    "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.7.1",
+    "block_outline_checks": [
+      "Outlined edges can be picked through nearer empty interiors; a selected opaque block occludes those same edges",
+      "Outline keeps only the selection solid; clicking an unfilled block selects it without writing the atlas",
+      "Hover highlights an outlined block on another layer and reveals its label even with Labels off; leaving clears the highlight",
+      "Solid/Outline switches preserve camera, saved geometry, unsaved text and an active placement draft",
+      "Layer and protocol filters remove outlined blocks from both edge and interior picking, including a filtered selection",
+      "Outline appearance survives Nodes and template previews; appearance controls stay out of Nodes view"
+    ]
   },
   "original_build": {
     "environment": {
@@ -193,6 +204,176 @@
     ]
   },
   "previous_builds": [
+    {
+      "date": "2026-10-25",
+      "app_version": "0.7.0",
+      "environment": {
+        "system": "Windows",
+        "architecture": "AMD64",
+        "python": "3.12.3",
+        "tk": 8.6,
+        "vtk": "9.6.2",
+        "numpy": "2.5.4"
+      },
+      "core_tests_passed": 105,
+      "gui_workflow_checks_passed": 81,
+      "layout": "16 fixed angular slots per layer and radial position; explicit block size and start slot",
+      "legacy_versions_tested": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "legacy_migration": "Versions 1-5 use consecutive 1/16 slots; versions 6-7 retain exact slots and sizes. Versions 1-6 receive the OSI design preset; version 7 retains its custom design and protocol assignments. Source backup on first save.",
+      "untested_platforms": [
+        "macOS",
+        "physical Arch/Sway desktop"
+      ],
+      "empty_atlas_checks": [
+        "Cancellation preserves document and draft",
+        "Write failure preserves active atlas",
+        "Confirmed reset saves an empty atlas with the previous saved document backed up",
+        "Repeating reset on an empty atlas preserves its backup"
+      ],
+      "placement_checks": [
+        "Add here starts explicit Placing mode; Save requires a locked location",
+        "Left click locks and cancels queued hover callbacks",
+        "Locked drafts stay fixed through motion and unrelated empty clicks",
+        "Clicking a locked draft or selected saved block picks it up",
+        "Occupied drops remain Placing with a red preview",
+        "Escape restores the last locked location and preserves notes",
+        "Relocating a saved block preserves its ID and requires Save to update disk",
+        "Dragging rotates while Placing without locking or saving"
+      ],
+      "slot_slider_checks": [
+        "16 snapping positions with aligned landmark labels",
+        "Live preview during drag; valid release locks and stops mouse following",
+        "Footprint highlights for every size, including wrapping from 16 to 01",
+        "Arrow keys and Home/End clamp to the slider endpoints",
+        "Blocked starts account for footprint width and exclude the selected saved block",
+        "Invalid releases cannot lock or save; Escape restores the prior lock and ignores a later release",
+        "Both sliders and the notes area fit the minimum window size"
+      ],
+      "atlas_file_version": 8,
+      "design_checks": [
+        "Add, rename, reorder and recolor layers with stable IDs and equal spacing",
+        "Add, rename and remove protocols with stable IDs",
+        "Editable layer/protocol captions and three block label styles",
+        "Dynamic axis, legend, filters, geometry, picking and camera",
+        "Cancel, validation errors and write failures preserve the saved atlas",
+        "Removing used entries requires explicit reassignment; overlaps reject the operation atomically",
+        "Custom design roundtrip through saved/exported JSON",
+        "Empty atlas preserves the design and backs up the saved blocks",
+        "A custom-only single-layer atlas can save its first block without preset entries"
+      ],
+      "design_editor_preview": "docs/design-editor.png",
+      "clear_list_checks": [
+        "Remove list clears layers in the draft and requires valid layer reassignments before Apply",
+        "Remove protocols saves immediately after confirmation; blocks become unassigned with unchanged notes and geometry",
+        "No protocol is an unassigned state; an empty protocol list remains valid",
+        "Immediate removal updates editor and filters and preserves camera position",
+        "Pending layer/caption edits stay in the design draft; cancelling does not undo confirmed protocol removal",
+        "Write failure preserves saved assignments and the draft; clearing unsaved additions does not replace the backup",
+        "New blocks, Empty atlas, export/import and save-on-close work without protocols",
+        "Controls fit the minimum window size"
+      ],
+      "radial_controls": "One discrete radial slider; Inward and Outward buttons removed",
+      "optional_protocol_checks": [
+        "Schema 8 stores unassigned protocol as null and an empty protocol list as []",
+        "Protocol addition does not automatically assign existing blocks",
+        "Explicit assignment/unassignment and No protocol filtering",
+        "A user protocol named No protocol remains selectable separately from the unassigned state",
+        "Version 7 custom designs migrate without changing protocol assignments"
+      ],
+      "view_modes": "Blocks is the default; Nodes is an alternative session-only view of the same atlas data",
+      "nodes_view_checks": [
+        "Layer-colored spheres use the midpoint of each saved radial and angular footprint",
+        "Occupied layer/depth rings have faint, unpickable orbital guides",
+        "Selected and hovered nodes retain labels while the Labels option controls all other labels",
+        "Sphere and label clicks select saved nodes for title and note editing without moving them",
+        "Hidden larger footprints continue to reserve all of their saved slots",
+        "New nodes use dropdowns and sliders only; occupied positions disable Create node",
+        "Saved-node coordinates stay read-only until Move node unlocks layer, position and start slot",
+        "New radial nodes use a 1/16 footprint while full Center nodes sit on the layer axis",
+        "Switching views preserves dirty editor text, current draft, selection, filters and camera",
+        "Custom layers, empty protocols, Center creation and Empty atlas work in both views"
+      ],
+      "nodes_interaction": "New node and Move node use dropdowns and sliders with a live validity preview; viewport clicks select saved spheres and dragging rotates the camera",
+      "node_move_checks": [
+        "Move node previews the existing block footprint without writing until Save move",
+        "Cancel move and Escape restore starting coordinates while keeping title and note edits",
+        "Entire footprints are checked against hidden reservations; invalid moves cannot save",
+        "Filtered destinations still preview; saving clears a filter that would hide the moved node",
+        "View switches and failed saves preserve the move draft; success preserves identity, text, size and neighbors and writes a backup",
+        "Switching notes honors Save, Discard and Cancel; templates remain read-only",
+        "Center and ring transitions retain full and partial sizes and obey occupancy rules",
+        "Move controls and the notes area fit the minimum window"
+      ],
+      "connection_checks": [
+        "Layer anchors bound the spine with no extension beyond the first or last anchor",
+        "Sparse adjacency joins ring neighbors and nearest nodes on the next occupied ring",
+        "Connections remain within one layer and use that layer's configured color",
+        "Selected and moving-node connections are emphasized",
+        "Filters rebuild the visible graph and the Connections checkbox hides or shows it without changing data"
+      ],
+      "template_checks": [
+        "Blank, Python, TypeScript, Web application, Solar system and Project planning use ordinary Atlas documents",
+        "The existing Nodes renderer provides every template preview without thumbnail graphics",
+        "Preview is read-only and never writes to disk",
+        "Cancel restores the document, editor, filters, view mode and camera",
+        "Use template saves atomically and keeps the previous saved atlas as the normal backup",
+        "Empty atlases leave the spatial view unobstructed"
+      ],
+      "focus_check": "Both custom sliders compare raw Tk focus paths and tolerate transient combobox popdown windows",
+      "nodes_view_preview": "docs/nodes-preview.png",
+      "slider_compatibility": "Six radial positions including Center and all sixteen Start slot positions are available",
+      "windows_release": {
+        "architecture": "x64",
+        "pyinstaller": "6.22.3",
+        "pyinstaller_hooks_contrib": "2026.9",
+        "inno_setup": "7.1.0",
+        "signed": false,
+        "installer": "CyberAtlas-0.7.0-Setup.exe",
+        "zip": "CyberAtlas-0.7.0-windows-x64.zip",
+        "packaged_runtime_checks_passed": 16,
+        "installed_runtime_checks_passed": 16,
+        "installer_lifecycle_checks_passed": 4,
+        "test_isolation": "New temporary atlases; packaged executable tested with Python, virtual-environment and Tcl/Tk environment overrides removed and only System32 on PATH",
+        "installer_checks": "Per-user install, installed executable, same-version upgrade and uninstall; saved test data preserved and test registration removed",
+        "limitations": "Tested on this Windows desktop; a separate clean machine without Python has not been tested"
+      },
+      "linux_release": {
+        "architecture": "x86_64",
+        "source_commit": "1e3e1505dcde19cdbdae35cd1111f53951456d82",
+        "build_baseline": "Ubuntu 22.04, glibc 2.35, Python 3.12.3",
+        "workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40185964098",
+        "core_tests_passed": 105,
+        "packaged_runtime_checks_passed": 16,
+        "appimage_runtime_checks_passed": 16,
+        "installed_runtime_checks_passed": 16,
+        "installer_lifecycle_checks_passed": 4,
+        "additional_desktop": "Ubuntu 24.04.2 under WSLg with XWayland",
+        "additional_desktop_deb_checks_passed": 16,
+        "additional_desktop_appimage_checks_passed": 16,
+        "appimage_launch": "Normal FUSE launch as well as extract-and-run on the headless runner",
+        "artifacts": [
+          {
+            "name": "cyber-atlas_0.7.0_amd64.deb",
+            "bytes": 80953268,
+            "sha256": "c2e1ae5a39eeb7800922cef58dbb4f8f18c49b308db739fbc5c21efb7eff9d60"
+          },
+          {
+            "name": "CyberAtlas-0.7.0-x86_64.AppImage",
+            "bytes": 97708536,
+            "sha256": "f11732c75e85d960cbcecc87c60bcab5c143b313c317267e6cc0b024eb627b70"
+          }
+        ],
+        "limitations": "Requires glibc 2.35 or newer, compatible C++ libraries and host OpenGL/X11 or XWayland. Other distributions and native Wayland without XWayland have not been tested."
+      }
+    },
     {
       "date": "2026-10-24",
       "app_version": "0.6.0",
