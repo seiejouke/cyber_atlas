@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="670" viewBox="0 0 1200 670">
+<defs>
+  <radialGradient id="outer" cx="32%" cy="29%" r="78%"><stop offset="0%" stop-color="#7BCFE0" stop-opacity="0.12"/><stop offset="100%" stop-color="#469CB4" stop-opacity="0.38"/></radialGradient>
+  <radialGradient id="inner" cx="30%" cy="22%" r="83%"><stop offset="0%" stop-color="#C1EFF5" stop-opacity="0.98"/><stop offset="100%" stop-color="#409EAF" stop-opacity="0.82"/></radialGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+<rect x="0" y="0" width="1200" height="670" rx="0" fill="#0A1422"/>
+<line x1="40" y1="116" x2="1160" y2="116" stroke="#31475D" stroke-width="1"/>
+<text x="44" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="31" font-weight="700" fill="#F1F6FA" text-anchor="start">05  /  Cumulative knowledge integration</text>
+<text x="46" y="96" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Seven books on one subject should contribute to shared concepts, not seven disconnected vaults.</text>
+<text x="1148" y="53" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="end">FIG 05</text>
+<rect x="55" y="160" width="96" height="95" rx="10" fill="#1A2B40" stroke="#31475D" stroke-width="1"/>
+<rect x="55" y="160" width="9" height="95" rx="4" fill="#71C4D9"/>
+<text x="103" y="203" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">BOOK 1</text>
+<text x="103" y="231" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="400" fill="#A1B5C9" text-anchor="middle">Source</text>
+<path d="M 103 257 C 103 312 600 317 600 348" fill="none" stroke="#34536D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<rect x="217" y="160" width="96" height="95" rx="10" fill="#1A2B40" stroke="#31475D" stroke-width="1"/>
+<rect x="217" y="160" width="9" height="95" rx="4" fill="#6BBCAF"/>
+<text x="265" y="203" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">BOOK 2</text>
+<text x="265" y="231" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="400" fill="#A1B5C9" text-anchor="middle">Source</text>
+<path d="M 265 257 C 265 312 600 317 600 348" fill="none" stroke="#34536D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<rect x="379" y="160" width="96" height="95" rx="10" fill="#1A2B40" stroke="#31475D" stroke-width="1"/>
+<rect x="379" y="160" width="9" height="95" rx="4" fill="#B9A0E9"/>
+<text x="427" y="203" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">BOOK 3</text>
+<text x="427" y="231" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="400" fill="#A1B5C9" text-anchor="middle">Source</text>
+<path d="M 427 257 C 427 312 600 317 600 348" fill="none" stroke="#34536D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<rect x="541" y="160" width="96" height="95" rx="10" fill="#1A2B40" stroke="#31475D" stroke-width="1"/>
+<rect x="541" y="160" width="9" height="95" rx="4" fill="#E9BC73"/>
+<text x="589" y="203" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">BOOK 4</text>
+<text x="589" y="231" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="400" fill="#A1B5C9" text-anchor="middle">Source</text>
+<path d="M 589 257 C 589 312 600 317 600 348" fill="none" stroke="#34536D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<rect x="703" y="160" width="96" height="95" rx="10" fill="#1A2B40" stroke="#31475D" stroke-width="1"/>
+<rect x="703" y="160" width="9" height="95" rx="4" fill="#84ADEC"/>
+<text x="751" y="203" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">BOOK 5</text>
+<text x="751" y="231" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="400" fill="#A1B5C9" text-anchor="middle">Source</text>
+<path d="M 751 257 C 751 312 600 317 600 348" fill="none" stroke="#34536D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<rect x="865" y="160" width="96" height="95" rx="10" fill="#1A2B40" stroke="#31475D" stroke-width="1"/>
+<rect x="865" y="160" width="9" height="95" rx="4" fill="#E6A49C"/>
+<text x="913" y="203" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">BOOK 6</text>
+<text x="913" y="231" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="400" fill="#A1B5C9" text-anchor="middle">Source</text>
+<path d="M 913 257 C 913 312 600 317 600 348" fill="none" stroke="#34536D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<rect x="1027" y="160" width="96" height="95" rx="10" fill="#1A2B40" stroke="#31475D" stroke-width="1"/>
+<rect x="1027" y="160" width="9" height="95" rx="4" fill="#71C4D9"/>
+<text x="1075" y="203" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">BOOK 7</text>
+<text x="1075" y="231" font-family="DejaVu Sans, Arial, sans-serif" font-size="11" font-weight="400" fill="#A1B5C9" text-anchor="middle">Source</text>
+<path d="M 1075 257 C 1075 312 600 317 600 348" fill="none" stroke="#34536D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<circle cx="600" cy="416" r="86" fill="url(#outer)" stroke="#71C4D9" stroke-width="2"/>
+<circle cx="600" cy="416" r="48" fill="url(#inner)" stroke="#71C4D9" stroke-width="1.5"/>
+<text x="600" y="418" font-family="DejaVu Sans, Arial, sans-serif" font-size="24" font-weight="700" fill="#F1F6FA" text-anchor="middle">TCP</text>
+<text x="600" y="445" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="400" fill="#F1F6FA" text-anchor="middle">Shared concept</text>
+<path d="M 600 502 Q 600 531 300 541" fill="none" stroke="#34536D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="300" cy="571" r="36" fill="#1A2B40" stroke="#6BBCAF" stroke-width="1.6"/>
+<text x="300" y="630" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="middle">Handshake</text>
+<path d="M 600 502 Q 600 531 600 541" fill="none" stroke="#34536D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="600" cy="571" r="36" fill="#1A2B40" stroke="#6BBCAF" stroke-width="1.6"/>
+<text x="600" y="630" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="middle">Reliability</text>
+<path d="M 600 502 Q 600 531 900 541" fill="none" stroke="#34536D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="900" cy="571" r="36" fill="#1A2B40" stroke="#6BBCAF" stroke-width="1.6"/>
+<text x="900" y="630" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="middle">Congestion</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<defs>
+  <radialGradient id="outer" cx="32%" cy="29%" r="78%"><stop offset="0%" stop-color="#7BCFE0" stop-opacity="0.12"/><stop offset="100%" stop-color="#469CB4" stop-opacity="0.38"/></radialGradient>
+  <radialGradient id="inner" cx="30%" cy="22%" r="83%"><stop offset="0%" stop-color="#C1EFF5" stop-opacity="0.98"/><stop offset="100%" stop-color="#409EAF" stop-opacity="0.82"/></radialGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+<rect x="0" y="0" width="1200" height="650" rx="0" fill="#0A1422"/>
+<line x1="40" y1="116" x2="1160" y2="116" stroke="#31475D" stroke-width="1"/>
+<text x="44" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="31" font-weight="700" fill="#F1F6FA" text-anchor="start">04  /  Orbital subconcept clusters</text>
+<text x="46" y="96" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Outward progression means deeper detail; a local orbit means sibling variants.</text>
+<text x="1148" y="53" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="end">FIG 04</text>
+<ellipse cx="600" cy="376" rx="365" ry="193" fill="none" stroke="#71C4D9" stroke-width="1.5" stroke-dasharray="8 9" opacity="0.65"/>
+<line x1="600" y1="376" x2="600" y2="183" stroke="#34536D" stroke-width="1.5" opacity="0.7"/>
+<line x1="600" y1="376" x2="965" y2="376" stroke="#34536D" stroke-width="1.5" opacity="0.7"/>
+<line x1="600" y1="376" x2="600" y2="569" stroke="#34536D" stroke-width="1.5" opacity="0.7"/>
+<line x1="600" y1="376" x2="235" y2="376" stroke="#34536D" stroke-width="1.5" opacity="0.7"/>
+<circle cx="600" cy="376" r="79" fill="#1A2B40" stroke="#71C4D9" stroke-width="2"/>
+<circle cx="600" cy="376" r="56" fill="#4495AD" opacity="0.16"/>
+<text x="600" y="366" font-family="DejaVu Sans, Arial, sans-serif" font-size="20" font-weight="700" fill="#F1F6FA" text-anchor="middle">FIREWALL</text>
+<text x="600" y="390" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="middle">Parent concept</text>
+<circle cx="600" cy="183" r="65" fill="#142235" stroke="#B9A0E9" stroke-width="2"/>
+<circle cx="600" cy="183" r="49" fill="#B9A0E9" opacity="0.1"/>
+<text x="600" y="189" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">Packet filtering</text>
+<circle cx="965" cy="376" r="65" fill="#142235" stroke="#E9BC73" stroke-width="2"/>
+<circle cx="965" cy="376" r="49" fill="#E9BC73" opacity="0.1"/>
+<text x="965" y="369" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">Stateful</text>
+<text x="965" y="391" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">inspection</text>
+<circle cx="600" cy="569" r="65" fill="#142235" stroke="#6BBCAF" stroke-width="2"/>
+<circle cx="600" cy="569" r="49" fill="#6BBCAF" opacity="0.1"/>
+<text x="600" y="562" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">Application</text>
+<text x="600" y="584" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">proxy</text>
+<circle cx="235" cy="376" r="65" fill="#142235" stroke="#84ADEC" stroke-width="2"/>
+<circle cx="235" cy="376" r="49" fill="#84ADEC" opacity="0.1"/>
+<text x="235" y="369" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">Next-generation</text>
+<text x="235" y="391" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#F1F6FA" text-anchor="middle">firewall</text>
+<text x="57" y="166" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="start">LOCAL ORBIT  /  &quot;IS A TYPE OF&quot;</text>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640">
+<defs>
+  <radialGradient id="outer" cx="32%" cy="29%" r="78%"><stop offset="0%" stop-color="#7BCFE0" stop-opacity="0.12"/><stop offset="100%" stop-color="#469CB4" stop-opacity="0.38"/></radialGradient>
+  <radialGradient id="inner" cx="30%" cy="22%" r="83%"><stop offset="0%" stop-color="#C1EFF5" stop-opacity="0.98"/><stop offset="100%" stop-color="#409EAF" stop-opacity="0.82"/></radialGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+<rect x="0" y="0" width="1200" height="640" rx="0" fill="#0A1422"/>
+<line x1="40" y1="116" x2="1160" y2="116" stroke="#31475D" stroke-width="1"/>
+<text x="44" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="31" font-weight="700" fill="#F1F6FA" text-anchor="start">01  /  Spatial knowledge architecture</text>
+<text x="46" y="96" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Position communicates conceptual structure, not merely visual placement.</text>
+<text x="1148" y="53" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="end">FIG 01</text>
+<text x="77" y="161" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="start">CENTRAL PILLAR</text>
+<rect x="77" y="187" width="214" height="47" rx="8" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="77" y="187" width="8" height="47" rx="5" fill="#E9BC73"/>
+<text x="98" y="207" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#E9BC73" text-anchor="start">L7</text>
+<text x="98" y="225" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#F1F6FA" text-anchor="start">Application</text>
+<rect x="77" y="243" width="214" height="47" rx="8" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="77" y="243" width="8" height="47" rx="5" fill="#E6A49C"/>
+<text x="98" y="263" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#E6A49C" text-anchor="start">L6</text>
+<text x="98" y="281" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#F1F6FA" text-anchor="start">Presentation</text>
+<rect x="77" y="299" width="214" height="47" rx="8" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="77" y="299" width="8" height="47" rx="5" fill="#84ADEC"/>
+<text x="98" y="319" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#84ADEC" text-anchor="start">L5</text>
+<text x="98" y="337" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#F1F6FA" text-anchor="start">Session</text>
+<rect x="77" y="355" width="214" height="47" rx="8" fill="#1A2B40" stroke="#71C4D9" stroke-width="2"/>
+<rect x="77" y="355" width="8" height="47" rx="5" fill="#71C4D9"/>
+<text x="98" y="375" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#71C4D9" text-anchor="start">L4</text>
+<text x="98" y="393" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#F1F6FA" text-anchor="start">Transport</text>
+<rect x="77" y="411" width="214" height="47" rx="8" fill="#1A2B40" stroke="#B9A0E9" stroke-width="2"/>
+<rect x="77" y="411" width="8" height="47" rx="5" fill="#B9A0E9"/>
+<text x="98" y="431" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#B9A0E9" text-anchor="start">L3</text>
+<text x="98" y="449" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#F1F6FA" text-anchor="start">Network</text>
+<rect x="77" y="467" width="214" height="47" rx="8" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="77" y="467" width="8" height="47" rx="5" fill="#6BBCAF"/>
+<text x="98" y="487" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#6BBCAF" text-anchor="start">L2</text>
+<text x="98" y="505" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#F1F6FA" text-anchor="start">Data Link</text>
+<rect x="77" y="523" width="214" height="47" rx="8" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="77" y="523" width="8" height="47" rx="5" fill="#6BBCAF"/>
+<text x="98" y="543" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#6BBCAF" text-anchor="start">L1</text>
+<text x="98" y="561" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#F1F6FA" text-anchor="start">Physical</text>
+<path d="M 291 382 C 337 382 349 363 387 363" fill="none" stroke="#71C4D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 291 438 C 332 438 352 363 387 363" fill="none" stroke="#71C4D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="377" y1="363" x2="407" y2="363" stroke="#71C4D9" stroke-width="2"/>
+<polygon points="407,363 397.6895115466265,368.85788398311183 397.6895115466265,357.14211601688817" fill="#71C4D9"/>
+<rect x="419" y="279" width="192" height="162" rx="16" fill="#142235" stroke="#71C4D9" stroke-width="1.5"/>
+<circle cx="515.0" cy="329" r="26" fill="#71C4D9" opacity="0.23"/>
+<circle cx="515.0" cy="329" r="12" fill="#71C4D9" opacity="0.88"/>
+<text x="515.0" y="373" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="700" fill="#F1F6FA" text-anchor="middle">PROTOCOLS</text>
+<text x="515.0" y="401" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="middle">IP, TCP, UDP</text>
+<text x="515.0" y="420" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="middle">Near the pillar</text>
+<rect x="654" y="279" width="192" height="162" rx="16" fill="#142235" stroke="#6BBCAF" stroke-width="1.5"/>
+<circle cx="750.0" cy="329" r="26" fill="#6BBCAF" opacity="0.23"/>
+<circle cx="750.0" cy="329" r="12" fill="#6BBCAF" opacity="0.88"/>
+<text x="750.0" y="373" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="700" fill="#F1F6FA" text-anchor="middle">SERVICES</text>
+<text x="750.0" y="401" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="middle">Firewall, DNS</text>
+<text x="750.0" y="420" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="middle">Further detail</text>
+<rect x="891" y="279" width="192" height="162" rx="16" fill="#142235" stroke="#B9A0E9" stroke-width="1.5"/>
+<circle cx="987.0" cy="329" r="26" fill="#B9A0E9" opacity="0.23"/>
+<circle cx="987.0" cy="329" r="12" fill="#B9A0E9" opacity="0.88"/>
+<text x="987.0" y="373" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="700" fill="#F1F6FA" text-anchor="middle">MECHANISMS</text>
+<text x="987.0" y="401" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="middle">Requests, rules</text>
+<text x="987.0" y="420" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="middle">Examples</text>
+<line x1="612" y1="363" x2="644" y2="363" stroke="#6BBCAF" stroke-width="2"/>
+<polygon points="644,363 634.6895115466265,368.85788398311183 634.6895115466265,357.14211601688817" fill="#6BBCAF"/>
+<line x1="849" y1="363" x2="881" y2="363" stroke="#B9A0E9" stroke-width="2"/>
+<polygon points="881,363 871.6895115466265,368.85788398311183 871.6895115466265,357.14211601688817" fill="#B9A0E9"/>
+<text x="517" y="470" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="700" fill="#7492AB" text-anchor="middle">NEAR AXIS</text>
+<text x="750" y="470" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="700" fill="#7492AB" text-anchor="middle">OUTWARD</text>
+<text x="989" y="470" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="700" fill="#7492AB" text-anchor="middle">INCREASING DETAIL</text>
+<rect x="409" y="529" width="682" height="57" rx="12" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<text x="430" y="553" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#E9BC73" text-anchor="start">Local orbits</text>
+<text x="565" y="553" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">hold sibling variations around one concept, not another radial stage.</text>
+<text x="430" y="574" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="400" fill="#7492AB" text-anchor="start">Concepts can also reference multiple layers when needed.</text>
+</svg>

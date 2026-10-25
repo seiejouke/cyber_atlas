@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+<defs>
+  <radialGradient id="outer" cx="32%" cy="29%" r="78%"><stop offset="0%" stop-color="#7BCFE0" stop-opacity="0.12"/><stop offset="100%" stop-color="#469CB4" stop-opacity="0.38"/></radialGradient>
+  <radialGradient id="inner" cx="30%" cy="22%" r="83%"><stop offset="0%" stop-color="#C1EFF5" stop-opacity="0.98"/><stop offset="100%" stop-color="#409EAF" stop-opacity="0.82"/></radialGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+<rect x="0" y="0" width="1200" height="600" rx="0" fill="#0A1422"/>
+<line x1="40" y1="116" x2="1160" y2="116" stroke="#31475D" stroke-width="1"/>
+<text x="44" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="31" font-weight="700" fill="#F1F6FA" text-anchor="start">07  /  Temporal knowledge evolution</text>
+<text x="46" y="96" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Replay how nodes appear, grow, consolidate, and form new relationships.</text>
+<text x="1148" y="53" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="end">FIG 07</text>
+<rect x="74" y="185" width="263" height="283" rx="13" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<text x="96" y="220" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#F1F6FA" text-anchor="start">T1 / BEGIN</text>
+<text x="96" y="245" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="400" fill="#A1B5C9" text-anchor="start">Snapshot of the atlas</text>
+<circle cx="179" cy="372" r="20" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="179" cy="372" r="4" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="343" y1="340" x2="356" y2="340" stroke="#6BBCAF" stroke-width="1.7"/>
+<polygon points="356,340 346.6895115466265,345.85788398311183 346.6895115466265,334.14211601688817" fill="#6BBCAF"/>
+<rect x="361" y="185" width="263" height="283" rx="13" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<text x="383" y="220" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#F1F6FA" text-anchor="start">T2 / EXPAND</text>
+<text x="383" y="245" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="400" fill="#A1B5C9" text-anchor="start">Snapshot of the atlas</text>
+<circle cx="466" cy="372" r="31" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="466" cy="372" r="7" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="466" y1="372" x2="537" y2="339" stroke="#34536D" stroke-width="1"/>
+<circle cx="537" cy="339" r="15" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<line x1="630" y1="340" x2="643" y2="340" stroke="#6BBCAF" stroke-width="1.7"/>
+<polygon points="643,340 633.6895115466265,345.85788398311183 633.6895115466265,334.14211601688817" fill="#6BBCAF"/>
+<rect x="648" y="185" width="263" height="283" rx="13" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<text x="670" y="220" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#F1F6FA" text-anchor="start">T3 / TEST</text>
+<text x="670" y="245" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="400" fill="#A1B5C9" text-anchor="start">Snapshot of the atlas</text>
+<circle cx="753" cy="372" r="35" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="753" cy="372" r="21" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="753" y1="372" x2="824" y2="339" stroke="#34536D" stroke-width="1"/>
+<circle cx="824" cy="339" r="25" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="824" cy="339" r="9" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="753" y1="372" x2="745" y2="301" stroke="#34536D" stroke-width="1"/>
+<circle cx="745" cy="301" r="16" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<line x1="917" y1="340" x2="930" y2="340" stroke="#6BBCAF" stroke-width="1.7"/>
+<polygon points="930,340 920.6895115466265,345.85788398311183 920.6895115466265,334.14211601688817" fill="#6BBCAF"/>
+<rect x="935" y="185" width="263" height="283" rx="13" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<text x="957" y="220" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#F1F6FA" text-anchor="start">T4 / CONSOLIDATE</text>
+<text x="957" y="245" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" font-weight="400" fill="#A1B5C9" text-anchor="start">Snapshot of the atlas</text>
+<circle cx="1040" cy="372" r="36" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="1040" cy="372" r="30" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="1040" y1="372" x2="1111" y2="339" stroke="#34536D" stroke-width="1"/>
+<circle cx="1111" cy="339" r="28" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="1111" cy="339" r="19" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="1040" y1="372" x2="1032" y2="301" stroke="#34536D" stroke-width="1"/>
+<circle cx="1032" cy="301" r="23" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="1032" cy="301" r="10" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="1040" y1="372" x2="1128" y2="418" stroke="#34536D" stroke-width="1"/>
+<circle cx="1128" cy="418" r="17" fill="url(#outer)" stroke="#71C4D9" stroke-width="1.2"/>
+<circle cx="1128" cy="418" r="6" fill="url(#inner)" stroke="#71C4D9" stroke-width="1"/>
+<line x1="94" y1="520" x2="1088" y2="520" stroke="#71C4D9" stroke-width="2"/>
+<polygon points="1088,520 1078.6895115466264,525.8578839831118 1078.6895115466264,514.1421160168882" fill="#71C4D9"/>
+<text x="600" y="548" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#7492AB" text-anchor="middle">TIME / PLAYBACK</text>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640">
+<defs>
+  <radialGradient id="outer" cx="32%" cy="29%" r="78%"><stop offset="0%" stop-color="#7BCFE0" stop-opacity="0.12"/><stop offset="100%" stop-color="#469CB4" stop-opacity="0.38"/></radialGradient>
+  <radialGradient id="inner" cx="30%" cy="22%" r="83%"><stop offset="0%" stop-color="#C1EFF5" stop-opacity="0.98"/><stop offset="100%" stop-color="#409EAF" stop-opacity="0.82"/></radialGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+<rect x="0" y="0" width="1200" height="640" rx="0" fill="#0A1422"/>
+<line x1="40" y1="116" x2="1160" y2="116" stroke="#31475D" stroke-width="1"/>
+<text x="44" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="31" font-weight="700" fill="#F1F6FA" text-anchor="start">06  /  Four complementary dimensions</text>
+<text x="46" y="96" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">The atlas communicates place, accumulation, understanding, and change.</text>
+<text x="1148" y="53" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="end">FIG 06</text>
+<rect x="70" y="153" width="503" height="183" rx="15" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="70" y="153" width="8" height="183" rx="6" fill="#71C4D9"/>
+<text x="100" y="199" font-family="DejaVu Sans, Arial, sans-serif" font-size="19" font-weight="700" fill="#71C4D9" text-anchor="start">SPACE</text>
+<text x="100" y="247" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700" fill="#F1F6FA" text-anchor="start">Where does this belong?</text>
+<text x="100" y="291" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">A stable, navigable location.</text>
+<rect x="628" y="153" width="503" height="183" rx="15" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="628" y="153" width="8" height="183" rx="6" fill="#6BBCAF"/>
+<text x="658" y="199" font-family="DejaVu Sans, Arial, sans-serif" font-size="19" font-weight="700" fill="#6BBCAF" text-anchor="start">VOLUME</text>
+<text x="658" y="247" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700" fill="#F1F6FA" text-anchor="start">How much have I accumulated?</text>
+<text x="658" y="291" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">The relative extent of information.</text>
+<rect x="70" y="374" width="503" height="183" rx="15" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="70" y="374" width="8" height="183" rx="6" fill="#B9A0E9"/>
+<text x="100" y="420" font-family="DejaVu Sans, Arial, sans-serif" font-size="19" font-weight="700" fill="#B9A0E9" text-anchor="start">MASTERY</text>
+<text x="100" y="468" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700" fill="#F1F6FA" text-anchor="start">How well can I explain or apply it?</text>
+<text x="100" y="512" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Assessment-based understanding.</text>
+<rect x="628" y="374" width="503" height="183" rx="15" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="628" y="374" width="8" height="183" rx="6" fill="#E9BC73"/>
+<text x="658" y="420" font-family="DejaVu Sans, Arial, sans-serif" font-size="19" font-weight="700" fill="#E9BC73" text-anchor="start">TIME</text>
+<text x="658" y="468" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700" fill="#F1F6FA" text-anchor="start">How has my knowledge evolved?</text>
+<text x="658" y="512" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Historical growth and restructuring.</text>
+</svg>

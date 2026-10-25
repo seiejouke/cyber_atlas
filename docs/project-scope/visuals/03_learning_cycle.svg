@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1350" height="530" viewBox="0 0 1350 530">
+<defs>
+  <radialGradient id="outer" cx="32%" cy="29%" r="78%"><stop offset="0%" stop-color="#7BCFE0" stop-opacity="0.12"/><stop offset="100%" stop-color="#469CB4" stop-opacity="0.38"/></radialGradient>
+  <radialGradient id="inner" cx="30%" cy="22%" r="83%"><stop offset="0%" stop-color="#C1EFF5" stop-opacity="0.98"/><stop offset="100%" stop-color="#409EAF" stop-opacity="0.82"/></radialGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+<rect x="0" y="0" width="1350" height="530" rx="0" fill="#0A1422"/>
+<line x1="40" y1="116" x2="1310" y2="116" stroke="#31475D" stroke-width="1"/>
+<text x="44" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="31" font-weight="700" fill="#F1F6FA" text-anchor="start">03  /  Continuous learning feedback</text>
+<text x="46" y="96" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Every new encounter can contribute to an existing body of understanding.</text>
+<text x="1298" y="53" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="end">FIG 03</text>
+<rect x="66" y="190" width="187" height="162" rx="14" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="66" y="190" width="187" height="8" rx="7" fill="#71C4D9"/>
+<text x="84" y="228" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#71C4D9" text-anchor="start">01</text>
+<text x="84" y="277" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="start">CAPTURE</text>
+<text x="84" y="314" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">Read or observe</text>
+<line x1="258" y1="272" x2="275" y2="272" stroke="#71C4D9" stroke-width="1.4"/>
+<polygon points="275,272 265.6895115466265,277.85788398311183 265.6895115466265,266.14211601688817" fill="#71C4D9"/>
+<rect x="281" y="190" width="187" height="162" rx="14" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="281" y="190" width="187" height="8" rx="7" fill="#6BBCAF"/>
+<text x="299" y="228" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#6BBCAF" text-anchor="start">02</text>
+<text x="299" y="277" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="start">INTEGRATE</text>
+<text x="299" y="314" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">Place and relate</text>
+<line x1="473" y1="272" x2="490" y2="272" stroke="#71C4D9" stroke-width="1.4"/>
+<polygon points="490,272 480.6895115466265,277.85788398311183 480.6895115466265,266.14211601688817" fill="#71C4D9"/>
+<rect x="496" y="190" width="187" height="162" rx="14" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="496" y="190" width="187" height="8" rx="7" fill="#B9A0E9"/>
+<text x="514" y="228" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#B9A0E9" text-anchor="start">03</text>
+<text x="514" y="277" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="start">EXPAND</text>
+<text x="514" y="314" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">Update volume</text>
+<line x1="688" y1="272" x2="705" y2="272" stroke="#71C4D9" stroke-width="1.4"/>
+<polygon points="705,272 695.6895115466265,277.85788398311183 695.6895115466265,266.14211601688817" fill="#71C4D9"/>
+<rect x="711" y="190" width="187" height="162" rx="14" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="711" y="190" width="187" height="8" rx="7" fill="#E9BC73"/>
+<text x="729" y="228" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#E9BC73" text-anchor="start">04</text>
+<text x="729" y="277" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="start">ASSESS</text>
+<text x="729" y="314" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">Test understanding</text>
+<line x1="903" y1="272" x2="920" y2="272" stroke="#71C4D9" stroke-width="1.4"/>
+<polygon points="920,272 910.6895115466265,277.85788398311183 910.6895115466265,266.14211601688817" fill="#71C4D9"/>
+<rect x="926" y="190" width="187" height="162" rx="14" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="926" y="190" width="187" height="8" rx="7" fill="#84ADEC"/>
+<text x="944" y="228" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#84ADEC" text-anchor="start">05</text>
+<text x="944" y="277" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="start">CONSOLIDATE</text>
+<text x="944" y="314" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">Update mastery</text>
+<line x1="1118" y1="272" x2="1135" y2="272" stroke="#71C4D9" stroke-width="1.4"/>
+<polygon points="1135,272 1125.6895115466264,277.85788398311183 1125.6895115466264,266.14211601688817" fill="#71C4D9"/>
+<rect x="1141" y="190" width="187" height="162" rx="14" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<rect x="1141" y="190" width="187" height="8" rx="7" fill="#E6A49C"/>
+<text x="1159" y="228" font-family="DejaVu Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#E6A49C" text-anchor="start">06</text>
+<text x="1159" y="277" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#F1F6FA" text-anchor="start">ADAPT</text>
+<text x="1159" y="314" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">Simplify or split</text>
+<path d="M 1233 377 V 440 Q 1233 463 1208 463 H 95 Q 68 463 68 438 V 375" fill="none" stroke="#71C4D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 8" opacity="0.8"/>
+<text x="677" y="487" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="middle">REVISIT  /  LEARNING CONTINUES</text>
+</svg>

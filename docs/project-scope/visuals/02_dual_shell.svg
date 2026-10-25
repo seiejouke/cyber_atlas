@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+<defs>
+  <radialGradient id="outer" cx="32%" cy="29%" r="78%"><stop offset="0%" stop-color="#7BCFE0" stop-opacity="0.12"/><stop offset="100%" stop-color="#469CB4" stop-opacity="0.38"/></radialGradient>
+  <radialGradient id="inner" cx="30%" cy="22%" r="83%"><stop offset="0%" stop-color="#C1EFF5" stop-opacity="0.98"/><stop offset="100%" stop-color="#409EAF" stop-opacity="0.82"/></radialGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+<rect x="0" y="0" width="1200" height="600" rx="0" fill="#0A1422"/>
+<line x1="40" y1="116" x2="1160" y2="116" stroke="#31475D" stroke-width="1"/>
+<text x="44" y="65" font-family="DejaVu Sans, Arial, sans-serif" font-size="31" font-weight="700" fill="#F1F6FA" text-anchor="start">02  /  The dual-shell learning node</text>
+<text x="46" y="96" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="400" fill="#A1B5C9" text-anchor="start">Information accumulation and demonstrated mastery are distinct variables.</text>
+<text x="1148" y="53" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="700" fill="#7492AB" text-anchor="end">FIG 02</text>
+<circle cx="316" cy="345" r="205" fill="none" stroke="#34536D" stroke-width="0.8" opacity="0.23"/>
+<circle cx="316" cy="345" r="163" fill="none" stroke="#34536D" stroke-width="0.8" opacity="0.23"/>
+<circle cx="316" cy="345" r="124" fill="none" stroke="#34536D" stroke-width="0.8" opacity="0.23"/>
+<circle cx="316" cy="345" r="82" fill="none" stroke="#34536D" stroke-width="0.8" opacity="0.23"/>
+<circle cx="316" cy="345" r="190" fill="url(#outer)" stroke="#71C4D9" stroke-width="2"/>
+<circle cx="316" cy="345" r="99" fill="url(#inner)" stroke="#71C4D9" stroke-width="2"/>
+<circle cx="277" cy="299" r="30" fill="#F1F6FA" opacity="0.06"/>
+<path d="M 459 222 L 633 199 L 683 199" fill="none" stroke="#71C4D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 409 383 L 633 384 L 683 384" fill="none" stroke="#6BBCAF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="715" y="187" font-family="DejaVu Sans, Arial, sans-serif" font-size="19" font-weight="700" fill="#F1F6FA" text-anchor="start">OUTER SHELL  /  INFORMATION</text>
+<text x="715" y="219" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="400" fill="#A1B5C9" text-anchor="start">Relative quantity of distinct recorded</text>
+<text x="715" y="246" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="400" fill="#A1B5C9" text-anchor="start">information associated with the concept.</text>
+<text x="715" y="376" font-family="DejaVu Sans, Arial, sans-serif" font-size="19" font-weight="700" fill="#F1F6FA" text-anchor="start">INNER CORE  /  MASTERY</text>
+<text x="715" y="408" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="400" fill="#A1B5C9" text-anchor="start">Demonstrated recall and application</text>
+<text x="715" y="435" font-family="DejaVu Sans, Arial, sans-serif" font-size="16" font-weight="400" fill="#A1B5C9" text-anchor="start">across repeated assessments.</text>
+<rect x="681" y="472" width="451" height="70" rx="12" fill="#142235" stroke="#31475D" stroke-width="1"/>
+<text x="704" y="500" font-family="DejaVu Sans, Arial, sans-serif" font-size="15" font-weight="700" fill="#E9BC73" text-anchor="start">The gap is not a failure score.</text>
+<text x="704" y="524" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" font-weight="400" fill="#A1B5C9" text-anchor="start">Untested and poorly retained material differ.</text>
+</svg>
