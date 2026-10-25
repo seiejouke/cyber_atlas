@@ -1,5 +1,5 @@
 {
-  "passed": 102,
+  "passed": 108,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -60,7 +60,7 @@
     "adding protocols stays optional; explicit assignment, unassignment and No protocol filtering work together",
     "a protocol named No protocol is distinct from the unassigned state",
     "optional protocol state survives JSON, new-block placement, Empty atlas and creating its first block",
-    "Nodes uses bounded layer anchors and layer-colored adjacency lines; Connections toggles the graph without changing atlas data or camera",
+    "Nodes leaves isolated footprints unconnected; Connections toggles the spine without changing atlas data or camera",
     "Blocks/Nodes switches preserve dirty titles, notes, selection, camera and saved data; Nodes hides block size and restores the Blocks label choice",
     "saved Nodes expose title and notes while coordinate dropdowns and sliders stay read-only; Blocks restores its placement controls",
     "custom-layer spheres pick at their midplanes, occupied rings have unpickable guides, and selected/hover labels remain visible with Labels off",
@@ -77,6 +77,12 @@
     "switching notes during movement honors Save, Discard and Cancel; movement can also be cancelled from Blocks",
     "moving between Center and rings preserves full and partial block sizes and applies the same overlap rules",
     "movement stays unavailable for new nodes and read-only templates; template cancellation restores a clean move and controls fit the minimum window",
+    "VTK renders exactly the edge-sharing spatial pairs; gaps, corners, other layers and marker spokes have no edges",
+    "protocol and layer filters hide existing edges without reconnecting across hidden concepts or writing data",
+    "valid move drafts update strict adjacency; invalid drafts and cancellation retain saved edges and notes",
+    "explicit orbital relationships remain separate from spatial adjacency and survive reversible cluster focus",
+    "Connections and Blocks/Nodes toggles restore the same graph without moving nodes or changing the camera",
+    "deleting a bridging node leaves a gap; real center notes connect only to footprints on the immediately adjacent band",
     "template previews use real read-only atlas nodes; Cancel restores the document, editor, view and camera without writing",
     "Use template atomically saves the selected ordinary Atlas and returns to the existing node editor",
     "Outlined edges can be picked through nearer empty interiors; a selected opaque block occludes those same edges",

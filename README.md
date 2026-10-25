@@ -247,7 +247,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Local notes, JSON import/export, atomic saves, one-version backup | **Implemented** |
 | Windows and Linux release packaging | **Implemented** |
 | Opt-in release checks and verified update downloads | **Implemented** |
-| Basic proximity-derived node connections | **Implemented** |
+| Node connections between footprints sharing an edge; gaps remain unconnected | **Implemented** |
 | Distinct-information-based node scaling | **Planned** |
 | Dual-shell mastery visualization | **Planned** |
 | Node-associated question bank and assessment history | **Planned** |

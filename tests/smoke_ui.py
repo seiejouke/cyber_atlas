@@ -28,6 +28,7 @@ from template_view_checks import check_template_browser
 from block_view_checks import check_block_view
 from update_view_checks import check_updates
 from cluster_view_checks import check_clusters
+from connection_view_checks import check_connections
 
 
 def pump(root, steps=5):
@@ -1046,6 +1047,7 @@ def main(report_path=None):
             check_immediate_protocol_clear(root, app, path, checks)
             check_node_view(root, app, path, checks)
             check_node_moves(root, app, path, checks)
+            check_connections(root, app, path, pump, checks)
             check_template_browser(root, app, path, pump, checks)
             check_block_view(root, app, path, pump, checks)
             check_updates(root, app, path, pump, checks)

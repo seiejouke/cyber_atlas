@@ -89,6 +89,8 @@ class Scene(OrbitScene):
         self.actors: dict[str, tuple[vtkActor, vtkActor]] = {}
         self.guides: dict[tuple[LayerId, int], vtkActor] = {}
         self.connections: dict[tuple[str, str], vtkActor] = {}
+        # Spatial adjacency only; explicit orbital relationships live in subconcepts.
+        self.connection_pairs: tuple[tuple[str, str], ...] = ()
         self._connection_nodes: dict[tuple[str, str], frozenset[str]] = {}
         self.connections_visible = True
         self.meshes: dict[str, Mesh] = {}
@@ -305,6 +307,7 @@ class Scene(OrbitScene):
         for actor in self.connections.values():
             self.renderer.RemoveActor(actor)
         self.connections.clear()
+        self.connection_pairs = ()
         self._connection_nodes.clear()
 
     def _connection_actor(self, segments: list[tuple[tuple, tuple]], color: str,
@@ -334,9 +337,11 @@ class Scene(OrbitScene):
         return actor
 
     def _connection_candidates(self) -> tuple[Node, ...]:
-        candidates = [node for node in self.nodes if self.is_visible(node)]
+        # Build topology before visibility filtering. Hiding a node never
+        # makes its former neighbors connect across the newly hidden gap.
+        candidates = list(self.nodes)
         preview = self.preview_node
-        if self.preview_valid and preview is not None and self.is_visible(preview):
+        if self.preview_valid and preview is not None:
             if self.selected is not None:
                 candidates = [node for node in candidates if node.id != self.selected]
             candidates = [node for node in candidates if node.id != preview.id]
@@ -359,18 +364,14 @@ class Scene(OrbitScene):
             emphasized = self.selected in node_ids or "preview" in node_ids
             buckets.setdefault((layer_id, emphasized), []).append((*segment, node_ids))
 
+        visible_pairs = []
         for left_id, right_id in adjacent_node_pairs(nodes):
             left, right = by_id[left_id], by_id[right_id]
+            if not self.is_visible(left) or not self.is_visible(right):
+                continue
             add(left.layer, self.node_anchor(left), self.node_anchor(right), frozenset((left_id, right_id)))
-
-        by_layer: dict[LayerId, list[Node]] = {}
-        for node in nodes:
-            by_layer.setdefault(node.layer, []).append(node)
-        for layer_id, layer_nodes in by_layer.items():
-            innermost = min(node.depth for node in layer_nodes)
-            for node in (candidate for candidate in layer_nodes if candidate.depth == innermost):
-                add(layer_id, self.layer_anchor(layer_id), self.node_anchor(node), frozenset((node.id,)),
-                    AXIS_NODE_RADIUS, NODE_RADIUS)
+            visible_pairs.append((left_id, right_id))
+        self.connection_pairs = tuple(visible_pairs)
 
         for (layer_id, emphasized), entries in buckets.items():
             key = (repr(layer_id), "emphasized" if emphasized else "normal")

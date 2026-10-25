@@ -118,11 +118,20 @@ show all labels that fit. Custom label formats and optional protocols work
 in both views.
 
 Enable **Connections** beside Blocks/Nodes to link adjacent visible spheres.
-Lines use their layer color; selected-node links are brighter. Create a center
+Adjacency follows the saved block footprints: on the same band they must share
+an angular edge; on consecutive bands they must overlap in angular slots.
+Slots 16 and 01 are neighbors. Empty slots, skipped bands, corner contact and
+different layers do not create connections. Filtering only hides existing
+connections; it never creates replacements across hidden nodes.
+
+Lines use their layer color; selected-node links are brighter. Layer markers
+do not create spokes to surrounding nodes. Create a center
 node with **New node** and the radial slider's **Center** stop; its saved sphere
 then selects and edits like any other node. The vertical spine stops at the
 first and last center nodes.
-Connections are derived from saved positions and are not stored in JSON.
+Spatial connections are derived from saved positions and are not stored in
+JSON. Orbital parent–subconcept links are explicit relationships stored with
+the subconcepts; they remain separate from spatial adjacency and layer guides.
 
 Blocks starts in **Outline** appearance: the selected block is solid and the
 other blocks have colored outlines. Blocks on the selected layer have brighter

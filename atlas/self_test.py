@@ -1,6 +1,7 @@
 """An isolated check run by the packaged executable, using its bundled runtime."""
 from __future__ import annotations
 
+from dataclasses import replace
 import json
 from pathlib import Path
 import sys
@@ -62,6 +63,13 @@ def run(app, report_path: Path) -> int:
         pump()
         x, y, _ = app.scene.project(app.scene.node_anchor(moving))
         require(app.scene.pick(x, y) == moving.id, "VTK renders and picks a sphere using bundled native libraries")
+        require(not app.scene.connections and not app.scene.connection_pairs,
+                "Separated footprints have no spatial edges or automatic layer-marker spokes")
+        app.scene.set_preview(replace(moving, id="preview", slot=5))
+        adjacent_preview = app.scene.connection_pairs == (("blocker", "preview"),)
+        app.scene.set_preview(None)
+        require(adjacent_preview and not app.scene.connection_pairs,
+                "Only edge-sharing move previews connect; cancellation restores the isolated graph")
         original = app.path.read_bytes()
         app.move_button.invoke()
         app.slot_var.set("07")

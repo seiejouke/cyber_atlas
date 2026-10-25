@@ -56,18 +56,13 @@ class NodePositionTests(unittest.TestCase):
         self.assertEqual((original[2], reordered[2]), (-.5, .5))
         self.assertEqual(node.to_dict(), before)
 
-    def test_adjacency_is_sparse_and_never_crosses_layers(self):
+    def test_separated_footprints_remain_isolated(self):
         ring = tuple(Node(name, name, 2, None, 0, slot=slot)
                      for name, slot in zip(("a", "b", "c", "d"), (0, 4, 8, 12)))
         outer = (Node("e", "e", 2, None, 2, slot=1), Node("f", "f", 2, None, 2, slot=9))
         other_layer = Node("g", "g", 3, None, 0, slot=0)
         pairs = set(adjacent_node_pairs(ring + outer + (other_layer,)))
-        self.assertTrue({("a", "b"), ("b", "c"), ("c", "d"), ("a", "d")} <= pairs)
-        self.assertNotIn(("a", "c"), pairs)
-        self.assertNotIn(("b", "d"), pairs)
-        self.assertFalse(any("g" in pair for pair in pairs))
-        connected = set().union(*map(set, pairs))
-        self.assertEqual(connected, {"a", "b", "c", "d", "e", "f"})
+        self.assertEqual(pairs, set())
 
 
 if __name__ == "__main__":

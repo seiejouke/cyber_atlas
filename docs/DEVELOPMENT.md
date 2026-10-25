@@ -184,6 +184,20 @@ integration, information scaling, mastery scores or nested orbits are inferred.
 Run `python tools/capture_clusters.py` on a graphical desktop to refresh the real
 cluster screenshots from an isolated example atlas.
 
+## Spatial connections
+
+`geometry.adjacent_node_pairs` indexes the saved footprints by layer, band and
+occupied slot. Two nodes connect only across a shared angular edge or across
+overlapping slots on consecutive bands. Empty cells, corner contact and other
+layers cannot create edges. The index runs in proportion to occupied cells.
+
+`Scene` computes pairs before applying visibility filters, includes valid draft
+positions, and exposes the visible spatial pairs as `connection_pairs`.
+Layer markers never create automatic spokes. The central spine is a reference
+guide; explicit parent–subconcept relationships remain in `Atlas.subconcepts`
+and are rendered separately. Spatial pairs and guides do not establish semantic
+relationships or information counts. No heat calculation is implemented.
+
 ## Update distribution
 
 `atlas/updates.py` reads the public GitHub latest-release endpoint without
@@ -212,7 +226,7 @@ After a Windows build, test the real upgrade helper without replacing an
 existing user installation:
 
 ```powershell
-.\.venv\Scripts\python.exe tools\test_windows_updater.py --previous-zip dist\CyberAtlas-0.7.2-windows-x64.zip
+.\.venv\Scripts\python.exe tools\test_windows_updater.py --previous-zip dist\CyberAtlas-0.8.0-windows-x64.zip
 ```
 
 This compiles isolated installers with a separate AppId, upgrades the old binary,

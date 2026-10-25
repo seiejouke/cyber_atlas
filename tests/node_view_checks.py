@@ -81,17 +81,7 @@ def check_node_view(root, app, path, checks):
     # The selected layer marker is intentionally 35% larger.
     assert min(bounds[4] for bounds in axis_bounds) >= design.z_base + .5 - .076
     assert max(bounds[5] for bounds in axis_bounds) <= -design.z_base - .5 + .076
-    assert app.scene.connections and all(not actor.GetPickable() for actor in app.scene.connections.values())
-    by_id = {node.id: node for node in fixture.nodes}
-    for key, endpoint_ids in app.scene._connection_nodes.items():
-        if len(endpoint_ids) == 2:
-            left, right = (by_id[node_id] for node_id in endpoint_ids)
-            assert left.layer == right.layer
-        actor = app.scene.connections[key]
-        node_id = next(iter(endpoint_ids))
-        assert all(abs(actual - expected) < 1e-6 for actual, expected in zip(
-            actor.GetProperty().GetColor(),
-            tuple(int(design.layer(by_id[node_id].layer).color[index:index + 2], 16) / 255 for index in (1, 3, 5))))
+    assert not app.scene.connections  # These isolated footprints do not touch.
     app.connections_check.invoke()
     _pump(root)
     assert not app.connections_var.get() and not app.scene.connections
@@ -99,9 +89,9 @@ def check_node_view(root, app, path, checks):
     assert app.document == fixture and path.read_bytes() == saved_bytes and camera() == original_camera
     app.connections_check.invoke()
     _pump(root)
-    assert app.connections_var.get() and app.scene.connections
+    assert app.connections_var.get() and not app.scene.connections
     assert all(actor.GetVisibility() for actor in app.scene._axis_connection_actors)
-    checks.append("Nodes uses bounded layer anchors and layer-colored adjacency lines; Connections toggles the graph without changing atlas data or camera")
+    checks.append("Nodes leaves isolated footprints unconnected; Connections toggles the spine without changing atlas data or camera")
     app.blocks_button.invoke()
     _pump(root)
     assert app.labels_var.get() and app.size_box.winfo_ismapped() and app.size_label.winfo_ismapped()
@@ -193,7 +183,8 @@ def check_node_view(root, app, path, checks):
     app.protocol_filter_var.set(app._all_protocols)
     app._filter_changed()
     _pump(root)
-    assert any(blocker.id in endpoint_ids for endpoint_ids in app.scene._connection_nodes.values())
+    assert app.scene.is_visible(blocker)
+    assert all(blocker.id not in endpoint_ids for endpoint_ids in app.scene._connection_nodes.values())
     checks.append("Nodes creation uses only dropdowns and sliders; hidden occupied slots disable Create node without changing saved data")
 
     app.name_var.set("Small node addition")
