@@ -26,6 +26,7 @@ from atlas.templates import find_template
 from node_view_checks import check_node_moves, check_node_view
 from template_view_checks import check_template_browser
 from block_view_checks import check_block_view
+from update_view_checks import check_updates
 
 
 def pump(root, steps=5):
@@ -1046,6 +1047,7 @@ def main(report_path=None):
             check_node_moves(root, app, path, checks)
             check_template_browser(root, app, path, pump, checks)
             check_block_view(root, app, path, pump, checks)
+            check_updates(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)

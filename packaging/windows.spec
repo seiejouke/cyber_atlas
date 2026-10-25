@@ -8,7 +8,8 @@ analysis = Analysis(
     pathex=[str(root)],
     binaries=[],
     datas=[(str(root / "assets" / "CyberAtlas.png"), "assets"),
-           (str(root / "assets" / "CyberAtlas.ico"), "assets")]
+           (str(root / "assets" / "CyberAtlas.ico"), "assets"),
+           (str(root / "atlas" / "update_helper.ps1"), "atlas")]
           + copy_metadata("vtk") + copy_metadata("numpy"),
     hiddenimports=[],
     hookspath=[],

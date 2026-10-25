@@ -26,6 +26,33 @@ system cannot mount AppImages, see the [AppImage FUSE guide](https://docs.appima
 Linux notes are stored in `~/.local/share/CyberAtlas` unless `XDG_DATA_HOME` is set.
 Installing or removing either package preserves those notes.
 
+## Updates
+
+Open **Updates** to check GitHub for a newer stable release and read its changes.
+Nothing is downloaded until you choose **Download update**. Each package is
+checked against the release's SHA-256 digest before it can be applied.
+
+On Windows, an installed copy offers **Restart and update** after the download.
+Save, discard, or cancel any unsaved note changes. The updater closes this copy,
+upgrades its existing installation, and reopens the same atlas. Other Cyber Atlas
+windows must be closed before the update can proceed; the updater does not force
+them to close. The Windows ZIP and source versions open the release page for
+manual updates instead.
+
+An AppImage can replace itself in a writable location and restart with the same
+atlas. Its previous version is kept beside it with a `.previous` suffix. If the
+new process cannot start, the previous file is restored. A Debian installation
+offers **Open installer** to open the verified package in the system software
+installer; finish there and reopen Cyber Atlas.
+
+**Check automatically once a day** is off by default. Enabling it saves that
+preference separately from your atlas and allows background release checks.
+Available updates open a notification window; downloads and installation still
+require your choice. Offline or failed checks leave the application usable.
+
+Users of 0.7.1 or earlier need one manual upgrade to receive this update checker.
+The first implementation downloads the full package and upgrades it in place.
+
 ## First use
 
 The first launch creates a local atlas containing the 14 starter notes from

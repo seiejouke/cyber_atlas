@@ -1,5 +1,5 @@
 {
-  "passed": 87,
+  "passed": 94,
   "checks": [
     "initial render: 14 occupied meshes, no empty-cell actors",
     "all six slider positions align with labels and support pointer/keyboard input",
@@ -85,6 +85,13 @@
     "Solid/Outline switches preserve camera, saved geometry, unsaved text and an active placement draft",
     "Layer and protocol filters remove outlined blocks from both edge and interior picking, including a filtered selection",
     "Outline appearance survives Nodes and template previews; appearance controls stay out of Nodes view",
+    "Updates checks GitHub on a worker thread only after the user opens Updates; Later never starts a download and editing stays responsive",
+    "An installed or newer development version is never offered an older package",
+    "Only Download update fetches a package; verified downloads wait for Restart and update before starting an installer",
+    "Cancelling the unsaved-notes prompt or a failed save prevents installation; a successful save precedes the installer and retains the atlas path",
+    "Offline checks show an actionable message and leave the editor and saved atlas available",
+    "Dismissing a pending automatic check prevents its result from reopening the update window",
+    "Daily automatic checks require an explicit saved opt-in, run at most once per day, and stay quiet when the app is current",
     "minimum-window layout remains usable",
     "no Tk callback errors",
     "close cancel and save-on-close"

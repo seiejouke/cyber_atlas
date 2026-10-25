@@ -142,7 +142,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The Blocks/Nodes build includes **105 core tests** covering chosen angular
+The desktop build includes **133 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -153,11 +153,46 @@ design editing, view switching, JSON import/export and unsaved drafts. Movement
 checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
-self-test. All **105 core tests and 87 GUI workflow checks passed** on Windows with Python
+self-test, release validation, verified downloads, and safe update handoffs. All **133 core tests and 94 GUI workflow checks passed** on Windows with Python
 3.12.3, Tk 8.6 and VTK 9.6.2. Test outputs are in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
 configuration are included.
+
+## Update distribution
+
+`atlas/updates.py` reads the public GitHub latest-release endpoint without
+credentials. Checks accept stable versions from this repository, select the
+matching platform asset, require its size and SHA-256 digest, and restrict
+download redirects to HTTPS GitHub release hosts. Downloads are staged and
+verified before replacing the cached file. Network work runs on daemon threads;
+Tk receives results through a queue. Defaults, settings and timestamps are
+stored in `updates.json` beside the normal application data, outside atlas JSON.
+
+The Windows helper is bundled as `atlas/update_helper.ps1`, copied outside the
+installation, and started hidden after the user chooses Restart and update.
+A readiness handshake prevents the app from closing if the helper cannot start.
+It waits for the parent, refuses to close other application instances, rechecks
+the installer hash, applies the installer to the existing folder, and restarts
+the same executable with the original `--file` path. A failed handoff or installer
+leaves a result report and installation log under the update cache.
+
+AppImages stage the replacement beside the current image, preserve a previous
+copy, and restore it if starting the replacement fails. Debian packages use
+the system software installer. Portable Windows and source copies use the
+release page. Automatic checks are opt-in and limited to once per day; no
+automatic downloads or installations run.
+
+After a Windows build, test the real upgrade helper without replacing an
+existing user installation:
+
+```powershell
+.\.venv\Scripts\python.exe tools\test_windows_updater.py --previous-zip dist\CyberAtlas-0.7.1-windows-x64.zip
+```
+
+This compiles isolated installers with a separate AppId, upgrades the old binary,
+checks the parent wait and restart, and verifies that the saved atlas and actual
+application registration remain unchanged. It requires Inno Setup and the old ZIP.
 
 ## Build the Windows release
 

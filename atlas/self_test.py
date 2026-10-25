@@ -33,6 +33,17 @@ def run(app, report_path: Path) -> int:
         pump()
         require(len(app.scene.actors) == len(app.document.nodes), "Startup renders every saved block")
         require(app._window_icon.width() == 256, "Bundled application icon loads")
+        from . import updates
+        require(not updates.UpdateSettings().automatic and not app.updates.settings.automatic,
+                "Automatic update checks default to off in an isolated installation")
+        app.updates.open(check=False)
+        pump()
+        require(app.updates.dialog is not None and not app.updates.busy,
+                "Bundled Updates window opens without making a network request")
+        app.updates.close_dialog()
+        if sys.platform == "win32":
+            require(Path(updates.__file__).with_name("update_helper.ps1").is_file(),
+                    "Windows installer handoff helper is bundled")
         design = Design((Layer("test", "Packaged test", "#70cbd8"),), ())
         moving = Node("moving", "Bundled node", "test", None, 1, "Original notes", slot=1, span=2)
         blocker = Node("blocker", "Reserved slots", "test", None, 1, slot=7, span=2)

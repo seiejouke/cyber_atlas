@@ -68,7 +68,8 @@ def main() -> int:
         else:
             document = Atlas() if args.empty else example_atlas()
             write_atlas(path, document, backup=False)
-        app = AtlasApp(root, path, document)
+        app = AtlasApp(root, path, document, settings_directory=path.parent if args.self_test else default_path().parent,
+                       automatic_updates=not bool(args.self_test))
         root.deiconify()
         if args.self_test:
             from atlas.self_test import run

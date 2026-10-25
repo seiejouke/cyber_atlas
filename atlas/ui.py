@@ -17,7 +17,8 @@ from .templates import TEMPLATES, AtlasTemplate
 
 
 class AtlasApp:
-    def __init__(self, root: tk.Tk, path: Path, document: Atlas) -> None:
+    def __init__(self, root: tk.Tk, path: Path, document: Atlas, *, settings_directory: Path | None = None,
+                 automatic_updates: bool = True) -> None:
         self.root, self.path, self.document = root, path, document
         self.family, self.mono = theme.apply(root)
         self.scene = Scene(document.design)
@@ -70,6 +71,8 @@ class AtlasApp:
         self._set_status(f"Local atlas  /  {self.path}")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self.root.after(80, self.request_render)
+        from .update_ui import UpdateManager
+        self.updates = UpdateManager(self, settings_directory or path.parent, automatic=automatic_updates)
 
     def _build(self) -> None:
         root = self.root
@@ -103,6 +106,8 @@ class AtlasApp:
         self.templates_button = ttk.Button(header, text="Templates", command=self.open_templates)
         self.templates_button.grid(row=0, column=3, rowspan=2, padx=(0, 8))
         ttk.Button(header, text="Reset view", command=self.reset_view).grid(row=0, column=4, rowspan=2)
+        self.updates_button = ttk.Button(header, text="Updates", command=lambda: self.updates.open())
+        self.updates_button.grid(row=0, column=5, rowspan=2, padx=(8, 0))
 
         content = ttk.Frame(outer)
         content.grid(row=1, column=0, sticky="nsew")
@@ -1473,6 +1478,7 @@ class AtlasApp:
     def shutdown(self) -> None:
         """Release resources. Tests also use this without a confirmation dialog."""
         self._closed = True
+        self.updates.shutdown()
         for job in (self._render_job, self._hover_job):
             if job is not None:
                 self.root.after_cancel(job)

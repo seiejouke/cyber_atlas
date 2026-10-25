@@ -193,6 +193,8 @@ def main():
         "Cancel move or Escape restores the starting position and keeps text edits.\n\n"
         "Blocks starts in Outline appearance: only the selected block is filled.\n"
         "Hover outlines for labels, or choose Solid to fill every block.\n\n"
+        "Use Updates to check for releases. Daily checks are optional and off by default.\n"
+        "Installed copies can download a verified update and restart to apply it.\n\n"
         "Requires Windows 10/11 x64 with a working OpenGL graphics driver.\n"
         "This build is unsigned.\n", encoding="utf-8")
     report_path = destination / "packaged-test-results.json"
