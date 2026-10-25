@@ -194,6 +194,45 @@ file. For the default atlas this is `%LOCALAPPDATA%\CyberAtlas\logs`.
 Logs rotate and startup failures also display a dialog in the windowed build.
 The build does not sign or publish the application.
 
+## Build the Linux release
+
+The **Build Linux packages** GitHub Actions workflow builds on Ubuntu 22.04
+x86_64 with Python 3.12.3. It runs automatically when the application or Linux
+packaging changes, and can also be started manually from the Actions tab.
+The build uses pinned actions and verifies downloaded AppImage tool hashes.
+
+For a local build, install the dependencies listed in
+[linux-release.yml](../.github/workflows/linux-release.yml), then run:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-build.txt
+xvfb-run -a -s "-screen 0 1440x1000x24" .venv/bin/python tools/build_linux.py
+```
+
+The packages include Python, Tk and VTK, a desktop icon, and third-party
+notices. The Debian package installs under `/opt/cyber-atlas` with a
+`/usr/bin/cyber-atlas` launcher. The AppImage is portable. Both use the existing
+per-user atlas path, outside the application directory.
+
+The build checks the frozen executable and the AppImage through their own
+bundled runtime. The workflow adds `--test-install` to install, upgrade and
+purge the Debian package on the disposable runner while checking saved data.
+This option requires passwordless sudo and refuses to replace an existing
+Cyber Atlas installation. A normal local build does not install the package.
+
+Outputs and reports are in `dist/linux/`:
+
+- `cyber-atlas_0.7.0_amd64.deb`
+- `CyberAtlas-0.7.0-x86_64.AppImage`
+- `SHA256SUMS-linux.txt`
+- `linux-build-report.json` and runtime/installation test reports
+
+Linux releases require glibc 2.35 or newer and host OpenGL/C++ libraries.
+The workflow uses Xvfb and Mesa software rendering. Packages are uploaded as
+workflow artifacts; publishing them to a GitHub release is a separate step
+after checking those artifacts.
+
 ## References
 
 Official library documentation and package references are recorded in

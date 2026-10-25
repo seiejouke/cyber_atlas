@@ -139,6 +139,34 @@
       "test_isolation": "New temporary atlases; packaged executable tested with Python, virtual-environment and Tcl/Tk environment overrides removed and only System32 on PATH",
       "installer_checks": "Per-user install, installed executable, same-version upgrade and uninstall; saved test data preserved and test registration removed",
       "limitations": "Tested on this Windows desktop; a separate clean machine without Python has not been tested"
+    },
+    "linux_release": {
+      "architecture": "x86_64",
+      "source_commit": "1e3e1505dcde19cdbdae35cd1111f53951456d82",
+      "build_baseline": "Ubuntu 22.04, glibc 2.35, Python 3.12.3",
+      "workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40185964098",
+      "core_tests_passed": 105,
+      "packaged_runtime_checks_passed": 16,
+      "appimage_runtime_checks_passed": 16,
+      "installed_runtime_checks_passed": 16,
+      "installer_lifecycle_checks_passed": 4,
+      "additional_desktop": "Ubuntu 24.04.2 under WSLg with XWayland",
+      "additional_desktop_deb_checks_passed": 16,
+      "additional_desktop_appimage_checks_passed": 16,
+      "appimage_launch": "Normal FUSE launch as well as extract-and-run on the headless runner",
+      "artifacts": [
+        {
+          "name": "cyber-atlas_0.7.0_amd64.deb",
+          "bytes": 80953268,
+          "sha256": "c2e1ae5a39eeb7800922cef58dbb4f8f18c49b308db739fbc5c21efb7eff9d60"
+        },
+        {
+          "name": "CyberAtlas-0.7.0-x86_64.AppImage",
+          "bytes": 97708536,
+          "sha256": "f11732c75e85d960cbcecc87c60bcab5c143b313c317267e6cc0b024eb627b70"
+        }
+      ],
+      "limitations": "Requires glibc 2.35 or newer, compatible C++ libraries and host OpenGL/X11 or XWayland. Other distributions and native Wayland without XWayland have not been tested."
     }
   },
   "original_build": {

@@ -4,13 +4,27 @@
 
 ## Install and open
 
-Download the installer from the [latest Windows release](https://github.com/seiejouke/cyber_atlas/releases/latest),
+Download the Windows installer from the [latest release](https://github.com/seiejouke/cyber_atlas/releases/latest),
 run it, and open Cyber Atlas from the Start menu. The installer includes Python,
 Tk and VTK. Windows 10/11 x64 and a working OpenGL graphics driver are required.
 
 For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
+
+On Linux x86_64, download `cyber-atlas_0.7.0_amd64.deb` for Ubuntu/Debian-based
+desktops and install it with your package installer. Open **Cyber Atlas** from
+the application menu. Python, Tk and VTK are included.
+
+For other compatible Linux desktops, download `CyberAtlas-0.7.0-x86_64.AppImage`.
+In the file's properties, allow it to run as a program, then open it. The AppImage
+is portable; it does not install an application-menu entry automatically.
+
+The Linux build requires glibc 2.35 or newer, a compatible C++ runtime, and a
+working OpenGL driver. Tk uses X11, or XWayland on Wayland desktops. If your
+system cannot mount AppImages, see the [AppImage FUSE guide](https://docs.appimage.org/user-guide/troubleshooting/fuse.html).
+Linux notes are stored in `~/.local/share/CyberAtlas` unless `XDG_DATA_HOME` is set.
+Installing or removing either package preserves those notes.
 
 ## First use
 
