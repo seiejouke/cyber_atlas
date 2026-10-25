@@ -23,6 +23,7 @@ from vtkmodules.vtkRenderingCore import (
 from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, adjacent_node_pairs, layout_meshes, node_position, wedge_mesh
 from .model import ANGULAR_SLOTS, BANDS, CENTER_DEPTH, Design, LayerId, Node
 from .orbit_scene import OrbitScene
+from .heat import InformationHeat, heat_color, information_heat
 
 
 class ProtocolFilter(Enum):
@@ -93,6 +94,8 @@ class Scene(OrbitScene):
         self.connection_pairs: tuple[tuple[str, str], ...] = ()
         self._connection_nodes: dict[tuple[str, str], frozenset[str]] = {}
         self.connections_visible = True
+        self.heat_enabled = False
+        self.heat_metrics: dict[str, InformationHeat] = {}
         self.meshes: dict[str, Mesh] = {}
         sphere = vtkSphereSource()
         sphere.SetRadius(NODE_RADIUS)
@@ -284,6 +287,30 @@ class Scene(OrbitScene):
     def node_anchor(self, node: Node) -> tuple[float, float, float]:
         return node_position(node, self.design)
 
+    @property
+    def heat_active(self) -> bool:
+        return self.mode == "nodes" and self.heat_enabled
+
+    def set_information(self, atlas) -> None:
+        self.heat_metrics = information_heat(atlas)
+        self.set_selected(self.selected)
+
+    def set_heat_enabled(self, enabled: bool) -> None:
+        self.heat_enabled = bool(enabled)
+        self.set_selected(self.selected)
+
+    def concept_color(self, concept_id: str, layer: LayerId) -> str:
+        if not self.heat_active:
+            return self.design.layer(layer).color
+        metric = self.heat_metrics.get(concept_id, InformationHeat())
+        return heat_color(metric.own if self.focused_parent is not None else metric.blended)
+
+    def _style_node(self, node: Node, actor: vtkActor) -> None:
+        selected = node.id == self.selected
+        actor.SetScale(1.15 if self.mode == "nodes" and selected and not self.heat_active else 1.0)
+        actor.GetProperty().SetColor(rgb(self.concept_color(node.id, node.layer),
+                                        1.10 if selected and not self.heat_active else 1.0))
+
     def layer_anchor(self, layer: LayerId) -> tuple[float, float, float]:
         return 0.0, 0.0, self.design.z_base + self.design.layer_index(layer) + .5
 
@@ -377,7 +404,7 @@ class Scene(OrbitScene):
             key = (repr(layer_id), "emphasized" if emphasized else "normal")
             self.connections[key] = self._connection_actor(
                 [(start, end) for start, end, _ in entries],
-                self.design.layer(layer_id).color, emphasized)
+                "#476579" if self.heat_active else self.design.layer(layer_id).color, emphasized)
             self._connection_nodes[key] = frozenset().union(*(node_ids for _, _, node_ids in entries))
 
     def set_connections_visible(self, visible: bool) -> None:
@@ -509,8 +536,7 @@ class Scene(OrbitScene):
             solid, outline = self.actors[node.id]
             selected = node.id == node_id
             color = self.design.layer(node.layer).color
-            solid.SetScale(1.15 if self.mode == "nodes" and selected else 1.0)
-            solid.GetProperty().SetColor(rgb(color, 1.10 if selected else 1.0))
+            self._style_node(node, solid)
             outline.GetProperty().SetColor(rgb("#fff0c2") if selected else rgb(color, 0.65))
             outline.GetProperty().SetLineWidth(2.0 if selected else 0.85)
         self._style_axis()

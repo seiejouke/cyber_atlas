@@ -235,7 +235,7 @@ class ClusterManager:
 
     def delete(self):
         child = self.app.document.child(self.child_id)
-        if child is None or not messagebox.askyesno("Delete subconcept", f"Delete '{child.name}' and its notes?\n\nThe parent and other children will be kept.", parent=self.root):
+        if child is None or not messagebox.askyesno("Delete subconcept", f"Delete '{child.name}', its notes and its recorded information?\n\nThe parent and other children will be kept.", parent=self.root):
             return False
         if not self.app._commit(self.app.document.without_child(child.id)):
             return False
@@ -284,7 +284,7 @@ class ClusterManager:
 
     def sync(self):
         parent = self.app.document.get(self.app.selected)
-        compact = (parent is not None and bool(self.app.document.children(parent.id)) and not self.editing
+        compact = (parent is not None and (bool(self.app.document.children(parent.id)) or self.app.scene.heat_active) and not self.editing
                    and self.app._node_move_origin is None and self.app.placement_state != "placing")
         for widget in self._coordinate_rows:
             widget.grid_remove() if compact else widget.grid()
@@ -334,10 +334,15 @@ class ClusterManager:
                 if scene.pick(x, y) != child.id:
                     continue
                 if selected:
-                    canvas.create_oval(x-11, y-11, x+11, y+11, outline=theme.ACCENT, width=2, tags="overlay")
+                    radius = max(11, .065 * .7 * scene.height / (2 * scene.scale) + 5) if scene.heat_active else 11
+                    canvas.create_oval(x-radius, y-radius, x+radius, y+radius,
+                                       outline=theme.TEXT if scene.heat_active else theme.ACCENT, width=2, tags="overlay")
                 label = child.name if len(child.name) <= 31 else child.name[:28] + "..."
+                if scene.heat_active:
+                    label += f" ({scene.heat_metrics.get(child.id).own if child.id in scene.heat_metrics else 0})"
                 width = self.app.label_font.measure(label) + 12
-                for dx, dy in ((12, -23), (12, 8), (-width-12, -23), (-width-12, 8), (12, -47), (-width-12, 32)):
+                gap = max(12, .065 * .7 * scene.height / (2 * scene.scale) + 8) if scene.heat_active else 12
+                for dx, dy in ((gap, -23), (gap, 8), (-width-gap, -23), (-width-gap, 8), (gap, -47), (-width-gap, 32)):
                     box = x+dx, y+dy, x+dx+width, y+dy+23
                     if box[0] < 5 or box[2] > scene.width-5 or box[1] < 30 or box[3] > scene.height-72:
                         continue

@@ -42,6 +42,10 @@ Try the [editable orbital-cluster example](examples/orbital_cluster_atlas.json).
 
 ![Implemented Blocks view retaining the Firewall footprint and selectable child list](docs/orbital-cluster-blocks.png)
 
+## Information heat — source preview
+
+The source version adds **Information heat** to Nodes view: the atlas overview blends recorded-entry counts with bounded subconcept support; **Focus cluster** separates own-information fills from support rims. Use **Entries** to manage recorded information independently of personal notes. See the [guide and actual screenshots](docs/USER_GUIDE.md#information-heat-source-preview) or try the [populated example atlas](examples/information_heat_atlas.json). This feature awaits a packaged release and uses atlas format 10; the current 0.8.1 installers cannot open format-10 files.
+
 ## Project scope and vision
 
 This section contains the complete illustrated design philosophy. The current
@@ -248,6 +252,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Windows and Linux release packaging | **Implemented** |
 | Opt-in release checks and verified update downloads | **Implemented** |
 | Node connections between footprints sharing an edge; gaps remain unconnected | **Implemented** |
+| Recorded information entries, heat colors and bounded cluster-support rims | **Implemented in source; awaiting a packaged release** |
 | Distinct-information-based node scaling | **Planned** |
 | Dual-shell mastery visualization | **Planned** |
 | Node-associated question bank and assessment history | **Planned** |

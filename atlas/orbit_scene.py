@@ -80,6 +80,7 @@ class OrbitScene:
         for node in self.nodes:
             visible = self.is_visible(node) and self.focused_parent in (None, node.id)
             self.actors[node.id][0].SetVisibility(visible)
+            self._style_node(node, self.actors[node.id][0])
         for actor in self._axis_actors:
             actor.SetVisibility(self.focused_parent is None)
         if self.focused_parent is None:
@@ -96,7 +97,7 @@ class OrbitScene:
         children = [child for child in self.subconcepts if child.parent_id == parent.id]
         if not children:
             return
-        color = self.design.layer(parent.layer).color
+        color = "#476579" if self.heat_active else self.design.layer(parent.layer).color
         center = node_position(parent, self.design)
         circle = vtkRegularPolygonSource()
         circle.SetNumberOfSides(96)
@@ -119,9 +120,10 @@ class OrbitScene:
             actor = vtkActor()
             actor.SetMapper(self._sphere_mapper)
             actor.SetPosition(*position)
-            actor.SetScale(CHILD_SCALE * (1.2 if child.id == self.selected_child else 1))
+            actor.SetScale(CHILD_SCALE * (1.2 if child.id == self.selected_child and not self.heat_active else 1))
             prop = actor.GetProperty()
-            prop.SetColor(rgb("#70cbd8" if child.id == self.selected_child else color))
+            prop.SetColor(rgb(self.concept_color(child.id, parent.layer) if self.heat_active else
+                              "#70cbd8" if child.id == self.selected_child else color))
             prop.SetAmbient(.45)
             prop.SetDiffuse(.65)
             prop.SetSpecular(.4)
@@ -130,7 +132,7 @@ class OrbitScene:
             self._actor_ids[actor.GetAddressAsString("")] = child.id
             start, end = self._trimmed_segment(center, position, NODE_RADIUS, NODE_RADIUS * CHILD_SCALE)
             self._line(start, end, 1.5 if child.id == self.selected_child else 1,
-                       color=color, opacity=.8, collection=self._orbit_lines)
+                       color=color, opacity=.35 if self.heat_active else .8, collection=self._orbit_lines)
             if self.focused_parent is None:
                 for other in self.nodes:
                     if other.id == parent.id or not self.is_visible(other):

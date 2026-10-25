@@ -91,6 +91,53 @@ preserves every child ID, parent link, local position, relationship and note.
 Import `examples/orbital_cluster_atlas.json` for an editable four-child Firewall
 example. See the [implemented cluster screenshots](../README.md#orbital-clusters).
 
+## Information heat (source preview)
+
+This feature is available in the source version and awaits a packaged release.
+The current 0.8.1 installers do not include it. Its saved atlases use format 10,
+which requires this source version or a future package supporting that format.
+Existing atlases load with their notes and coordinates preserved; the first
+save keeps the previous saved file as the normal backup.
+
+In **Nodes**, choose **Color → Information heat**. The full atlas uses one
+cool-to-warm fill per node, combining its own recorded entries with a capped
+contribution from explicit subconcepts. Choose **Focus cluster** to see each
+node's own-information fill and a separate amber support rim around the parent.
+The inspector always shows own entries, support and the cluster's total entries.
+**Show atlas** restores the overview. **Layer colors** restores the original
+palette. These controls do not change saved coordinates or sphere sizes based
+on information quantity; Blocks retains its existing footprints.
+
+![Implemented heat overview containing 84 concepts and 527 recorded entries](information-heat-overview.png)
+
+Select a saved concept or subconcept and choose **Entries**. Each entry needs a
+title and information body, such as one explanation, observation or worked
+example. **Save entry** stores it independently of personal notes; editing an
+entry keeps its count at one. **New entry**, the saved-entry list and **Delete
+entry** manage that concept's information. Closing a changed entry offers
+Save, Discard or Cancel; failed writes preserve the draft.
+
+Existing personal notes do not automatically become entries. **Use notes as
+one entry** copies them into one draft; saving counts it once and keeps the
+original notes. Identical entries within one concept are rejected. Entry counts
+measure recorded items, not demonstrated mastery or automatic semantic novelty.
+
+![Implemented Firewall focus with own-information fills, a support rim and exact counts](information-heat-cluster.png)
+
+Each child's contribution is 25% of its own entry count, capped at one equivalent
+entry per child and four per parent. For example, children with 4, 2, 10 and 0
+entries provide 1 + 0.5 + 1 + 0 = 2.5 support. Empty children, spatial neighbors
+and layer guides provide zero. Support is not passed back down to children.
+The palette has fixed anchors at 0, 1, 2, 4, 8, 16 and 32+; high counts saturate
+at the warmest color while exact counts remain visible. Filtering does not
+change the scale or the underlying values.
+
+Information entries are included in JSON exports and backups. Deleting a
+concept removes its owned entries; deleting a cluster includes its children
+and their entries. The [example atlas](../examples/information_heat_atlas.json)
+contains illustrative information for exploring the display.
+See the [source verification report](information-heat-verification.json).
+
 ## First use
 
 The first launch creates a local atlas containing the 14 starter notes from
@@ -366,7 +413,7 @@ layer, protocol, depth, notes and list order. Versions 1–5 become compact
 1/16 blocks in consecutive slots at each layer/depth; versions 6–7 retain
 their exact sizes and slots. Versions 1–6 receive the OSI design preset;
 version 7 keeps its custom design. Legacy integer node IDs become strings.
-The next save or export writes version 9
+The source version's next save or export writes version 10
 with the design and explicit size/slot coordinates; the first save retains
 the original file as the normal previous-version backup. Empty atlases can
 be imported/exported with their custom design.
@@ -377,6 +424,12 @@ protocol assignments intact. Version 9 adds a separate `subconcepts` list;
 existing grid coordinates remain unchanged, and the first save retains the old
 file as the normal backup. Files using schema 9 require version 0.8.0 or newer;
 older applications do not support the new file format.
+
+Version 10 adds `information_entries`, with stable IDs, concept ownership,
+titles and bodies. Versions 1–9 load with an empty entry list and retain their
+existing personal notes. Format 10 is currently supported by the source preview;
+the packaged 0.8.1 release supports formats through 9. Keep the original file
+or its backup when using both versions.
 
 A legacy ring with more than 16 notes cannot fit this grid. Import/loading
 stops with a message identifying the ring, without dropping notes or changing

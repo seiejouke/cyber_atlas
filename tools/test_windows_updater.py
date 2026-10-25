@@ -107,10 +107,13 @@ def main():
             application = directory / "Installed app"
             user_data = directory / "Saved notes" / "atlas.json"
             write_atlas(user_data, example_atlas(), backup=False)
-            if args.previous_version in ("0.7.1", "0.7.2"):
+            if args.previous_version in ("0.7.1", "0.7.2", "0.8.0", "0.8.1"):
                 previous_data = json.loads(user_data.read_text(encoding="utf-8"))
-                previous_data["version"] = 8
-                previous_data.pop("subconcepts", None)
+                previous_data.pop("information_entries", None)
+                previous_data["version"] = 9
+                if args.previous_version in ("0.7.1", "0.7.2"):
+                    previous_data["version"] = 8
+                    previous_data.pop("subconcepts", None)
                 user_data.write_text(json.dumps(previous_data), encoding="utf-8")
             saved = user_data.read_bytes()
             try:

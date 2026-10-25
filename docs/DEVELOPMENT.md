@@ -205,7 +205,38 @@ positions, and exposes the visible spatial pairs as `connection_pairs`.
 Layer markers never create automatic spokes. The central spine is a reference
 guide; explicit parent–subconcept relationships remain in `Atlas.subconcepts`
 and are rendered separately. Spatial pairs and guides do not establish semantic
-relationships or information counts. No heat calculation is implemented.
+relationships or information counts. Heat uses explicit entries and
+parent–subconcept data, as described below.
+
+## Recorded information and heat (unreleased source)
+
+Schema 10 stores `InformationEntry` records separately from `Node.notes` and
+`Subconcept.notes`. Entries have an immutable concept owner, stable ID, title
+and nonempty body. Atlas validation rejects missing owners, duplicate IDs and
+identical entries within a concept. Deleting concepts cascades through their
+owned records; design reassignment preserves them. Versions 1–9 load without
+inventing entries or changing existing notes. Normal atomic saves retain the
+previous file as the backup.
+
+`heat.information_heat` counts entries once, then adds direct-child support
+with weight 0.25, a per-child cap of 1, and a per-parent cap of 4. Spatial
+adjacency and reference guides are not inputs. `heat_color` uses fixed bounded
+anchors and logarithmic interpolation. `Scene` caches metrics on document
+changes, independently of filtering, and uses blended fills in the overview
+and own-information fills in cluster focus. The Tk overlay draws the support
+arc and neutral selection halo separately.
+
+`information_ui.InformationManager` provides a modal entry editor, independent
+draft handling, inspector counts, palette controls and legend. Entry commits
+preserve dirty personal-note fields. Its color setting lasts for the session.
+Blocks continues to use layer colors and the original meshes.
+
+Run `python tools/capture_information.py` on a graphical desktop to generate the
+84-concept example and capture both implemented views. `--example-only` writes
+the illustrative atlas without opening a GUI. Core tests and real GUI checks
+cover entry ownership, migration, bounded support, preview colors, filtering,
+failed saves, export/import and minimum window sizes. These changes have not
+been packaged; release versions and installed downloads remain at 0.8.1.
 
 ## Update distribution
 

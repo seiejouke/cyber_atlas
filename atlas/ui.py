@@ -71,6 +71,9 @@ class AtlasApp:
         from .cluster_ui import ClusterManager
         self.clusters = ClusterManager(self)
         self.scene.set_subconcepts(document.subconcepts)
+        from .information_ui import InformationManager
+        self.information = InformationManager(self)
+        self.scene.set_information(document)
         self._set_status(f"Local atlas  /  {self.path}")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self.root.after(80, self.request_render)
@@ -423,6 +426,7 @@ class AtlasApp:
         self.scene.set_design(template.atlas.design)
         self.scene.set_nodes(template.atlas.nodes)
         self.scene.set_subconcepts(template.atlas.subconcepts)
+        self.scene.set_information(template.atlas)
         self.scene.set_selected(None)
         self.scene.set_layer_filter(None)
         self.scene.set_protocol_filter(None)
@@ -472,6 +476,7 @@ class AtlasApp:
         self.scene.set_design(self.document.design)
         self.scene.set_nodes(self.document.nodes)
         self.scene.set_subconcepts(self.document.subconcepts)
+        self.scene.set_information(self.document)
         self.scene.set_mode(origin["mode"])
         self.scene.set_connections_visible(origin["connections"])
         self.scene.set_layer_filter(origin["layer_filter"])
@@ -983,6 +988,8 @@ class AtlasApp:
         self.request_render()
 
     def _allow_leave(self) -> bool:
+        if hasattr(self, "information") and not self.information.close():
+            return False
         if hasattr(self, "clusters") and self.clusters.editing:
             return self.clusters.allow_leave()
         if not self.dirty:
@@ -1020,6 +1027,7 @@ class AtlasApp:
             self._refresh_design_controls()
         self.scene.set_nodes(document.nodes)
         self.scene.set_subconcepts(document.subconcepts)
+        self.scene.set_information(document)
         self._set_status(f"Saved {datetime.now():%H:%M:%S}  /  {self.path}")
         return True
 
@@ -1126,6 +1134,10 @@ class AtlasApp:
             return False
         children = self.document.children(node.id)
         warning = f"\n\nThis also deletes all {len(children)} subconcepts and their notes." if children else ""
+        owners = {node.id} | {child.id for child in children}
+        entry_count = sum(entry.concept_id in owners for entry in self.document.information_entries)
+        if entry_count:
+            warning += f"\n\nThis also deletes {entry_count} recorded information entries."
         if not messagebox.askyesno("Delete cluster" if children else "Delete volume", f"Delete '{node.name}'?{warning}\n\nIts volume and notes will be removed. Any unsaved edits to this note will be discarded.", parent=self.root):
             return False
         if not self._commit(self.document.without_node(node.id, remove_children=bool(children))):
@@ -1215,6 +1227,7 @@ class AtlasApp:
                                          fg=layer.color if layer else theme.MUTED)
         elif self.block_bar.winfo_manager():
             self.block_bar.grid_remove()
+        self.information.sync()
         width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
         if width < 10 or height < 10:
             return
@@ -1294,6 +1307,7 @@ class AtlasApp:
             self.canvas.create_text(width / 2, height / 2 - 20, text=text, fill=theme.TEXT,
                                     font=(self.family, 16), tags="overlay")
         self.clusters.draw()
+        self.information.draw()
 
     def _draw_node_halo(self, node: Node, tag: str, color: str, *, preview: bool = False) -> None:
         x, y, depth = self.scene.project(self.scene.node_anchor(node))
@@ -1305,8 +1319,12 @@ class AtlasApp:
         elif self.scene.pick(x, y) != node.id:
             return
         radius = max(9.0, .065 * self.scene.height / (2 * self.scene.scale) + 4)
+        if self.scene.heat_active and not preview:
+            color = theme.TEXT
+            radius += 5
         self.canvas.create_oval(x - radius - 3, y - radius - 3, x + radius + 3, y + radius + 3,
-                                outline="#345866" if color == theme.ACCENT else "#68464c", width=1, tags=("overlay", tag))
+                                outline=theme.BORDER if self.scene.heat_active and not preview else
+                                "#345866" if color == theme.ACCENT else "#68464c", width=1, tags=("overlay", tag))
         self.canvas.create_oval(x - radius, y - radius, x + radius, y + radius,
                                 outline=color, width=2, tags=("overlay", tag))
 
@@ -1326,6 +1344,10 @@ class AtlasApp:
             text = design.block_label(node)
             if design.label_mode == "combined":
                 text = f"{node.name}\n{design.layer(node.layer).name} · {design.protocol_name(node.protocol)}"
+            if self.scene.heat_active:
+                metric = self.scene.heat_metrics.get(node.id)
+                if metric is not None:
+                    text += f"\n{metric.own} entries" + (f" / +{metric.support:g} support" if metric.support else "")
             max_label_width = min(300, width - 50) if design.label_mode != "title" else 176
             lines = text.splitlines()
             for i, line in enumerate(lines):
@@ -1337,9 +1359,10 @@ class AtlasApp:
             box_height = 23 + 17 * (len(lines) - 1)
             total_width = text_width + 14
             right = x >= width * 0.5
-            shifts = [(12, -25), (12, 8), (12, -49), (-total_width - 12, -25), (-total_width - 12, 8)]
+            gap = max(12, .065 * self.scene.height / (2 * self.scene.scale) + 16) if self.scene.heat_active else 12
+            shifts = [(gap, -25), (gap, 8), (gap, -49), (-total_width - gap, -25), (-total_width - gap, 8)]
             if not right:
-                shifts = [(-total_width - 12, -25), (-total_width - 12, 8), (-total_width - 12, -49), (12, -25), (12, 8)]
+                shifts = [(-total_width - gap, -25), (-total_width - gap, 8), (-total_width - gap, -49), (gap, -25), (gap, 8)]
             placement = None
             for dx, dy in shifts:
                 bx, by = x + dx, y + dy

@@ -1,0 +1,165 @@
+"""Recorded information, bounded support, and lossless atlas migration."""
+from dataclasses import replace
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
+import unittest
+
+from atlas.design_draft import DesignDraft
+from atlas.geometry import adjacent_node_pairs
+from atlas.heat import HEAT_STOPS, heat_color, information_heat
+from atlas.model import Atlas, AtlasError, InformationEntry, Node, Subconcept
+from atlas.storage import read_atlas, write_atlas
+
+
+def entries(identity, count):
+    return tuple(InformationEntry(f"{identity}-{i}", identity, f"Entry {i}", f"Recorded information {i}")
+                 for i in range(count))
+
+
+class InformationTests(unittest.TestCase):
+    def setUp(self):
+        self.parent = Node("parent", "Firewall", 3, None, 1, "Keep personal notes", slot=2, span=4)
+        self.neighbor = Node("neighbor", "Spatial neighbor", 3, None, 1, slot=6)
+        self.children = tuple(Subconcept(f"child-{i}", "parent", f"Child {i}", "Existing child notes", i)
+                              for i in range(4))
+        self.atlas = Atlas((self.parent, self.neighbor), subconcepts=self.children)
+
+    def populated(self):
+        return replace(self.atlas, information_entries=entries("parent", 8) + entries("neighbor", 100)
+                       + sum((entries(child.id, count) for child, count in zip(self.children, (4, 2, 10, 0))), ()))
+
+    def test_legacy_notes_and_empty_children_add_no_heat(self):
+        self.assertTrue(all(metric.own == 0 and metric.support == 0 for metric in information_heat(self.atlas).values()))
+
+    def test_own_entries_and_direct_child_support_are_separate(self):
+        metric = information_heat(self.populated())
+        self.assertEqual((metric["parent"].own, metric["parent"].support, metric["parent"].blended), (8, 2.5, 10.5))
+        self.assertEqual(metric["child-1"].own, 2)
+        self.assertEqual(metric["child-1"].support, 0)
+        self.assertEqual(metric["neighbor"].blended, 100)
+
+    def test_spatial_neighbors_do_not_supply_support(self):
+        atlas = replace(self.atlas, information_entries=entries("neighbor", 100))
+        self.assertEqual(information_heat(atlas)["parent"].blended, 0)
+
+    def test_parent_support_does_not_flow_back_to_children(self):
+        atlas = replace(self.atlas, information_entries=entries("parent", 100))
+        for child in self.children:
+            self.assertEqual(information_heat(atlas)[child.id].blended, 0)
+
+    def test_each_child_and_whole_cluster_have_independent_caps(self):
+        children = tuple(Subconcept(f"c{i}", "parent", f"Child {i}", orbit_slot=i) for i in range(8))
+        atlas = replace(self.atlas, subconcepts=children,
+                        information_entries=sum((entries(child.id, 20) for child in children), ()))
+        self.assertEqual(information_heat(atlas)["parent"].support, 4)
+
+    def test_editing_entry_keeps_id_count_and_coordinates(self):
+        entry = InformationEntry.create("parent", "Definition", "First explanation")
+        atlas = self.atlas.with_entry(entry)
+        updated = atlas.with_entry(replace(entry, body="A revised explanation"))
+        self.assertEqual(information_heat(updated)["parent"].own, 1)
+        self.assertEqual(updated.nodes, self.atlas.nodes)
+        self.assertEqual(updated.entries_for("parent")[0].id, entry.id)
+
+    def test_entries_require_real_owners_unique_ids_and_nonempty_content(self):
+        entry = InformationEntry("entry", "parent", "Definition", "Explanation")
+        for changes in ({"body": " "}, {"title": ""}, {"body": "bad\x00text"}, {"title": "bad\ntitle"}, {"body": "x" * 100_001}):
+            with self.subTest(changes=changes), self.assertRaises(AtlasError):
+                replace(entry, **changes)
+        with self.assertRaises(AtlasError):
+            self.atlas.with_entry(replace(entry, concept_id="missing"))
+        with self.assertRaises(AtlasError):
+            replace(self.atlas, information_entries=(entry, entry))
+
+    def test_identical_entry_cannot_accidentally_inflate_a_count(self):
+        entry = InformationEntry.create("parent", "Definition", "Explanation")
+        with self.assertRaisesRegex(AtlasError, "identical"):
+            self.atlas.with_entry(entry).with_entry(replace(entry, id="another"))
+
+    def test_entry_ownership_cannot_be_changed_by_editing(self):
+        entry = InformationEntry.create("parent", "Definition", "Explanation")
+        with self.assertRaises(AtlasError):
+            self.atlas.with_entry(entry).with_entry(replace(entry, concept_id="child-0"))
+
+    def test_deleting_one_entry_preserves_its_concept_and_other_records(self):
+        atlas = self.populated()
+        updated = atlas.without_entry("parent-0")
+        self.assertEqual(updated.nodes, atlas.nodes)
+        self.assertEqual(len(updated.entries_for("parent")), 7)
+        self.assertEqual(updated.entries_for("child-0"), atlas.entries_for("child-0"))
+
+    def test_deleting_child_removes_only_its_owned_entries(self):
+        atlas = self.populated()
+        updated = atlas.without_child("child-1")
+        self.assertFalse(updated.entries_for("child-1"))
+        self.assertEqual(updated.entries_for("parent"), atlas.entries_for("parent"))
+        self.assertEqual(information_heat(updated)["parent"].support, 2)
+
+    def test_confirmed_cluster_deletion_removes_all_cluster_entries(self):
+        atlas = self.populated()
+        with self.assertRaises(AtlasError):
+            atlas.without_node("parent")
+        updated = atlas.without_node("parent", remove_children=True)
+        self.assertEqual(updated.information_entries, atlas.entries_for("neighbor"))
+
+    def test_design_edits_and_protocol_removal_preserve_entries(self):
+        atlas = self.populated()
+        self.assertEqual(atlas.with_design(atlas.design).information_entries, atlas.information_entries)
+        self.assertEqual(atlas.without_protocols().information_entries, atlas.information_entries)
+        self.assertEqual(DesignDraft(atlas).to_atlas().information_entries, atlas.information_entries)
+
+    def test_schema_ten_roundtrip_preserves_notes_entries_and_children(self):
+        atlas = self.populated()
+        data = atlas.to_dict()
+        self.assertEqual(data["version"], 10)
+        self.assertEqual(Atlas.from_dict(json.loads(json.dumps(data))), atlas)
+
+    def test_version_nine_import_preserves_existing_notes_without_inventing_entries(self):
+        data = self.atlas.to_dict()
+        data["version"] = 9
+        data.pop("information_entries")
+        self.assertEqual(Atlas.from_dict(data), self.atlas)
+
+    def test_cannot_hide_new_entries_in_older_files_or_omit_current_list(self):
+        data = self.populated().to_dict()
+        data["version"] = 9
+        with self.assertRaisesRegex(AtlasError, "version 10"):
+            Atlas.from_dict(data)
+        for value in (None, {}, "entries", [None]):
+            data = self.atlas.to_dict()
+            data["information_entries"] = value
+            with self.assertRaises(AtlasError):
+                Atlas.from_dict(data)
+
+    def test_first_save_keeps_original_version_nine_backup(self):
+        with TemporaryDirectory() as folder:
+            path = Path(folder) / "atlas.json"
+            data = self.atlas.to_dict()
+            data["version"] = 9
+            data.pop("information_entries")
+            original = json.dumps(data).encode()
+            path.write_bytes(original)
+            atlas = read_atlas(path).with_entry(InformationEntry.create("parent", "Definition", "Information"))
+            write_atlas(path, atlas)
+            self.assertEqual(path.with_suffix(".json.bak").read_bytes(), original)
+            self.assertEqual(read_atlas(path), atlas)
+
+    def test_palette_has_fixed_anchors_and_bounded_extremes(self):
+        for count, color in HEAT_STOPS:
+            self.assertEqual(heat_color(count), color)
+        self.assertEqual(heat_color(10000), HEAT_STOPS[-1][1])
+        self.assertEqual(heat_color(-1), HEAT_STOPS[0][1])
+        self.assertNotEqual(heat_color(2.5), heat_color(2))
+
+    def test_complete_atlas_example_has_real_entries_and_expected_firewall_metrics(self):
+        atlas = read_atlas(Path(__file__).resolve().parents[1] / "examples/information_heat_atlas.json")
+        self.assertEqual(len(atlas.nodes), 84)
+        self.assertEqual(len(atlas.information_entries), 527)
+        self.assertTrue(adjacent_node_pairs(atlas.nodes))
+        metric = information_heat(atlas)["firewall"]
+        self.assertEqual((metric.own, metric.support), (8, 2.5))
+
+
+if __name__ == "__main__":
+    unittest.main()

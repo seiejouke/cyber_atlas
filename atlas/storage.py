@@ -50,7 +50,7 @@ def _atomic_bytes(path: Path, content: bytes) -> None:
 def write_atlas(path: Path, atlas: Atlas, *, backup: bool = True) -> None:
     content = (json.dumps(atlas.to_dict(), ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     if len(content) > MAX_FILE_BYTES:
-        raise AtlasError("The atlas exceeds the 16 MiB file limit. Shorten some notes before saving.")
+        raise AtlasError("The atlas exceeds the 16 MiB file limit. Shorten some notes or information entries before saving.")
     # Never replace a good backup with a corrupt file.
     if backup and path.exists():
         read_atlas(path)

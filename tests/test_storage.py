@@ -89,7 +89,7 @@ class StorageTests(unittest.TestCase):
         self.assertEqual(migrated, self.atlas)
         write_atlas(self.path, migrated)
         self.assertEqual(self.path.with_suffix(".json.bak").read_bytes(), original)
-        self.assertEqual(json.loads(self.path.read_text())["version"], 9)
+        self.assertEqual(json.loads(self.path.read_text())["version"], 10)
         self.assertEqual(read_atlas(self.path), migrated)
 
     def test_overfull_legacy_ring_load_leaves_file_untouched(self):

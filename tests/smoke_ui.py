@@ -29,6 +29,7 @@ from block_view_checks import check_block_view
 from update_view_checks import check_updates
 from cluster_view_checks import check_clusters
 from connection_view_checks import check_connections
+from information_view_checks import check_information
 
 
 def pump(root, steps=5):
@@ -780,7 +781,7 @@ def main(report_path=None):
             with patch("atlas.ui.filedialog.asksaveasfilename", return_value=str(export)):
                 app.export_json()
             assert read_atlas(export) == app.document
-            assert json.loads(export.read_text())["version"] == 9
+            assert json.loads(export.read_text())["version"] == 10
             legacy = Path(folder) / "legacy.json"
             legacy.write_text(json.dumps({"type": "cyber-knowledge-atlas", "version": 3,
                                          "nodes": [{**n.to_dict(), "id": int(n.id)} for n in doc.nodes]}))
@@ -1052,6 +1053,7 @@ def main(report_path=None):
             check_block_view(root, app, path, pump, checks)
             check_updates(root, app, path, pump, checks)
             check_clusters(root, app, path, pump, checks)
+            check_information(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)

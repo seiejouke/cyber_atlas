@@ -1,0 +1,4097 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 10,
+  "layout": "fixed-slots",
+  "center_depth": -1,
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "angular_slots": 16,
+  "design": {
+    "layers": [
+      {
+        "id": 1,
+        "name": "Physical",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 2,
+        "name": "Data Link",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 3,
+        "name": "Network",
+        "color": "#9c8bdb"
+      },
+      {
+        "id": 4,
+        "name": "Transport",
+        "color": "#70cbd8"
+      },
+      {
+        "id": 5,
+        "name": "Session",
+        "color": "#8ca9da"
+      },
+      {
+        "id": 6,
+        "name": "Presentation",
+        "color": "#cb96ba"
+      },
+      {
+        "id": 7,
+        "name": "Application",
+        "color": "#edbb69"
+      }
+    ],
+    "protocols": [],
+    "layer_caption": "OSI layer",
+    "protocol_caption": "Protocol",
+    "label_mode": "title"
+  },
+  "nodes": [
+    {
+      "id": "layer-1-concept-0",
+      "name": "Copper",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-1",
+      "name": "Fiber",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-2",
+      "name": "Radio",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-3",
+      "name": "Encoding",
+      "layer": 1,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-4",
+      "name": "Modulation",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-5",
+      "name": "Clocking",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-6",
+      "name": "Noise",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-7",
+      "name": "Signal loss",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-8",
+      "name": "Interfaces",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-9",
+      "name": "Bandwidth",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-10",
+      "name": "Cabling",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-1-concept-11",
+      "name": "Repeaters",
+      "layer": 1,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-0",
+      "name": "Ethernet",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-1",
+      "name": "Frames",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-2",
+      "name": "MAC",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-3",
+      "name": "Switching",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-4",
+      "name": "VLANs",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-5",
+      "name": "Bridging",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-6",
+      "name": "ARP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-7",
+      "name": "Wi-Fi",
+      "layer": 2,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-8",
+      "name": "STP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-9",
+      "name": "MTU",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-10",
+      "name": "LLDP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-2-concept-11",
+      "name": "LACP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-0",
+      "name": "IPv4",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-1",
+      "name": "Routing",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-2",
+      "name": "Subnets",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-3",
+      "name": "ICMP",
+      "layer": 3,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-4",
+      "name": "NAT",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-5",
+      "name": "IPv6",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-6",
+      "name": "Gateways",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-7",
+      "name": "Route tables",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-8",
+      "name": "Forwarding",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-9",
+      "name": "Tunnels",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "firewall",
+      "name": "Firewall",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-3-concept-11",
+      "name": "Multicast",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-0",
+      "name": "TCP",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 0,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-1",
+      "name": "UDP",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 4,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-2",
+      "name": "Ports",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 8,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-3",
+      "name": "Connections",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 12,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-4",
+      "name": "Congestion",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 0,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-5",
+      "name": "Flow control",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 4,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-6",
+      "name": "Reliability",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 8,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-7",
+      "name": "Handshake",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 12,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-8",
+      "name": "Retransmission",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 0,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-9",
+      "name": "Segments",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 4,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-10",
+      "name": "Sockets",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 8,
+      "span": 1
+    },
+    {
+      "id": "layer-4-concept-11",
+      "name": "Checksums",
+      "layer": 4,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 12,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-0",
+      "name": "Sessions",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-1",
+      "name": "RPC",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-2",
+      "name": "Dialogs",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-3",
+      "name": "Keepalive",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-4",
+      "name": "Recovery",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-5",
+      "name": "Tokens",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-6",
+      "name": "Checkpoints",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-7",
+      "name": "State",
+      "layer": 5,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-8",
+      "name": "Negotiation",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-9",
+      "name": "Synchronization",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-10",
+      "name": "Timeouts",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "layer-5-concept-11",
+      "name": "Resumption",
+      "layer": 5,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-0",
+      "name": "TLS",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-1",
+      "name": "Encoding",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-2",
+      "name": "Serialization",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-3",
+      "name": "Compression",
+      "layer": 6,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-4",
+      "name": "ASN.1",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-5",
+      "name": "Certificates",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-6",
+      "name": "JSON",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-7",
+      "name": "UTF-8",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-8",
+      "name": "Formats",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 2,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-9",
+      "name": "Encryption",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-10",
+      "name": "Decoding",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 10,
+      "span": 1
+    },
+    {
+      "id": "layer-6-concept-11",
+      "name": "Representation",
+      "layer": 6,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 14,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-0",
+      "name": "HTTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-1",
+      "name": "DNS",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-2",
+      "name": "SSH",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-3",
+      "name": "SMTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-4",
+      "name": "DHCP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-5",
+      "name": "NTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-6",
+      "name": "IMAP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-7",
+      "name": "SNMP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 15,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-8",
+      "name": "HTTPS",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-9",
+      "name": "FTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-10",
+      "name": "LDAP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "layer-7-concept-11",
+      "name": "APIs",
+      "layer": 7,
+      "protocol": null,
+      "depth": 2,
+      "notes": "Personal notes are independent of the information entries counted by heat.",
+      "slot": 15,
+      "span": 1
+    }
+  ],
+  "subconcepts": [
+    {
+      "id": "firewall-type-0",
+      "parent_id": "firewall",
+      "name": "Next-generation firewall",
+      "notes": "Personal notes about next-generation firewall.",
+      "orbit_slot": 0,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-1",
+      "parent_id": "firewall",
+      "name": "Packet filtering",
+      "notes": "Personal notes about packet filtering.",
+      "orbit_slot": 2,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-2",
+      "parent_id": "firewall",
+      "name": "Stateful inspection",
+      "notes": "Personal notes about stateful inspection.",
+      "orbit_slot": 4,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-3",
+      "parent_id": "firewall",
+      "name": "Application proxy",
+      "notes": "Personal notes about application proxy.",
+      "orbit_slot": 6,
+      "relationship": "type_of"
+    }
+  ],
+  "information_entries": [
+    {
+      "id": "layer-1-concept-0-entry-0",
+      "concept_id": "layer-1-concept-0",
+      "title": "Copper: observation 1",
+      "body": "Illustrative entry 1 about Copper. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-1-entry-0",
+      "concept_id": "layer-1-concept-1",
+      "title": "Fiber: observation 1",
+      "body": "Illustrative entry 1 about Fiber. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-1-entry-1",
+      "concept_id": "layer-1-concept-1",
+      "title": "Fiber: observation 2",
+      "body": "Illustrative entry 2 about Fiber. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-2-entry-0",
+      "concept_id": "layer-1-concept-2",
+      "title": "Radio: observation 1",
+      "body": "Illustrative entry 1 about Radio. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-2-entry-1",
+      "concept_id": "layer-1-concept-2",
+      "title": "Radio: observation 2",
+      "body": "Illustrative entry 2 about Radio. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-2-entry-2",
+      "concept_id": "layer-1-concept-2",
+      "title": "Radio: observation 3",
+      "body": "Illustrative entry 3 about Radio. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-2-entry-3",
+      "concept_id": "layer-1-concept-2",
+      "title": "Radio: observation 4",
+      "body": "Illustrative entry 4 about Radio. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-0",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 1",
+      "body": "Illustrative entry 1 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-1",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 2",
+      "body": "Illustrative entry 2 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-2",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 3",
+      "body": "Illustrative entry 3 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-3",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 4",
+      "body": "Illustrative entry 4 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-4",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 5",
+      "body": "Illustrative entry 5 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-5",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 6",
+      "body": "Illustrative entry 6 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-6",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 7",
+      "body": "Illustrative entry 7 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-4-entry-7",
+      "concept_id": "layer-1-concept-4",
+      "title": "Modulation: observation 8",
+      "body": "Illustrative entry 8 about Modulation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-5-entry-0",
+      "concept_id": "layer-1-concept-5",
+      "title": "Clocking: observation 1",
+      "body": "Illustrative entry 1 about Clocking. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-5-entry-1",
+      "concept_id": "layer-1-concept-5",
+      "title": "Clocking: observation 2",
+      "body": "Illustrative entry 2 about Clocking. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-6-entry-0",
+      "concept_id": "layer-1-concept-6",
+      "title": "Noise: observation 1",
+      "body": "Illustrative entry 1 about Noise. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-0",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 1",
+      "body": "Illustrative entry 1 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-1",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 2",
+      "body": "Illustrative entry 2 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-2",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 3",
+      "body": "Illustrative entry 3 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-3",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 4",
+      "body": "Illustrative entry 4 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-4",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 5",
+      "body": "Illustrative entry 5 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-5",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 6",
+      "body": "Illustrative entry 6 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-6",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 7",
+      "body": "Illustrative entry 7 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-7",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 8",
+      "body": "Illustrative entry 8 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-8",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 9",
+      "body": "Illustrative entry 9 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-9",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 10",
+      "body": "Illustrative entry 10 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-10",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 11",
+      "body": "Illustrative entry 11 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-11",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 12",
+      "body": "Illustrative entry 12 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-12",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 13",
+      "body": "Illustrative entry 13 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-13",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 14",
+      "body": "Illustrative entry 14 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-14",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 15",
+      "body": "Illustrative entry 15 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-7-entry-15",
+      "concept_id": "layer-1-concept-7",
+      "title": "Signal loss: observation 16",
+      "body": "Illustrative entry 16 about Signal loss. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-8-entry-0",
+      "concept_id": "layer-1-concept-8",
+      "title": "Interfaces: observation 1",
+      "body": "Illustrative entry 1 about Interfaces. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-8-entry-1",
+      "concept_id": "layer-1-concept-8",
+      "title": "Interfaces: observation 2",
+      "body": "Illustrative entry 2 about Interfaces. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-8-entry-2",
+      "concept_id": "layer-1-concept-8",
+      "title": "Interfaces: observation 3",
+      "body": "Illustrative entry 3 about Interfaces. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-8-entry-3",
+      "concept_id": "layer-1-concept-8",
+      "title": "Interfaces: observation 4",
+      "body": "Illustrative entry 4 about Interfaces. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-9-entry-0",
+      "concept_id": "layer-1-concept-9",
+      "title": "Bandwidth: observation 1",
+      "body": "Illustrative entry 1 about Bandwidth. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-9-entry-1",
+      "concept_id": "layer-1-concept-9",
+      "title": "Bandwidth: observation 2",
+      "body": "Illustrative entry 2 about Bandwidth. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-0",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 1",
+      "body": "Illustrative entry 1 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-1",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 2",
+      "body": "Illustrative entry 2 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-2",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 3",
+      "body": "Illustrative entry 3 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-3",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 4",
+      "body": "Illustrative entry 4 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-4",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 5",
+      "body": "Illustrative entry 5 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-5",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 6",
+      "body": "Illustrative entry 6 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-6",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 7",
+      "body": "Illustrative entry 7 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-7",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 8",
+      "body": "Illustrative entry 8 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-8",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 9",
+      "body": "Illustrative entry 9 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-9",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 10",
+      "body": "Illustrative entry 10 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-10",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 11",
+      "body": "Illustrative entry 11 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-11",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 12",
+      "body": "Illustrative entry 12 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-12",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 13",
+      "body": "Illustrative entry 13 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-13",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 14",
+      "body": "Illustrative entry 14 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-14",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 15",
+      "body": "Illustrative entry 15 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-15",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 16",
+      "body": "Illustrative entry 16 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-16",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 17",
+      "body": "Illustrative entry 17 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-17",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 18",
+      "body": "Illustrative entry 18 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-18",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 19",
+      "body": "Illustrative entry 19 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-19",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 20",
+      "body": "Illustrative entry 20 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-20",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 21",
+      "body": "Illustrative entry 21 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-21",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 22",
+      "body": "Illustrative entry 22 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-22",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 23",
+      "body": "Illustrative entry 23 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-23",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 24",
+      "body": "Illustrative entry 24 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-24",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 25",
+      "body": "Illustrative entry 25 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-25",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 26",
+      "body": "Illustrative entry 26 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-26",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 27",
+      "body": "Illustrative entry 27 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-27",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 28",
+      "body": "Illustrative entry 28 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-28",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 29",
+      "body": "Illustrative entry 29 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-29",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 30",
+      "body": "Illustrative entry 30 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-30",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 31",
+      "body": "Illustrative entry 31 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-1-concept-10-entry-31",
+      "concept_id": "layer-1-concept-10",
+      "title": "Cabling: observation 32",
+      "body": "Illustrative entry 32 about Cabling. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-0-entry-0",
+      "concept_id": "layer-2-concept-0",
+      "title": "Ethernet: observation 1",
+      "body": "Illustrative entry 1 about Ethernet. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-0-entry-1",
+      "concept_id": "layer-2-concept-0",
+      "title": "Ethernet: observation 2",
+      "body": "Illustrative entry 2 about Ethernet. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-1-entry-0",
+      "concept_id": "layer-2-concept-1",
+      "title": "Frames: observation 1",
+      "body": "Illustrative entry 1 about Frames. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-1-entry-1",
+      "concept_id": "layer-2-concept-1",
+      "title": "Frames: observation 2",
+      "body": "Illustrative entry 2 about Frames. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-1-entry-2",
+      "concept_id": "layer-2-concept-1",
+      "title": "Frames: observation 3",
+      "body": "Illustrative entry 3 about Frames. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-1-entry-3",
+      "concept_id": "layer-2-concept-1",
+      "title": "Frames: observation 4",
+      "body": "Illustrative entry 4 about Frames. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-0",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 1",
+      "body": "Illustrative entry 1 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-1",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 2",
+      "body": "Illustrative entry 2 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-2",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 3",
+      "body": "Illustrative entry 3 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-3",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 4",
+      "body": "Illustrative entry 4 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-4",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 5",
+      "body": "Illustrative entry 5 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-5",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 6",
+      "body": "Illustrative entry 6 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-6",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 7",
+      "body": "Illustrative entry 7 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-3-entry-7",
+      "concept_id": "layer-2-concept-3",
+      "title": "Switching: observation 8",
+      "body": "Illustrative entry 8 about Switching. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-4-entry-0",
+      "concept_id": "layer-2-concept-4",
+      "title": "VLANs: observation 1",
+      "body": "Illustrative entry 1 about VLANs. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-4-entry-1",
+      "concept_id": "layer-2-concept-4",
+      "title": "VLANs: observation 2",
+      "body": "Illustrative entry 2 about VLANs. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-5-entry-0",
+      "concept_id": "layer-2-concept-5",
+      "title": "Bridging: observation 1",
+      "body": "Illustrative entry 1 about Bridging. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-0",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 1",
+      "body": "Illustrative entry 1 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-1",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 2",
+      "body": "Illustrative entry 2 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-2",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 3",
+      "body": "Illustrative entry 3 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-3",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 4",
+      "body": "Illustrative entry 4 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-4",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 5",
+      "body": "Illustrative entry 5 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-5",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 6",
+      "body": "Illustrative entry 6 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-6",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 7",
+      "body": "Illustrative entry 7 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-7",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 8",
+      "body": "Illustrative entry 8 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-8",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 9",
+      "body": "Illustrative entry 9 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-9",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 10",
+      "body": "Illustrative entry 10 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-10",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 11",
+      "body": "Illustrative entry 11 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-11",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 12",
+      "body": "Illustrative entry 12 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-12",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 13",
+      "body": "Illustrative entry 13 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-13",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 14",
+      "body": "Illustrative entry 14 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-14",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 15",
+      "body": "Illustrative entry 15 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-6-entry-15",
+      "concept_id": "layer-2-concept-6",
+      "title": "ARP: observation 16",
+      "body": "Illustrative entry 16 about ARP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-7-entry-0",
+      "concept_id": "layer-2-concept-7",
+      "title": "Wi-Fi: observation 1",
+      "body": "Illustrative entry 1 about Wi-Fi. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-7-entry-1",
+      "concept_id": "layer-2-concept-7",
+      "title": "Wi-Fi: observation 2",
+      "body": "Illustrative entry 2 about Wi-Fi. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-7-entry-2",
+      "concept_id": "layer-2-concept-7",
+      "title": "Wi-Fi: observation 3",
+      "body": "Illustrative entry 3 about Wi-Fi. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-7-entry-3",
+      "concept_id": "layer-2-concept-7",
+      "title": "Wi-Fi: observation 4",
+      "body": "Illustrative entry 4 about Wi-Fi. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-8-entry-0",
+      "concept_id": "layer-2-concept-8",
+      "title": "STP: observation 1",
+      "body": "Illustrative entry 1 about STP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-8-entry-1",
+      "concept_id": "layer-2-concept-8",
+      "title": "STP: observation 2",
+      "body": "Illustrative entry 2 about STP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-0",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 1",
+      "body": "Illustrative entry 1 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-1",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 2",
+      "body": "Illustrative entry 2 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-2",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 3",
+      "body": "Illustrative entry 3 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-3",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 4",
+      "body": "Illustrative entry 4 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-4",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 5",
+      "body": "Illustrative entry 5 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-5",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 6",
+      "body": "Illustrative entry 6 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-6",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 7",
+      "body": "Illustrative entry 7 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-7",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 8",
+      "body": "Illustrative entry 8 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-8",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 9",
+      "body": "Illustrative entry 9 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-9",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 10",
+      "body": "Illustrative entry 10 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-10",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 11",
+      "body": "Illustrative entry 11 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-11",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 12",
+      "body": "Illustrative entry 12 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-12",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 13",
+      "body": "Illustrative entry 13 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-13",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 14",
+      "body": "Illustrative entry 14 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-14",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 15",
+      "body": "Illustrative entry 15 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-15",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 16",
+      "body": "Illustrative entry 16 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-16",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 17",
+      "body": "Illustrative entry 17 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-17",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 18",
+      "body": "Illustrative entry 18 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-18",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 19",
+      "body": "Illustrative entry 19 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-19",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 20",
+      "body": "Illustrative entry 20 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-20",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 21",
+      "body": "Illustrative entry 21 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-21",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 22",
+      "body": "Illustrative entry 22 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-22",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 23",
+      "body": "Illustrative entry 23 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-23",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 24",
+      "body": "Illustrative entry 24 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-24",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 25",
+      "body": "Illustrative entry 25 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-25",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 26",
+      "body": "Illustrative entry 26 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-26",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 27",
+      "body": "Illustrative entry 27 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-27",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 28",
+      "body": "Illustrative entry 28 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-28",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 29",
+      "body": "Illustrative entry 29 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-29",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 30",
+      "body": "Illustrative entry 30 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-30",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 31",
+      "body": "Illustrative entry 31 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-9-entry-31",
+      "concept_id": "layer-2-concept-9",
+      "title": "MTU: observation 32",
+      "body": "Illustrative entry 32 about MTU. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-2-concept-11-entry-0",
+      "concept_id": "layer-2-concept-11",
+      "title": "LACP: observation 1",
+      "body": "Illustrative entry 1 about LACP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-0-entry-0",
+      "concept_id": "layer-3-concept-0",
+      "title": "IPv4: observation 1",
+      "body": "Illustrative entry 1 about IPv4. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-0-entry-1",
+      "concept_id": "layer-3-concept-0",
+      "title": "IPv4: observation 2",
+      "body": "Illustrative entry 2 about IPv4. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-0-entry-2",
+      "concept_id": "layer-3-concept-0",
+      "title": "IPv4: observation 3",
+      "body": "Illustrative entry 3 about IPv4. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-0-entry-3",
+      "concept_id": "layer-3-concept-0",
+      "title": "IPv4: observation 4",
+      "body": "Illustrative entry 4 about IPv4. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-0",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 1",
+      "body": "Illustrative entry 1 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-1",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 2",
+      "body": "Illustrative entry 2 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-2",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 3",
+      "body": "Illustrative entry 3 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-3",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 4",
+      "body": "Illustrative entry 4 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-4",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 5",
+      "body": "Illustrative entry 5 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-5",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 6",
+      "body": "Illustrative entry 6 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-6",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 7",
+      "body": "Illustrative entry 7 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-2-entry-7",
+      "concept_id": "layer-3-concept-2",
+      "title": "Subnets: observation 8",
+      "body": "Illustrative entry 8 about Subnets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-3-entry-0",
+      "concept_id": "layer-3-concept-3",
+      "title": "ICMP: observation 1",
+      "body": "Illustrative entry 1 about ICMP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-3-entry-1",
+      "concept_id": "layer-3-concept-3",
+      "title": "ICMP: observation 2",
+      "body": "Illustrative entry 2 about ICMP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-4-entry-0",
+      "concept_id": "layer-3-concept-4",
+      "title": "NAT: observation 1",
+      "body": "Illustrative entry 1 about NAT. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-0",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 1",
+      "body": "Illustrative entry 1 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-1",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 2",
+      "body": "Illustrative entry 2 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-2",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 3",
+      "body": "Illustrative entry 3 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-3",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 4",
+      "body": "Illustrative entry 4 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-4",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 5",
+      "body": "Illustrative entry 5 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-5",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 6",
+      "body": "Illustrative entry 6 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-6",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 7",
+      "body": "Illustrative entry 7 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-7",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 8",
+      "body": "Illustrative entry 8 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-8",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 9",
+      "body": "Illustrative entry 9 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-9",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 10",
+      "body": "Illustrative entry 10 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-10",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 11",
+      "body": "Illustrative entry 11 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-11",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 12",
+      "body": "Illustrative entry 12 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-12",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 13",
+      "body": "Illustrative entry 13 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-13",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 14",
+      "body": "Illustrative entry 14 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-14",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 15",
+      "body": "Illustrative entry 15 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-5-entry-15",
+      "concept_id": "layer-3-concept-5",
+      "title": "IPv6: observation 16",
+      "body": "Illustrative entry 16 about IPv6. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-6-entry-0",
+      "concept_id": "layer-3-concept-6",
+      "title": "Gateways: observation 1",
+      "body": "Illustrative entry 1 about Gateways. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-6-entry-1",
+      "concept_id": "layer-3-concept-6",
+      "title": "Gateways: observation 2",
+      "body": "Illustrative entry 2 about Gateways. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-6-entry-2",
+      "concept_id": "layer-3-concept-6",
+      "title": "Gateways: observation 3",
+      "body": "Illustrative entry 3 about Gateways. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-6-entry-3",
+      "concept_id": "layer-3-concept-6",
+      "title": "Gateways: observation 4",
+      "body": "Illustrative entry 4 about Gateways. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-7-entry-0",
+      "concept_id": "layer-3-concept-7",
+      "title": "Route tables: observation 1",
+      "body": "Illustrative entry 1 about Route tables. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-7-entry-1",
+      "concept_id": "layer-3-concept-7",
+      "title": "Route tables: observation 2",
+      "body": "Illustrative entry 2 about Route tables. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-0",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 1",
+      "body": "Illustrative entry 1 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-1",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 2",
+      "body": "Illustrative entry 2 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-2",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 3",
+      "body": "Illustrative entry 3 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-3",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 4",
+      "body": "Illustrative entry 4 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-4",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 5",
+      "body": "Illustrative entry 5 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-5",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 6",
+      "body": "Illustrative entry 6 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-6",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 7",
+      "body": "Illustrative entry 7 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-7",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 8",
+      "body": "Illustrative entry 8 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-8",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 9",
+      "body": "Illustrative entry 9 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-9",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 10",
+      "body": "Illustrative entry 10 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-10",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 11",
+      "body": "Illustrative entry 11 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-11",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 12",
+      "body": "Illustrative entry 12 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-12",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 13",
+      "body": "Illustrative entry 13 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-13",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 14",
+      "body": "Illustrative entry 14 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-14",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 15",
+      "body": "Illustrative entry 15 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-15",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 16",
+      "body": "Illustrative entry 16 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-16",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 17",
+      "body": "Illustrative entry 17 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-17",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 18",
+      "body": "Illustrative entry 18 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-18",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 19",
+      "body": "Illustrative entry 19 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-19",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 20",
+      "body": "Illustrative entry 20 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-20",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 21",
+      "body": "Illustrative entry 21 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-21",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 22",
+      "body": "Illustrative entry 22 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-22",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 23",
+      "body": "Illustrative entry 23 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-23",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 24",
+      "body": "Illustrative entry 24 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-24",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 25",
+      "body": "Illustrative entry 25 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-25",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 26",
+      "body": "Illustrative entry 26 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-26",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 27",
+      "body": "Illustrative entry 27 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-27",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 28",
+      "body": "Illustrative entry 28 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-28",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 29",
+      "body": "Illustrative entry 29 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-29",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 30",
+      "body": "Illustrative entry 30 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-30",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 31",
+      "body": "Illustrative entry 31 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-8-entry-31",
+      "concept_id": "layer-3-concept-8",
+      "title": "Forwarding: observation 32",
+      "body": "Illustrative entry 32 about Forwarding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-0",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 1",
+      "body": "Illustrative entry 1 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-1",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 2",
+      "body": "Illustrative entry 2 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-2",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 3",
+      "body": "Illustrative entry 3 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-3",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 4",
+      "body": "Illustrative entry 4 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-4",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 5",
+      "body": "Illustrative entry 5 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-5",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 6",
+      "body": "Illustrative entry 6 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-6",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 7",
+      "body": "Illustrative entry 7 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-entry-7",
+      "concept_id": "firewall",
+      "title": "Firewall: observation 8",
+      "body": "Illustrative entry 8 about Firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-11-entry-0",
+      "concept_id": "layer-3-concept-11",
+      "title": "Multicast: observation 1",
+      "body": "Illustrative entry 1 about Multicast. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-3-concept-11-entry-1",
+      "concept_id": "layer-3-concept-11",
+      "title": "Multicast: observation 2",
+      "body": "Illustrative entry 2 about Multicast. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-0",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 1",
+      "body": "Illustrative entry 1 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-1",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 2",
+      "body": "Illustrative entry 2 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-2",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 3",
+      "body": "Illustrative entry 3 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-3",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 4",
+      "body": "Illustrative entry 4 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-4",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 5",
+      "body": "Illustrative entry 5 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-5",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 6",
+      "body": "Illustrative entry 6 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-6",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 7",
+      "body": "Illustrative entry 7 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-1-entry-7",
+      "concept_id": "layer-4-concept-1",
+      "title": "UDP: observation 8",
+      "body": "Illustrative entry 8 about UDP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-2-entry-0",
+      "concept_id": "layer-4-concept-2",
+      "title": "Ports: observation 1",
+      "body": "Illustrative entry 1 about Ports. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-2-entry-1",
+      "concept_id": "layer-4-concept-2",
+      "title": "Ports: observation 2",
+      "body": "Illustrative entry 2 about Ports. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-3-entry-0",
+      "concept_id": "layer-4-concept-3",
+      "title": "Connections: observation 1",
+      "body": "Illustrative entry 1 about Connections. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-0",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 1",
+      "body": "Illustrative entry 1 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-1",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 2",
+      "body": "Illustrative entry 2 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-2",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 3",
+      "body": "Illustrative entry 3 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-3",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 4",
+      "body": "Illustrative entry 4 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-4",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 5",
+      "body": "Illustrative entry 5 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-5",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 6",
+      "body": "Illustrative entry 6 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-6",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 7",
+      "body": "Illustrative entry 7 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-7",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 8",
+      "body": "Illustrative entry 8 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-8",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 9",
+      "body": "Illustrative entry 9 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-9",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 10",
+      "body": "Illustrative entry 10 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-10",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 11",
+      "body": "Illustrative entry 11 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-11",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 12",
+      "body": "Illustrative entry 12 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-12",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 13",
+      "body": "Illustrative entry 13 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-13",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 14",
+      "body": "Illustrative entry 14 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-14",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 15",
+      "body": "Illustrative entry 15 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-4-entry-15",
+      "concept_id": "layer-4-concept-4",
+      "title": "Congestion: observation 16",
+      "body": "Illustrative entry 16 about Congestion. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-5-entry-0",
+      "concept_id": "layer-4-concept-5",
+      "title": "Flow control: observation 1",
+      "body": "Illustrative entry 1 about Flow control. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-5-entry-1",
+      "concept_id": "layer-4-concept-5",
+      "title": "Flow control: observation 2",
+      "body": "Illustrative entry 2 about Flow control. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-5-entry-2",
+      "concept_id": "layer-4-concept-5",
+      "title": "Flow control: observation 3",
+      "body": "Illustrative entry 3 about Flow control. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-5-entry-3",
+      "concept_id": "layer-4-concept-5",
+      "title": "Flow control: observation 4",
+      "body": "Illustrative entry 4 about Flow control. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-6-entry-0",
+      "concept_id": "layer-4-concept-6",
+      "title": "Reliability: observation 1",
+      "body": "Illustrative entry 1 about Reliability. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-6-entry-1",
+      "concept_id": "layer-4-concept-6",
+      "title": "Reliability: observation 2",
+      "body": "Illustrative entry 2 about Reliability. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-0",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 1",
+      "body": "Illustrative entry 1 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-1",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 2",
+      "body": "Illustrative entry 2 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-2",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 3",
+      "body": "Illustrative entry 3 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-3",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 4",
+      "body": "Illustrative entry 4 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-4",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 5",
+      "body": "Illustrative entry 5 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-5",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 6",
+      "body": "Illustrative entry 6 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-6",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 7",
+      "body": "Illustrative entry 7 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-7",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 8",
+      "body": "Illustrative entry 8 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-8",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 9",
+      "body": "Illustrative entry 9 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-9",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 10",
+      "body": "Illustrative entry 10 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-10",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 11",
+      "body": "Illustrative entry 11 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-11",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 12",
+      "body": "Illustrative entry 12 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-12",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 13",
+      "body": "Illustrative entry 13 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-13",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 14",
+      "body": "Illustrative entry 14 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-14",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 15",
+      "body": "Illustrative entry 15 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-15",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 16",
+      "body": "Illustrative entry 16 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-16",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 17",
+      "body": "Illustrative entry 17 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-17",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 18",
+      "body": "Illustrative entry 18 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-18",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 19",
+      "body": "Illustrative entry 19 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-19",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 20",
+      "body": "Illustrative entry 20 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-20",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 21",
+      "body": "Illustrative entry 21 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-21",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 22",
+      "body": "Illustrative entry 22 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-22",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 23",
+      "body": "Illustrative entry 23 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-23",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 24",
+      "body": "Illustrative entry 24 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-24",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 25",
+      "body": "Illustrative entry 25 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-25",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 26",
+      "body": "Illustrative entry 26 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-26",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 27",
+      "body": "Illustrative entry 27 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-27",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 28",
+      "body": "Illustrative entry 28 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-28",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 29",
+      "body": "Illustrative entry 29 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-29",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 30",
+      "body": "Illustrative entry 30 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-30",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 31",
+      "body": "Illustrative entry 31 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-7-entry-31",
+      "concept_id": "layer-4-concept-7",
+      "title": "Handshake: observation 32",
+      "body": "Illustrative entry 32 about Handshake. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-9-entry-0",
+      "concept_id": "layer-4-concept-9",
+      "title": "Segments: observation 1",
+      "body": "Illustrative entry 1 about Segments. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-10-entry-0",
+      "concept_id": "layer-4-concept-10",
+      "title": "Sockets: observation 1",
+      "body": "Illustrative entry 1 about Sockets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-10-entry-1",
+      "concept_id": "layer-4-concept-10",
+      "title": "Sockets: observation 2",
+      "body": "Illustrative entry 2 about Sockets. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-11-entry-0",
+      "concept_id": "layer-4-concept-11",
+      "title": "Checksums: observation 1",
+      "body": "Illustrative entry 1 about Checksums. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-11-entry-1",
+      "concept_id": "layer-4-concept-11",
+      "title": "Checksums: observation 2",
+      "body": "Illustrative entry 2 about Checksums. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-11-entry-2",
+      "concept_id": "layer-4-concept-11",
+      "title": "Checksums: observation 3",
+      "body": "Illustrative entry 3 about Checksums. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-4-concept-11-entry-3",
+      "concept_id": "layer-4-concept-11",
+      "title": "Checksums: observation 4",
+      "body": "Illustrative entry 4 about Checksums. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-0",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 1",
+      "body": "Illustrative entry 1 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-1",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 2",
+      "body": "Illustrative entry 2 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-2",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 3",
+      "body": "Illustrative entry 3 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-3",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 4",
+      "body": "Illustrative entry 4 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-4",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 5",
+      "body": "Illustrative entry 5 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-5",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 6",
+      "body": "Illustrative entry 6 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-6",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 7",
+      "body": "Illustrative entry 7 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-0-entry-7",
+      "concept_id": "layer-5-concept-0",
+      "title": "Sessions: observation 8",
+      "body": "Illustrative entry 8 about Sessions. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-1-entry-0",
+      "concept_id": "layer-5-concept-1",
+      "title": "RPC: observation 1",
+      "body": "Illustrative entry 1 about RPC. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-1-entry-1",
+      "concept_id": "layer-5-concept-1",
+      "title": "RPC: observation 2",
+      "body": "Illustrative entry 2 about RPC. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-2-entry-0",
+      "concept_id": "layer-5-concept-2",
+      "title": "Dialogs: observation 1",
+      "body": "Illustrative entry 1 about Dialogs. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-0",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 1",
+      "body": "Illustrative entry 1 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-1",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 2",
+      "body": "Illustrative entry 2 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-2",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 3",
+      "body": "Illustrative entry 3 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-3",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 4",
+      "body": "Illustrative entry 4 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-4",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 5",
+      "body": "Illustrative entry 5 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-5",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 6",
+      "body": "Illustrative entry 6 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-6",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 7",
+      "body": "Illustrative entry 7 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-7",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 8",
+      "body": "Illustrative entry 8 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-8",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 9",
+      "body": "Illustrative entry 9 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-9",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 10",
+      "body": "Illustrative entry 10 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-10",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 11",
+      "body": "Illustrative entry 11 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-11",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 12",
+      "body": "Illustrative entry 12 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-12",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 13",
+      "body": "Illustrative entry 13 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-13",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 14",
+      "body": "Illustrative entry 14 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-14",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 15",
+      "body": "Illustrative entry 15 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-3-entry-15",
+      "concept_id": "layer-5-concept-3",
+      "title": "Keepalive: observation 16",
+      "body": "Illustrative entry 16 about Keepalive. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-4-entry-0",
+      "concept_id": "layer-5-concept-4",
+      "title": "Recovery: observation 1",
+      "body": "Illustrative entry 1 about Recovery. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-4-entry-1",
+      "concept_id": "layer-5-concept-4",
+      "title": "Recovery: observation 2",
+      "body": "Illustrative entry 2 about Recovery. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-4-entry-2",
+      "concept_id": "layer-5-concept-4",
+      "title": "Recovery: observation 3",
+      "body": "Illustrative entry 3 about Recovery. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-4-entry-3",
+      "concept_id": "layer-5-concept-4",
+      "title": "Recovery: observation 4",
+      "body": "Illustrative entry 4 about Recovery. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-5-entry-0",
+      "concept_id": "layer-5-concept-5",
+      "title": "Tokens: observation 1",
+      "body": "Illustrative entry 1 about Tokens. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-5-entry-1",
+      "concept_id": "layer-5-concept-5",
+      "title": "Tokens: observation 2",
+      "body": "Illustrative entry 2 about Tokens. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-0",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 1",
+      "body": "Illustrative entry 1 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-1",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 2",
+      "body": "Illustrative entry 2 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-2",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 3",
+      "body": "Illustrative entry 3 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-3",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 4",
+      "body": "Illustrative entry 4 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-4",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 5",
+      "body": "Illustrative entry 5 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-5",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 6",
+      "body": "Illustrative entry 6 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-6",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 7",
+      "body": "Illustrative entry 7 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-7",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 8",
+      "body": "Illustrative entry 8 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-8",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 9",
+      "body": "Illustrative entry 9 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-9",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 10",
+      "body": "Illustrative entry 10 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-10",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 11",
+      "body": "Illustrative entry 11 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-11",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 12",
+      "body": "Illustrative entry 12 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-12",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 13",
+      "body": "Illustrative entry 13 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-13",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 14",
+      "body": "Illustrative entry 14 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-14",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 15",
+      "body": "Illustrative entry 15 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-15",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 16",
+      "body": "Illustrative entry 16 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-16",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 17",
+      "body": "Illustrative entry 17 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-17",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 18",
+      "body": "Illustrative entry 18 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-18",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 19",
+      "body": "Illustrative entry 19 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-19",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 20",
+      "body": "Illustrative entry 20 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-20",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 21",
+      "body": "Illustrative entry 21 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-21",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 22",
+      "body": "Illustrative entry 22 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-22",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 23",
+      "body": "Illustrative entry 23 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-23",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 24",
+      "body": "Illustrative entry 24 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-24",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 25",
+      "body": "Illustrative entry 25 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-25",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 26",
+      "body": "Illustrative entry 26 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-26",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 27",
+      "body": "Illustrative entry 27 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-27",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 28",
+      "body": "Illustrative entry 28 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-28",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 29",
+      "body": "Illustrative entry 29 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-29",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 30",
+      "body": "Illustrative entry 30 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-30",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 31",
+      "body": "Illustrative entry 31 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-6-entry-31",
+      "concept_id": "layer-5-concept-6",
+      "title": "Checkpoints: observation 32",
+      "body": "Illustrative entry 32 about Checkpoints. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-8-entry-0",
+      "concept_id": "layer-5-concept-8",
+      "title": "Negotiation: observation 1",
+      "body": "Illustrative entry 1 about Negotiation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-9-entry-0",
+      "concept_id": "layer-5-concept-9",
+      "title": "Synchronization: observation 1",
+      "body": "Illustrative entry 1 about Synchronization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-9-entry-1",
+      "concept_id": "layer-5-concept-9",
+      "title": "Synchronization: observation 2",
+      "body": "Illustrative entry 2 about Synchronization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-10-entry-0",
+      "concept_id": "layer-5-concept-10",
+      "title": "Timeouts: observation 1",
+      "body": "Illustrative entry 1 about Timeouts. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-10-entry-1",
+      "concept_id": "layer-5-concept-10",
+      "title": "Timeouts: observation 2",
+      "body": "Illustrative entry 2 about Timeouts. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-10-entry-2",
+      "concept_id": "layer-5-concept-10",
+      "title": "Timeouts: observation 3",
+      "body": "Illustrative entry 3 about Timeouts. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-5-concept-10-entry-3",
+      "concept_id": "layer-5-concept-10",
+      "title": "Timeouts: observation 4",
+      "body": "Illustrative entry 4 about Timeouts. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-0-entry-0",
+      "concept_id": "layer-6-concept-0",
+      "title": "TLS: observation 1",
+      "body": "Illustrative entry 1 about TLS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-0-entry-1",
+      "concept_id": "layer-6-concept-0",
+      "title": "TLS: observation 2",
+      "body": "Illustrative entry 2 about TLS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-1-entry-0",
+      "concept_id": "layer-6-concept-1",
+      "title": "Encoding: observation 1",
+      "body": "Illustrative entry 1 about Encoding. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-0",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 1",
+      "body": "Illustrative entry 1 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-1",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 2",
+      "body": "Illustrative entry 2 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-2",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 3",
+      "body": "Illustrative entry 3 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-3",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 4",
+      "body": "Illustrative entry 4 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-4",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 5",
+      "body": "Illustrative entry 5 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-5",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 6",
+      "body": "Illustrative entry 6 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-6",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 7",
+      "body": "Illustrative entry 7 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-7",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 8",
+      "body": "Illustrative entry 8 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-8",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 9",
+      "body": "Illustrative entry 9 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-9",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 10",
+      "body": "Illustrative entry 10 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-10",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 11",
+      "body": "Illustrative entry 11 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-11",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 12",
+      "body": "Illustrative entry 12 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-12",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 13",
+      "body": "Illustrative entry 13 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-13",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 14",
+      "body": "Illustrative entry 14 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-14",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 15",
+      "body": "Illustrative entry 15 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-2-entry-15",
+      "concept_id": "layer-6-concept-2",
+      "title": "Serialization: observation 16",
+      "body": "Illustrative entry 16 about Serialization. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-3-entry-0",
+      "concept_id": "layer-6-concept-3",
+      "title": "Compression: observation 1",
+      "body": "Illustrative entry 1 about Compression. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-3-entry-1",
+      "concept_id": "layer-6-concept-3",
+      "title": "Compression: observation 2",
+      "body": "Illustrative entry 2 about Compression. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-3-entry-2",
+      "concept_id": "layer-6-concept-3",
+      "title": "Compression: observation 3",
+      "body": "Illustrative entry 3 about Compression. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-3-entry-3",
+      "concept_id": "layer-6-concept-3",
+      "title": "Compression: observation 4",
+      "body": "Illustrative entry 4 about Compression. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-4-entry-0",
+      "concept_id": "layer-6-concept-4",
+      "title": "ASN.1: observation 1",
+      "body": "Illustrative entry 1 about ASN.1. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-4-entry-1",
+      "concept_id": "layer-6-concept-4",
+      "title": "ASN.1: observation 2",
+      "body": "Illustrative entry 2 about ASN.1. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-0",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 1",
+      "body": "Illustrative entry 1 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-1",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 2",
+      "body": "Illustrative entry 2 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-2",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 3",
+      "body": "Illustrative entry 3 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-3",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 4",
+      "body": "Illustrative entry 4 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-4",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 5",
+      "body": "Illustrative entry 5 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-5",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 6",
+      "body": "Illustrative entry 6 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-6",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 7",
+      "body": "Illustrative entry 7 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-7",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 8",
+      "body": "Illustrative entry 8 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-8",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 9",
+      "body": "Illustrative entry 9 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-9",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 10",
+      "body": "Illustrative entry 10 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-10",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 11",
+      "body": "Illustrative entry 11 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-11",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 12",
+      "body": "Illustrative entry 12 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-12",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 13",
+      "body": "Illustrative entry 13 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-13",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 14",
+      "body": "Illustrative entry 14 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-14",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 15",
+      "body": "Illustrative entry 15 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-15",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 16",
+      "body": "Illustrative entry 16 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-16",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 17",
+      "body": "Illustrative entry 17 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-17",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 18",
+      "body": "Illustrative entry 18 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-18",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 19",
+      "body": "Illustrative entry 19 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-19",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 20",
+      "body": "Illustrative entry 20 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-20",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 21",
+      "body": "Illustrative entry 21 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-21",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 22",
+      "body": "Illustrative entry 22 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-22",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 23",
+      "body": "Illustrative entry 23 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-23",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 24",
+      "body": "Illustrative entry 24 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-24",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 25",
+      "body": "Illustrative entry 25 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-25",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 26",
+      "body": "Illustrative entry 26 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-26",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 27",
+      "body": "Illustrative entry 27 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-27",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 28",
+      "body": "Illustrative entry 28 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-28",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 29",
+      "body": "Illustrative entry 29 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-29",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 30",
+      "body": "Illustrative entry 30 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-30",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 31",
+      "body": "Illustrative entry 31 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-5-entry-31",
+      "concept_id": "layer-6-concept-5",
+      "title": "Certificates: observation 32",
+      "body": "Illustrative entry 32 about Certificates. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-7-entry-0",
+      "concept_id": "layer-6-concept-7",
+      "title": "UTF-8: observation 1",
+      "body": "Illustrative entry 1 about UTF-8. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-8-entry-0",
+      "concept_id": "layer-6-concept-8",
+      "title": "Formats: observation 1",
+      "body": "Illustrative entry 1 about Formats. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-8-entry-1",
+      "concept_id": "layer-6-concept-8",
+      "title": "Formats: observation 2",
+      "body": "Illustrative entry 2 about Formats. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-9-entry-0",
+      "concept_id": "layer-6-concept-9",
+      "title": "Encryption: observation 1",
+      "body": "Illustrative entry 1 about Encryption. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-9-entry-1",
+      "concept_id": "layer-6-concept-9",
+      "title": "Encryption: observation 2",
+      "body": "Illustrative entry 2 about Encryption. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-9-entry-2",
+      "concept_id": "layer-6-concept-9",
+      "title": "Encryption: observation 3",
+      "body": "Illustrative entry 3 about Encryption. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-9-entry-3",
+      "concept_id": "layer-6-concept-9",
+      "title": "Encryption: observation 4",
+      "body": "Illustrative entry 4 about Encryption. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-0",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 1",
+      "body": "Illustrative entry 1 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-1",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 2",
+      "body": "Illustrative entry 2 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-2",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 3",
+      "body": "Illustrative entry 3 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-3",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 4",
+      "body": "Illustrative entry 4 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-4",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 5",
+      "body": "Illustrative entry 5 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-5",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 6",
+      "body": "Illustrative entry 6 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-6",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 7",
+      "body": "Illustrative entry 7 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-6-concept-11-entry-7",
+      "concept_id": "layer-6-concept-11",
+      "title": "Representation: observation 8",
+      "body": "Illustrative entry 8 about Representation. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-0-entry-0",
+      "concept_id": "layer-7-concept-0",
+      "title": "HTTP: observation 1",
+      "body": "Illustrative entry 1 about HTTP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-0",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 1",
+      "body": "Illustrative entry 1 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-1",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 2",
+      "body": "Illustrative entry 2 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-2",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 3",
+      "body": "Illustrative entry 3 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-3",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 4",
+      "body": "Illustrative entry 4 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-4",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 5",
+      "body": "Illustrative entry 5 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-5",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 6",
+      "body": "Illustrative entry 6 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-6",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 7",
+      "body": "Illustrative entry 7 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-7",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 8",
+      "body": "Illustrative entry 8 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-8",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 9",
+      "body": "Illustrative entry 9 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-9",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 10",
+      "body": "Illustrative entry 10 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-10",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 11",
+      "body": "Illustrative entry 11 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-11",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 12",
+      "body": "Illustrative entry 12 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-12",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 13",
+      "body": "Illustrative entry 13 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-13",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 14",
+      "body": "Illustrative entry 14 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-14",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 15",
+      "body": "Illustrative entry 15 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-1-entry-15",
+      "concept_id": "layer-7-concept-1",
+      "title": "DNS: observation 16",
+      "body": "Illustrative entry 16 about DNS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-2-entry-0",
+      "concept_id": "layer-7-concept-2",
+      "title": "SSH: observation 1",
+      "body": "Illustrative entry 1 about SSH. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-2-entry-1",
+      "concept_id": "layer-7-concept-2",
+      "title": "SSH: observation 2",
+      "body": "Illustrative entry 2 about SSH. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-2-entry-2",
+      "concept_id": "layer-7-concept-2",
+      "title": "SSH: observation 3",
+      "body": "Illustrative entry 3 about SSH. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-2-entry-3",
+      "concept_id": "layer-7-concept-2",
+      "title": "SSH: observation 4",
+      "body": "Illustrative entry 4 about SSH. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-3-entry-0",
+      "concept_id": "layer-7-concept-3",
+      "title": "SMTP: observation 1",
+      "body": "Illustrative entry 1 about SMTP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-3-entry-1",
+      "concept_id": "layer-7-concept-3",
+      "title": "SMTP: observation 2",
+      "body": "Illustrative entry 2 about SMTP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-0",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 1",
+      "body": "Illustrative entry 1 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-1",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 2",
+      "body": "Illustrative entry 2 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-2",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 3",
+      "body": "Illustrative entry 3 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-3",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 4",
+      "body": "Illustrative entry 4 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-4",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 5",
+      "body": "Illustrative entry 5 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-5",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 6",
+      "body": "Illustrative entry 6 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-6",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 7",
+      "body": "Illustrative entry 7 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-7",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 8",
+      "body": "Illustrative entry 8 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-8",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 9",
+      "body": "Illustrative entry 9 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-9",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 10",
+      "body": "Illustrative entry 10 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-10",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 11",
+      "body": "Illustrative entry 11 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-11",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 12",
+      "body": "Illustrative entry 12 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-12",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 13",
+      "body": "Illustrative entry 13 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-13",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 14",
+      "body": "Illustrative entry 14 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-14",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 15",
+      "body": "Illustrative entry 15 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-15",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 16",
+      "body": "Illustrative entry 16 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-16",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 17",
+      "body": "Illustrative entry 17 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-17",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 18",
+      "body": "Illustrative entry 18 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-18",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 19",
+      "body": "Illustrative entry 19 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-19",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 20",
+      "body": "Illustrative entry 20 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-20",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 21",
+      "body": "Illustrative entry 21 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-21",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 22",
+      "body": "Illustrative entry 22 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-22",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 23",
+      "body": "Illustrative entry 23 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-23",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 24",
+      "body": "Illustrative entry 24 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-24",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 25",
+      "body": "Illustrative entry 25 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-25",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 26",
+      "body": "Illustrative entry 26 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-26",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 27",
+      "body": "Illustrative entry 27 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-27",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 28",
+      "body": "Illustrative entry 28 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-28",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 29",
+      "body": "Illustrative entry 29 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-29",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 30",
+      "body": "Illustrative entry 30 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-30",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 31",
+      "body": "Illustrative entry 31 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-4-entry-31",
+      "concept_id": "layer-7-concept-4",
+      "title": "DHCP: observation 32",
+      "body": "Illustrative entry 32 about DHCP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-6-entry-0",
+      "concept_id": "layer-7-concept-6",
+      "title": "IMAP: observation 1",
+      "body": "Illustrative entry 1 about IMAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-7-entry-0",
+      "concept_id": "layer-7-concept-7",
+      "title": "SNMP: observation 1",
+      "body": "Illustrative entry 1 about SNMP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-7-entry-1",
+      "concept_id": "layer-7-concept-7",
+      "title": "SNMP: observation 2",
+      "body": "Illustrative entry 2 about SNMP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-8-entry-0",
+      "concept_id": "layer-7-concept-8",
+      "title": "HTTPS: observation 1",
+      "body": "Illustrative entry 1 about HTTPS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-8-entry-1",
+      "concept_id": "layer-7-concept-8",
+      "title": "HTTPS: observation 2",
+      "body": "Illustrative entry 2 about HTTPS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-8-entry-2",
+      "concept_id": "layer-7-concept-8",
+      "title": "HTTPS: observation 3",
+      "body": "Illustrative entry 3 about HTTPS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-8-entry-3",
+      "concept_id": "layer-7-concept-8",
+      "title": "HTTPS: observation 4",
+      "body": "Illustrative entry 4 about HTTPS. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-0",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 1",
+      "body": "Illustrative entry 1 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-1",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 2",
+      "body": "Illustrative entry 2 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-2",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 3",
+      "body": "Illustrative entry 3 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-3",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 4",
+      "body": "Illustrative entry 4 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-4",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 5",
+      "body": "Illustrative entry 5 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-5",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 6",
+      "body": "Illustrative entry 6 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-6",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 7",
+      "body": "Illustrative entry 7 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-10-entry-7",
+      "concept_id": "layer-7-concept-10",
+      "title": "LDAP: observation 8",
+      "body": "Illustrative entry 8 about LDAP. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-11-entry-0",
+      "concept_id": "layer-7-concept-11",
+      "title": "APIs: observation 1",
+      "body": "Illustrative entry 1 about APIs. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "layer-7-concept-11-entry-1",
+      "concept_id": "layer-7-concept-11",
+      "title": "APIs: observation 2",
+      "body": "Illustrative entry 2 about APIs. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-0-entry-0",
+      "concept_id": "firewall-type-0",
+      "title": "Next-generation firewall: observation 1",
+      "body": "Illustrative entry 1 about Next-generation firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-0-entry-1",
+      "concept_id": "firewall-type-0",
+      "title": "Next-generation firewall: observation 2",
+      "body": "Illustrative entry 2 about Next-generation firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-0-entry-2",
+      "concept_id": "firewall-type-0",
+      "title": "Next-generation firewall: observation 3",
+      "body": "Illustrative entry 3 about Next-generation firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-0-entry-3",
+      "concept_id": "firewall-type-0",
+      "title": "Next-generation firewall: observation 4",
+      "body": "Illustrative entry 4 about Next-generation firewall. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-1-entry-0",
+      "concept_id": "firewall-type-1",
+      "title": "Packet filtering: observation 1",
+      "body": "Illustrative entry 1 about Packet filtering. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-1-entry-1",
+      "concept_id": "firewall-type-1",
+      "title": "Packet filtering: observation 2",
+      "body": "Illustrative entry 2 about Packet filtering. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-0",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 1",
+      "body": "Illustrative entry 1 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-1",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 2",
+      "body": "Illustrative entry 2 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-2",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 3",
+      "body": "Illustrative entry 3 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-3",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 4",
+      "body": "Illustrative entry 4 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-4",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 5",
+      "body": "Illustrative entry 5 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-5",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 6",
+      "body": "Illustrative entry 6 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-6",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 7",
+      "body": "Illustrative entry 7 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-7",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 8",
+      "body": "Illustrative entry 8 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-8",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 9",
+      "body": "Illustrative entry 9 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    },
+    {
+      "id": "firewall-type-2-entry-9",
+      "concept_id": "firewall-type-2",
+      "title": "Stateful inspection: observation 10",
+      "body": "Illustrative entry 10 about Stateful inspection. Replace this example with your own explanation, observation or worked example."
+    }
+  ]
+}
