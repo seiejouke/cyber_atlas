@@ -175,8 +175,8 @@ and revision history. The current source passes **259 core tests and 164 GUI
 workflow checks** on Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2.
 Version 0.10.0 passes **50 frozen runtime checks on Windows and 49 per Linux
 format**, seven isolated Windows upgrade checks and four Debian installer
-checks. Public publication is pending approval; see
-[FlowNotes package verification](flows-verification.json). These source counts
+checks. This release is published; see
+[FlowNotes release verification](flows-verification.json). These source counts
 include flow validation, manual branches, shared-note updates, missing-reference
 repair, schema-10 history compatibility, native rendering and view restoration.
 All 259 core tests pass on Ubuntu 22.04 CI. Both frozen Linux formats also
@@ -318,7 +318,7 @@ or rewrite its recorded timestamp or hash.
 and text parsing; `tests/flow_view_checks.py` adds 16 real Tk/VTK workflows to
 the full smoke runner. `self_test.py` covers flow editing, native rendering,
 branches and canonical notes using the runtime that executes it. Windows
-and Linux 0.10.0 packages have been built and verified; publication is pending.
+and Linux 0.10.0 packages have been built, verified and published.
 To refresh real source screenshots and the example:
 
 ```bash
@@ -416,7 +416,7 @@ byte and recording the current state and valid previous backup in history.
 ## Saved-state history architecture
 
 `history.HistoryStore` stores compressed, complete JSON snapshots (format 11
-in current source; format 10 in published 0.9.3) in
+in version 0.10.0; format 10 in version 0.9.3) in
 an adjacent `.history.sqlite3` database. History schema 1 has a stable atlas ID,
 UUID revision IDs, increasing sequence numbers, parent links, UTC recording
 times, application/data-format versions, content hashes and structured changes

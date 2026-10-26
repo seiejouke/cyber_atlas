@@ -1,11 +1,11 @@
 {
-  "status": "Built and verified Windows and Linux packages; publication pending approval",
+  "status": "Published Windows and Linux release",
   "date": "2026-10-26",
   "source_base_version": "0.9.3",
   "atlas_file_version": 11,
   "history_file_version": 1,
   "packages_built_for_this_change": true,
-  "published": false,
+  "published": true,
   "packaging_requires_explicit_approval": true,
   "windows_core_tests_passed": 259,
   "windows_gui_workflow_checks_passed": 164,
@@ -58,7 +58,8 @@
     "flows-linux-ubuntu24.json",
     "flows-linux-ubuntu24-deb-runtime.json",
     "flows-linux-ubuntu24-appimage-runtime.json",
-    "flows-SHA256SUMS-linux.txt"
+    "flows-SHA256SUMS-linux.txt",
+    "flows-update-feed-results.json"
   ],
   "screenshots": [
     "flownotes-editor.png",
@@ -67,7 +68,6 @@
   ],
   "example": "../examples/packet_flow_atlas.json",
   "limitations": [
-    "Public downloads and the update feed remain at 0.9.3 until publication is approved",
     "Unsigned packages; no macOS package",
     "Full Linux GUI smoke suite not run; bundled runtime checks pass on Ubuntu 22.04 and 24.04.2",
     "Format 11 requires 0.10.0 or newer; retain an older-format copy for older applications",
@@ -90,22 +90,27 @@
     {
       "path": "dist/CyberAtlas-0.10.0-windows-x64.zip",
       "bytes": 59636821,
-      "sha256": "3be67b1f4bc512d50e1db207eb05f5feed68090f751010384bab21db6c4aaf60"
+      "sha256": "3be67b1f4bc512d50e1db207eb05f5feed68090f751010384bab21db6c4aaf60",
+      "url": "https://github.com/seiejouke/cyber_atlas/releases/download/v0.10.0/CyberAtlas-0.10.0-windows-x64.zip"
     },
     {
       "path": "dist/CyberAtlas-0.10.0-Setup.exe",
       "bytes": 38656921,
-      "sha256": "01fddadd85a4b239b8ceb0b45a2bc13fbc2a3c48a31c4231e46fb4a02657fb98"
+      "sha256": "01fddadd85a4b239b8ceb0b45a2bc13fbc2a3c48a31c4231e46fb4a02657fb98",
+      "url": "https://github.com/seiejouke/cyber_atlas/releases/download/v0.10.0/CyberAtlas-0.10.0-Setup.exe"
     },
     {
       "path": "dist/linux/cyber-atlas_0.10.0_amd64.deb",
       "bytes": 81934894,
-      "sha256": "f43039ec5ccd7885e1b06415269aa2beccd59e5590e1d84e14192968c2a728b7"
+      "sha256": "f43039ec5ccd7885e1b06415269aa2beccd59e5590e1d84e14192968c2a728b7",
+      "url": "https://github.com/seiejouke/cyber_atlas/releases/download/v0.10.0/cyber-atlas_0.10.0_amd64.deb"
     },
     {
       "path": "dist/linux/CyberAtlas-0.10.0-x86_64.AppImage",
       "bytes": 98822648,
-      "sha256": "479a02600a39a8074ef7a5a68082e2e6f41558eb2bd12befa85139f79f790963"
+      "sha256": "479a02600a39a8074ef7a5a68082e2e6f41558eb2bd12befa85139f79f790963",
+      "url": "https://github.com/seiejouke/cyber_atlas/releases/download/v0.10.0/CyberAtlas-0.10.0-x86_64.AppImage"
     }
-  ]
+  ],
+  "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.10.0"
 }

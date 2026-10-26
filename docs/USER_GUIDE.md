@@ -12,11 +12,11 @@ For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
 
-On Linux x86_64, download `cyber-atlas_0.9.3_amd64.deb` for Ubuntu/Debian-based
+On Linux x86_64, download `cyber-atlas_0.10.0_amd64.deb` for Ubuntu/Debian-based
 desktops and install it with your package installer. Open **Cyber Atlas** from
 the application menu. Python, Tk and VTK are included.
 
-For other compatible Linux desktops, download `CyberAtlas-0.9.3-x86_64.AppImage`.
+For other compatible Linux desktops, download `CyberAtlas-0.10.0-x86_64.AppImage`.
 In the file's properties, allow it to run as a program, then open it. The AppImage
 is portable; it does not install an application-menu entry automatically.
 
@@ -120,9 +120,8 @@ preserved. Stable labels are included in version 0.9.3.
 
 ## FlowNotes
 
-FlowNotes is included in the built and verified **0.10.0 Windows and Linux
-packages**. Public publication is pending; the released 0.9.3 installers do not
-include it. Open **Flows** beside History to create or study a saved
+FlowNotes is included in the published **0.10.0 Windows and Linux packages**.
+Open **Flows** beside History to create or study a saved
 process guide. The compass and layer slider remain available in the viewport.
 
 Choose **New**, enter a title and optional introduction, then use **Add concept**
@@ -625,7 +624,7 @@ layer, protocol, depth, notes and list order. Versions 1–5 become compact
 1/16 blocks in consecutive slots at each layer/depth; versions 6–7 retain
 their exact sizes and slots. Versions 1–6 receive the OSI design preset;
 version 7 keeps its custom design. Legacy integer node IDs become strings.
-The source version's next changed save or JSON export writes version 11
+The next changed save or JSON export writes version 11
 with the design and explicit size/slot coordinates; the first save retains
 the original file as the normal previous-version backup. Empty atlases can
 be imported/exported with their custom design.
@@ -648,7 +647,7 @@ to canonical concepts. Older atlases load with an empty flow collection. Existin
 history snapshots retain their IDs and recorded dates; opening an older atlas
 does not invent a content change just because the schema advanced. Format 11
 requires Cyber Atlas 0.10.0 or newer;
-published Cyber Atlas 0.9.3 supports formats through 10. Keep an older-format
+earlier Cyber Atlas versions through 0.9.3 support formats through 10. Keep an older-format
 copy when returning to an older application.
 
 A legacy ring with more than 16 notes cannot fit this grid. Import/loading

@@ -14,15 +14,15 @@ See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [develo
 
 ## Install Cyber Atlas
 
-Choose a package for **version 0.9.3**. Each **Download** link downloads the selected file.
+Choose a package for **version 0.10.0**. Each **Download** link downloads the selected file.
 
 | Platform | Package | Installation |
 | --- | --- | --- |
-| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.3/CyberAtlas-0.9.3-Setup.exe)** | Open it and follow the installer. |
-| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.3/cyber-atlas_0.9.3_amd64.deb)** | Open it with your software installer. |
-| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.3/CyberAtlas-0.9.3-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
+| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.10.0/CyberAtlas-0.10.0-Setup.exe)** | Open it and follow the installer. |
+| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.10.0/cyber-atlas_0.10.0_amd64.deb)** | Open it with your software installer. |
+| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.10.0/CyberAtlas-0.10.0-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
 
-See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.3) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
+See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.10.0) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
 
 ---
 
@@ -84,10 +84,9 @@ concept keeps its position and shared notes. The study panel provides readable
 notes, clickable concept references, branch choices and manual Previous/Next
 navigation. **Focus step** adjusts the camera separately.
 
-Version **0.10.0 packages are built and verified** for Windows and Linux;
-publication is pending. The public downloads above remain at v0.9.3, which does
-not include FlowNotes. See the [FlowNotes guide](docs/USER_GUIDE.md#flownotes),
-[package verification](docs/flows-verification.json), or the
+FlowNotes is included in **v0.10.0** for Windows and Linux. See the
+[FlowNotes guide](docs/USER_GUIDE.md#flownotes),
+[release verification](docs/flows-verification.json), or the
 [editable packet-flow example](examples/packet_flow_atlas.json).
 
 ![Actual source FlowNotes study view with an Allowed branch, shared concept notes and the existing navigation panel](docs/flownotes-branch.png)
@@ -95,7 +94,7 @@ not include FlowNotes. See the [FlowNotes guide](docs/USER_GUIDE.md#flownotes),
 ## Project scope and vision
 
 This section contains the complete illustrated design philosophy. The current
-release provides the spatial notebook, automatic main-note counts and information heat;
+release provides the spatial notebook, information heat, saved-state history and FlowNotes;
 mastery measurements, assessments, source integration and historical
 playback remain planned capabilities. The implementation table below records
 what is available today.
@@ -111,7 +110,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.9.3 · **Updated:** 26 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.10.0 · **Updated:** 26 October 2026
 
 ### Product vision
 
@@ -286,7 +285,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Published baseline: v0.9.3. FlowNotes and its study reader are built in 0.10.0 packages; publication is pending. Planned capabilities below describe the intended system.*
+*Published baseline: v0.10.0. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -310,8 +309,8 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Adaptive simplification and decomposition suggestions | **Planned** |
 | Saved-state recording, read-only history browsing and restore | **Implemented** |
 | Animated timeline playback and scrubbing | **Planned** |
-| FlowNotes, manual process arrows, branch choices and shared study content | **Implemented in 0.10.0 packages** — publication pending |
-| Interactive comparative study notes | **Partial in 0.10.0 packages** — FlowNotes provides a structured reader and clickable concept references; a standalone study-note view remains planned |
+| FlowNotes, manual process arrows, branch choices and shared study content | **Implemented in v0.10.0** |
+| Interactive comparative study notes | **Partial in v0.10.0** — FlowNotes provides a structured reader and clickable concept references; a standalone study-note view remains planned |
 | Orbital subconcept clusters | **Implemented** — one ring of eight stable positions, independent notes, Nodes expansion and Blocks child list |
 
 The present alpha establishes the spatial notebook. The envisioned learning mechanisms, including mastery estimates and the proposed memory benefits of spatial association, still require implementation and validation with actual learners.
@@ -327,5 +326,5 @@ The ultimate objective is not to maximize the quantity of notes. It is to help l
 ---
 
 **Project:** [seiejouke/cyber_atlas](https://github.com/seiejouke/cyber_atlas)  
-**Reference release:** [v0.9.3](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.3)\
+**Reference release:** [v0.10.0](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.10.0)\
 **Document:** Conceptual product specification; not a claim of scientific efficacy or completed functionality.
