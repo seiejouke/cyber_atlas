@@ -10,6 +10,8 @@ from . import theme
 from .history import HistoryStore
 from .model import AtlasError
 from .scene import Scene
+from .compass_ui import Compass
+from .orientation import aligned_view, view_title
 
 
 def local_time(value, *, include_zone=True):
@@ -146,6 +148,7 @@ class HistoryManager:
         self.scene.yaw, self.scene.elevation, self.scene.scale = app.scene.yaw, app.scene.elevation, app.scene.scale
         self.scene.target = list(app.scene.target)
         self.scene._apply_camera()
+        self.compass = Compass(self.canvas, self.scene, self.request_render, family=app.family, mono=app.mono)
         self._pointer = None
         self._dragged = False
         self.selected_id = app.selected
@@ -156,6 +159,10 @@ class HistoryManager:
         self.canvas.bind("<MouseWheel>", lambda event: self._zoom(event.delta / 120))
         self.canvas.bind("<Button-4>", lambda _: self._zoom(1))
         self.canvas.bind("<Button-5>", lambda _: self._zoom(-1))
+        self.canvas.bind("<Motion>", lambda _: self.canvas.configure(cursor="fleur"))
+        for axis in "xyz":
+            self.canvas.bind(f"<Key-{axis}>", lambda _, a=axis: self.compass.activate(a.upper()))
+        self.canvas.bind("<Home>", lambda _: self.compass.activate("home"))
         window.grab_set()
         self.tree.focus_set()
 
@@ -255,6 +262,7 @@ class HistoryManager:
             self.request_render()
 
     def reset_view(self):
+        self.compass.cancel_animation()
         self.scene.collapse_orbit()
         self.scene.reset_camera()
         self._selected_concept()
@@ -317,18 +325,35 @@ class HistoryManager:
         self._image = tk.PhotoImage(master=self.dialog, data=self.scene.frame(width, height), format="PPM")
         self.canvas.delete("all")
         self.canvas.create_image(0, 0, anchor="nw", image=self._image)
+        self.compass.draw()
+        view = aligned_view(self.scene.yaw, self.scene.elevation)
+        top_view = view is not None and view[0] == "Z"
+        self.canvas.create_text(12, 12, text=view_title(self.scene.yaw, self.scene.elevation), anchor="nw",
+                                fill=theme.MUTED, font=(self.app.mono, 8))
+        if top_view:
+            self.canvas.create_text(12, 35, text="Layers overlap in this view.", anchor="nw",
+                                    fill=theme.MUTED, font=(self.app.family, 8), width=max(100, width - 170))
+        label_boxes = [self.compass.reserved_box, (0, 0, width, 63)]
         for layer in self.document.design.layers:
+            if top_view:
+                break
             actor = self.scene.axis_markers.get(layer.id)
             if actor is not None:
                 x, y, depth = self.scene.project(actor.GetPosition())
-                if 0 <= depth <= 1 and 0 <= y <= height:
+                box = (x + 7, y - 9, x + 14 + self.app.mono_font.measure(layer.name), y + 9)
+                if 0 <= depth <= 1 and 0 <= y <= height and not any(
+                        box[0] < b[2] and box[2] > b[0] and box[1] < b[3] and box[3] > b[1] for b in label_boxes):
                     self.canvas.create_text(x + 10, y, text=layer.name, anchor="w", fill=layer.color, font=(self.app.mono, 8))
+                    label_boxes.append(box)
         if self.selected_id:
             concept = next((c for c in self.concepts if c.id == self.selected_id), None)
             if concept:
-                self.canvas.create_text(12, 12, text=concept.name, anchor="nw", fill=theme.ACCENT, font=(self.app.family, 10))
+                self.canvas.create_text(12, 62 if top_view else 33, text=concept.name, anchor="nw", fill=theme.ACCENT,
+                                        font=(self.app.family, 10), width=max(100, width - 170))
 
     def _press(self, event):
+        self.compass.cancel_animation()
+        self.canvas.focus_set()
         self._pointer = (event.x, event.y)
         self._dragged = False
 
@@ -353,6 +378,7 @@ class HistoryManager:
         self._pointer = None
 
     def _zoom(self, steps):
+        self.compass.cancel_animation()
         self.scene.zoom(steps)
         self.request_render()
 
@@ -360,6 +386,7 @@ class HistoryManager:
         if self.dialog is None:
             return
         window, self.dialog = self.dialog, None
+        self.compass.close()
         if self._render_job:
             window.after_cancel(self._render_job)
             self._render_job = None

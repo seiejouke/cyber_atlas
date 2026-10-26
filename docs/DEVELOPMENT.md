@@ -153,7 +153,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The current source includes **215 core tests** covering chosen angular
+The current source includes **238 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -165,14 +165,92 @@ checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, orbital relationships
-and revision history. All **215 core tests and 132 GUI workflow checks passed** on
-Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2. The 25 history tests also passed
-under Ubuntu. Packaged applications passed 38 runtime checks on Windows and
+and revision history. The current source passes **238 core tests and 148 GUI
+workflow checks** on Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2.
+The published 0.9.2 release passed 215 core tests and 132 GUI checks; its 25
+history tests also passed under Ubuntu. Packaged applications passed 38 runtime checks on Windows and
 37 per format on Linux. See the [history release verification](history-verification.json)
 and the packaged runtime/installation reports in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
 configuration are included.
+
+## Orientation compass
+
+`atlas/orientation.py` defines the world-axis view conventions and an
+orthonormal camera basis. Z is the layer axis. From +X, screen-right is +Y;
+from +Y, screen-left is +X. From +Z, +X is right and +Y is up. The matching
+bottom view keeps +Y upright. The scene uses this same basis for view-up and
+panning, avoiding a singular view-up vector at either pole.
+
+`atlas/compass_ui.py` supplies the shared Tk control for the main viewport and
+the independent History scene. Axis tips animate the camera orientation with
+the shortest yaw transition; clicking an active axis flips its sign. Home
+restores only the default yaw/elevation. Zoom, target, atlas data and history
+are outside the control. Manual input, external camera changes and window
+closure cancel pending animation callbacks. The compass reserves label space
+and keeps a fixed size and position through camera changes.
+
+`tests/test_orientation.py` checks all six signed directions, screen-axis
+conventions and orthonormal bases at and near both poles without Tk or VTK.
+`tests/compass_view_checks.py`, included in the GUI smoke runner, compares real
+VTK projections with the compass, clicks through both representations, checks
+draft/file/history preservation, interrupts animations and checks the minimum
+layout and independent History control. The compass, navigation panel and stable labels are included in version 0.9.3.
+Earlier release-verification reports retain their original version numbers.
+
+## Retractable navigation panel
+
+`atlas/navigation_ui.py` embeds the main compass above a discrete layer slider
+and supplies the edge tab that restores the panel when collapsed. Its reserved
+label/picking region shrinks with the collapsed panel. Layer choices go through
+the existing filter handler, which synchronizes the dropdown, keeps protocol
+filtering and preserves drafts and the camera, including when filtering ends
+cluster focus. The slider derives equal intervals from the current layer order;
+single-layer designs avoid division by zero, while dense lists thin number
+labels without removing stops or keyboard access.
+
+`atlas/view_settings.py` atomically saves the collapsed preference in
+`view-settings.json` in the application's settings directory. Reads fall back
+to expanded for missing or malformed settings; writes preserve other preference
+keys. A failed write leaves the panel usable for the session and reports that
+the preference could not be remembered. No atlas/history write is involved.
+History retains its separate compass and camera.
+
+`tests/test_view_settings.py` covers persistence, invalid files and failed atomic
+replacement. `tests/navigation_view_checks.py` is included in the desktop smoke
+runner and exercises synchronization, mouse/keyboard input, dirty drafts,
+protocol filtering, collapse/reopen, saved preferences, failed preference writes,
+focused clusters and custom designs with one to 64 layers.
+
+## Stable label placement
+
+`atlas/label_layout.py` is a renderer-independent placement engine. It remembers
+offsets relative to projected anchors, retains valid cached positions and gives
+selection/hover priority over ordinary labels. A larger search includes nearby
+offsets, wider columns and edge callouts. Controls and each label's own node
+remain protected; priority callouts may displace softer decorations. Sparse
+views use the available canvas, while crowded views report omitted labels.
+
+`atlas/label_ui.py` supplies one layout for main notes and expanded suborbitals.
+Camera movement retains cached visibility/offsets; a short debounce schedules
+collision resolution after motion stops. Small offset changes transition over
+120 ms when the path stays clear of UI reservations. Mouse presses pause label
+transitions to keep clicks predictable. Hit boxes follow displayed label boxes,
+and window closure cancels pending settle/animation callbacks. Cache entries
+are pruned when concepts disappear; offsets never enter atlas JSON or history.
+
+In Nodes view, `Scene.label_visible` samples the projected rim if the centre
+pixel is covered, including for orbital children. Fully covered spheres remain
+unlabelled unless selection/hover requests a priority callout. Blocks retains
+its surface/outline visibility rules. Parent indicators use the same sphere
+visibility check.
+
+`tests/test_label_layout.py` covers stable offsets, camera motion, sparse and
+crowded placement, priorities, reservations, bounds and pruning without Tk/VTK.
+`tests/label_view_checks.py` uses the real renderer for the four-node physical
+layer, constant-offset pan, partial/full sphere and child occlusion, shared
+suborbital placement, crowded minimum layouts and read-only label clicks.
 
 ## Orbital cluster architecture
 
@@ -363,8 +441,8 @@ installer check is skipped.
 Outputs in `dist/`:
 
 - `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
-- `CyberAtlas-0.9.2-windows-x64.zip`: complete folder for ZIP distribution.
-- `CyberAtlas-0.9.2-Setup.exe`: installer for the current Windows account.
+- `CyberAtlas-0.9.3-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.9.3-Setup.exe`: installer for the current Windows account.
 - `SHA256SUMS.txt`: hashes for the distributable files.
 - `packaged-test-results.json`: results from the bundled executable.
 - `installed-test-results.json`: results from running the installed executable.
@@ -405,8 +483,8 @@ Cyber Atlas installation. A normal local build does not install the package.
 
 Outputs and reports are in `dist/linux/`:
 
-- `cyber-atlas_0.9.2_amd64.deb`
-- `CyberAtlas-0.9.2-x86_64.AppImage`
+- `cyber-atlas_0.9.3_amd64.deb`
+- `CyberAtlas-0.9.3-x86_64.AppImage`
 - `SHA256SUMS-linux.txt`
 - `linux-build-report.json` and runtime/installation test reports
 

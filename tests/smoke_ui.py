@@ -31,6 +31,9 @@ from cluster_view_checks import check_clusters
 from connection_view_checks import check_connections
 from information_view_checks import check_information
 from history_view_checks import check_history
+from compass_view_checks import check_compass
+from navigation_view_checks import check_navigation
+from label_view_checks import check_labels
 
 
 def pump(root, steps=5):
@@ -1056,6 +1059,9 @@ def main(report_path=None):
             check_clusters(root, app, path, pump, checks)
             check_information(root, app, path, pump, checks)
             check_history(root, app, path, pump, checks)
+            check_compass(root, app, path, pump, checks)
+            check_navigation(root, app, path, pump, checks)
+            check_labels(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)

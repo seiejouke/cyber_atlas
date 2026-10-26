@@ -321,39 +321,15 @@ class ClusterManager:
             return
         scene, canvas = self.app.scene, self.app.canvas
         parent = scene.orbit_parent()
-        if scene.mode == "nodes" and parent is not None:
-            boxes = [box for _, box in self.app._label_hits] + list(self.app._axis_label_boxes)
-            for child in sorted(scene.subconcepts, key=lambda child: child.id != scene.selected_child):
-                actor = scene.orbit_actors.get(child.id)
-                if actor is None or not actor.GetVisibility():
-                    continue
+        if scene.mode == "nodes" and parent is not None and scene.selected_child is not None:
+            child = self.app.document.child(scene.selected_child)
+            actor = scene.orbit_actors.get(scene.selected_child)
+            if child is not None and actor is not None and actor.GetVisibility():
                 x, y, depth = scene.project(orbit_position(parent, child.orbit_slot, scene.design))
-                if not (0 <= depth <= 1 and 0 < x < scene.width and 0 < y < scene.height):
-                    continue
-                selected = child.id == scene.selected_child
-                if scene.pick(x, y) != child.id:
-                    continue
-                if selected:
-                    radius = max(11, .065 * .7 * scene.height / (2 * scene.scale) + 5) if scene.heat_active else 11
+                if 0 <= depth <= 1 and scene.label_visible(child, x, y):
+                    radius = max(11, .065*.7*scene.height/(2*scene.scale)+5) if scene.heat_active else 11
                     self.app._draw_selection_corners(x, y, radius,
-                                                     theme.TEXT if scene.heat_active else theme.ACCENT, "child-halo")
-                label = child.name if len(child.name) <= 31 else child.name[:28] + "..."
-                if scene.heat_active:
-                    label += f" ({scene.heat_metrics.get(child.id).own if child.id in scene.heat_metrics else 0})"
-                width = self.app.label_font.measure(label) + 12
-                gap = max(12, .065 * .7 * scene.height / (2 * scene.scale) + 8) if scene.heat_active else 12
-                for dx, dy in ((gap, -23), (gap, 8), (-width-gap, -23), (-width-gap, 8), (gap, -47), (-width-gap, 32)):
-                    box = x+dx, y+dy, x+dx+width, y+dy+23
-                    if box[0] < 5 or box[2] > scene.width-5 or box[1] < 30 or box[3] > scene.height-72:
-                        continue
-                    if any(not (box[2]+3 < old[0] or box[0]-3 > old[2] or box[3]+3 < old[1] or box[1]-3 > old[3]) for old in boxes):
-                        continue
-                    boxes.append(box)
-                    canvas.create_rectangle(*box, fill=theme.PANEL, outline=theme.ACCENT if selected else theme.BORDER, tags="overlay")
-                    canvas.create_text(box[0]+6, box[1]+11, text=label, anchor="w", fill=theme.ACCENT if selected else theme.TEXT,
-                                       font=self.app.label_font, tags="overlay")
-                    self.app._label_hits.append((child.id, box))
-                    break
+                        theme.TEXT if scene.heat_active else theme.ACCENT, "child-halo")
         root = self.app.document.get(self.app.selected)
         if root is not None and self.app.document.children(root.id) and scene.is_visible(root):
             point = scene.node_anchor(root) if scene.mode == "nodes" else scene.meshes[root.id].label_anchor

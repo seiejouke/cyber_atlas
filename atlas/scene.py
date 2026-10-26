@@ -7,7 +7,7 @@ on demand, not a continuously running animation loop.
 from __future__ import annotations
 
 from enum import Enum
-from math import atan2, cos, exp, hypot, pi, sin, sqrt
+from math import atan2, exp, hypot, pi, sqrt
 
 import vtkmodules.vtkRenderingOpenGL2  # noqa: F401: register OpenGL factories
 from vtkmodules.util.numpy_support import vtk_to_numpy
@@ -24,6 +24,7 @@ from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, adjacent_node_pairs, lay
 from .model import ANGULAR_SLOTS, BANDS, CENTER_DEPTH, Design, LayerId, Node
 from .orbit_scene import OrbitScene
 from .heat import DEFAULT_HEAT_MAX, HEAT_PRESETS, InformationHeat, heat_color, information_heat
+from .orientation import DEFAULT_ELEVATION, DEFAULT_YAW, camera_basis
 
 
 class ProtocolFilter(Enum):
@@ -640,8 +641,8 @@ class Scene(OrbitScene):
         return self.layer_filter in (None, node.layer) and protocol_matches
 
     def reset_camera(self) -> None:
-        self.yaw = 135 * pi / 180
-        self.elevation = 19 * pi / 180
+        self.yaw = DEFAULT_YAW
+        self.elevation = DEFAULT_ELEVATION
         self.scale = max(4.80, len(self.design.layers) * .62)
         self.target = [0.0, 0.0, 0.0]
         self._apply_camera()
@@ -649,23 +650,22 @@ class Scene(OrbitScene):
     def _apply_camera(self) -> None:
         camera = self.renderer.GetActiveCamera()
         radius = max(30.0, len(self.design.layers) * 1.5)
-        direction = (cos(self.elevation) * cos(self.yaw), cos(self.elevation) * sin(self.yaw), sin(self.elevation))
+        _, up, direction = camera_basis(self.yaw, self.elevation)
         camera.SetPosition(*(self.target[i] + radius * direction[i] for i in range(3)))
         camera.SetFocalPoint(*self.target)
-        camera.SetViewUp(0, 0, 1)
+        camera.SetViewUp(*up)
         camera.ParallelProjectionOn()
         camera.SetParallelScale(self.scale)
         self.renderer.ResetCameraClippingRange()
 
     def rotate(self, dx: float, dy: float) -> None:
         self.yaw -= dx * 0.007
-        self.elevation = max(-1.30, min(1.30, self.elevation + dy * 0.006))
+        self.elevation = max(-pi / 2, min(pi / 2, self.elevation + dy * 0.006))
         self._apply_camera()
 
     def pan(self, dx: float, dy: float) -> None:
         units = 2 * self.scale / max(self.height, 1)
-        right = (-sin(self.yaw), cos(self.yaw), 0)
-        up = (-sin(self.elevation) * cos(self.yaw), -sin(self.elevation) * sin(self.yaw), cos(self.elevation))
+        right, up, _ = camera_basis(self.yaw, self.elevation)
         for i in range(3):
             self.target[i] += units * (-dx * right[i] + dy * up[i])
         self._apply_camera()
@@ -753,6 +753,19 @@ class Scene(OrbitScene):
         return None
 
     def label_visible(self, node: Node, x: float, y: float) -> bool:
+        if self.mode == "nodes":
+            actor = self.actors.get(node.id, (None,))[0] or self.orbit_actors.get(node.id)
+            if actor is None or not actor.GetVisibility():
+                return False
+            if self.pick(x, y) == node.id:
+                return True
+            radius = NODE_RADIUS*max(actor.GetScale())*self.height/(2*self.scale)
+            # A nearer sphere can cover the centre while the labelled sphere's rim remains visible.
+            for dx, dy in ((.9, 0), (-.9, 0), (0, .9), (0, -.9),
+                           (.64, .64), (.64, -.64), (-.64, .64), (-.64, -.64)):
+                if self.pick(x+radius*dx, y+radius*dy) == node.id:
+                    return True
+            return False
         if self.mode == "blocks" and self.block_appearance == "outline":
             if node.id == self.hovered:
                 return True

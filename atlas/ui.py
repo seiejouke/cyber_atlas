@@ -14,12 +14,18 @@ from .design_editor import DesignEditor
 from .scene import NO_PROTOCOL_FILTER, Scene
 from .storage import read_atlas, write_atlas
 from .templates import TEMPLATES, AtlasTemplate
+from .navigation_ui import NavigationPanel
+from .orientation import aligned_view, view_title
+
+
+ORIENTATION_KEY = "Z = layers · Outward = detail · Around = slots\nRing + count = suborbitals · Corners = selected"
 
 
 class AtlasApp:
     def __init__(self, root: tk.Tk, path: Path, document: Atlas, *, settings_directory: Path | None = None,
                  automatic_updates: bool = True) -> None:
         self.root, self.path, self.document = root, path, document
+        self.settings_directory = settings_directory or path.parent
         self.family, self.mono = theme.apply(root)
         self.scene = Scene(document.design)
         self.scene.set_nodes(document.nodes)
@@ -63,6 +69,7 @@ class AtlasApp:
         self.label_font = font.Font(root, family=self.family, size=9)
         self.mono_font = font.Font(root, family=self.mono, size=9)
         self.coordinate_font = font.Font(root, family=self.mono, size=10)
+        self.key_font = font.Font(root, family=self.family, size=8)
         self._build()
         self._refresh_design_controls()
         self._bind()
@@ -74,13 +81,15 @@ class AtlasApp:
         from .information_ui import InformationManager
         self.information = InformationManager(self)
         self.scene.set_information(document)
+        from .label_ui import LabelManager
+        self.label_manager = LabelManager(self)
         from .history_ui import HistoryManager
         self.history = HistoryManager(self)
         self._set_status(f"Local atlas  /  {self.path}")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self.root.after(80, self.request_render)
         from .update_ui import UpdateManager
-        self.updates = UpdateManager(self, settings_directory or path.parent, automatic=automatic_updates)
+        self.updates = UpdateManager(self, self.settings_directory, automatic=automatic_updates)
 
     def _build(self) -> None:
         root = self.root
@@ -168,6 +177,10 @@ class AtlasApp:
         self.canvas = tk.Canvas(left, bg=theme.BG, highlightthickness=0, takefocus=True, cursor="fleur")
         self.canvas.grid(row=2, column=0, sticky="nsew")
         self.canvas.create_text(180, 180, text="Building the atlas...", fill=theme.MUTED, tags="overlay")
+        self.navigation = NavigationPanel(self.canvas, self.scene, self.request_render,
+            self._visible_layer_changed, self.settings_directory / "view-settings.json",
+            family=self.family, mono=self.mono, on_status=self._set_status)
+        self.compass = self.navigation.compass
 
         right = tk.Frame(content, bg=theme.PANEL, highlightthickness=1, highlightbackground=theme.BORDER)
         right.grid(row=0, column=1, sticky="nsew")
@@ -601,6 +614,7 @@ class AtlasApp:
         self.legend.configure(scrollregion=(0, 0, x, 19))
         self._legend_width = x
         self._update_legend_scroll()
+        self.navigation.sync(design.layers, self.scene.layer_filter)
 
     def _update_legend_scroll(self, _event=None) -> None:
         if getattr(self, "_legend_width", 0) > self.legend.winfo_width():
@@ -757,6 +771,9 @@ class AtlasApp:
         c.bind("<Button-4>", lambda _: self._zoom(1))
         c.bind("<Button-5>", lambda _: self._zoom(-1))
         c.bind("<Key-r>", lambda _: self.reset_view())
+        for axis in "xyz":
+            c.bind(f"<Key-{axis}>", lambda _, a=axis: self.compass.activate(a.upper()))
+        c.bind("<Home>", lambda _: self.compass.activate("home"))
         c.bind("<Key-plus>", lambda _: self._zoom(1))
         c.bind("<Key-equal>", lambda _: self._zoom(1))
         c.bind("<Key-minus>", lambda _: self._zoom(-1))
@@ -1198,19 +1215,30 @@ class AtlasApp:
             return
         self._set_status(f"Exported  /  {filename}")
 
+    def _visible_layer_changed(self, layer_id) -> None:
+        self.filter_var.set("All layers" if layer_id is None else self._layer_displays[layer_id])
+        self._filter_changed()
+
     def _filter_changed(self, _event=None) -> None:
         self._hovered_node = None
+        self.compass.cancel_animation()
+        camera = self.scene.yaw, self.scene.elevation, self.scene.scale, list(self.scene.target)
         value = self.filter_var.get()
         self.scene.set_layer_filter(None if value == "All layers" else self._layer_ids[value])
         protocol = self.protocol_filter_var.get()
         selected_protocol = None if protocol == self._all_protocols else self._protocol_ids[protocol]
         self.scene.set_protocol_filter(None if protocol == self._all_protocols else
                                        NO_PROTOCOL_FILTER if selected_protocol is None else selected_protocol)
+        # Filtering a focused parent may end focus; retain the user's viewing angle and zoom.
+        self.scene.yaw, self.scene.elevation, self.scene.scale, self.scene.target = camera
+        self.scene._apply_camera()
+        self.navigation.sync(self.document.design.layers, self.scene.layer_filter)
         if self._template_origin is None:
             self._refresh_preview()
         self.request_render()
 
     def reset_view(self) -> None:
+        self.compass.cancel_animation()
         self.scene.reset_camera()
         self.request_render()
 
@@ -1251,18 +1279,30 @@ class AtlasApp:
         visible = [n for n in self.document.nodes if self.scene.is_visible(n)
                    and (self.scene.mode != "nodes" or self.scene.actors[n.id][0].GetVisibility())]
         node_view = self.scene.mode == "nodes"
-        self.canvas.create_text(18, 18, anchor="nw", text="SPATIAL VIEW", fill=theme.MUTED,
+        self.navigation.sync(self.document.design.layers, self.scene.layer_filter)
+        view = aligned_view(self.scene.yaw, self.scene.elevation)
+        top_view = view is not None and view[0] == "Z"
+        self.canvas.create_text(18, 18, anchor="nw", text=view_title(self.scene.yaw, self.scene.elevation), fill=theme.MUTED,
                                 font=(self.mono, 8), tags="overlay")
+        if top_view and self.scene.layer_filter is None and self.scene.focused_parent is None:
+            self.canvas.create_text(18, 37, anchor="nw", text="Layers overlap · filter to one layer for detail.",
+                                    fill=theme.MUTED, font=(self.family, 9), width=max(180, width - 190), tags="overlay")
         count_label = "NODES" if node_view else "BLOCKS" if self.scene.block_appearance == "outline" else "FILLED VOLUMES"
         count = len(visible) + (len(self.scene.orbit_actors) if node_view else 0)
         self.canvas.create_text(width - 17, 18, anchor="ne", text=f"{count:02d} {count_label}",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
-        self._axis_label_boxes.clear()
+        self._axis_label_boxes[:] = [self.compass.reserved_box, (8, 8, min(width - 160, 355), 58 if top_view else 34),
+                                    (12, height - 111, 24 + max(self.key_font.measure(line) for line in ORIENTATION_KEY.splitlines()), height - 79),
+                                    (8, 58, min(width - 170, 350), 82)]
         selected_node = self.document.get(self.selected)
         for i, layer in enumerate(self.document.design.layers, 1):
             if self.scene.focused_parent is not None:
                 break
-            x, y, _ = self.scene.project((0.0, 0.0, self.document.design.z_base + i - 0.5))
+            if top_view and self.scene.layer_filter != layer.id:
+                continue
+            x, y, depth = self.scene.project((0.0, 0.0, self.document.design.z_base + i - 0.5))
+            if not (0 <= depth <= 1 and 0 <= y <= height):
+                continue
             # Reference labels must not float through a solid in front of them.
             if not node_view and self.scene.occludes(x - 24, y):
                 continue
@@ -1271,15 +1311,19 @@ class AtlasApp:
             while self.mono_font.measure(axis_text) > 170 and len(axis_text) > 4:
                 axis_text = axis_text[:-2] + "\u2026"
             label_x = x + 16 if node_view else x - 16
+            text_width = self.mono_font.measure(axis_text)
+            label_box = ((label_x - 4, y - 10, label_x + text_width + 4, y + 10) if node_view
+                         else (label_x - text_width - 4, y - 10, label_x + 6, y + 10))
+            if any(label_box[0] < b[2] and label_box[2] > b[0] and label_box[1] < b[3] and label_box[3] > b[1]
+                   for b in self._axis_label_boxes):
+                continue
             self.canvas.create_text(label_x, y, text=axis_text, anchor="w" if node_view else "e", fill=color,
                                     font=(self.mono, 9), tags="overlay")
             if node_view and selected_node is not None and selected_node.layer == layer.id:
                 self.canvas.create_text(x - 7, y - 7, text="00", anchor="se", fill=color,
                                         font=(self.mono, 7), tags="overlay")
-            text_width = self.mono_font.measure(axis_text)
-            label_box = ((label_x - 4, y - 10, label_x + text_width + 4, y + 10) if node_view
-                         else (label_x - text_width - 4, y - 10, label_x + 6, y + 10))
             self._axis_label_boxes.append(label_box)
+        labeled = []
         if node_view:
             self.information.draw_parent_indicators()
             if self.scene.preview_node is not None:
@@ -1287,20 +1331,24 @@ class AtlasApp:
             elif not self.clusters.editing and (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
                 self._draw_node_halo(selected, "node-halo", theme.ACCENT)
             labeled = visible if self.labels_var.get() else [node for node in visible if node.id in (self.selected, self._hovered_node)]
-            self._draw_labels(labeled, width, height)
         elif self.scene.block_appearance == "outline":
             layer = selected_node.layer if selected_node is not None and self.scene.is_visible(selected_node) else None
             labeled = [node for node in visible if node.id in (self.selected, self._hovered_node)
                        or self.labels_var.get() and (layer is None or node.layer == layer)]
-            self._draw_labels(labeled, width, height)
         elif self.labels_var.get():
-            self._draw_labels(visible, width, height)
+            labeled = visible
+        else:
+            labeled = [node for node in visible if node.id in (self.selected, self._hovered_node)]
+        self._draw_labels(labeled, width, height)
         self.canvas.create_text(18, height - 44, anchor="sw",
                                 text="DRAG  ROTATE     WHEEL  ZOOM     CLICK NODE  EDIT NOTE" if node_view else
                                 "DRAG  ROTATE     WHEEL  ZOOM     CLICK  EDIT",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self.canvas.create_text(18, height - 24, anchor="sw", text="SHIFT + DRAG  PAN     TAB  NEXT NOTE",
                                 fill="#6d879f", font=(self.mono, 8), tags="overlay")
+        self.canvas.create_text(18, height - 86, anchor="sw", fill=theme.MUTED, font=self.key_font,
+            text=ORIENTATION_KEY,
+            tags=("overlay", "orientation-key"))
         if self._template_origin is None:
             self.canvas.create_text(18, height - 64, anchor="sw",
                                     text="ORBIT MOVE / ESC CANCEL" if self.clusters.editing and self.clusters.moving else
@@ -1325,7 +1373,7 @@ class AtlasApp:
         if preview:
             if not self.scene.pick_preview(x, y):
                 return
-        elif self.scene.pick(x, y) != node.id:
+        elif not self.scene.label_visible(node, x, y):
             return
         radius = max(9.0, .065 * self.scene.height / (2 * self.scene.scale) + 4)
         if self.scene.heat_active and not preview:
@@ -1347,72 +1395,19 @@ class AtlasApp:
                                     fill=color, width=2, tags=("overlay", tag))
 
     def _draw_labels(self, nodes: list[Node], width: int, height: int) -> None:
-        boxes: list[tuple[float, float, float, float]] = list(self._axis_label_boxes)
-        if self.scene.mode == "nodes":
-            boxes.extend(self.information.indicator_boxes)
-        ordered = sorted(nodes, key=lambda n: n.id != self.selected)
-        for node in ordered:
-            anchor = self.scene.node_anchor(node) if self.scene.mode == "nodes" else self.scene.meshes[node.id].label_anchor
-            x, y, depth = self.scene.project(anchor)
-            if not (0 <= depth <= 1 and 0 < x < width and 0 < y < height):
-                continue
-            selected = node.id == self.selected
-            # Hidden surfaces don't get floating labels through other volumes.
-            if not selected and not self.scene.label_visible(node, x, y):
-                continue
-            design = self.document.design
-            text = design.block_label(node)
-            if design.label_mode == "combined":
-                text = f"{node.name}\n{design.layer(node.layer).name} · {design.protocol_name(node.protocol)}"
-            if self.scene.heat_active:
-                metric = self.scene.heat_metrics.get(node.id)
-                if metric is not None:
-                    text += f"\n{metric.blended} total" + (f" ({metric.own} own + {metric.support} from subconcepts)" if metric.support else "")
-            max_label_width = min(300, width - 50) if design.label_mode != "title" else 176
-            lines = text.splitlines()
-            for i, line in enumerate(lines):
-                while self.label_font.measure(line) > max_label_width and len(line) > 2:
-                    line = line[:-2] + "\u2026"
-                lines[i] = line
-            text = "\n".join(lines)
-            text_width = max(self.label_font.measure(line) for line in lines)
-            box_height = 23 + 17 * (len(lines) - 1)
-            total_width = text_width + 14
-            right = x >= width * 0.5
-            decorated = self.scene.mode == "nodes" and (self.scene.heat_active or node.id in self.information.parent_counts)
-            gap = max(12, .065 * self.scene.actors[node.id][0].GetScale()[0] * self.scene.height / (2 * self.scene.scale) + 16) if decorated else 12
-            shifts = [(gap, -25), (gap, 8), (gap, -49), (-total_width - gap, -25), (-total_width - gap, 8)]
-            if not right:
-                shifts = [(-total_width - gap, -25), (-total_width - gap, 8), (-total_width - gap, -49), (gap, -25), (gap, 8)]
-            placement = None
-            for dx, dy in shifts:
-                bx, by = x + dx, y + dy
-                box = (bx, by, bx + total_width, by + box_height)
-                if not (8 <= box[0] and box[2] <= width - 8 and 36 <= box[1] and box[3] < height - 82):
-                    continue
-                if any(not (box[2] + 4 < b[0] or box[0] - 4 > b[2] or box[3] + 4 < b[1] or box[1] - 4 > b[3]) for b in boxes):
-                    continue
-                placement = box
-                break
-            if placement is None:
-                continue
-            boxes.append(placement)
-            bx, by, ex, ey = placement
-            end_x = bx if bx > x else ex
-            self.canvas.create_line(x, y, end_x, (by + ey) / 2, fill=theme.GOLD if selected else "#456279", tags="overlay")
-            self.canvas.create_rectangle(bx, by, ex, ey, fill="#1b3044" if selected else "#101e2e",
-                                         outline="#9d8d69" if selected else "#2a4155", width=1, tags="overlay")
-            self.canvas.create_text(bx + 7, (by + ey) / 2, text=text, fill="#fff0ca" if selected else theme.TEXT,
-                                    font=self.label_font, anchor="w", tags="overlay")
-            self._label_hits.append((node.id, placement))
+        self.label_manager.draw(nodes, width, height)
 
     def _pick_at(self, x: float, y: float) -> str | None:
+        x0, y0, x1, y1 = self.compass.reserved_box
+        if x0 <= x <= x1 and y0 <= y <= y1:
+            return None
         for node_id, (x0, y0, x1, y1) in reversed(self._label_hits):
             if x0 <= x <= x1 and y0 <= y <= y1:
                 return node_id
         return self.scene.pick(x, y)
 
     def _press(self, event) -> str:
+        self.compass.cancel_animation()
         self._cancel_hover()
         self.canvas.focus_set()
         self._pressed = (event.x, event.y)
@@ -1462,6 +1457,7 @@ class AtlasApp:
                         self.place_at(*position)
         self._pressed = None
         self.canvas.configure(cursor="fleur")
+        self.request_render()
         return "break"
 
     def place_at(self, depth: int, slot: int) -> bool:
@@ -1531,11 +1527,13 @@ class AtlasApp:
         return self._zoom(steps)
 
     def _zoom(self, steps: float) -> str:
+        self.compass.cancel_animation()
         self.scene.zoom(steps)
         self.request_render()
         return "break"
 
     def _rotate_key(self, dx: float, dy: float) -> str:
+        self.compass.cancel_animation()
         self.scene.rotate(dx, dy)
         self.request_render()
         return "break"
@@ -1563,6 +1561,8 @@ class AtlasApp:
     def shutdown(self) -> None:
         """Release resources. Tests also use this without a confirmation dialog."""
         self._closed = True
+        self.label_manager.close()
+        self.navigation.close()
         self.history.close()
         self.updates.shutdown()
         for job in (self._render_job, self._hover_job):

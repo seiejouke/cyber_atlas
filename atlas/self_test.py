@@ -175,6 +175,63 @@ def run(app, report_path: Path) -> int:
         require(app.scene.focused_parent == parent.id and len(rings) == 1
                 and app.scene.concept_color(parent.id, parent.layer) == heat_color(4),
                 "Focused clusters retain total heat and a neutral parent ring with bundled VTK and Tk")
+        from .orientation import aligned_view, DEFAULT_YAW, DEFAULT_ELEVATION
+        from .view_settings import navigation_collapsed
+        from .label_layout import overlaps
+
+        def settle_view():
+            deadline = time.monotonic() + 4
+            while app.compass._job is not None and time.monotonic() < deadline:
+                pump()
+            if app.compass._job is not None:
+                raise AssertionError("Bundled compass animation did not finish")
+            for _ in range(4):
+                pump()
+
+        unchanged = app.path.read_bytes(), app.history.store.revisions()
+        view = app.scene.scale, tuple(app.scene.target), app.scene.focused_parent
+        for axis in "XYZ":
+            for sign in (1, -1):
+                app.compass.activate(axis)
+                settle_view()
+                if aligned_view(app.scene.yaw, app.scene.elevation) != (axis, sign):
+                    raise AssertionError(f"Bundled compass failed {axis} / {sign}")
+        require((app.scene.scale, tuple(app.scene.target), app.scene.focused_parent) == view,
+                "Bundled compass reaches all six signed axis views while preserving zoom, pan and cluster focus")
+        app.compass.activate("home")
+        settle_view()
+        require((app.scene.yaw, app.scene.elevation) == (DEFAULT_YAW, DEFAULT_ELEVATION)
+                and (app.path.read_bytes(), app.history.store.revisions()) == unchanged,
+                "Compass Home restores the angled view without writing atlas data or revisions")
+        nav = app.navigation
+        was_collapsed = nav.collapsed
+        nav.toggle()
+        pump()
+        require(navigation_collapsed(nav.settings_path) == nav.collapsed != was_collapsed
+                and (app.scene.scale, tuple(app.scene.target), app.scene.focused_parent) == view,
+                "Navigation retracts and saves its preference separately without changing the focused camera")
+        if nav.collapsed:
+            nav.toggle()
+        nav.slider._choose(0)
+        pump()
+        require(nav.slider.selected == app.scene.layer_filter == parent.layer
+                and app.filter_var.get() == app._layer_displays[parent.layer],
+                "Bundled layer slider filters the atlas and synchronizes the dropdown")
+        nav.all_button.invoke()
+        settle_view()
+        app.clusters.select_child(child.id)
+        settle_view()
+        child_box = app.label_manager.placements.get(f"nodes:{child.id}")
+        require(child_box is not None and not overlaps(child_box, nav.reserved_box)
+                and app._pick_at(round((child_box[0]+child_box[2])/2),
+                                 round((child_box[1]+child_box[3])/2)) == child.id,
+                "Bundled stable labels give the selected suborbital a clickable label outside the navigation panel")
+        app.clusters.parent_note()
+        if nav.collapsed != was_collapsed:
+            nav.toggle()
+        require(app.scene.layer_filter is None
+                and (app.path.read_bytes(), app.history.store.revisions()) == unchanged,
+                "Navigation and label interactions leave notes, suborbitals, information and history unchanged")
         saved_heat = app.path.read_bytes()
         write_atlas(export, app.document, backup=False)
         manager.color_mode.set("Layer colors")

@@ -129,7 +129,7 @@ class InformationManager:
             x, y, depth = scene.project(scene.node_anchor(node))
             if not (0 <= depth <= 1 and 0 < x < scene.width and 0 < y < scene.height):
                 continue
-            if scene.pick(x, y) != node.id:
+            if not scene.label_visible(node, x, y):
                 continue
             radius = max(7, .065 * actor.GetScale()[0] * scene.height / (2 * scene.scale) + 4)
             bounds = x-radius, y-radius, x+radius, y+radius

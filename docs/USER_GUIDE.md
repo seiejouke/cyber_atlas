@@ -12,11 +12,11 @@ For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
 
-On Linux x86_64, download `cyber-atlas_0.9.2_amd64.deb` for Ubuntu/Debian-based
+On Linux x86_64, download `cyber-atlas_0.9.3_amd64.deb` for Ubuntu/Debian-based
 desktops and install it with your package installer. Open **Cyber Atlas** from
 the application menu. Python, Tk and VTK are included.
 
-For other compatible Linux desktops, download `CyberAtlas-0.9.2-x86_64.AppImage`.
+For other compatible Linux desktops, download `CyberAtlas-0.9.3-x86_64.AppImage`.
 In the file's properties, allow it to run as a program, then open it. The AppImage
 is portable; it does not install an application-menu entry automatically.
 
@@ -52,6 +52,67 @@ require your choice. Offline or failed checks leave the application usable.
 
 Users of 0.7.1 or earlier need one manual upgrade to receive this update checker.
 The first implementation downloads the full package and upgrades it in place.
+
+## Orientation compass
+
+The **Navigation** panel in the viewport's upper-right corner groups the compass
+and the **Visible layer** slider. Choose **›** to retract the whole panel into
+the small **Nav** tab; choose that tab to reopen it. This keeps the current
+camera, zoom, layer filter, selected note and unsaved text. The application
+remembers whether the panel is open or retracted in `view-settings.json`,
+separately from your atlas, backups and saved-state history.
+
+Below the compass, click or drag the vertical slider to show one layer. Its
+stops are equally spaced, with the highest layer at the top, following your
+custom layer order. **All** shows every layer again. The slider and the existing
+layer dropdown stay synchronized, and protocol filtering continues to apply.
+The slider controls visibility; the note editor's **Layer** field controls where
+a node is saved. Hover a stop for its full name. With the slider focused, use
+**Up/Down**, **Home/End**, or **A** for all layers. Larger layer lists show fewer
+number labels to keep them readable; every stop and dropdown choice remains
+available. The panel adapts to shorter windows without shrinking the editor.
+
+The compass follows the camera as you
+rotate. Click **X** for a side view, **Y** for a front view, or **Z** to look
+straight down through the layers. Click the same axis again to see the opposite
+side; Z alternates between top and bottom. The active axis is highlighted and
+the viewport heading shows the signed direction, such as **SIDE VIEW / +X**.
+
+**Home** beneath the compass restores the default angled orientation. These
+short animated rotations preserve zoom, pan, filters and cluster focus. The
+existing **Reset view** button also resets zoom and pan. Dragging the atlas
+interrupts a rotation and returns to manual control. With the viewport or
+compass focused, **X**, **Y**, **Z** and **Home** also work from the keyboard.
+
+In the top and bottom views, different layers occupy the same circular
+footprint and can hide one another. Select one layer to inspect it; the compass
+never changes your filters automatically. Overlapping layer labels are hidden
+until you choose a layer. The key inside the viewport explains layer height,
+outward detail, angular slots, suborbital rings and selection corners.
+
+The read-only **History** viewer keeps its own independent compass. Camera changes never
+edit notes, change information heat or create saved revisions. The compass and retractable navigation panel are included in version 0.9.3.
+
+## Stable node labels
+
+The **Labels** checkbox still controls main-note labels. Labels remember their
+position relative to each node, so crossing the screen's centre no longer
+switches them to the other side. During rotation, pan and zoom, the labels
+follow their nodes. After a short pause, labels that need space settle into
+free positions. Wider placement searches can use longer connecting lines
+instead of dropping a label after a few nearby attempts.
+
+Selected and hovered concepts get space first, and suborbitals share the same
+layout as ordinary nodes. Partially obscured spheres retain labels when their
+rim is visible. Fully covered, off-screen or filtered-out concepts do not add
+ordinary labels. Selecting a note does not reveal a layer hidden by your filter.
+
+The layout avoids the navigation panel, layer captions and viewport controls.
+If a crowded view cannot fit every eligible label, **N labels hidden · zoom in
+for space** reports the limit. Zooming in, filtering to a layer or retracting
+Navigation makes more space available. Label positions and these camera changes
+stay outside your atlas JSON and saved-state history; notes and drafts are
+preserved. Stable labels are included in version 0.9.3.
 
 ## Orbital subconcepts
 

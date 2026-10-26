@@ -1,3 +1,3 @@
 """Cyber Atlas: a small, local-first spatial notebook."""
 
-__version__ = "0.9.2"
+__version__ = "0.9.3"
