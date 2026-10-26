@@ -43,5 +43,5 @@
   ],
   "passed": true,
   "checks_passed": 38,
-  "execution_mode": "Source interpreter; no packages built"
+  "execution_mode": "Source interpreter; see packaged-test-results.json for the frozen release checks"
 }

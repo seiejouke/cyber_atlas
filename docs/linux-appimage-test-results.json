@@ -34,11 +34,15 @@
     "Balanced defaults to sixteen equally spaced counts; collapsed parents keep their suborbital ring",
     "Focused clusters retain total heat and a neutral parent ring with bundled VTK and Tk",
     "Format-10 export preserves entries, notes and positions; color changes never write atlas data",
+    "Local SQLite history records full atlas revisions with the bundled runtime",
+    "Read-only history browser opens with its own bundled 3D scene",
+    "Browsing earlier saved states preserves the current atlas and creates no revisions",
+    "History ZIP export contains every revision and the current portable atlas",
     "Editor fits the minimum window size",
     "No Tk callback errors"
   ],
   "passed": true,
-  "checks_passed": 33,
-  "app_version": "0.9.1",
+  "checks_passed": 37,
+  "app_version": "0.9.2",
   "paths_redacted": true
 }

@@ -12,11 +12,11 @@ For the ZIP version, extract the whole archive and open `CyberAtlas.exe`.
 Keep its `_internal` folder beside it. Both versions use the same saved atlas
 location described below; updating or uninstalling preserves your atlas.
 
-On Linux x86_64, download `cyber-atlas_0.9.1_amd64.deb` for Ubuntu/Debian-based
+On Linux x86_64, download `cyber-atlas_0.9.2_amd64.deb` for Ubuntu/Debian-based
 desktops and install it with your package installer. Open **Cyber Atlas** from
 the application menu. Python, Tk and VTK are included.
 
-For other compatible Linux desktops, download `CyberAtlas-0.9.1-x86_64.AppImage`.
+For other compatible Linux desktops, download `CyberAtlas-0.9.2-x86_64.AppImage`.
 In the file's properties, allow it to run as a program, then open it. The AppImage
 is portable; it does not install an application-menu entry automatically.
 
@@ -94,7 +94,7 @@ example. See the [implemented cluster screenshots](../README.md#orbital-clusters
 ## Information heat
 
 Automatic main-note counts, linear presets and persistent parent rings are
-included in Cyber Atlas 0.9.1 for Windows and Linux. These display changes do
+included in Cyber Atlas 0.9.2 for Windows and Linux. These display changes do
 not require a new atlas file format or rewriting existing notes. Format-10
 files require Cyber Atlas 0.9.0 or newer.
 
@@ -107,8 +107,9 @@ contribute nothing. Editing the usual main note does not add another item.
 
 **Heat range** starts at **B - Balanced (1-16)**. Compact reaches red at 9,
 Balanced at 16, and Extended at 32. Counts are equally spaced and every item
-changes the color until the selected ceiling. Blue transitions to cyan, through
-pale neutral tones into yellow, then orange and red; there is no green band.
+changes the color until the selected ceiling. Blue transitions to cyan, then
+switches directly to yellow, followed by orange and red. There is no white
+or green band.
 Above the ceiling the color stays red and the exact count remains visible.
 Changing filters never changes the counts or scale. The range and color choices
 last for the current session.
@@ -153,13 +154,12 @@ Information entries are included in JSON exports and backups. Deleting a
 concept removes its owned entries; deleting a cluster includes its children
 and their entries. The [main-note example atlas](../examples/main_note_heat_atlas.json)
 contains illustrative information for exploring the display.
-See the [release verification report](main-note-heat-verification.json).
+See the [release verification report](history-verification.json).
 
-## Saved-state history (source preview)
+## Saved-state history
 
-History is implemented in the current source and awaits a packaged update.
-The 0.9.1 installers do not include it. The source also removes the pale neutral
-heat transition, using only blue, cyan, yellow, orange and red.
+History is included in Cyber Atlas 0.9.2 for Windows and Linux. Its heat
+palette uses only blue, cyan, yellow, orange and red, without white or green.
 
 Click **History** in the top bar to browse dated saved states. The browser has
 its own read-only 3D scene and inspector: choose a revision, then select a node
@@ -204,9 +204,9 @@ older application are recorded as observed states when reopened, without
 inventing timestamps for intermediate edits. Continue to use one application
 window per atlas.
 
-![Actual source history browser with an earlier note and its independent suborbitals](history-browser.png)
+![History browser with an earlier note and its independent suborbitals](history-browser.png)
 
-See the [source verification report](history-verification.json). Playback,
+See the [release verification report](history-verification.json). Playback,
 animated transitions and a timeline scrubber will build on these revisions.
 
 ## First use

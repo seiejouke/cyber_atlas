@@ -1,10 +1,9 @@
 {
-  "status": "Implemented in source; awaiting explicit packaging approval",
+  "status": "Published Windows and Linux release",
   "date": "2026-10-26",
-  "base_release_version": "0.9.1",
   "atlas_file_version": 10,
   "history_file_version": 1,
-  "packages_built": false,
+  "packages_built": true,
   "packaging_requires_explicit_approval": true,
   "windows_core_tests_passed": 215,
   "windows_gui_workflow_checks_passed": 132,
@@ -12,8 +11,9 @@
   "windows_source_runtime_checks_passed": 38,
   "linux_history_core_tests_passed": 25,
   "tested_platforms": [
-    "Windows desktop with Python 3.12.3, Tk 8.6 and VTK 9.6.2",
-    "Ubuntu under WSL: 25 history core tests"
+    "Windows desktop",
+    "Ubuntu 22.04 CI with Xvfb/Mesa",
+    "Ubuntu 24.04.2 under WSLg"
   ],
   "gui_report": "history-full-gui-results.json",
   "focused_report": "history-gui-results.json",
@@ -27,12 +27,24 @@
   "preview": "Separate read-only VTK scene; no writes or changes to the active document, backup, camera or heat range",
   "restore": "New revision appended with intervening history retained",
   "archive": "Atomic ZIP export of current JSON, individually importable revision JSON files and lineage/timestamp/change metadata",
-  "source_palette_correction": "Saturated blue, cyan, yellow, orange and red; no white or green; direct cyan-to-yellow boundary",
   "limitations": [
     "Automatic playback and timeline scrubbing are not implemented",
     "Whole-history archive import is not implemented",
     "Use one application window per atlas",
     "Revisions are not automatically pruned",
-    "Packaged runtime and Linux GUI checks await packaging approval"
-  ]
+    "No physical clean Windows or additional Linux distributions tested"
+  ],
+  "palette": "Saturated blue, cyan, yellow, orange and red; no white or green; direct cyan-to-yellow boundary",
+  "app_version": "0.9.2",
+  "source_commit": "d07c2073f3e17f7ff66906000d24d5dd47c0a1d2",
+  "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.2",
+  "previous_release_version": "0.9.1",
+  "windows_runtime_checks": 38,
+  "linux_runtime_checks": 37,
+  "windows_updater_lifecycle_checks": 7,
+  "linux_installer_lifecycle_checks": 4,
+  "linux_workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40296203771",
+  "packaged_runtime_report": "packaged-test-results.json",
+  "windows_updater_report": "windows-updater-test-results.json",
+  "linux_build_report": "linux-build-report.json"
 }

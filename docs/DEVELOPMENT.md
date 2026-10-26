@@ -167,9 +167,9 @@ also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, orbital relationships
 and revision history. All **215 core tests and 132 GUI workflow checks passed** on
 Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2. The 25 history tests also passed
-under Ubuntu, and the source application passed 38 runtime checks on Windows.
-See the [history source verification](history-verification.json). Released 0.9.1
-package reports remain separate in `docs/`; no packages were built for this preview.
+under Ubuntu. Packaged applications passed 38 runtime checks on Windows and
+37 per format on Linux. See the [history release verification](history-verification.json)
+and the packaged runtime/installation reports in `docs/`.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
 configuration are included.
@@ -230,11 +230,10 @@ main-note text copies stay saved but do not
 double-count the main note. Spatial adjacency and reference guides are not
 inputs. Numeric totals have no heat ceiling; only the color saturates.
 
-The current source corrects the palette in the released 0.9.1 packages:
 `heat_color` uses saturated blue, cyan, yellow, orange and red anchors, with
 no white or green. Shades interpolate within these bands; cyan switches
 directly to yellow to avoid introducing an unrequested color. Counts remain
-equally spaced. This correction awaits packaging. Presets rescale that same
+equally spaced. Presets rescale that same
 palette to 9, 16 or 32, with Balanced 16 as the initial choice. `Scene` caches
 metrics on document changes independently
 of filtering. Overview and focus both use total-information fills.
@@ -257,13 +256,13 @@ Core and GUI checks cover automatic counts, saved-copy compatibility, exact
 totals, green-free gradual colors, every equally spaced tick, all three presets,
 ring persistence and removal, filtering, failed saves, export/import and minimum
 windows. Runtime self-checks also cover main notes, the default linear scale
-and collapsed-parent rings. Version 0.9.1 includes these improvements in the
-Windows installer and ZIP and the Linux Debian package and AppImage. Windows
-passed 34 bundled runtime checks; Linux passed 33 per format. An isolated real
-0.9.0-to-0.9.1 Windows update passed six lifecycle checks, preserving notes,
-suborbitals and saved information records byte for byte.
+and collapsed-parent rings. Version 0.9.2 includes these improvements and
+saved-state history in Windows and Linux packages. Windows passed 38 bundled
+runtime checks; Linux passed 37 per format. An isolated real 0.9.1-to-0.9.2
+Windows update passed seven lifecycle checks, preserving the atlas byte for
+byte and recording the current state and valid previous backup in history.
 
-## Saved-state history architecture (source preview)
+## Saved-state history architecture
 
 `history.HistoryStore` stores compressed, complete format-10 JSON snapshots in
 an adjacent `.history.sqlite3` database. History schema 1 has a stable atlas ID,
@@ -364,8 +363,8 @@ installer check is skipped.
 Outputs in `dist/`:
 
 - `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
-- `CyberAtlas-0.9.1-windows-x64.zip`: complete folder for ZIP distribution.
-- `CyberAtlas-0.9.1-Setup.exe`: installer for the current Windows account.
+- `CyberAtlas-0.9.2-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.9.2-Setup.exe`: installer for the current Windows account.
 - `SHA256SUMS.txt`: hashes for the distributable files.
 - `packaged-test-results.json`: results from the bundled executable.
 - `installed-test-results.json`: results from running the installed executable.
@@ -406,8 +405,8 @@ Cyber Atlas installation. A normal local build does not install the package.
 
 Outputs and reports are in `dist/linux/`:
 
-- `cyber-atlas_0.9.1_amd64.deb`
-- `CyberAtlas-0.9.1-x86_64.AppImage`
+- `cyber-atlas_0.9.2_amd64.deb`
+- `CyberAtlas-0.9.2-x86_64.AppImage`
 - `SHA256SUMS-linux.txt`
 - `linux-build-report.json` and runtime/installation test reports
 

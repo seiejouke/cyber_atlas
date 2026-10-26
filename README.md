@@ -14,15 +14,15 @@ See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [develo
 
 ## Install Cyber Atlas
 
-Choose a package for **version 0.9.1**. Each **Download** link downloads the selected file.
+Choose a package for **version 0.9.2**. Each **Download** link downloads the selected file.
 
 | Platform | Package | Installation |
 | --- | --- | --- |
-| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.1/CyberAtlas-0.9.1-Setup.exe)** | Open it and follow the installer. |
-| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.1/cyber-atlas_0.9.1_amd64.deb)** | Open it with your software installer. |
-| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.1/CyberAtlas-0.9.1-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
+| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.2/CyberAtlas-0.9.2-Setup.exe)** | Open it and follow the installer. |
+| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.2/cyber-atlas_0.9.2_amd64.deb)** | Open it with your software installer. |
+| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.2/CyberAtlas-0.9.2-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
 
-See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.1) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
+See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.2) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
 
 ---
 
@@ -44,7 +44,7 @@ Try the [editable orbital-cluster example](examples/orbital_cluster_atlas.json).
 
 ## Information heat
 
-In **Nodes**, choose **Color → Information heat**. Each saved concept's main note counts automatically, and its suborbitals add their own information to the parent. **Balanced (1–16)** is the initial preset; every additional item changes the color until red, using blue → cyan → pale neutral → yellow → orange → red with equally spaced counts. Compact and Extended presets are also available. A neutral ring and count badge identify parents even when their suborbitals are collapsed.
+In **Nodes**, choose **Color → Information heat**. Each saved concept's main note counts automatically, and its suborbitals add their own information to the parent. **Balanced (1–16)** is the initial preset; every additional item changes the color until red, using blue → cyan → yellow → orange → red with equally spaced counts. Compact and Extended presets are also available. A neutral ring and count badge identify parents even when their suborbitals are collapsed.
 
 ![Cyber Atlas interface with automatic main-note heat, Balanced preset and collapsed-parent indicators](docs/main-note-heat-overview.png)
 
@@ -52,11 +52,7 @@ In **Nodes**, choose **Color → Information heat**. Each saved concept's main n
 
 See the [guide](docs/USER_GUIDE.md#information-heat) or try the [main-note heat example](examples/main_note_heat_atlas.json). Existing notes, suborbitals and additional records are preserved; exact copies made by the old main-note copy action count once. No file-format migration is needed for this display change.
 
-## Saved-state history — source preview
-
-**Implemented in source; awaiting a packaged update.** The current 0.9.1 downloads
-do not include History. The source also corrects the heat palette to use only
-blue → cyan → yellow → orange → red, without the pale neutral transition.
+## Saved-state history
 
 Choose **History** to browse saved atlas states in a separate read-only 3D view,
 inspect earlier notes and deleted suborbitals, or restore a version as a new save.
@@ -64,10 +60,10 @@ Recording starts with the existing atlas and a valid previous backup, then captu
 successful content changes with timestamps. **Export with history** keeps all
 states and their change summaries in a ZIP. Automated timeline playback remains planned.
 
-![Actual source History browser showing an earlier TCP explanation and suborbitals, saved revisions, change summary and restoration controls](docs/history-browser.png)
+![History browser showing an earlier TCP explanation and suborbitals, saved revisions, change summary and restoration controls](docs/history-browser.png)
 
-See the [history guide](docs/USER_GUIDE.md#saved-state-history-source-preview)
-and [source verification](docs/history-verification.json).
+See the [history guide](docs/USER_GUIDE.md#saved-state-history)
+and [release verification](docs/history-verification.json).
 
 ## Project scope and vision
 
@@ -88,7 +84,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.9.1 · **Updated:** 26 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.9.2 · **Updated:** 26 October 2026
 
 ### Product vision
 
@@ -263,7 +259,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Released status checked against v0.9.1; source previews are marked separately, updated 26 October 2026. Planned capabilities below describe the intended system.*
+*Implementation status checked against v0.9.2 on 26 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -282,7 +278,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Node-associated question bank and assessment history | **Planned** |
 | Source-aware integration and typed relationships | **Planned** |
 | Adaptive simplification and decomposition suggestions | **Planned** |
-| Saved-state recording, read-only history browsing and restore | **Implemented in source; awaiting a packaged update** |
+| Saved-state recording, read-only history browsing and restore | **Implemented** |
 | Animated timeline playback and scrubbing | **Planned** |
 | Interactive comparative study notes | **Planned** |
 | Orbital subconcept clusters | **Implemented** — one ring of eight stable positions, independent notes, Nodes expansion and Blocks child list |
@@ -300,5 +296,5 @@ The ultimate objective is not to maximize the quantity of notes. It is to help l
 ---
 
 **Project:** [seiejouke/cyber_atlas](https://github.com/seiejouke/cyber_atlas)  
-**Reference release:** [v0.9.1](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.1)\
+**Reference release:** [v0.9.2](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.2)\
 **Document:** Conceptual product specification; not a claim of scientific efficacy or completed functionality.
