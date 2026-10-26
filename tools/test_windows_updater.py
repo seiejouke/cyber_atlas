@@ -6,6 +6,7 @@ portable Windows release. The real Cyber Atlas installation is never replaced.
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 import ctypes
 from ctypes import wintypes
 import hashlib
@@ -24,6 +25,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from atlas import __version__, updates
+from atlas.history import HistoryStore
 from atlas.model import InformationEntry, Subconcept, example_atlas
 from atlas.storage import write_atlas
 from tools.build_windows import check_executable, find_compiler
@@ -72,7 +74,7 @@ def close_window(pid):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--previous-zip", type=Path, required=True)
-    parser.add_argument("--previous-version", default="0.9.0")
+    parser.add_argument("--previous-version", default="0.9.1")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("Run this integration check on Windows.")
@@ -120,7 +122,9 @@ def main():
                 fixture = fixture.with_entry(InformationEntry("upgrade-main-copy", owner.id, owner.name, owner.notes))
                 fixture = fixture.with_entry(InformationEntry("upgrade-child-copy", child.id, child.name, child.notes))
                 fixture = fixture.with_entry(InformationEntry("upgrade-extra", child.id, "Additional observation", "Distinct saved information"))
-            write_atlas(user_data, fixture, backup=False)
+            previous_notes = fixture.with_node(replace(fixture.nodes[0], notes="Earlier saved upgrade notes"))
+            write_atlas(user_data, previous_notes, backup=False)
+            write_atlas(user_data, fixture)
             if args.previous_version in ("0.7.1", "0.7.2", "0.8.0", "0.8.1"):
                 previous_data = json.loads(user_data.read_text(encoding="utf-8"))
                 previous_data.pop("information_entries", None)
@@ -130,6 +134,7 @@ def main():
                     previous_data.pop("subconcepts", None)
                 user_data.write_text(json.dumps(previous_data), encoding="utf-8")
             saved = user_data.read_bytes()
+            saved_backup = user_data.with_suffix(".json.bak").read_bytes()
             try:
                 subprocess.run([str(installers[0]), "/CURRENTUSER", "/VERYSILENT", "/SUPPRESSMSGBOXES", "/SP-",
                     "/NORESTART", "/NOICONS", "/TASKS=", "/NOCLOSEAPPLICATIONS", f"/DIR={application}"], check=True)
@@ -194,6 +199,13 @@ def main():
                         kernel.CloseHandle(handle)
                     assert user_data.read_bytes() == saved
                     checks.append("The updated app reopens with the original atlas path; closing it preserves notes, subconcepts and information records byte for byte")
+                    history = HistoryStore(user_data)
+                    assert history.path.is_file(), "The upgraded app did not begin recording history"
+                    revisions = history.revisions()
+                    assert len(revisions) == 2 and [item.kind for item in revisions] == ["baseline", "backup"]
+                    assert history.load(revisions[0].id) == fixture and history.load(revisions[1].id) == previous_notes
+                    assert user_data.with_suffix(".json.bak").read_bytes() == saved_backup
+                    checks.append("The upgraded app starts history with the unchanged current atlas and valid previous backup, without inventing earlier dates")
                     report = check_executable(executable, directory / "updated-runtime.json", directory)
                     result["updated_runtime_checks"] = report["checks_passed"]
                     checks.append(f"The upgraded executable passes {report['checks_passed']} frozen runtime checks")
@@ -212,6 +224,7 @@ def main():
                 if uninstaller.is_file():
                     subprocess.run([str(uninstaller), "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART"], check=True, timeout=60)
             assert registration(test_id) is None and user_data.read_bytes() == saved
+            assert history.path.is_file() and history.load(revisions[0].id) == fixture
             assert registration(updates.APP_ID) == baseline
             checks.append("Uninstall removes the test registration, preserves the atlas, and leaves the real Cyber Atlas installation unchanged")
         result["passed"] = True
