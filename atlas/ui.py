@@ -74,6 +74,8 @@ class AtlasApp:
         from .information_ui import InformationManager
         self.information = InformationManager(self)
         self.scene.set_information(document)
+        from .history_ui import HistoryManager
+        self.history = HistoryManager(self)
         self._set_status(f"Local atlas  /  {self.path}")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self.root.after(80, self.request_render)
@@ -113,7 +115,9 @@ class AtlasApp:
         self.templates_button.grid(row=0, column=3, rowspan=2, padx=(0, 8))
         ttk.Button(header, text="Reset view", command=self.reset_view).grid(row=0, column=4, rowspan=2)
         self.updates_button = ttk.Button(header, text="Updates", command=lambda: self.updates.open())
-        self.updates_button.grid(row=0, column=5, rowspan=2, padx=(8, 0))
+        self.history_button = ttk.Button(header, text="History", command=lambda: self.history.open())
+        self.history_button.grid(row=0, column=5, rowspan=2, padx=(8, 0))
+        self.updates_button.grid(row=0, column=6, rowspan=2, padx=(8, 0))
 
         content = ttk.Frame(outer)
         content.grid(row=1, column=0, sticky="nsew")
@@ -405,6 +409,7 @@ class AtlasApp:
         self.template_form.pack(fill="both", expand=True)
         self.design_button.state(["disabled"])
         self.empty_button.state(["disabled"])
+        self.history_button.state(["disabled"])
         self.blocks_button.state(["disabled"])
         self.nodes_button.state(["disabled"])
         self.template_search_var.set("")
@@ -455,6 +460,7 @@ class AtlasApp:
         self.editor_form.pack(fill="both", expand=True)
         self.design_button.state(["!disabled"])
         self.empty_button.state(["!disabled"])
+        self.history_button.state(["!disabled"])
         self.blocks_button.state(["!disabled"])
         self.nodes_button.state(["!disabled"])
 
@@ -530,7 +536,7 @@ class AtlasApp:
         ):
             return False
         self.document = original
-        if not self._commit(template.atlas):
+        if not self._commit(template.atlas, kind="template", summary=f"Applied template: {template.name}"):
             # Keep the preview active after a failed write.
             self.document = template.atlas
             return False
@@ -1010,11 +1016,11 @@ class AtlasApp:
         self._load_editor(node)
         return True
 
-    def _commit(self, document: Atlas) -> bool:
+    def _commit(self, document: Atlas, *, kind="save", summary=None, error_parent=None) -> bool:
         try:
-            write_atlas(self.path, document)
+            result = self.history.store.save(document, expected=self.document, kind=kind, summary=summary, writer=write_atlas)
         except (OSError, AtlasError) as exc:
-            messagebox.showerror("Could not save the atlas", f"No changes were committed.\n\n{exc}", parent=self.root)
+            messagebox.showerror("Could not save the atlas", f"No changes were committed.\n\n{exc}", parent=error_parent or self.root)
             return False
         design_changed = self.document.design != document.design
         self.document = document
@@ -1028,7 +1034,9 @@ class AtlasApp:
         self.scene.set_nodes(document.nodes)
         self.scene.set_subconcepts(document.subconcepts)
         self.scene.set_information(document)
-        self._set_status(f"Saved {datetime.now():%H:%M:%S}  /  {self.path}")
+        self._set_status(f"{'Saved' if result.changed else 'Already saved'} {datetime.now():%H:%M:%S}  /  {self.path}")
+        if result.warning:
+            messagebox.showwarning("Saved atlas; history needs recovery", result.warning, parent=error_parent or self.root)
         return True
 
     def save_node(self) -> bool:
@@ -1110,7 +1118,7 @@ class AtlasApp:
                 parent=self.root,
             ):
                 return False
-            if not self._commit(Atlas(design=self.document.design)):
+            if not self._commit(Atlas(design=self.document.design), kind="reset", summary="Started an empty atlas"):
                 return False
         # Repeating this action on an empty document must preserve its backup.
         self.filter_var.set("All layers")
@@ -1165,7 +1173,7 @@ class AtlasApp:
             return
         if not messagebox.askyesno("Replace the current atlas?", f"Load {len(candidate.nodes)} volumes from this file?\n\nThis replaces the current atlas. A backup of the previous atlas is retained next to the local data file.", parent=self.root):
             return
-        if self._commit(candidate):
+        if self._commit(candidate, kind="import", summary="Imported atlas from JSON"):
             self.filter_var.set("All layers")
             self.protocol_filter_var.set(self._all_protocols)
             self.scene.set_layer_filter(None)
@@ -1555,6 +1563,7 @@ class AtlasApp:
     def shutdown(self) -> None:
         """Release resources. Tests also use this without a confirmation dialog."""
         self._closed = True
+        self.history.close()
         self.updates.shutdown()
         for job in (self._render_job, self._hover_job):
             if job is not None:

@@ -6,5 +6,6 @@ __pycache__/
 build/
 dist/
 *.bak
+*.history.sqlite3*
 atlas.json
 !examples/*.json

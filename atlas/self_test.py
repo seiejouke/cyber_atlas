@@ -186,6 +186,26 @@ def run(app, report_path: Path) -> int:
                 and reopened.get(parent.id) == parent and reopened.child(child.id) == child
                 and app.path.read_bytes() == saved_heat and not app.scene.heat_active,
                 "Format-10 export preserves entries, notes and positions; color changes never write atlas data")
+        history = app.history
+        revisions = history.store.revisions()
+        require(len(revisions) > 1 and history.store.load(revisions[0].id) == app.document,
+                "Local SQLite history records full atlas revisions with the bundled runtime")
+        saved_history_atlas = app.path.read_bytes()
+        require(history.open(), "Read-only history browser opens with its own bundled 3D scene")
+        pump()
+        history.step(1)
+        pump()
+        require(history.notes.cget("state") == "disabled" and app.path.read_bytes() == saved_history_atlas
+                and history.store.revisions() == revisions,
+                "Browsing earlier saved states preserves the current atlas and creates no revisions")
+        history.close()
+        archive = app.path.parent / "history-self-test.zip"
+        history.store.export(archive)
+        import zipfile
+        with zipfile.ZipFile(archive) as bundle:
+            manifest = json.loads(bundle.read("history.json"))
+            require(len(manifest["revisions"]) == len(revisions) and "atlas.json" in bundle.namelist(),
+                    "History ZIP export contains every revision and the current portable atlas")
         root = app.root
         root.geometry("1020x780")
         pump()

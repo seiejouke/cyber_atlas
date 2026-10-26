@@ -52,6 +52,23 @@ In **Nodes**, choose **Color → Information heat**. Each saved concept's main n
 
 See the [guide](docs/USER_GUIDE.md#information-heat) or try the [main-note heat example](examples/main_note_heat_atlas.json). Existing notes, suborbitals and additional records are preserved; exact copies made by the old main-note copy action count once. No file-format migration is needed for this display change.
 
+## Saved-state history — source preview
+
+**Implemented in source; awaiting a packaged update.** The current 0.9.1 downloads
+do not include History. The source also corrects the heat palette to use only
+blue → cyan → yellow → orange → red, without the pale neutral transition.
+
+Choose **History** to browse saved atlas states in a separate read-only 3D view,
+inspect earlier notes and deleted suborbitals, or restore a version as a new save.
+Recording starts with the existing atlas and a valid previous backup, then captures
+successful content changes with timestamps. **Export with history** keeps all
+states and their change summaries in a ZIP. Automated timeline playback remains planned.
+
+![Actual source History browser showing an earlier TCP explanation and suborbitals, saved revisions, change summary and restoration controls](docs/history-browser.png)
+
+See the [history guide](docs/USER_GUIDE.md#saved-state-history-source-preview)
+and [source verification](docs/history-verification.json).
+
 ## Project scope and vision
 
 This section contains the complete illustrated design philosophy. The current
@@ -71,7 +88,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.9.1 · **Updated:** 25 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.9.1 · **Updated:** 26 October 2026
 
 ### Product vision
 
@@ -246,7 +263,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.9.1 on 25 October 2026. Planned capabilities below describe the intended system.*
+*Released status checked against v0.9.1; source previews are marked separately, updated 26 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -265,7 +282,8 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Node-associated question bank and assessment history | **Planned** |
 | Source-aware integration and typed relationships | **Planned** |
 | Adaptive simplification and decomposition suggestions | **Planned** |
-| Historical playback and timeline | **Planned** |
+| Saved-state recording, read-only history browsing and restore | **Implemented in source; awaiting a packaged update** |
+| Animated timeline playback and scrubbing | **Planned** |
 | Interactive comparative study notes | **Planned** |
 | Orbital subconcept clusters | **Implemented** — one ring of eight stable positions, independent notes, Nodes expansion and Blocks child list |
 

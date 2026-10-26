@@ -115,6 +115,8 @@ cyber_atlas/
     design_draft.py       Temporary empty lists and pending block assignments
     geometry.py           Explicit slot/span -> closed curved meshes
     storage.py            JSON, atomic writes and a previous-version backup
+    history.py            Compressed SQLite revisions, change summaries and save recovery
+    history_ui.py         Separate read-only scene, revision browsing, restore and ZIP export
     scene.py              VTK rendering, camera and surface picking
     theme.py              Dark colors, widget styles and aligned position slider
     ui.py                 Window, editor and interaction handling
@@ -151,7 +153,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The current source includes **190 core tests** covering chosen angular
+The current source includes **215 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -162,10 +164,12 @@ design editing, view switching, JSON import/export and unsaved drafts. Movement
 checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
-self-test, release validation, verified downloads, safe update handoffs, and orbital relationships. All **190 core tests and 121 GUI workflow checks passed** on Windows with Python
-3.12.3, Tk 8.6 and VTK 9.6.2. The release verification report is
-[`main-note-heat-verification.json`](main-note-heat-verification.json); the
-packaged-release reports remain separate in `docs/`.
+self-test, release validation, verified downloads, safe update handoffs, orbital relationships
+and revision history. All **215 core tests and 132 GUI workflow checks passed** on
+Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2. The 25 history tests also passed
+under Ubuntu, and the source application passed 38 runtime checks on Windows.
+See the [history source verification](history-verification.json). Released 0.9.1
+package reports remain separate in `docs/`; no packages were built for this preview.
 
 The minimum window size is 1020 x 780. Source code and Windows packaging
 configuration are included.
@@ -226,10 +230,13 @@ main-note text copies stay saved but do not
 double-count the main note. Spatial adjacency and reference guides are not
 inputs. Numeric totals have no heat ceiling; only the color saturates.
 
-`heat_color` interpolates linearly through fixed blue, cyan, neutral, yellow,
-orange and red anchors. The neutral stop prevents a green hue between cyan
-and yellow. Presets rescale that same palette to 9, 16 or 32, with Balanced 16
-as the initial choice. `Scene` caches metrics on document changes independently
+The current source corrects the palette in the released 0.9.1 packages:
+`heat_color` uses saturated blue, cyan, yellow, orange and red anchors, with
+no white or green. Shades interpolate within these bands; cyan switches
+directly to yellow to avoid introducing an unrequested color. Counts remain
+equally spaced. This correction awaits packaging. Presets rescale that same
+palette to 9, 16 or 32, with Balanced 16 as the initial choice. `Scene` caches
+metrics on document changes independently
 of filtering. Overview and focus both use total-information fills.
 
 The Tk overlay draws neutral parent rings and count badges before labels.
@@ -255,6 +262,45 @@ Windows installer and ZIP and the Linux Debian package and AppImage. Windows
 passed 34 bundled runtime checks; Linux passed 33 per format. An isolated real
 0.9.0-to-0.9.1 Windows update passed six lifecycle checks, preserving notes,
 suborbitals and saved information records byte for byte.
+
+## Saved-state history architecture (source preview)
+
+`history.HistoryStore` stores compressed, complete format-10 JSON snapshots in
+an adjacent `.history.sqlite3` database. History schema 1 has a stable atlas ID,
+UUID revision IDs, increasing sequence numbers, parent links, UTC recording
+times, application/data-format versions, content hashes and structured changes
+with affected entity/concept IDs. Snapshot loading bounds decompression and
+checks hashes before model validation. Existing atlas JSON needs no migration.
+
+`AtlasApp._commit` routes content saves through the recorder, including the
+cluster, entry and design editors. Exports and session view changes bypass it.
+Identical content is a no-op. A changed save commits a hidden pending snapshot,
+uses the existing atomic JSON writer, then confirms the revision. Startup and
+History opening reconcile pending content against the authoritative JSON:
+completed replacements are confirmed; failed replacements are discarded.
+History preparation failure prevents the JSON write; a failure confirming an
+already saved atlas returns success with a recovery warning. Saves reject a
+stale document when a different atlas state is found on disk.
+
+Initial recording observes the current state and, if valid and different, the
+previous backup without claiming original save/creation dates. Later changes
+from older applications become observed external revisions. Revision order
+uses sequence numbers rather than wall-clock sorting. Keep the existing
+one-window-per-atlas restriction; this is not a multi-writer transaction system.
+
+`history_ui.HistoryManager` renders a separate VTK scene in a modal browser.
+It never replaces the active in-memory document for preview. Navigation,
+inspection and heat/view controls are read-only, with a fixed inherited heat
+range. Restoration calls the ordinary save pipeline with a restore milestone.
+ZIP export reads a consistent history transaction and writes each state as
+portable JSON with a lineage/timestamp manifest. A temporary archive protects
+an existing export from write failure. Whole-history import and automated
+timeline playback are deferred; neither is required to begin recording now.
+
+On Windows, run `python tools/capture_history.py` for an actual browser screenshot with
+disposable example data. The focused checks are in `tests/history_view_checks.py`
+and run as part of `tests/smoke_ui.py`; core crash/recovery coverage is in
+`tests/test_history.py`. No history retention policy silently removes revisions.
 
 ## Update distribution
 

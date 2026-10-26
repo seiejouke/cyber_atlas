@@ -155,6 +155,60 @@ and their entries. The [main-note example atlas](../examples/main_note_heat_atla
 contains illustrative information for exploring the display.
 See the [release verification report](main-note-heat-verification.json).
 
+## Saved-state history (source preview)
+
+History is implemented in the current source and awaits a packaged update.
+The 0.9.1 installers do not include it. The source also removes the pale neutral
+heat transition, using only blue, cyan, yellow, orange and red.
+
+Click **History** in the top bar to browse dated saved states. The browser has
+its own read-only 3D scene and inspector: choose a revision, then select a node
+or suborbital to read its saved notes and additional information. **Previous**
+and **Next** step through revisions. You can rotate, zoom, switch Nodes/Blocks
+and toggle heat in Nodes; the heat range stays fixed at the main window's chosen
+preset. Browsing does not save, replace your atlas, alter its backup or move
+the main window's camera. **Return to present** closes the browser.
+
+**Restore this version** asks for confirmation and saves the selected state
+as a new revision. Every intervening state remains available. Unsaved notes
+receive the usual Save/Discard/Cancel prompt before entering History.
+
+Recording begins with the current atlas. A valid, different `.bak` is also
+preserved as a previous state when history starts. Existing concept creation
+dates and the backup's original save date are unknown; displayed timestamps
+mark when these states were recorded. Later successful content saves capture
+notes, positions, suborbitals, information records and design changes. Imports,
+templates, Empty atlas and restoration receive milestone summaries. Unchanged
+saves, unsaved typing and view changes do not create revisions. Stored UTC
+times display in your local timezone; revision order remains stable if your
+computer's clock changes.
+
+History stays beside the active JSON as `atlas.json.history.sqlite3` (or beside
+the filename selected with `--file`). The browser shows its size. Revisions
+are compressed full snapshots and are not automatically deleted. History
+retains earlier note text even after it is edited or deleted from the current
+atlas. Keep the history file with the atlas when backing up the working files.
+The existing `.bak` recovery and format-10 JSON remain available.
+
+**Export with history** writes a ZIP containing `atlas.json`, a `revisions`
+folder of independently importable JSON states, and `history.json` with dates,
+revision IDs, lineage and change summaries. Extract a desired state and use
+**Import JSON** to make it a new saved state. Ordinary **Export JSON** contains
+only the current atlas. This first version does not import a complete history
+archive into the revision database.
+
+Interrupted saves are reconciled when history reopens. If history cannot be
+recorded, saving stops before replacing the atlas; a saved atlas whose history
+confirmation was interrupted receives a recovery warning. Changes made by an
+older application are recorded as observed states when reopened, without
+inventing timestamps for intermediate edits. Continue to use one application
+window per atlas.
+
+![Actual source history browser with an earlier note and its independent suborbitals](history-browser.png)
+
+See the [source verification report](history-verification.json). Playback,
+animated transitions and a timeline scrubber will build on these revisions.
+
 ## First use
 
 The first launch creates a local atlas containing the 14 starter notes from

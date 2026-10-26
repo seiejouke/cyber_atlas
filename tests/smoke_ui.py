@@ -30,6 +30,7 @@ from update_view_checks import check_updates
 from cluster_view_checks import check_clusters
 from connection_view_checks import check_connections
 from information_view_checks import check_information
+from history_view_checks import check_history
 
 
 def pump(root, steps=5):
@@ -1054,6 +1055,7 @@ def main(report_path=None):
             check_updates(root, app, path, pump, checks)
             check_clusters(root, app, path, pump, checks)
             check_information(root, app, path, pump, checks)
+            check_history(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)
@@ -1062,6 +1064,8 @@ def main(report_path=None):
             assert app.protocol_filter_box.winfo_rootx() + app.protocol_filter_box.winfo_width() < app.canvas.winfo_rootx() + app.canvas.winfo_width()
             assert app.empty_button.winfo_ismapped()
             assert app.empty_button.winfo_rootx() + app.empty_button.winfo_width() < root.winfo_rootx() + root.winfo_width()
+            assert app.history_button.winfo_ismapped()
+            assert app.updates_button.winfo_rootx() + app.updates_button.winfo_width() < root.winfo_rootx() + root.winfo_width()
             label_x = [app.scale_widget.coords(item)[0] for item in app.scale_widget.find_withtag("label")]
             assert max(b - a for a, b in zip(label_x, label_x[1:])) - min(b - a for a, b in zip(label_x, label_x[1:])) < .01
             checks.append("minimum-window layout remains usable")

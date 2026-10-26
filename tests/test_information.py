@@ -1,5 +1,6 @@
 """Automatic main notes, exact child totals, linear colors and lossless storage."""
 from dataclasses import replace
+import colorsys
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -166,12 +167,14 @@ class InformationTests(unittest.TestCase):
             self.assertEqual(colors[-1], "#ef3f36")
             self.assertEqual(heat_color(ceiling + 100, ceiling), colors[-1])
 
-    def test_continuous_palette_never_passes_through_green(self):
+    def test_palette_stays_saturated_without_white_or_green(self):
         for ceiling in HEAT_PRESETS.values():
             for step in range(501):
                 color = heat_color(1 + (ceiling-1) * step / 500, ceiling)
                 red, green, blue = (int(color[i:i+2], 16) for i in (1, 3, 5))
                 self.assertLessEqual(green, max(red, blue), color)
+                _, saturation, _ = colorsys.rgb_to_hsv(red / 255, green / 255, blue / 255)
+                self.assertGreaterEqual(saturation, .7, color)
 
     def test_heat_does_not_modify_documents_or_depend_on_note_length(self):
         original = self.atlas.to_dict()

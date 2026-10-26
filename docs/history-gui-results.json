@@ -1,0 +1,16 @@
+{
+  "passed": 11,
+  "checks": [
+    "History opens a separate read-only 3D scene with saved dates, summaries and inspectable notes",
+    "Earlier revisions retain deleted suborbitals and their independent saved notes",
+    "Browsing, heat, camera controls and revision stepping never save, alter backups or change the active camera",
+    "Export with history includes the current JSON, all saved JSON states and timestamped change metadata without creating a revision",
+    "Cancelling a restoration leaves the active atlas, browser and complete history unchanged",
+    "A failed restoration preserves the preview, current notes and recorded history",
+    "History navigation, restoration, export, 3D preview and notes fit the minimum browser window",
+    "Restore appends a new revision and retains every later saved state, including deleted concepts",
+    "Cancel before opening History preserves the complete unsaved main-note draft",
+    "Discard opens the saved state without recording a draft; Return to present leaves the active file untouched",
+    "Save before opening History records the note once and exposes it in the newest revision"
+  ]
+}

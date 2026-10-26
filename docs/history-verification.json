@@ -1,0 +1,38 @@
+{
+  "status": "Implemented in source; awaiting explicit packaging approval",
+  "date": "2026-10-26",
+  "base_release_version": "0.9.1",
+  "atlas_file_version": 10,
+  "history_file_version": 1,
+  "packages_built": false,
+  "packaging_requires_explicit_approval": true,
+  "windows_core_tests_passed": 215,
+  "windows_gui_workflow_checks_passed": 132,
+  "focused_history_gui_checks_passed": 11,
+  "windows_source_runtime_checks_passed": 38,
+  "linux_history_core_tests_passed": 25,
+  "tested_platforms": [
+    "Windows desktop with Python 3.12.3, Tk 8.6 and VTK 9.6.2",
+    "Ubuntu under WSL: 25 history core tests"
+  ],
+  "gui_report": "history-full-gui-results.json",
+  "focused_report": "history-gui-results.json",
+  "runtime_report": "history-runtime-results.json",
+  "capture": "Actual source browser with disposable example data; window-only screenshot",
+  "history_storage": "Adjacent atlas.json.history.sqlite3 with compressed full snapshots and content hashes",
+  "recording": "Initial observed baseline and valid different previous backup; then changed successful content saves with UTC times, stable IDs, sequence order, parent links, summaries and application/data-format versions",
+  "unknown_dates": "Existing concept creation dates and recovered backup save dates are explicitly unknown",
+  "crash_recovery": "Durable hidden pending revision; authoritative JSON content confirms or discards an interrupted save",
+  "failed_save": "History preparation failure blocks replacement; failed JSON saves do not become completed revisions; interrupted confirmation reports the successful JSON save with a recovery warning",
+  "preview": "Separate read-only VTK scene; no writes or changes to the active document, backup, camera or heat range",
+  "restore": "New revision appended with intervening history retained",
+  "archive": "Atomic ZIP export of current JSON, individually importable revision JSON files and lineage/timestamp/change metadata",
+  "source_palette_correction": "Saturated blue, cyan, yellow, orange and red; no white or green; direct cyan-to-yellow boundary",
+  "limitations": [
+    "Automatic playback and timeline scrubbing are not implemented",
+    "Whole-history archive import is not implemented",
+    "Use one application window per atlas",
+    "Revisions are not automatically pruned",
+    "Packaged runtime and Linux GUI checks await packaging approval"
+  ]
+}

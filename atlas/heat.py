@@ -7,10 +7,10 @@ from .model import Atlas
 HEAT_PRESETS = {"A - Compact (1-9)": 9, "B - Balanced (1-16)": 16, "C - Extended (1-32)": 32}
 DEFAULT_HEAT_PRESET = "B - Balanced (1-16)"
 DEFAULT_HEAT_MAX = HEAT_PRESETS[DEFAULT_HEAT_PRESET]
-# The neutral stop prevents RGB interpolation between cyan and yellow producing green.
+# Keep the requested blue/cyan/yellow/orange/red palette saturated.
 HEAT_STOPS = ((1, "#2878ff"), (2, "#218fff"), (3, "#19a8ff"), (4, "#0fc3ff"),
-              (5, "#00d2ff"), (6, "#9de8ff"), (6.5, "#f5f5f5"), (7, "#f5f0df"),
-              (8, "#ffe58a"), (9, "#ffd940"), (10, "#ffbf3c"), (11, "#ffa638"),
+              (5, "#00d2ff"), (6, "#00e5ff"), (7, "#ffe23b"),
+              (8, "#ffdf3e"), (9, "#ffd940"), (10, "#ffbf3c"), (11, "#ffa638"),
               (12, "#ff8a35"), (13, "#ff7435"), (14, "#fb603a"), (15, "#f94f40"),
               (16, "#ef3f36"))
 
@@ -43,7 +43,7 @@ def information_heat(atlas: Atlas) -> dict[str, InformationHeat]:
 
 
 def heat_color(value: float, ceiling: int = DEFAULT_HEAT_MAX) -> str:
-    """Linearly map 1..ceiling onto blue..red; exact counts are never capped."""
+    """Map equally spaced counts onto blue..red; exact counts are never capped."""
     if ceiling not in HEAT_PRESETS.values():
         raise ValueError("Choose a heat ceiling of 9, 16 or 32.")
     if value <= 1:
@@ -52,6 +52,10 @@ def heat_color(value: float, ceiling: int = DEFAULT_HEAT_MAX) -> str:
     for (lower, start), (upper, end) in zip(HEAT_STOPS, HEAT_STOPS[1:]):
         if value <= upper:
             fraction = (value - lower) / (upper - lower)
+            # Blending cyan and yellow introduces green or a neutral color.
+            # Switch directly between these two requested hues instead.
+            if lower == 6 and upper == 7:
+                return start if fraction < .5 else end
             channels = [round(int(start[i:i+2], 16) * (1 - fraction) + int(end[i:i+2], 16) * fraction)
                         for i in (1, 3, 5)]
             return "#" + "".join(f"{channel:02x}" for channel in channels)
