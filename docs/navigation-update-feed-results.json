@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "installed_version": "0.9.2",
+  "release": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.3",
+  "checks": [
+    {
+      "platform": "windows",
+      "version": "0.9.3",
+      "asset": "CyberAtlas-0.9.3-Setup.exe",
+      "sha256": "e4a84f6d91a23b2db45b24065424cc98907affafa6f554c9973097b444943c6b",
+      "bytes": 38604572
+    },
+    {
+      "platform": "deb",
+      "version": "0.9.3",
+      "asset": "cyber-atlas_0.9.3_amd64.deb",
+      "sha256": "6dc9cddd56a1fdf6d3075a8dd427f378cf1636fa37b78a96084656ec609a2eca",
+      "bytes": 81705712
+    },
+    {
+      "platform": "appimage",
+      "version": "0.9.3",
+      "asset": "CyberAtlas-0.9.3-x86_64.AppImage",
+      "sha256": "95bf713e564a4dd1d6bd34ad7e60f39a27da80ea18ee17128792103fc5dca20e",
+      "bytes": 98761208
+    }
+  ]
+}

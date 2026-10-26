@@ -14,17 +14,28 @@ See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [develo
 
 ## Install Cyber Atlas
 
-Choose a package for **version 0.9.2**. Each **Download** link downloads the selected file.
+Choose a package for **version 0.9.3**. Each **Download** link downloads the selected file.
 
 | Platform | Package | Installation |
 | --- | --- | --- |
-| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.2/CyberAtlas-0.9.2-Setup.exe)** | Open it and follow the installer. |
-| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.2/cyber-atlas_0.9.2_amd64.deb)** | Open it with your software installer. |
-| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.2/CyberAtlas-0.9.2-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
+| Windows 10/11 (x64) | **[Download installer (.exe)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.3/CyberAtlas-0.9.3-Setup.exe)** | Open it and follow the installer. |
+| Ubuntu / Debian (x86_64) | **[Download package (.deb)](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.3/cyber-atlas_0.9.3_amd64.deb)** | Open it with your software installer. |
+| Other compatible Linux (x86_64) | **[Download AppImage](https://github.com/seiejouke/cyber_atlas/releases/download/v0.9.3/CyberAtlas-0.9.3-x86_64.AppImage)** | In the file's properties, allow it to run as a program, then open it. |
 
-See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.2) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
+See the [release notes and checksums](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.3) and the [user guide](docs/USER_GUIDE.md#install-and-open) for system requirements and installation details.
 
 ---
+
+## Camera navigation and labels
+
+Click **X**, **Y** or **Z** on the compass to align the view; click again for the
+opposite side. The layer slider below it selects a visible layer, and **All**
+shows the whole atlas. Retract **Navigation** into the **Nav** tab for more space.
+Labels follow nodes as you move the camera and settle into free space afterward;
+selected and hovered concepts get priority. These controls preserve your notes,
+drafts and history. See the [navigation guide](docs/USER_GUIDE.md#orientation-compass).
+
+![Cyber Atlas 0.9.3 showing the clickable compass above the visible-layer slider](docs/navigation.png)
 
 ## Orbital clusters
 
@@ -84,7 +95,7 @@ what is available today.
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.9.2 · **Updated:** 26 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.9.3 · **Updated:** 26 October 2026
 
 ### Product vision
 
@@ -259,13 +270,16 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.9.2 on 26 October 2026. Planned capabilities below describe the intended system.*
+*Implementation status checked against v0.9.3 on 26 October 2026. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
 | Configurable 3D spatial architecture | **Implemented** |
 | Blocks and Nodes visualizations | **Implemented** |
 | Stable node coordinates and manual movement | **Implemented** |
+| Clickable orientation compass with six axis views | **Implemented** |
+| Retractable navigation panel and synchronized layer slider | **Implemented** |
+| Stable node and suborbital labels with selection priority | **Implemented** |
 | Editable layers, protocols, labels, and templates | **Implemented** |
 | Local notes, JSON import/export, atomic saves, one-version backup | **Implemented** |
 | Windows and Linux release packaging | **Implemented** |
@@ -296,5 +310,5 @@ The ultimate objective is not to maximize the quantity of notes. It is to help l
 ---
 
 **Project:** [seiejouke/cyber_atlas](https://github.com/seiejouke/cyber_atlas)  
-**Reference release:** [v0.9.2](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.2)\
+**Reference release:** [v0.9.3](https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.3)\
 **Document:** Conceptual product specification; not a claim of scientific efficacy or completed functionality.

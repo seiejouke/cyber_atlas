@@ -1,10 +1,11 @@
 {
-  "status": "Built and verified; public publication awaits explicit approval",
+  "status": "Published Windows and Linux release",
   "date": "2026-10-26",
   "app_version": "0.9.3",
   "source_commit": "50c23e7c60173f4118e4ad4e7ffcdcfaaf6834b2",
+  "release_url": "https://github.com/seiejouke/cyber_atlas/releases/tag/v0.9.3",
   "packages_built": true,
-  "published": false,
+  "published": true,
   "packaging_requires_explicit_approval": true,
   "atlas_file_version": 10,
   "history_file_version": 1,
@@ -23,6 +24,12 @@
     "Ubuntu 22.04 CI with Xvfb/Mesa",
     "Ubuntu 24.04.2 under WSLg"
   ],
+  "features": [
+    "Six signed compass views and Home with camera target and zoom preserved",
+    "Equally spaced visible-layer slider synchronized with dropdown",
+    "Retractable Navigation panel with separate persisted preference",
+    "Shared stable node/suborbital label layout with selection/hover priority"
+  ],
   "data_preservation": "Navigation and labels never edit atlas JSON or append history; isolated Windows update retains saved notes, suborbitals, information and previous backup byte for byte",
   "reports": [
     "navigation-full-gui-results.json",
@@ -30,7 +37,8 @@
     "navigation-windows-runtime.json",
     "navigation-windows-updater.json",
     "navigation-linux-build.json",
-    "navigation-linux-ubuntu24.json"
+    "navigation-linux-ubuntu24.json",
+    "navigation-update-feed-results.json"
   ],
   "screenshot": "Actual version 0.9.3 application with disposable illustrative atlas",
   "limitations": [

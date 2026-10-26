@@ -167,10 +167,10 @@ also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, orbital relationships
 and revision history. The current source passes **238 core tests and 148 GUI
 workflow checks** on Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2.
-The built 0.9.3 packages pass 44 frozen runtime checks on Windows and 43 per
+The published 0.9.3 packages pass 44 frozen runtime checks on Windows and 43 per
 format on Linux. An isolated real 0.9.2-to-0.9.3 Windows update and four Debian
-installer lifecycle checks also pass. Public release publication is pending
-explicit approval. See [navigation package verification](navigation-verification.json).
+installer lifecycle checks also pass. See
+[navigation release verification](navigation-verification.json).
 
 The published 0.9.2 release passed 215 core tests and 132 GUI checks; its 25
 history tests also passed under Ubuntu. Packaged applications passed 38 runtime checks on Windows and
