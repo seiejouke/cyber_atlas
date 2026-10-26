@@ -242,7 +242,39 @@ def run(app, report_path: Path) -> int:
         require(reopened == app.document and len(reopened.information_entries) == 2
                 and reopened.get(parent.id) == parent and reopened.child(child.id) == child
                 and app.path.read_bytes() == saved_heat and not app.scene.heat_active,
-                "Format-10 export preserves entries, notes and positions; color changes never write atlas data")
+                "Format-11 export preserves entries, notes and positions; color changes never write atlas data")
+        flows = app.flows
+        app._load_editor(parent)
+        original_metrics = app.scene.heat_metrics.copy()
+        require(flows.open() and flows.add_step(parent) and flows.add_step(child) and flows.add_step(parent),
+                "Flow editor adds existing nodes and suborbitals with separate identities for repeated concepts")
+        flows.title.set("Bundled process guide")
+        first, second, repeated = flows.draft.steps
+        flows.select_step(first.id)
+        flows.explanation.insert("1.0", "## Mechanism\nUse **the existing concept**.")
+        flows.edge_label.set("Blocked")
+        flows.edge_target.set("End flow")
+        require(flows.connect() and flows.save() and read_atlas(app.path) == app.document
+                and app.scene.heat_metrics == original_metrics,
+                "Bundled flow saves labelled branches in format 11 without adding heat or duplicating concept notes")
+        flows.set_mode("study")
+        pump()
+        require(app.scene.flow_actors and child.id in app.scene.flow_child_actors
+                and all(not actor.GetPickable() for actors in app.scene.flow_actors.values() for actor in actors),
+                "Bundled native flow arrows and referenced suborbitals render separately from spatial adjacency")
+        flow_bytes, flow_revisions = app.path.read_bytes(), app.history.store.revisions()
+        require(flows.next_button.instate(["disabled"]) and flows.reader.cget("state") == "disabled",
+                "Structured study content is read-only and branch steps require a learner choice")
+        edge = next(edge for edge in flows.run.choices if edge.target_id == second.id)
+        flows.choice.set(edge.id)
+        flows.choose_branch()
+        require(flows.next() and flows.run.current == second.id
+                and child.notes in flows.reader.get("1.0", "end"),
+                "Manual flow traversal selects the original subconcept and reads its canonical note")
+        flows.previous()
+        require(flows.close() and app.scene.mode == "blocks" and not app.scene.flow_actors
+                and app.path.read_bytes() == flow_bytes and app.history.store.revisions() == flow_revisions,
+                "Leaving a bundled flow restores the atlas view without changing content or recording navigation history")
         history = app.history
         revisions = history.store.revisions()
         require(len(revisions) > 1 and history.store.load(revisions[0].id) == app.document,

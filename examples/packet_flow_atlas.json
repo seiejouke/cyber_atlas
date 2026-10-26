@@ -1,0 +1,395 @@
+{
+  "type": "cyber-knowledge-atlas",
+  "version": 11,
+  "layout": "fixed-slots",
+  "center_depth": -1,
+  "radial_bands": [
+    "Overview",
+    "Protocol function",
+    "Service",
+    "Implementation",
+    "Detailed example"
+  ],
+  "angular_slots": 16,
+  "design": {
+    "layers": [
+      {
+        "id": 1,
+        "name": "Physical",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 2,
+        "name": "Data Link",
+        "color": "#65b6a1"
+      },
+      {
+        "id": 3,
+        "name": "Network",
+        "color": "#9c8bdb"
+      },
+      {
+        "id": 4,
+        "name": "Transport",
+        "color": "#70cbd8"
+      },
+      {
+        "id": 5,
+        "name": "Session",
+        "color": "#8ca9da"
+      },
+      {
+        "id": 6,
+        "name": "Presentation",
+        "color": "#cb96ba"
+      },
+      {
+        "id": 7,
+        "name": "Application",
+        "color": "#edbb69"
+      }
+    ],
+    "protocols": [],
+    "layer_caption": "OSI layer",
+    "protocol_caption": "Protocol",
+    "label_mode": "title"
+  },
+  "nodes": [
+    {
+      "id": "packet-interface",
+      "name": "Network interface",
+      "layer": 2,
+      "protocol": null,
+      "depth": 0,
+      "notes": "## Definition\nA network interface connects a device to a link.\n\n## Example\nAn Ethernet port receives or sends a frame.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "packet-ipv4",
+      "name": "IPv4",
+      "layer": 3,
+      "protocol": null,
+      "depth": 1,
+      "notes": "## Definition\nAn IPv4 packet carries source and destination addresses.\n\n## Mechanism\nThe destination helps a router choose where to forward the packet.",
+      "slot": 9,
+      "span": 1
+    },
+    {
+      "id": "packet-firewall",
+      "name": "Firewall",
+      "layer": 3,
+      "protocol": null,
+      "depth": 2,
+      "notes": "## Definition\nA firewall applies policy to traffic.\n\n## Example\nA rule can permit or block a packet.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "packet-route",
+      "name": "Routing table",
+      "layer": 3,
+      "protocol": null,
+      "depth": 3,
+      "notes": "## Definition\nA routing table records routes used to choose a next hop.\n\n## Mechanism\nUse the destination to choose an outgoing route.",
+      "slot": 13,
+      "span": 1
+    },
+    {
+      "id": "packet-arp",
+      "name": "ARP",
+      "layer": 2,
+      "protocol": null,
+      "depth": 2,
+      "notes": "## Definition\nARP resolves an IPv4 address to a link address on a local network.\n\n## Example\nUse a cached neighbor entry or make a request when needed.",
+      "slot": 11,
+      "span": 1
+    },
+    {
+      "id": "context-0",
+      "name": "Signals",
+      "layer": 1,
+      "protocol": null,
+      "depth": 1,
+      "notes": "A contextual concept outside this process.",
+      "slot": 12,
+      "span": 1
+    },
+    {
+      "id": "context-1",
+      "name": "TCP",
+      "layer": 4,
+      "protocol": null,
+      "depth": 1,
+      "notes": "A contextual concept outside this process.",
+      "slot": 7,
+      "span": 1
+    },
+    {
+      "id": "context-2",
+      "name": "UDP",
+      "layer": 4,
+      "protocol": null,
+      "depth": 0,
+      "notes": "A contextual concept outside this process.",
+      "slot": 1,
+      "span": 1
+    },
+    {
+      "id": "context-3",
+      "name": "Sessions",
+      "layer": 5,
+      "protocol": null,
+      "depth": 0,
+      "notes": "A contextual concept outside this process.",
+      "slot": 6,
+      "span": 1
+    },
+    {
+      "id": "context-4",
+      "name": "TLS",
+      "layer": 6,
+      "protocol": null,
+      "depth": 1,
+      "notes": "A contextual concept outside this process.",
+      "slot": 3,
+      "span": 1
+    },
+    {
+      "id": "context-5",
+      "name": "DNS",
+      "layer": 7,
+      "protocol": null,
+      "depth": 0,
+      "notes": "A contextual concept outside this process.",
+      "slot": 5,
+      "span": 1
+    },
+    {
+      "id": "context-6",
+      "name": "HTTP",
+      "layer": 7,
+      "protocol": null,
+      "depth": 1,
+      "notes": "A contextual concept outside this process.",
+      "slot": 9,
+      "span": 1
+    }
+  ],
+  "subconcepts": [
+    {
+      "id": "firewall-type-0",
+      "parent_id": "packet-firewall",
+      "name": "Packet filtering",
+      "notes": "## Definition\nApply rules using packet header fields.",
+      "orbit_slot": 0,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-1",
+      "parent_id": "packet-firewall",
+      "name": "Stateful inspection",
+      "notes": "## Definition\nConsider tracked connection context.",
+      "orbit_slot": 2,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-2",
+      "parent_id": "packet-firewall",
+      "name": "Application proxy",
+      "notes": "## Definition\nMediate communication at the application level.",
+      "orbit_slot": 4,
+      "relationship": "type_of"
+    },
+    {
+      "id": "firewall-type-3",
+      "parent_id": "packet-firewall",
+      "name": "Next-generation firewall",
+      "notes": "## Definition\nCombine several policy and inspection capabilities.",
+      "orbit_slot": 6,
+      "relationship": "type_of"
+    }
+  ],
+  "information_entries": [
+    {
+      "id": "policy-entry-0",
+      "concept_id": "packet-firewall",
+      "title": "Match criteria",
+      "body": "A rule can describe the traffic it applies to."
+    },
+    {
+      "id": "policy-entry-1",
+      "concept_id": "packet-firewall",
+      "title": "Policy action",
+      "body": "A matching rule has a permitted or blocked outcome in this example."
+    },
+    {
+      "id": "policy-entry-2",
+      "concept_id": "packet-firewall",
+      "title": "Inspect context",
+      "body": "Stateful policies also use tracked context."
+    },
+    {
+      "id": "policy-entry-3",
+      "concept_id": "packet-firewall",
+      "title": "Compare types",
+      "body": "Different firewall mechanisms inspect different aspects of traffic."
+    }
+  ],
+  "flows": [
+    {
+      "id": "packet-forwarding",
+      "title": "Packet forwarding",
+      "introduction": "A simplified, manually authored learning example. Device-specific routing and policy order can differ.",
+      "start_step_id": "packet-step-1",
+      "steps": [
+        {
+          "id": "packet-step-1",
+          "concept_id": "packet-interface",
+          "title": "Receive packet",
+          "concept_name": "Network interface",
+          "explanation": "Identify the incoming frame and the concept it belongs to.",
+          "question": ""
+        },
+        {
+          "id": "packet-step-2",
+          "concept_id": "packet-ipv4",
+          "title": "Read destination",
+          "concept_name": "IPv4",
+          "explanation": "Read the destination address and relate it to [Routing table](concept:packet-route).",
+          "question": ""
+        },
+        {
+          "id": "packet-step-3",
+          "concept_id": "packet-firewall",
+          "title": "Apply packet policy",
+          "concept_name": "Firewall",
+          "explanation": "## Mechanism\nCheck whether the packet may continue. Choose **Allowed** or **Blocked** below.",
+          "question": ""
+        },
+        {
+          "id": "packet-step-4",
+          "concept_id": "packet-route",
+          "title": "Look up route",
+          "concept_name": "Routing table",
+          "explanation": "Use the destination address to choose an outgoing route.\n\nSee [the IPv4 concept](concept:packet-ipv4).",
+          "question": "What would you expect to happen next?"
+        },
+        {
+          "id": "packet-step-5",
+          "concept_id": "packet-arp",
+          "title": "Resolve next hop",
+          "concept_name": "ARP",
+          "explanation": "Use a known neighbor address or resolve it when this example requires local IPv4 delivery.",
+          "question": ""
+        },
+        {
+          "id": "packet-step-6",
+          "concept_id": "packet-interface",
+          "title": "Send packet",
+          "concept_name": "Network interface",
+          "explanation": "Send the outgoing frame. This is a second occurrence of the same **Network interface** concept.",
+          "question": ""
+        }
+      ],
+      "connections": [
+        {
+          "id": "packet-edge-1",
+          "source_id": "packet-step-1",
+          "target_id": "packet-step-2",
+          "label": "Next"
+        },
+        {
+          "id": "packet-edge-2",
+          "source_id": "packet-step-2",
+          "target_id": "packet-step-3",
+          "label": "Next"
+        },
+        {
+          "id": "packet-edge-3",
+          "source_id": "packet-step-3",
+          "target_id": "packet-step-4",
+          "label": "Allowed"
+        },
+        {
+          "id": "packet-edge-4",
+          "source_id": "packet-step-4",
+          "target_id": "packet-step-5",
+          "label": "Next"
+        },
+        {
+          "id": "packet-edge-5",
+          "source_id": "packet-step-5",
+          "target_id": "packet-step-6",
+          "label": "Next"
+        },
+        {
+          "id": "packet-blocked",
+          "source_id": "packet-step-3",
+          "target_id": null,
+          "label": "Blocked"
+        }
+      ]
+    },
+    {
+      "id": "firewall-comparison",
+      "title": "Compare firewall types",
+      "introduction": "Read each existing suborbital note. These steps form a comparison guide, not a simulated packet path.",
+      "start_step_id": "compare-0",
+      "steps": [
+        {
+          "id": "compare-0",
+          "concept_id": "firewall-type-0",
+          "title": "Examine Packet filtering",
+          "concept_name": "Packet filtering",
+          "explanation": "Compare this shared concept with [Firewall](concept:packet-firewall).",
+          "question": ""
+        },
+        {
+          "id": "compare-1",
+          "concept_id": "firewall-type-1",
+          "title": "Examine Stateful inspection",
+          "concept_name": "Stateful inspection",
+          "explanation": "Compare this shared concept with [Firewall](concept:packet-firewall).",
+          "question": ""
+        },
+        {
+          "id": "compare-2",
+          "concept_id": "firewall-type-2",
+          "title": "Examine Application proxy",
+          "concept_name": "Application proxy",
+          "explanation": "Compare this shared concept with [Firewall](concept:packet-firewall).",
+          "question": ""
+        },
+        {
+          "id": "compare-3",
+          "concept_id": "firewall-type-3",
+          "title": "Examine Next-generation firewall",
+          "concept_name": "Next-generation firewall",
+          "explanation": "Compare this shared concept with [Firewall](concept:packet-firewall).",
+          "question": ""
+        }
+      ],
+      "connections": [
+        {
+          "id": "compare-edge-0",
+          "source_id": "compare-0",
+          "target_id": "compare-1",
+          "label": "Compare next"
+        },
+        {
+          "id": "compare-edge-1",
+          "source_id": "compare-1",
+          "target_id": "compare-2",
+          "label": "Compare next"
+        },
+        {
+          "id": "compare-edge-2",
+          "source_id": "compare-2",
+          "target_id": "compare-3",
+          "label": "Compare next"
+        }
+      ]
+    }
+  ]
+}

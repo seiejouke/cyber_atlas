@@ -20,7 +20,10 @@ MAX_NODES = 10_000
 ANGULAR_SLOTS = 16
 BLOCK_SIZES = {"1/16": 1, "1/8": 2, "1/4": 4, "1/2": 8, "Full": 16}
 SCHEMA = "cyber-knowledge-atlas"
-VERSION = 10
+VERSION = 11
+MAX_FLOWS = 256
+MAX_FLOW_STEPS = 256
+MAX_FLOW_CONNECTIONS = 1024
 MAX_INFORMATION_ENTRIES = 50_000
 ORBIT_SLOTS = 8
 LAYOUT = "fixed-slots"
@@ -263,11 +266,141 @@ class InformationEntry:
 
 
 @dataclass(frozen=True, slots=True)
+class FlowStep:
+    """One occurrence of a concept; name is a fallback for a deleted reference."""
+    id: str
+    concept_id: str
+    title: str
+    concept_name: str = ""
+    explanation: str = ""
+    question: str = ""
+
+    def __post_init__(self):
+        _text(self.id, "Flow step ID", 100)
+        _text(self.concept_id, "Referenced concept ID", 100)
+        _text(self.title, "Step title", 120)
+        if not isinstance(self.concept_name, str) or len(self.concept_name) > 120 or any(ord(c) < 32 for c in self.concept_name):
+            raise AtlasError("The saved concept name must be a single line of at most 120 characters.")
+        for content, label, limit in ((self.explanation, "Step explanation", 100_000), (self.question, "Recall prompt", 10_000)):
+            if not isinstance(content, str) or len(content) > limit or "\x00" in content:
+                raise AtlasError(f"{label} must be text without null characters, at most {limit:,} characters.")
+
+    @classmethod
+    def create(cls, concept_id, title, concept_name="", **values):
+        return cls(uuid4().hex, concept_id, title.strip(), concept_name, **values)
+
+    def to_dict(self):
+        return {field: getattr(self, field) for field in self.__dataclass_fields__}
+
+
+@dataclass(frozen=True, slots=True)
+class FlowConnection:
+    id: str
+    source_id: str
+    target_id: str | None
+    label: str = ""
+
+    def __post_init__(self):
+        _text(self.id, "Flow connection ID", 100)
+        _text(self.source_id, "Source step ID", 100)
+        if self.target_id is not None:
+            _text(self.target_id, "Destination step ID", 100)
+        if not isinstance(self.label, str) or len(self.label) > 100 or any(ord(c) < 32 for c in self.label):
+            raise AtlasError("Connection labels must be single lines of at most 100 characters.")
+
+    @classmethod
+    def create(cls, source_id, target_id, label=""):
+        return cls(uuid4().hex, source_id, target_id, label.strip())
+
+    def to_dict(self):
+        return {field: getattr(self, field) for field in self.__dataclass_fields__}
+
+
+@dataclass(frozen=True, slots=True)
+class FlowNote:
+    id: str
+    title: str
+    introduction: str = ""
+    steps: tuple[FlowStep, ...] = ()
+    connections: tuple[FlowConnection, ...] = ()
+    start_step_id: str | None = None
+
+    def __post_init__(self):
+        _text(self.id, "Flow ID", 100)
+        _text(self.title, "Flow title", 120)
+        if not isinstance(self.introduction, str) or len(self.introduction) > 100_000 or "\x00" in self.introduction:
+            raise AtlasError("Flow introductions must be text without null characters, at most 100,000 characters.")
+        if not isinstance(self.steps, tuple) or len(self.steps) > MAX_FLOW_STEPS or not all(isinstance(s, FlowStep) for s in self.steps):
+            raise AtlasError(f"A flow supports at most {MAX_FLOW_STEPS} valid steps.")
+        ids = {step.id for step in self.steps}
+        if len(ids) != len(self.steps):
+            raise AtlasError("Each flow step needs its own unique ID, even when reusing a concept.")
+        if self.start_step_id is None and self.steps:
+            object.__setattr__(self, "start_step_id", self.steps[0].id)
+        if self.start_step_id is not None:
+            _text(self.start_step_id, "Starting step ID", 100)
+        if self.start_step_id is not None and self.start_step_id not in ids:
+            raise AtlasError("The starting step must belong to this flow.")
+        if (not isinstance(self.connections, tuple) or len(self.connections) > MAX_FLOW_CONNECTIONS
+                or not all(isinstance(c, FlowConnection) for c in self.connections)):
+            raise AtlasError(f"A flow supports at most {MAX_FLOW_CONNECTIONS} valid connections.")
+        connection_ids, edges, labels = set(), set(), {}
+        for connection in self.connections:
+            if connection.id in connection_ids:
+                raise AtlasError("Duplicate flow connection ID.")
+            connection_ids.add(connection.id)
+            if connection.source_id not in ids or connection.target_id is not None and connection.target_id not in ids:
+                raise AtlasError("Flow connections must reference steps in their own flow.")
+            key = connection.source_id, connection.target_id, connection.label.strip().casefold()
+            if key in edges:
+                raise AtlasError("That flow connection already exists.")
+            edges.add(key)
+            labels.setdefault(connection.source_id, []).append(connection.label.strip().casefold())
+        for names in labels.values():
+            if len(names) > 1 and (not all(names) or len(set(names)) != len(names)):
+                raise AtlasError("Give each outgoing branch a distinct, nonempty label.")
+
+    @classmethod
+    def create(cls, title="New flow", **values):
+        return cls(uuid4().hex, title.strip(), **values)
+
+    def step(self, identity):
+        return next((step for step in self.steps if step.id == identity), None)
+
+    def outgoing(self, step_id):
+        return tuple(c for c in self.connections if c.source_id == step_id)
+
+    def to_dict(self):
+        return {"id": self.id, "title": self.title, "introduction": self.introduction,
+                "start_step_id": self.start_step_id, "steps": [s.to_dict() for s in self.steps],
+                "connections": [c.to_dict() for c in self.connections]}
+
+    @classmethod
+    def from_dict(cls, raw):
+        if not isinstance(raw, dict):
+            raise AtlasError("Each flow must be an object.")
+        steps, connections = raw.get("steps"), raw.get("connections")
+        if (not isinstance(steps, list) or len(steps) > MAX_FLOW_STEPS or not all(isinstance(s, dict) for s in steps)
+                or not isinstance(connections, list) or len(connections) > MAX_FLOW_CONNECTIONS
+                or not all(isinstance(c, dict) for c in connections)):
+            raise AtlasError("Each flow needs bounded step and connection lists.")
+        try:
+            return cls(raw["id"], raw["title"], raw.get("introduction", ""),
+                       tuple(FlowStep(s["id"], s["concept_id"], s["title"], s.get("concept_name", ""),
+                                      s.get("explanation", ""), s.get("question", "")) for s in steps),
+                       tuple(FlowConnection(c["id"], c["source_id"], c["target_id"], c.get("label", "")) for c in connections),
+                       raw.get("start_step_id"))
+        except KeyError as exc:
+            raise AtlasError(f"Flow data is missing {exc.args[0]!r}.") from exc
+
+
+@dataclass(frozen=True, slots=True)
 class Atlas:
     nodes: tuple[Node, ...] = ()
     design: Design = Design()
     subconcepts: tuple[Subconcept, ...] = ()
     information_entries: tuple[InformationEntry, ...] = ()
+    flows: tuple[FlowNote, ...] = ()
 
     def __post_init__(self) -> None:
         if not isinstance(self.design, Design):
@@ -317,6 +450,29 @@ class Atlas:
                 raise AtlasError("An identical information entry already exists for this concept.")
             entry_ids.add(entry.id)
             contents.add(content)
+        if not isinstance(self.flows, tuple) or len(self.flows) > MAX_FLOWS or not all(isinstance(f, FlowNote) for f in self.flows):
+            raise AtlasError(f"An atlas supports at most {MAX_FLOWS} valid flows.")
+        if len({flow.id for flow in self.flows}) != len(self.flows):
+            raise AtlasError("Duplicate flow ID.")
+        # Missing concept references remain repairable after deletion/import.
+
+    def concept(self, identity):
+        return self.get(identity) or self.child(identity)
+
+    def flow(self, identity):
+        return next((flow for flow in self.flows if flow.id == identity), None)
+
+    def with_flow(self, flow):
+        return replace(self, flows=tuple(flow if old.id == flow.id else old for old in self.flows)
+                       if self.flow(flow.id) else self.flows + (flow,))
+
+    def without_flow(self, identity):
+        if self.flow(identity) is None:
+            raise AtlasError("The selected flow no longer exists.")
+        return replace(self, flows=tuple(flow for flow in self.flows if flow.id != identity))
+
+    def flows_referencing(self, identities):
+        return tuple(flow for flow in self.flows if any(step.concept_id in identities for step in flow.steps))
 
     def get(self, node_id: str | None) -> Node | None:
         return next((n for n in self.nodes if n.id == node_id), None)
@@ -388,13 +544,13 @@ class Atlas:
         """Apply explicit reassignments atomically; overlaps and orphan IDs fail."""
         layer_moves, protocol_moves = layer_moves or {}, protocol_moves or {}
         return Atlas(tuple(replace(n, layer=layer_moves.get(n.layer, n.layer),
-                                   protocol=protocol_moves.get(n.protocol, n.protocol)) for n in self.nodes), design, self.subconcepts, self.information_entries)
+                                   protocol=protocol_moves.get(n.protocol, n.protocol)) for n in self.nodes), design, self.subconcepts, self.information_entries, self.flows)
 
     def without_protocols(self) -> Atlas:
         """Clear optional metadata while preserving blocks and all geometry."""
         if not self.design.protocols:
             return self
-        return Atlas(tuple(replace(n, protocol=None) for n in self.nodes), replace(self.design, protocols=()), self.subconcepts, self.information_entries)
+        return Atlas(tuple(replace(n, protocol=None) for n in self.nodes), replace(self.design, protocols=()), self.subconcepts, self.information_entries, self.flows)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -405,6 +561,7 @@ class Atlas:
             "nodes": [n.to_dict() for n in self.nodes],
             "subconcepts": [child.to_dict() for child in self.subconcepts],
             "information_entries": [entry.to_dict() for entry in self.information_entries],
+            "flows": [flow.to_dict() for flow in self.flows],
         }
 
     @classmethod
@@ -413,7 +570,9 @@ class Atlas:
             raise AtlasError("This is not a Cyber Atlas JSON document.")
         version = data.get("version")
         if type(version) is not int or not 1 <= version <= VERSION:
-            raise AtlasError("Supported atlas file versions are 1 through 10.")
+            raise AtlasError(f"Supported atlas file versions are 1 through {VERSION}.")
+        if version < 11 and data.get("flows", []) != []:
+            raise AtlasError("FlowNotes require atlas file version 11.")
         if version < 10 and data.get("information_entries", []) != []:
             raise AtlasError("Information entries require atlas file version 10.")
         if version < 9 and data.get("subconcepts", []) != []:
@@ -485,7 +644,10 @@ class Atlas:
                     entries.append(InformationEntry(raw["id"], raw["concept_id"], raw["title"], raw["body"]))
                 except KeyError as exc:
                     raise AtlasError(f"Information entry {index} is missing {exc.args[0]!r}.") from exc
-        return cls(tuple(nodes), design, tuple(children), tuple(entries))
+        raw_flows = data.get("flows") if version >= 11 else []
+        if not isinstance(raw_flows, list) or len(raw_flows) > MAX_FLOWS:
+            raise AtlasError(f"The file needs a flow list of at most {MAX_FLOWS} entries.")
+        return cls(tuple(nodes), design, tuple(children), tuple(entries), tuple(FlowNote.from_dict(raw) for raw in raw_flows))
 
 
 def example_atlas() -> Atlas:

@@ -147,7 +147,7 @@ class ModelTests(unittest.TestCase):
         nodes = (Node("z", "Z", 7, "SSH", 2, slot=11, span=4), Node("a", "A", 7, "SSH", 2, slot=2, span=2))
         atlas = Atlas(nodes)
         self.assertEqual(Atlas.from_dict(atlas.to_dict()), atlas)
-        self.assertEqual(atlas.to_dict()["version"], 10)
+        self.assertEqual(atlas.to_dict()["version"], 11)
         self.assertEqual(atlas.to_dict()["angular_slots"], 16)
 
     def test_empty_roundtrip(self):

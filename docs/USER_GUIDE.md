@@ -118,6 +118,81 @@ Navigation makes more space available. Label positions and these camera changes
 stay outside your atlas JSON and saved-state history; notes and drafts are
 preserved. Stable labels are included in version 0.9.3.
 
+## FlowNotes (current source)
+
+FlowNotes is available in the current source. The published 0.9.3 installers
+do not include it yet. Open **Flows** beside History to create or study a saved
+process guide. The compass and layer slider remain available in the viewport.
+
+Choose **New**, enter a title and optional introduction, then use **Add concept**
+to search existing nodes and suborbitals. Choose a step to edit its action title,
+process explanation and optional recall prompt. The same concept can occur in
+several steps: each occurrence has its own action, while the concept and its
+canonical note remain shared. Number badges identify occurrences; a badge such
+as **1,6** belongs to one concept used twice.
+
+Adding a step after an unconnected last step creates an explicit **Next**
+connection. Use **Outgoing connections** to select, rename, add or remove links.
+Choose an existing step or **End flow** as the destination. Each branch leaving
+the same step needs a distinct, nonempty label, such as Allowed and Blocked.
+**Save flow** also applies changes still in the connection fields. Removing a
+step removes its incident links; it does not create a replacement across the gap.
+**Up/Down** changes display numbering; connections still determine the path.
+**Start here** changes the flow's starting step.
+
+Choose **Study** to read the original concept note and additional records,
+the current step's process explanation and its recall prompt. The introduction appears at the starting
+step. Headings (`#`, `##`, `###`), lists, **bold**, *emphasis* and inline code
+are rendered as readable text. **Insert concept link** adds a clickable link to
+the step explanation. Links to flow concepts select their step; other concept
+links temporarily highlight that shared concept and offer **Return to current
+step**. External HTML and scripts are displayed as ordinary text.
+
+Select a numbered progress marker, click a referenced sphere or its label, or
+use **Next**. At a decision, choose a labelled path before continuing.
+**Previous** follows the actual visited path, including branch choices and
+manual loops. Jumping directly to a step begins a new visit trail. An explicit
+End flow connection or a step with no outgoing connection finishes the run.
+Traversing a flow does not write your atlas or add saved-state revisions.
+
+The current step receives a ring. Native directional arrows are separate from
+the spatial **Connections** checkbox and may cross layers and gaps. Unrelated
+concepts are dimmed. References, arrows and repeated occurrences never add
+information heat or resize concepts. Referenced suborbitals can be shown for
+several parents at once; they remain at their saved orbital coordinates.
+
+Selecting a step highlights it without rotating the camera. **Focus step**
+deliberately centres and zooms the view; **Show entire flow** frames all existing
+references. A filtered concept remains hidden until you choose **Show flow
+layers**, which clears the layer/protocol filters for this view. **Return to
+atlas** restores the previous representation, camera, filters and orbit focus.
+Unsaved main-note and suborbital drafts are retained behind the study panel.
+
+**Edit concept note** edits the canonical note once, so every occurrence reads
+the updated content. If that same concept already has an unsaved draft in the
+standard editor, finish it there first. Flow edits remain drafts until **Save
+flow**; switching to Study can preview a draft. Closing or switching guides asks
+whether to save changed flows. Failed saves retain the draft.
+
+Renaming or moving a concept preserves its flow references. Deletion identifies
+affected flows and keeps their steps with a **Missing concept** marker; use
+**Edit → Relink** to repair them. Flow-specific explanations are retained.
+History lists saved flows alongside concepts, displays their steps and shared
+notes in its independent read-only scene, and restores flows with the atlas.
+JSON exports, backups and history ZIPs include the saved flow records.
+
+Try [packet_flow_atlas.json](../examples/packet_flow_atlas.json) from source. It
+includes a simplified packet-forwarding flow and a comparison guide across
+firewall suborbitals. The example is a manually authored learning guide, not a
+network simulation. Automatic progression and recall-answer reveals remain
+future work. See [source verification](flows-verification.json).
+
+![Actual source flow editor, with steps referencing existing atlas concepts](flownotes-editor.png)
+
+![Actual source comparison guide using existing firewall suborbitals](flownotes-suborbitals.png)
+
+These captures use the editable example above and show the unpackaged source.
+
 ## Orbital subconcepts
 
 Select a saved node and choose **+ Subconcept** in the cluster bar above the
@@ -544,12 +619,12 @@ duplicate IDs and overlapping blocks are rejected without partially importing
 a document.
 
 The importer supports the earlier HTML prototype's JSON versions 1, 2 and 3,
-as well as desktop versions 4–9. Older files retain every note's ID,
+as well as desktop versions 4–10. Older files retain every note's ID,
 layer, protocol, depth, notes and list order. Versions 1–5 become compact
 1/16 blocks in consecutive slots at each layer/depth; versions 6–7 retain
 their exact sizes and slots. Versions 1–6 receive the OSI design preset;
 version 7 keeps its custom design. Legacy integer node IDs become strings.
-The source version's next save or export writes version 10
+The source version's next changed save or JSON export writes version 11
 with the design and explicit size/slot coordinates; the first save retains
 the original file as the normal previous-version backup. Empty atlases can
 be imported/exported with their custom design.
@@ -566,6 +641,14 @@ titles and bodies. Versions 1–9 load with an empty entry list and retain their
 existing personal notes. Format 10 requires Cyber Atlas 0.9.0 or newer.
 Older applications support formats through 9; keep the original file or a
 separate export when returning to an older application.
+
+Format 11 adds `flows`, with stable flow, step and connection IDs and references
+to canonical concepts. Older atlases load with an empty flow collection. Existing
+history snapshots retain their IDs and recorded dates; opening an older atlas
+does not invent a content change just because the schema advanced. Format 11
+requires the current FlowNotes source or a future package containing it;
+published Cyber Atlas 0.9.3 supports formats through 10. Keep an older-format
+copy when returning to an older application.
 
 A legacy ring with more than 16 notes cannot fit this grid. Import/loading
 stops with a message identifying the ring, without dropping notes or changing

@@ -1,0 +1,62 @@
+{
+  "status": "Implemented and verified in source; not packaged or published",
+  "date": "2026-10-26",
+  "source_base_version": "0.9.3",
+  "atlas_file_version": 11,
+  "history_file_version": 1,
+  "packages_built_for_this_change": false,
+  "published": false,
+  "packaging_requires_explicit_approval": true,
+  "windows_core_tests_passed": 259,
+  "windows_gui_workflow_checks_passed": 164,
+  "windows_focused_flow_workflow_checks_passed": 16,
+  "windows_source_runtime_checks_passed": 50,
+  "linux_portable_subset_tests_passed": 110,
+  "linux_portable_subset_modules": [
+    "test_flows",
+    "test_history",
+    "test_storage",
+    "test_clusters",
+    "test_information",
+    "test_optional_protocols"
+  ],
+  "tested_platforms": [
+    "Windows desktop: Python 3.12.3, Tk 8.6, VTK 9.6.2",
+    "Ubuntu under WSL: Python 3.12, portable test subset"
+  ],
+  "features": [
+    "Saved FlowNotes with distinct step IDs referencing existing nodes or suborbitals",
+    "Draft editor, concept search, reordering, relinking, labelled connections and explicit starting step",
+    "Manual branch choices, terminal connections, loops and Previous following the actual visit trail",
+    "Read-only structured study reader with canonical notes, additional records, concept links and recall prompts",
+    "Independent native directional arrows, shared concept highlights and repeated occurrence badges",
+    "Canonical note editing, repairable missing concepts and atomic save failure recovery",
+    "Flow records retained by JSON exports, backups, design changes and saved-state history",
+    "Compass, retractable layer navigation and stable atlas labels preserved"
+  ],
+  "data_preservation": [
+    "Flow references and arrows do not duplicate concepts, move coordinates, create spatial adjacency or increase heat",
+    "Study traversal and camera/filter navigation do not write atlas content or history revisions",
+    "Leaving a flow restores camera, representation, filters, orbit focus and unsaved inspector drafts",
+    "Opening an older schema-10 atlas/history does not create a false content revision",
+    "GUI and runtime checks use disposable atlases rather than the user's saved atlas"
+  ],
+  "reports": [
+    "flows-full-gui-results.json",
+    "flows-focused-gui-results.json",
+    "flows-source-runtime-results.json"
+  ],
+  "screenshots": [
+    "flownotes-editor.png",
+    "flownotes-branch.png",
+    "flownotes-suborbitals.png"
+  ],
+  "example": "../examples/packet_flow_atlas.json",
+  "limitations": [
+    "Published 0.9.3 installers do not include FlowNotes or read format 11",
+    "The Ubuntu system Python lacks Tkinter; the full Linux source suite and GUI were not verified for this change",
+    "No package, installer, update handoff or release was produced or tested for this change",
+    "Branching is manually authored and traversed, not a process simulation",
+    "Automatic progression, recall-answer reveals and a standalone comparative study-note view remain future work"
+  ]
+}

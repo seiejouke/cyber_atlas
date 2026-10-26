@@ -200,6 +200,7 @@ class HistoryManager:
                 self.tree.selection_set(self.current_revision.id)
             return False
         self.current_revision, self.document = revision, document
+        self.scene.set_flow()
         self.scene.collapse_orbit()
         self.scene.set_subconcepts(())
         self.scene.set_nodes(())
@@ -218,6 +219,9 @@ class HistoryManager:
             for child in document.children(node.id):
                 self.concepts.append(child)
                 self.concept_list.insert("end", "  ↳ " + child.name)
+        for flow in document.flows:
+            self.concepts.append(flow)
+            self.concept_list.insert("end", "Flow: " + flow.title)
         selected = next((i for i, c in enumerate(self.concepts) if c.id == self.selected_id), 0)
         if self.concepts:
             self.concept_list.selection_set(selected)
@@ -239,6 +243,22 @@ class HistoryManager:
             return
         concept = self.concepts[selection[0]]
         self.selected_id = concept.id
+        from .model import FlowNote
+        if isinstance(concept, FlowNote):
+            self.scene.collapse_orbit()
+            self.scene.set_flow(concept, current=concept.start_step_id)
+            lines = [concept.title, concept.introduction]
+            for i, step in enumerate(concept.steps, 1):
+                source = self.document.concept(step.concept_id)
+                lines += [f"\n{i}. {step.title}", f"Concept: {source.name if source else 'Missing: ' + (step.concept_name or step.concept_id)}",
+                          source.notes if source else '', step.explanation, step.question]
+                for edge in concept.outgoing(step.id):
+                    target = concept.step(edge.target_id)
+                    lines.append(f"  {edge.label or 'Continue'} → {target.title if target else 'End flow'}")
+            self._text(self.notes, '\n'.join(lines))
+            self.request_render()
+            return
+        self.scene.set_flow()
         parent_id = getattr(concept, "parent_id", concept.id)
         self.scene.set_selected(parent_id)
         self.scene.expand_orbit(parent_id)
@@ -348,7 +368,7 @@ class HistoryManager:
         if self.selected_id:
             concept = next((c for c in self.concepts if c.id == self.selected_id), None)
             if concept:
-                self.canvas.create_text(12, 62 if top_view else 33, text=concept.name, anchor="nw", fill=theme.ACCENT,
+                self.canvas.create_text(12, 62 if top_view else 33, text=getattr(concept, 'name', getattr(concept, 'title', '')), anchor="nw", fill=theme.ACCENT,
                                         font=(self.app.family, 10), width=max(100, width - 170))
 
     def _press(self, event):

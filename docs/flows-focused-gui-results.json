@@ -1,0 +1,22 @@
+{
+  "passed": 16,
+  "checks": [
+    "Flows opens beside the existing compass and layer slider without writing data, moving the camera or discarding an unsaved main note",
+    "Search selects existing concepts and suborbitals; repeated occurrences have independent step IDs and stay in an unsaved draft",
+    "A saved flow retains conditional and terminal edges in JSON and history while preserving canonical notes, coordinates, adjacency and heat counts",
+    "Connection field edits survive selecting another edge, and Save flow applies pending branch edits without requiring an extra update click",
+    "The independent native 3D arrow overlay crosses layers, dims unrelated concepts, exposes children of multiple parents and remains non-pickable",
+    "Study renders canonical notes, headings, emphasis, recall prompts and concept links; multiple outgoing branches require an explicit learner choice",
+    "Allowed and Blocked branches highlight their own paths; terminal choices and Previous retrace the actual visit trail without saving revisions",
+    "Concept links highlight shared references; leaving a flow restores the exact camera, filters and dirty inspector and removes all temporary actors",
+    "Edit concept note updates one canonical record, refreshes every occurrence and restores the updated standard editor on leaving the flow",
+    "Opening a flow from a focused orbit restores contextual visibility without moving the camera and restores the original orbit focus on return",
+    "Flows can be entered from Blocks and return to the original representation with connection controls and camera restored",
+    "Unsaved suborbital note drafts remain intact when the study panel opens and closes",
+    "Failed saves preserve flow drafts and authoritative JSON/history; Cancel keeps the flow open with its unsaved changes",
+    "Focus respects hidden filters, Show flow layers reveals the process, arrows survive rotation and the study controls fit the minimum window",
+    "Deleting a referenced suborbital warns about affected flows, retains a marked missing step and supports relinking it to another existing concept",
+    "Saved-state History lists flows, displays their steps and original referenced notes in its independent scene and leaves the active document unchanged"
+  ],
+  "callback_errors": []
+}

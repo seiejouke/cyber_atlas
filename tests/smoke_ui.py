@@ -34,6 +34,7 @@ from history_view_checks import check_history
 from compass_view_checks import check_compass
 from navigation_view_checks import check_navigation
 from label_view_checks import check_labels
+from flow_view_checks import check_flows
 
 
 def pump(root, steps=5):
@@ -785,7 +786,7 @@ def main(report_path=None):
             with patch("atlas.ui.filedialog.asksaveasfilename", return_value=str(export)):
                 app.export_json()
             assert read_atlas(export) == app.document
-            assert json.loads(export.read_text())["version"] == 10
+            assert json.loads(export.read_text())["version"] == 11
             legacy = Path(folder) / "legacy.json"
             legacy.write_text(json.dumps({"type": "cyber-knowledge-atlas", "version": 3,
                                          "nodes": [{**n.to_dict(), "id": int(n.id)} for n in doc.nodes]}))
@@ -1062,6 +1063,7 @@ def main(report_path=None):
             check_compass(root, app, path, pump, checks)
             check_navigation(root, app, path, pump, checks)
             check_labels(root, app, path, pump, checks)
+            check_flows(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)

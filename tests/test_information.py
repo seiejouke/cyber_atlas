@@ -118,7 +118,7 @@ class InformationTests(unittest.TestCase):
     def test_schema_ten_roundtrip_preserves_notes_entries_and_children(self):
         atlas = self.populated()
         data = atlas.to_dict()
-        self.assertEqual(data["version"], 10)
+        self.assertEqual(data["version"], 11)
         self.assertEqual(Atlas.from_dict(json.loads(json.dumps(data))), atlas)
 
     def test_version_nine_import_preserves_existing_notes_without_inventing_entries(self):

@@ -125,14 +125,20 @@ def main():
             previous_notes = fixture.with_node(replace(fixture.nodes[0], notes="Earlier saved upgrade notes"))
             write_atlas(user_data, previous_notes, backup=False)
             write_atlas(user_data, fixture)
-            if args.previous_version in ("0.7.1", "0.7.2", "0.8.0", "0.8.1"):
-                previous_data = json.loads(user_data.read_text(encoding="utf-8"))
-                previous_data.pop("information_entries", None)
-                previous_data["version"] = 9
-                if args.previous_version in ("0.7.1", "0.7.2"):
-                    previous_data["version"] = 8
-                    previous_data.pop("subconcepts", None)
-                user_data.write_text(json.dumps(previous_data), encoding="utf-8")
+            if updates.version_tuple(args.previous_version) < updates.version_tuple("0.10.0"):
+                # Start the integration check with files the older binary can
+                # actually read, including its previous-version backup.
+                for legacy_path in (user_data, user_data.with_suffix(".json.bak")):
+                    previous_data = json.loads(legacy_path.read_text(encoding="utf-8"))
+                    previous_data.pop("flows", None)
+                    previous_data["version"] = 10
+                    if args.previous_version in ("0.7.1", "0.7.2", "0.8.0", "0.8.1"):
+                        previous_data.pop("information_entries", None)
+                        previous_data["version"] = 9
+                    if args.previous_version in ("0.7.1", "0.7.2"):
+                        previous_data["version"] = 8
+                        previous_data.pop("subconcepts", None)
+                    legacy_path.write_text(json.dumps(previous_data), encoding="utf-8")
             saved = user_data.read_bytes()
             saved_backup = user_data.with_suffix(".json.bak").read_bytes()
             try:

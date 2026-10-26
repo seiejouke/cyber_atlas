@@ -19,7 +19,7 @@ class ClusterTests(unittest.TestCase):
 
     def test_json_roundtrip_preserves_both_kinds_of_notes(self):
         self.assertEqual(Atlas.from_dict(json.loads(json.dumps(self.atlas.to_dict()))), self.atlas)
-        self.assertEqual(self.atlas.to_dict()['version'], 10)
+        self.assertEqual(self.atlas.to_dict()['version'], 11)
 
     def test_version_eight_migration_preserves_exact_nodes_and_design(self):
         original = Atlas((self.parent,))

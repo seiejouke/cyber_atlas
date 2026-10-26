@@ -76,6 +76,20 @@ states and their change summaries in a ZIP. Automated timeline playback remains 
 See the [history guide](docs/USER_GUIDE.md#saved-state-history)
 and [release verification](docs/history-verification.json).
 
+## FlowNotes (current source)
+
+Create saved process guides with **Flows** beside History. Each step references
+an existing node or suborbital; labelled arrows can cross layers while every
+concept keeps its position and shared notes. The study panel provides readable
+notes, clickable concept references, branch choices and manual Previous/Next
+navigation. **Focus step** adjusts the camera separately.
+
+FlowNotes is implemented in the current source and is **not included in the
+published v0.9.3 installers**. See the [FlowNotes guide](docs/USER_GUIDE.md#flownotes-current-source)
+or try the [editable packet-flow example](examples/packet_flow_atlas.json) from source.
+
+![Actual source FlowNotes study view with an Allowed branch, shared concept notes and the existing navigation panel](docs/flownotes-branch.png)
+
 ## Project scope and vision
 
 This section contains the complete illustrated design philosophy. The current
@@ -270,7 +284,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 
 ### Alpha implementation versus planned features
 
-*Implementation status checked against v0.9.3 on 26 October 2026. Planned capabilities below describe the intended system.*
+*Published baseline: v0.9.3. FlowNotes and its study reader are available in the current source and await packaging. Planned capabilities below describe the intended system.*
 
 | Component | Status |
 | --- | --- |
@@ -294,7 +308,8 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Adaptive simplification and decomposition suggestions | **Planned** |
 | Saved-state recording, read-only history browsing and restore | **Implemented** |
 | Animated timeline playback and scrubbing | **Planned** |
-| Interactive comparative study notes | **Planned** |
+| FlowNotes, manual process arrows, branch choices and shared study content | **Implemented in source** — awaits packaging |
+| Interactive comparative study notes | **Partial in source** — FlowNotes provides a structured reader and clickable concept references; a standalone study-note view remains planned |
 | Orbital subconcept clusters | **Implemented** — one ring of eight stable positions, independent notes, Nodes expansion and Blocks child list |
 
 The present alpha establishes the spatial notebook. The envisioned learning mechanisms, including mastery estimates and the proposed memory benefits of spatial association, still require implementation and validation with actual learners.

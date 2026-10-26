@@ -235,7 +235,9 @@ class ClusterManager:
 
     def delete(self):
         child = self.app.document.child(self.child_id)
-        if child is None or not messagebox.askyesno("Delete subconcept", f"Delete '{child.name}', its notes and its recorded information?\n\nThe parent and other children will be kept.", parent=self.root):
+        flows = self.app.document.flows_referencing({child.id}) if child else ()
+        warning = f"\n\n{len(flows)} flow(s) reference this subconcept. Their steps will be kept and marked missing for relinking." if flows else ''
+        if child is None or not messagebox.askyesno("Delete subconcept", f"Delete '{child.name}', its notes and its recorded information?\n\nThe parent and other children will be kept.{warning}", parent=self.root):
             return False
         if not self.app._commit(self.app.document.without_child(child.id)):
             return False

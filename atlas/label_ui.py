@@ -42,7 +42,7 @@ class LabelManager:
                 app.root.after_cancel(self._settle_job)
             self._settle_job = app.root.after(self.SETTLE_MS+10, self._settle)
         self._camera = camera
-        context = scene.mode, scene.layer_filter, scene.protocol_filter, scene.focused_parent, scene.expanded_parent
+        context = scene.mode, scene.layer_filter, scene.protocol_filter, scene.focused_parent, scene.expanded_parent, scene.flow_note.id if scene.flow_note else None
         if context != self._context:
             self._visibility.clear()
             self._context = context
@@ -61,6 +61,11 @@ class LabelManager:
 
     def _text(self, concept, child):
         scene, document = self.app.scene, self.app.document
+        if scene.flow_note is not None:
+            text = concept.name
+            while self.app.label_font.measure(text) > 230 and len(text) > 2:
+                text = text[:-2]+'…'
+            return text, (self.app.label_font.measure(text)+14, 23)
         if child:
             text = concept.name
             if scene.heat_active:
@@ -85,31 +90,41 @@ class LabelManager:
         moving = self._motion()
         valid = {f"{mode}:{concept.id}" for mode in ("nodes", "blocks")
                  for concept in (*app.document.nodes, *app.document.subconcepts)}
+        if scene.flow_note is not None:
+            valid.update(f"flow:{scene.flow_note.id}:{concept.id}" for concept in (*app.document.nodes, *app.document.subconcepts))
         self.layout.prune(valid)
         self._shown_offsets = {key: offset for key, offset in self._shown_offsets.items() if key in valid}
         self._visibility = {key: value for key, value in self._visibility.items() if key in valid}
         specs, requests, obstacles = {}, [], []
         if scene.mode == "nodes":
             obstacles.extend(app.information.indicator_boxes)
+            if hasattr(app, 'flows') and app.flows.active:
+                obstacles.extend(app.flows.badge_boxes)
         concepts = [(node, False) for node in nodes]
         parent = scene.orbit_parent() if scene.mode == "nodes" else None
         if parent is not None and app._template_origin is None:
             concepts.extend((child, True) for child in scene.subconcepts
                             if child.parent_id == parent.id and child.id in scene.orbit_actors and scene.orbit_actors[child.id].GetVisibility())
+        if scene.flow_note is not None:
+            existing = {concept.id for concept, _ in concepts}
+            concepts.extend((child, True) for child in scene.subconcepts
+                            if child.id in scene.flow_child_actors and child.id not in existing)
         for concept, child in concepts:
             if child:
-                point = orbit_position(parent, concept.orbit_slot, scene.design)
-                actor = scene.orbit_actors[concept.id]
+                point = scene.concept_point(concept.id)
+                actor = scene.orbit_actors.get(concept.id) or scene.flow_child_actors[concept.id]
                 selected = concept.id == scene.selected_child
             else:
                 point = scene.node_anchor(concept) if scene.mode == "nodes" else scene.meshes[concept.id].label_anchor
                 actor = scene.actors[concept.id][0]
                 selected = concept.id == app.selected
+            if scene.flow_note is not None:
+                selected = concept.id == scene.flow_concept_id
             x, y, depth = scene.project(point)
             if not (0 <= depth <= 1 and 0 < x < width and 0 < y < height):
                 continue
-            key = f"{scene.mode}:{concept.id}"
-            priority = 3 if selected else 2 if concept.id == app._hovered_node else 0
+            key = f"flow:{scene.flow_note.id}:{concept.id}" if scene.flow_note is not None else f"{scene.mode}:{concept.id}"
+            priority = 3 if selected else 2 if concept.id == app._hovered_node else 1 if concept.id in scene.flow_concepts else 0
             if selected and not child and scene.selected_child is not None:
                 priority = 1
             if not self._visible(concept, key, x, y, priority, moving):

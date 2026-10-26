@@ -38,6 +38,7 @@ def describe_changes(before: Atlas, after: Atlas) -> list[dict]:
     changes = []
     groups = (("node", before.nodes, after.nodes), ("subconcept", before.subconcepts, after.subconcepts),
               ("entry", before.information_entries, after.information_entries),
+              ("flow", before.flows, after.flows),
               ("layer", before.design.layers, after.design.layers), ("protocol", before.design.protocols, after.design.protocols))
     for entity, old_items, new_items in groups:
         old = {item.id: item for item in old_items}
@@ -186,7 +187,7 @@ class HistoryStore:
             raise HistoryError("Multiple unfinished saves need recovery. No history was overwritten.")
         if pending:
             row = pending[0]
-            if row["content_hash"] == digest:
+            if row["content_hash"] == digest or self._decode(row) == current:
                 connection.execute("UPDATE revisions SET state='committed' WHERE id=?", (row["id"],))
             else:
                 connection.execute("DELETE FROM revisions WHERE id=?", (row["id"],))
@@ -202,7 +203,7 @@ class HistoryStore:
             if previous != current:
                 self._insert(connection, previous, "backup", "Recovered previous backup; its original save date is unknown", before=previous)
             self._insert(connection, current, "baseline", "History recording began; existing concepts have unknown creation dates", before=previous)
-        elif head["content_hash"] != digest:
+        elif head["content_hash"] != digest and self._decode(head) != current:
             self._insert(connection, current, "external", "Observed atlas changes made outside this history")
 
     def initialize(self, current: Atlas):

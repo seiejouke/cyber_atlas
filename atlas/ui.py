@@ -85,6 +85,8 @@ class AtlasApp:
         self.label_manager = LabelManager(self)
         from .history_ui import HistoryManager
         self.history = HistoryManager(self)
+        from .flow_ui import FlowManager
+        self.flows = FlowManager(self)
         self._set_status(f"Local atlas  /  {self.path}")
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self.root.after(80, self.request_render)
@@ -126,7 +128,9 @@ class AtlasApp:
         self.updates_button = ttk.Button(header, text="Updates", command=lambda: self.updates.open())
         self.history_button = ttk.Button(header, text="History", command=lambda: self.history.open())
         self.history_button.grid(row=0, column=5, rowspan=2, padx=(8, 0))
-        self.updates_button.grid(row=0, column=6, rowspan=2, padx=(8, 0))
+        self.flows_button = ttk.Button(header, text="Flows", command=lambda: self.flows.open())
+        self.flows_button.grid(row=0, column=6, rowspan=2, padx=(8, 0))
+        self.updates_button.grid(row=0, column=7, rowspan=2, padx=(8, 0))
 
         content = ttk.Frame(outer)
         content.grid(row=1, column=0, sticky="nsew")
@@ -623,6 +627,8 @@ class AtlasApp:
             self.legend_scroll.grid_remove()
 
     def set_view_mode(self, mode: str) -> None:
+        if hasattr(self, "flows") and self.flows.active and not self.flows.close():
+            return
         mode = mode.lower()
         if mode not in ("blocks", "nodes"):
             raise ValueError("Choose Blocks or Nodes.")
@@ -784,7 +790,9 @@ class AtlasApp:
         c.bind("<Tab>", lambda _: self._cycle_node(1))
         c.bind("<Shift-Tab>", lambda _: self._cycle_node(-1))
         c.bind("<ISO_Left_Tab>", lambda _: self._cycle_node(-1))
-        c.bind("<Return>", lambda _: self.name_entry.focus_set() if self._template_origin is None else "break")
+        c.bind("<Return>", lambda _: self.flows.next() if hasattr(self, 'flows') and self.flows.active and self.flows.mode.get() == 'study' else
+               self.flows.step_entry.focus_set() if hasattr(self, 'flows') and self.flows.active else
+               self.name_entry.focus_set() if self._template_origin is None else "break")
         self.root.bind("<Escape>", lambda _: self._escape())
         for key, callback in (("<Control-s>", self.save_node), ("<Control-n>", self.new_node),
                               ("<Control-o>", self.import_json), ("<Control-Shift-S>", self.export_json)):
@@ -796,6 +804,9 @@ class AtlasApp:
         return "break"
 
     def _escape(self) -> str:
+        if hasattr(self, "flows") and self.flows.active:
+            self.flows.close()
+            return "break"
         if self._template_origin is not None:
             self.cancel_templates()
             return "break"
@@ -884,6 +895,8 @@ class AtlasApp:
                     slot=int(self.slot_var.get()) - 1 if slot is None else slot, span=BLOCK_SIZES[self.size_var.get()])
 
     def _refresh_preview(self, depth: int | None = None, slot: int | None = None) -> bool:
+        if hasattr(self, "flows") and self.flows.active:
+            return True
         if depth is None and self.placement_state == "placing" and self._floating_position is not None:
             depth, slot = self._floating_position
         candidate = self._preview_candidate(depth, slot)
@@ -1011,6 +1024,8 @@ class AtlasApp:
         self.request_render()
 
     def _allow_leave(self) -> bool:
+        if hasattr(self, "flows") and self.flows.active and not self.flows.close():
+            return False
         if hasattr(self, "information") and not self.information.close():
             return False
         if hasattr(self, "clusters") and self.clusters.editing:
@@ -1021,6 +1036,8 @@ class AtlasApp:
         return self.save_node() if answer is True else answer is False
 
     def select_node(self, node_id: str) -> bool:
+        if hasattr(self, "flows") and self.flows.active:
+            return self.flows.select_concept(node_id)
         if self._template_origin is not None:
             return False
         if self.document.child(node_id) is not None:
@@ -1051,12 +1068,16 @@ class AtlasApp:
         self.scene.set_nodes(document.nodes)
         self.scene.set_subconcepts(document.subconcepts)
         self.scene.set_information(document)
+        if hasattr(self, "flows"):
+            self.flows.document_changed()
         self._set_status(f"{'Saved' if result.changed else 'Already saved'} {datetime.now():%H:%M:%S}  /  {self.path}")
         if result.warning:
             messagebox.showwarning("Saved atlas; history needs recovery", result.warning, parent=error_parent or self.root)
         return True
 
     def save_node(self) -> bool:
+        if hasattr(self, "flows") and self.flows.active:
+            return self.flows.save()
         if self._template_origin is not None:
             return False
         if self.clusters.editing:
@@ -1098,6 +1119,9 @@ class AtlasApp:
         return True
 
     def new_node(self) -> None:
+        if hasattr(self, "flows") and self.flows.active:
+            self.flows.new_flow()
+            return
         if self._template_origin is not None:
             return
         if not self._allow_leave():
@@ -1126,10 +1150,10 @@ class AtlasApp:
             return False
         if not self._allow_leave():
             return False
-        if self.document.nodes:
+        if self.document.nodes or self.document.flows:
             if not messagebox.askyesno(
                 "Start an empty atlas?",
-                f"Replace all {len(self.document.nodes)} saved blocks with an empty atlas?\n\n"
+                f"Replace all {len(self.document.nodes)} saved blocks and {len(self.document.flows)} flows with an empty atlas?\n\n"
                 "The current saved atlas will be kept as the previous-version backup. "
                 "Use Export JSON first to keep a separate copy.",
                 parent=self.root,
@@ -1160,6 +1184,9 @@ class AtlasApp:
         children = self.document.children(node.id)
         warning = f"\n\nThis also deletes all {len(children)} subconcepts and their notes." if children else ""
         owners = {node.id} | {child.id for child in children}
+        linked_flows = self.document.flows_referencing(owners)
+        if linked_flows:
+            warning += f"\n\n{len(linked_flows)} flow(s) reference this cluster. Their steps will be kept and marked missing so you can relink them."
         entry_count = sum(entry.concept_id in owners for entry in self.document.information_entries)
         if entry_count:
             warning += f"\n\nThis also deletes {entry_count} recorded information entries."
@@ -1264,6 +1291,9 @@ class AtlasApp:
         elif self.block_bar.winfo_manager():
             self.block_bar.grid_remove()
         self.information.sync()
+        flow_active = hasattr(self, "flows") and self.flows.active
+        if flow_active:
+            self.flows.sync()
         width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
         if width < 10 or height < 10:
             return
@@ -1328,7 +1358,7 @@ class AtlasApp:
             self.information.draw_parent_indicators()
             if self.scene.preview_node is not None:
                 self._draw_node_halo(self.scene.preview_node, "preview-halo", theme.ACCENT if self.scene.preview_valid else theme.ERROR, preview=True)
-            elif not self.clusters.editing and (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
+            elif not flow_active and not self.clusters.editing and (selected := self.document.get(self.selected)) is not None and self.scene.is_visible(selected):
                 self._draw_node_halo(selected, "node-halo", theme.ACCENT)
             labeled = visible if self.labels_var.get() else [node for node in visible if node.id in (self.selected, self._hovered_node)]
         elif self.scene.block_appearance == "outline":
@@ -1339,9 +1369,13 @@ class AtlasApp:
             labeled = visible
         else:
             labeled = [node for node in visible if node.id in (self.selected, self._hovered_node)]
+        if flow_active:
+            labeled = [node for node in visible if node.id in self.scene.flow_concepts]
+            self.flows.prepare_badges()
         self._draw_labels(labeled, width, height)
         self.canvas.create_text(18, height - 44, anchor="sw",
-                                text="DRAG  ROTATE     WHEEL  ZOOM     CLICK NODE  EDIT NOTE" if node_view else
+                                text="DRAG  ROTATE     WHEEL  ZOOM     CLICK  SELECT STEP" if flow_active else
+                                "DRAG  ROTATE     WHEEL  ZOOM     CLICK NODE  EDIT NOTE" if node_view else
                                 "DRAG  ROTATE     WHEEL  ZOOM     CLICK  EDIT",
                                 fill=theme.MUTED, font=(self.mono, 8), tags="overlay")
         self.canvas.create_text(18, height - 24, anchor="sw", text="SHIFT + DRAG  PAN     TAB  NEXT NOTE",
@@ -1352,6 +1386,7 @@ class AtlasApp:
         if self._template_origin is None:
             self.canvas.create_text(18, height - 64, anchor="sw",
                                     text="ORBIT MOVE / ESC CANCEL" if self.clusters.editing and self.clusters.moving else
+                                    "FLOW: REFERENCES DO NOT ADD HEAT" if flow_active else
                                     "SUBCONCEPT: USE MOVE IN ORBIT" if self.clusters.editing else
                                     "MOVING: EDITOR CONTROLS / ESC CANCEL" if self._node_move_origin is not None else
                                     "CREATE WITH EDITOR CONTROLS" if node_view and self.selected is None else
@@ -1363,8 +1398,11 @@ class AtlasApp:
             text = "No nodes match these filters." if node_view else "No volumes match these filters."
             self.canvas.create_text(width / 2, height / 2 - 20, text=text, fill=theme.TEXT,
                                     font=(self.family, 16), tags="overlay")
-        self.clusters.draw()
+        if not flow_active:
+            self.clusters.draw()
         self.information.draw()
+        if flow_active:
+            self.flows.draw()
 
     def _draw_node_halo(self, node: Node, tag: str, color: str, *, preview: bool = False) -> None:
         x, y, depth = self.scene.project(self.scene.node_anchor(node))
@@ -1401,6 +1439,10 @@ class AtlasApp:
         x0, y0, x1, y1 = self.compass.reserved_box
         if x0 <= x <= x1 and y0 <= y <= y1:
             return None
+        if hasattr(self, "flows") and self.flows.active:
+            for identity, (x0, y0, x1, y1) in self.flows.badge_hits:
+                if x0 <= x <= x1 and y0 <= y <= y1:
+                    return identity
         for node_id, (x0, y0, x1, y1) in reversed(self._label_hits):
             if x0 <= x <= x1 and y0 <= y <= y1:
                 return node_id
@@ -1539,6 +1581,9 @@ class AtlasApp:
         return "break"
 
     def _cycle_node(self, direction: int) -> str:
+        if hasattr(self, "flows") and self.flows.active:
+            self.flows.next() if direction > 0 else self.flows.previous()
+            return "break"
         if self._template_origin is not None:
             return "break"
         ids = [n.id for n in self.document.nodes if self.scene.is_visible(n)]
@@ -1561,6 +1606,7 @@ class AtlasApp:
     def shutdown(self) -> None:
         """Release resources. Tests also use this without a confirmation dialog."""
         self._closed = True
+        self.flows.shutdown()
         self.label_manager.close()
         self.navigation.close()
         self.history.close()

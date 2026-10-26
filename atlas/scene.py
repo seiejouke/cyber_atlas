@@ -23,6 +23,7 @@ from vtkmodules.vtkRenderingCore import (
 from .geometry import LAYER_HEIGHT, RADIAL_WIDTH, Mesh, adjacent_node_pairs, layout_meshes, node_position, wedge_mesh
 from .model import ANGULAR_SLOTS, BANDS, CENTER_DEPTH, Design, LayerId, Node
 from .orbit_scene import OrbitScene
+from .flow_scene import FlowScene
 from .heat import DEFAULT_HEAT_MAX, HEAT_PRESETS, InformationHeat, heat_color, information_heat
 from .orientation import DEFAULT_ELEVATION, DEFAULT_YAW, camera_basis
 
@@ -55,7 +56,7 @@ def polydata(mesh: Mesh) -> vtkPolyData:
     return result
 
 
-class Scene(OrbitScene):
+class Scene(FlowScene, OrbitScene):
     def __init__(self, design: Design = Design()) -> None:
         self.design = design
         self.mode = "blocks"
@@ -127,6 +128,7 @@ class Scene(OrbitScene):
         self.width, self.height = 800, 650
         self.closed = False
         self._init_orbits()
+        self._init_flows()
         for position, intensity in (((0, 0, 1), 0.80), ((-1, 0.6, 0.7), 0.45)):
             light = vtkLight()
             light.SetLightTypeToCameraLight()
@@ -315,9 +317,10 @@ class Scene(OrbitScene):
 
     def _style_node(self, node: Node, actor: vtkActor) -> None:
         selected = node.id == self.selected
-        actor.SetScale(1.15 if self.mode == "nodes" and selected and not self.heat_active else 1.0)
+        actor.SetScale(1.15 if self.mode == "nodes" and selected and not self.heat_active and self.flow_note is None else 1.0)
         actor.GetProperty().SetColor(rgb(self.concept_color(node.id, node.layer),
                                         1.10 if selected and not self.heat_active else 1.0))
+        actor.GetProperty().SetOpacity(.18 if self.flow_note is not None and node.id not in self.flow_concepts else 1)
 
     def layer_anchor(self, layer: LayerId) -> tuple[float, float, float]:
         return 0.0, 0.0, self.design.z_base + self.design.layer_index(layer) + .5
@@ -677,6 +680,7 @@ class Scene(OrbitScene):
     def frame(self, width: int, height: int) -> bytes:
         """Return a P6 PPM image in memory, understood directly by Tk PhotoImage."""
         self.width, self.height = max(1, width), max(1, height)
+        self.sync_flow_overlay()
         if self.window.GetSize() != (self.width, self.height):
             self.window.SetSize(self.width, self.height)
         self.window.Render()

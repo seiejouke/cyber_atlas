@@ -117,6 +117,11 @@ cyber_atlas/
     storage.py            JSON, atomic writes and a previous-version backup
     history.py            Compressed SQLite revisions, change summaries and save recovery
     history_ui.py         Separate read-only scene, revision browsing, restore and ZIP export
+    flow.py               Manual branch traversal and world-space process curves
+    flow_scene.py         Independent VTK process arrows and referenced orbital children
+    flow_ui.py            Flow library, draft editor, study panel and view restoration
+    study_text.py         Inert headings, emphasis, lists and stable concept links
+    study_ui.py           Readable study text, concept search and shared-note editing
     scene.py              VTK rendering, camera and surface picking
     theme.py              Dark colors, widget styles and aligned position slider
     ui.py                 Window, editor and interaction handling
@@ -135,9 +140,10 @@ in-memory image, avoiding platform-specific native-window embedding. Rendering
 happens only when the view changes. Very large windows or dense atlases can
 rotate more slowly because a frame must be copied to the GUI.
 
-Notes accept Markdown **as text**. Markdown preview, Obsidian vault sync,
-links between blocks, attachments, global search, multi-note cells and
-multi-step undo are not implemented in this version.
+The standard note editor accepts Markdown **as text**. FlowNotes renders a small
+study-text subset and manually authored concept references. Obsidian vault sync,
+attachments, full-text global search, multi-note cells and multi-step undo are
+not implemented. The flow picker searches concept names and locations.
 
 ## Tests and verification
 
@@ -153,7 +159,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The current source includes **238 core tests** covering chosen angular
+The current source includes **259 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -165,8 +171,15 @@ checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, orbital relationships
-and revision history. The current source passes **238 core tests and 148 GUI
+and revision history. The current source passes **259 core tests and 164 GUI
 workflow checks** on Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2.
+FlowNotes also passes 50 source runtime checks. It remains unpackaged; see
+[FlowNotes source verification](flows-verification.json). These source counts
+include flow validation, manual branches, shared-note updates, missing-reference
+repair, schema-10 history compatibility, native rendering and view restoration.
+Under Ubuntu, 110 tests covering flows, history, storage, clusters, information
+and optional protocols pass. Its system Python lacks Tkinter, so the complete
+Linux desktop suite has not been verified for this source change.
 The published 0.9.3 packages pass 44 frozen runtime checks on Windows and 43 per
 format on Linux. An isolated real 0.9.2-to-0.9.3 Windows update and four Debian
 installer lifecycle checks also pass. See
@@ -256,6 +269,58 @@ crowded placement, priorities, reservations, bounds and pruning without Tk/VTK.
 `tests/label_view_checks.py` uses the real renderer for the four-node physical
 layer, constant-offset pan, partial/full sphere and child occlusion, shared
 suborbital placement, crowded minimum layouts and read-only label clicks.
+
+## FlowNotes architecture (current source)
+
+Format 11 adds immutable `FlowNote`, `FlowStep` and `FlowConnection` records to
+`Atlas`. Steps reference stable node/subconcept IDs; their saved concept names
+are fallback labels for deleted references. Repeated concepts have distinct
+step IDs. End-flow edges have a null target. Each branch has a unique nonempty
+label. Limits are 256 flows, 256 steps per flow and 1,024 connections per flow,
+within the existing 16 MiB document limit. Missing concept references remain
+loadable and repairable. Invalid endpoints, duplicate IDs/edges, malformed text
+and ambiguous branch labels are rejected before a save.
+
+`flow.FlowRun` follows only explicit outgoing edges and retains a visit trail
+for Previous, including terminal choices and manual loops. Jumping starts a new
+trail. `flow_scene.FlowScene` draws trimmed world-space curves and cone heads
+using independent non-pickable VTK actors, caches the overlay between scene
+changes, and supplies referenced child spheres for multiple parent orbits.
+Neither adjacency nor `information_heat` reads flow references. Node coordinates
+and heat fill colours are unchanged; dimming is temporary actor opacity.
+
+`flow_ui.FlowManager` maintains a validated draft outside the active document.
+It supports concept search, step reordering and relinking, labelled connections,
+branch selection and explicit save. Reader traversal and camera/filter operations
+never commit data. The original inspector draft stays intact. Exit restores
+the camera, representation, filters and orbital focus. Canonical note editing
+uses the same atomic save/history path as ordinary notes and refreshes all
+occurrences. Save failure retains the draft; conflicting unsaved inspector
+notes must be finished before editing that same shared concept.
+
+`study_text` parses a bounded, inert subset: headings, lists, bold, italic,
+inline code and `[label](concept:percent-encoded-id)` links. `StudyText` renders
+Tk tags without HTML, a browser engine, external navigation or script execution.
+Flow labels use the shared placement engine with a separate temporary cache;
+ordinary atlas label offsets remain available when the flow closes.
+
+Design edits and protocol clearing retain flows. Deleting a concept retains
+its flow steps with missing-reference markers. Atomic JSON saves, exports,
+backups and complete history snapshots include flows; change summaries identify
+flow edits. History's independent viewer lists and reads saved flows. History
+reconciliation compares decoded content across supported schema versions, so
+loading a format-10 snapshot under format 11 does not create a false revision
+or rewrite its recorded timestamp or hash.
+
+`tests/test_flows.py` covers the data model, storage/history, old files, traversal
+and text parsing; `tests/flow_view_checks.py` adds 16 real Tk/VTK workflows to
+the full smoke runner. `self_test.py` covers flow editing, native rendering,
+branches and canonical notes using the runtime that executes it. No package
+was built for this change. To refresh real source screenshots and the example:
+
+```bash
+python tools/capture_flows.py --example examples/packet_flow_atlas.json --output build/flows-previews
+```
 
 ## Orbital cluster architecture
 
@@ -347,7 +412,8 @@ byte and recording the current state and valid previous backup in history.
 
 ## Saved-state history architecture
 
-`history.HistoryStore` stores compressed, complete format-10 JSON snapshots in
+`history.HistoryStore` stores compressed, complete JSON snapshots (format 11
+in current source; format 10 in published 0.9.3) in
 an adjacent `.history.sqlite3` database. History schema 1 has a stable atlas ID,
 UUID revision IDs, increasing sequence numbers, parent links, UTC recording
 times, application/data-format versions, content hashes and structured changes

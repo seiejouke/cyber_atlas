@@ -66,7 +66,7 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(self.store.load(revisions[1].id), self.original)
         self.assertEqual(read_atlas(self.path), changed)
         self.assertEqual(read_atlas(self.path.with_suffix(".json.bak")), self.original)
-        self.assertEqual(json.loads(self.path.read_text())["version"], 10)
+        self.assertEqual(json.loads(self.path.read_text())["version"], 11)
         self.assertEqual({c["entity"] for c in revisions[0].changes}, {"node", "subconcept", "entry"})
 
     def test_moves_and_design_reordering_are_identifiable(self):

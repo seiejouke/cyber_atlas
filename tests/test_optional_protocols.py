@@ -22,7 +22,7 @@ class OptionalProtocolTests(unittest.TestCase):
 
     def test_unassigned_blocks_roundtrip_with_json_null(self):
         data = self.cleared.to_dict()
-        self.assertEqual(data["version"], 10)
+        self.assertEqual(data["version"], 11)
         self.assertEqual(data["design"]["protocols"], [])
         self.assertTrue(all(n["protocol"] is None for n in data["nodes"]))
         self.assertEqual(Atlas.from_dict(json.loads(json.dumps(data))), self.cleared)
