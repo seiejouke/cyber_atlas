@@ -1,0 +1,64 @@
+{
+  "status": "Built and verified; public publication awaits explicit approval",
+  "date": "2026-10-26",
+  "app_version": "0.9.3",
+  "source_commit": "50c23e7c60173f4118e4ad4e7ffcdcfaaf6834b2",
+  "packages_built": true,
+  "published": false,
+  "packaging_requires_explicit_approval": true,
+  "atlas_file_version": 10,
+  "history_file_version": 1,
+  "windows_core_tests_passed": 238,
+  "linux_core_tests_passed": 238,
+  "windows_gui_workflow_checks_passed": 148,
+  "windows_runtime_checks": 44,
+  "linux_runtime_checks_per_format": 43,
+  "previous_release_version": "0.9.2",
+  "windows_updater_lifecycle_checks": 7,
+  "linux_installer_lifecycle_checks": 4,
+  "windows_installer_check": "Existing user installation preserved; real install/upgrade/uninstall checked under a separate temporary AppId",
+  "linux_workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40320834150",
+  "tested_platforms": [
+    "Windows desktop",
+    "Ubuntu 22.04 CI with Xvfb/Mesa",
+    "Ubuntu 24.04.2 under WSLg"
+  ],
+  "data_preservation": "Navigation and labels never edit atlas JSON or append history; isolated Windows update retains saved notes, suborbitals, information and previous backup byte for byte",
+  "reports": [
+    "navigation-full-gui-results.json",
+    "navigation-source-runtime-results.json",
+    "navigation-windows-runtime.json",
+    "navigation-windows-updater.json",
+    "navigation-linux-build.json",
+    "navigation-linux-ubuntu24.json"
+  ],
+  "screenshot": "Actual version 0.9.3 application with disposable illustrative atlas",
+  "limitations": [
+    "Unsigned packages",
+    "No macOS package",
+    "No physical clean Windows or additional Linux distributions tested",
+    "Crowded views can hide ordinary labels; the viewport reports their count"
+  ],
+  "files": [
+    {
+      "path": "dist\\CyberAtlas-0.9.3-Setup.exe",
+      "bytes": 38604572,
+      "sha256": "e4a84f6d91a23b2db45b24065424cc98907affafa6f554c9973097b444943c6b"
+    },
+    {
+      "path": "dist\\CyberAtlas-0.9.3-windows-x64.zip",
+      "bytes": 59572782,
+      "sha256": "a3de4d4d0d79a687c7a9a58326202d489fd180680bde904a6d931cf67c061203"
+    },
+    {
+      "path": "dist\\linux\\cyber-atlas_0.9.3_amd64.deb",
+      "bytes": 81705712,
+      "sha256": "6dc9cddd56a1fdf6d3075a8dd427f378cf1636fa37b78a96084656ec609a2eca"
+    },
+    {
+      "path": "dist\\linux\\CyberAtlas-0.9.3-x86_64.AppImage",
+      "bytes": 98761208,
+      "sha256": "95bf713e564a4dd1d6bd34ad7e60f39a27da80ea18ee17128792103fc5dca20e"
+    }
+  ]
+}

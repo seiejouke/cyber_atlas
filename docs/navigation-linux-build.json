@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "version": "0.9.3",
+  "platform": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+  "glibc": [
+    "glibc",
+    "2.35"
+  ],
+  "python": "3.12.3",
+  "vtk": "9.6.2",
+  "commit": "50c23e7c60173f4118e4ad4e7ffcdcfaaf6834b2",
+  "packaged_checks": 43,
+  "appimage_checks": 43,
+  "installer_checked": true,
+  "files": [
+    {
+      "name": "cyber-atlas_0.9.3_amd64.deb",
+      "bytes": 81705712,
+      "sha256": "6dc9cddd56a1fdf6d3075a8dd427f378cf1636fa37b78a96084656ec609a2eca"
+    },
+    {
+      "name": "CyberAtlas-0.9.3-x86_64.AppImage",
+      "bytes": 98761208,
+      "sha256": "95bf713e564a4dd1d6bd34ad7e60f39a27da80ea18ee17128792103fc5dca20e"
+    }
+  ]
+}

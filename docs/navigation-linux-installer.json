@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks_passed": 4,
+  "checks": [
+    "Debian package installs and creates the application launcher",
+    "Installed launcher passes all 43 rendering and storage checks",
+    "Same-version package upgrade preserves saved user data",
+    "Package removal deletes the application and preserves user data"
+  ]
+}
