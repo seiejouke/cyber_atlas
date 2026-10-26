@@ -1,0 +1,2 @@
+3be67b1f4bc512d50e1db207eb05f5feed68090f751010384bab21db6c4aaf60  CyberAtlas-0.10.0-windows-x64.zip
+01fddadd85a4b239b8ceb0b45a2bc13fbc2a3c48a31c4231e46fb4a02657fb98  CyberAtlas-0.10.0-Setup.exe

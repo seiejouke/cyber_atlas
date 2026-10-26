@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "version": "0.10.0",
+  "system": "Ubuntu 24.04.2 under WSLg with XWayland",
+  "deb_runtime_checks": 49,
+  "appimage_runtime_checks": 49,
+  "appimage_launch": "Normal FUSE launch, without extraction flags"
+}

@@ -173,13 +173,15 @@ also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, orbital relationships
 and revision history. The current source passes **259 core tests and 164 GUI
 workflow checks** on Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2.
-FlowNotes also passes 50 source runtime checks. It remains unpackaged; see
-[FlowNotes source verification](flows-verification.json). These source counts
+Version 0.10.0 passes **50 frozen runtime checks on Windows and 49 per Linux
+format**, seven isolated Windows upgrade checks and four Debian installer
+checks. Public publication is pending approval; see
+[FlowNotes package verification](flows-verification.json). These source counts
 include flow validation, manual branches, shared-note updates, missing-reference
 repair, schema-10 history compatibility, native rendering and view restoration.
-Under Ubuntu, 110 tests covering flows, history, storage, clusters, information
-and optional protocols pass. Its system Python lacks Tkinter, so the complete
-Linux desktop suite has not been verified for this source change.
+All 259 core tests pass on Ubuntu 22.04 CI. Both frozen Linux formats also
+pass 49 runtime checks on Ubuntu 24.04.2 under WSLg. The complete Linux GUI
+smoke suite has not been run for this change.
 The published 0.9.3 packages pass 44 frozen runtime checks on Windows and 43 per
 format on Linux. An isolated real 0.9.2-to-0.9.3 Windows update and four Debian
 installer lifecycle checks also pass. See
@@ -270,7 +272,7 @@ crowded placement, priorities, reservations, bounds and pruning without Tk/VTK.
 layer, constant-offset pan, partial/full sphere and child occlusion, shared
 suborbital placement, crowded minimum layouts and read-only label clicks.
 
-## FlowNotes architecture (current source)
+## FlowNotes architecture (0.10.0)
 
 Format 11 adds immutable `FlowNote`, `FlowStep` and `FlowConnection` records to
 `Atlas`. Steps reference stable node/subconcept IDs; their saved concept names
@@ -315,8 +317,9 @@ or rewrite its recorded timestamp or hash.
 `tests/test_flows.py` covers the data model, storage/history, old files, traversal
 and text parsing; `tests/flow_view_checks.py` adds 16 real Tk/VTK workflows to
 the full smoke runner. `self_test.py` covers flow editing, native rendering,
-branches and canonical notes using the runtime that executes it. No package
-was built for this change. To refresh real source screenshots and the example:
+branches and canonical notes using the runtime that executes it. Windows
+and Linux 0.10.0 packages have been built and verified; publication is pending.
+To refresh real source screenshots and the example:
 
 ```bash
 python tools/capture_flows.py --example examples/packet_flow_atlas.json --output build/flows-previews
@@ -512,8 +515,8 @@ installer check is skipped.
 Outputs in `dist/`:
 
 - `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
-- `CyberAtlas-0.9.3-windows-x64.zip`: complete folder for ZIP distribution.
-- `CyberAtlas-0.9.3-Setup.exe`: installer for the current Windows account.
+- `CyberAtlas-0.10.0-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.10.0-Setup.exe`: installer for the current Windows account.
 - `SHA256SUMS.txt`: hashes for the distributable files.
 - `packaged-test-results.json`: results from the bundled executable.
 - `installed-test-results.json`: results from running the installed executable.
@@ -554,8 +557,8 @@ Cyber Atlas installation. A normal local build does not install the package.
 
 Outputs and reports are in `dist/linux/`:
 
-- `cyber-atlas_0.9.3_amd64.deb`
-- `CyberAtlas-0.9.3-x86_64.AppImage`
+- `cyber-atlas_0.10.0_amd64.deb`
+- `CyberAtlas-0.10.0-x86_64.AppImage`
 - `SHA256SUMS-linux.txt`
 - `linux-build-report.json` and runtime/installation test reports
 

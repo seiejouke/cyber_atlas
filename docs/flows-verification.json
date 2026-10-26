@@ -1,10 +1,10 @@
 {
-  "status": "Implemented and verified in source; not packaged or published",
+  "status": "Built and verified Windows and Linux packages; publication pending approval",
   "date": "2026-10-26",
   "source_base_version": "0.9.3",
   "atlas_file_version": 11,
   "history_file_version": 1,
-  "packages_built_for_this_change": false,
+  "packages_built_for_this_change": true,
   "published": false,
   "packaging_requires_explicit_approval": true,
   "windows_core_tests_passed": 259,
@@ -22,7 +22,8 @@
   ],
   "tested_platforms": [
     "Windows desktop: Python 3.12.3, Tk 8.6, VTK 9.6.2",
-    "Ubuntu under WSL: Python 3.12, portable test subset"
+    "Ubuntu 22.04 CI: 259 core tests and frozen runtime/installer checks",
+    "Ubuntu 24.04.2 under WSLg: both frozen Linux formats"
   ],
   "features": [
     "Saved FlowNotes with distinct step IDs referencing existing nodes or suborbitals",
@@ -44,7 +45,20 @@
   "reports": [
     "flows-full-gui-results.json",
     "flows-focused-gui-results.json",
-    "flows-source-runtime-results.json"
+    "flows-source-runtime-results.json",
+    "flows-windows-runtime.json",
+    "flows-windows-installer.json",
+    "flows-windows-updater.json",
+    "flows-SHA256SUMS.txt",
+    "flows-linux-build.json",
+    "flows-linux-runtime.json",
+    "flows-linux-appimage-runtime.json",
+    "flows-linux-installed-runtime.json",
+    "flows-linux-installer.json",
+    "flows-linux-ubuntu24.json",
+    "flows-linux-ubuntu24-deb-runtime.json",
+    "flows-linux-ubuntu24-appimage-runtime.json",
+    "flows-SHA256SUMS-linux.txt"
   ],
   "screenshots": [
     "flownotes-editor.png",
@@ -53,10 +67,45 @@
   ],
   "example": "../examples/packet_flow_atlas.json",
   "limitations": [
-    "Published 0.9.3 installers do not include FlowNotes or read format 11",
-    "The Ubuntu system Python lacks Tkinter; the full Linux source suite and GUI were not verified for this change",
-    "No package, installer, update handoff or release was produced or tested for this change",
-    "Branching is manually authored and traversed, not a process simulation",
+    "Public downloads and the update feed remain at 0.9.3 until publication is approved",
+    "Unsigned packages; no macOS package",
+    "Full Linux GUI smoke suite not run; bundled runtime checks pass on Ubuntu 22.04 and 24.04.2",
+    "Format 11 requires 0.10.0 or newer; retain an older-format copy for older applications",
+    "Branches are manually authored and traversed, not a process simulation",
     "Automatic progression, recall-answer reveals and a standalone comparative study-note view remain future work"
+  ],
+  "app_version": "0.10.0",
+  "source_commit": "02db98daf157ec2edbdcb47257432477cbcd0e58",
+  "packages_built": true,
+  "linux_core_tests_passed": 259,
+  "windows_runtime_checks": 50,
+  "linux_runtime_checks_per_format": 49,
+  "previous_release_version": "0.9.3",
+  "windows_updater_lifecycle_checks": 7,
+  "linux_installer_lifecycle_checks": 4,
+  "windows_installer_check": "Existing installation preserved; separate test AppId exercises real installation, upgrade helper, restart and uninstall",
+  "linux_workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40339741213",
+  "screenshot_note": "Source previews captured before the 0.10.0 package build",
+  "files": [
+    {
+      "path": "dist/CyberAtlas-0.10.0-windows-x64.zip",
+      "bytes": 59636821,
+      "sha256": "3be67b1f4bc512d50e1db207eb05f5feed68090f751010384bab21db6c4aaf60"
+    },
+    {
+      "path": "dist/CyberAtlas-0.10.0-Setup.exe",
+      "bytes": 38656921,
+      "sha256": "01fddadd85a4b239b8ceb0b45a2bc13fbc2a3c48a31c4231e46fb4a02657fb98"
+    },
+    {
+      "path": "dist/linux/cyber-atlas_0.10.0_amd64.deb",
+      "bytes": 81934894,
+      "sha256": "f43039ec5ccd7885e1b06415269aa2beccd59e5590e1d84e14192968c2a728b7"
+    },
+    {
+      "path": "dist/linux/CyberAtlas-0.10.0-x86_64.AppImage",
+      "bytes": 98822648,
+      "sha256": "479a02600a39a8074ef7a5a68082e2e6f41558eb2bd12befa85139f79f790963"
+    }
   ]
 }

@@ -118,10 +118,11 @@ Navigation makes more space available. Label positions and these camera changes
 stay outside your atlas JSON and saved-state history; notes and drafts are
 preserved. Stable labels are included in version 0.9.3.
 
-## FlowNotes (current source)
+## FlowNotes
 
-FlowNotes is available in the current source. The published 0.9.3 installers
-do not include it yet. Open **Flows** beside History to create or study a saved
+FlowNotes is included in the built and verified **0.10.0 Windows and Linux
+packages**. Public publication is pending; the released 0.9.3 installers do not
+include it. Open **Flows** beside History to create or study a saved
 process guide. The compass and layer slider remain available in the viewport.
 
 Choose **New**, enter a title and optional introduction, then use **Add concept**
@@ -181,17 +182,17 @@ History lists saved flows alongside concepts, displays their steps and shared
 notes in its independent read-only scene, and restores flows with the atlas.
 JSON exports, backups and history ZIPs include the saved flow records.
 
-Try [packet_flow_atlas.json](../examples/packet_flow_atlas.json) from source. It
+Try [packet_flow_atlas.json](../examples/packet_flow_atlas.json) with 0.10.0 or source. It
 includes a simplified packet-forwarding flow and a comparison guide across
 firewall suborbitals. The example is a manually authored learning guide, not a
 network simulation. Automatic progression and recall-answer reveals remain
-future work. See [source verification](flows-verification.json).
+future work. See [package verification](flows-verification.json).
 
 ![Actual source flow editor, with steps referencing existing atlas concepts](flownotes-editor.png)
 
 ![Actual source comparison guide using existing firewall suborbitals](flownotes-suborbitals.png)
 
-These captures use the editable example above and show the unpackaged source.
+These source previews use the editable example above and were captured before packaging.
 
 ## Orbital subconcepts
 
@@ -646,7 +647,7 @@ Format 11 adds `flows`, with stable flow, step and connection IDs and references
 to canonical concepts. Older atlases load with an empty flow collection. Existing
 history snapshots retain their IDs and recorded dates; opening an older atlas
 does not invent a content change just because the schema advanced. Format 11
-requires the current FlowNotes source or a future package containing it;
+requires Cyber Atlas 0.10.0 or newer;
 published Cyber Atlas 0.9.3 supports formats through 10. Keep an older-format
 copy when returning to an older application.
 
