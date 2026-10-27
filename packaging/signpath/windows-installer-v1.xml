@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <parameters>
+    <parameter name="version" required="true" />
+  </parameters>
+  <zip-file>
+    <pe-file path="CyberAtlas-*-Setup.exe" product-name="Cyber Atlas" product-version="${version}">
+      <authenticode-sign hash-algorithm="sha256" description="Cyber Atlas installer" description-url="https://github.com/seiejouke/cyber_atlas" />
+    </pe-file>
+  </zip-file>
+</artifact-configuration>

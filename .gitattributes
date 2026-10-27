@@ -1,0 +1,3 @@
+# Preserve verbatim upstream license texts and their recorded checksums.
+LICENSE text eol=lf
+packaging/licenses/*.txt text eol=lf

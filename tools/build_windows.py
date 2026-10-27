@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 from contextlib import nullcontext
 import hashlib
-from importlib import metadata
 import json
 import os
 from pathlib import Path
@@ -17,6 +16,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from atlas import __version__
+from tools.release_legal import include_legal_files
 
 
 def make_icon():
@@ -49,7 +49,9 @@ def make_version(work: Path):
     StringStruct('InternalName', 'CyberAtlas'),
     StringStruct('OriginalFilename', 'CyberAtlas.exe'),
     StringStruct('ProductName', 'Cyber Atlas'),
-    StringStruct('ProductVersion', '{__version__}')
+    StringStruct('CompanyName', 'Jouke Seinstra'),
+    StringStruct('LegalCopyright', 'Copyright (C) 2026 Jouke Seinstra and Cyber Atlas contributors'),
+    StringStruct('ProductVersion', '{__version__}.0')
   ])]), VarFileInfo([VarStruct('Translation', [1033, 1200])])]
 )
 """, encoding="utf-8")
@@ -63,23 +65,6 @@ def find_compiler(explicit: Path | None) -> Path | None:
             candidates.extend((base / f"Inno Setup {version}" / "ISCC.exe",
                                base / "Programs" / f"Inno Setup {version}" / "ISCC.exe"))
     return next((Path(path).resolve() for path in candidates if path and Path(path).is_file()), None)
-
-
-def include_notices(bundle: Path):
-    notices = bundle / "Third-party notices"
-    notices.mkdir(exist_ok=True)
-    for package in ("vtk", "numpy"):
-        distribution = metadata.distribution(package)
-        for item in distribution.files or ():
-            if ".dist-info/licenses/" in str(item).replace("\\", "/"):
-                target = notices / package / Path(*item.parts[item.parts.index("licenses") + 1:])
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(distribution.locate_file(item), target)
-    for name, path in (("Python", Path(sys.base_prefix) / "LICENSE.txt"),
-                       ("Tcl", Path(sys.base_prefix) / "tcl" / "tcl8.6" / "license.terms"),
-                       ("Tk", Path(sys.base_prefix) / "tcl" / "tk8.6" / "license.terms")):
-        if path.is_file():
-            shutil.copy2(path, notices / f"{name}-license.txt")
 
 
 def check_executable(executable: Path, report_path: Path, work: Path, *, test_directory: Path | None = None):
@@ -100,7 +85,7 @@ def check_executable(executable: Path, report_path: Path, work: Path, *, test_di
     return report
 
 
-def check_installer(installer: Path, work: Path):
+def check_installer(installer: Path, work: Path, *, signature_check=None):
     """Exercise the actual installer, then remove the isolated test installation."""
     import winreg
     key_name = r"Software\Microsoft\Windows\CurrentVersion\Uninstall\{6B2793DE-9136-42A5-BF2E-C05AD776517B}_is1"
@@ -133,6 +118,11 @@ def check_installer(installer: Path, work: Path):
             subprocess.run(command, cwd=directory, check=True, timeout=120)
             if not registered() or not (application / "CyberAtlas.exe").is_file():
                 raise RuntimeError("The installer did not register the application and create the executable.")
+            if signature_check is not None:
+                for signed_file in (application / "CyberAtlas.exe", uninstaller,
+                                    application / "_internal/atlas/update_helper.ps1"):
+                    signature_check(signed_file)
+                checks.append("Installed application, updater and uninstaller have verified timestamped signatures")
             checks.append("Per-user silent installation succeeds in a path containing spaces")
             runtime = check_executable(application / "CyberAtlas.exe", ROOT / "dist" / "installed-test-results.json",
                                        work, test_directory=user_data)
@@ -161,7 +151,13 @@ def main():
     parser.add_argument("--iscc", type=Path, help="Path to Inno Setup's ISCC.exe")
     parser.add_argument("--skip-installer", action="store_true", help="Build only the application and ZIP")
     parser.add_argument("--check-installer-only", action="store_true", help="Check an already built installer without rebuilding")
+    parser.add_argument("--bundle-only", action="store_true", help="Prepare an application folder without ZIP or installer output")
+    parser.add_argument("--defer-desktop-checks", action="store_true", help="With --bundle-only, defer desktop checks to release validation")
     args = parser.parse_args()
+    if args.bundle_only and (args.skip_installer or args.check_installer_only):
+        parser.error("--bundle-only cannot be combined with installer options")
+    if args.defer_desktop_checks and not args.bundle_only:
+        parser.error("Desktop checks can be deferred only when preparing a bundle, not a release")
     if sys.platform != "win32" or sys.maxsize <= 2**32:
         parser.error("Build this x64 release using 64-bit Python on Windows.")
     work, destination = ROOT / "build" / "windows", ROOT / "dist"
@@ -170,8 +166,8 @@ def main():
     if args.check_installer_only:
         check_installer(destination / f"CyberAtlas-{__version__}-Setup.exe", work)
         return
-    compiler = None if args.skip_installer else find_compiler(args.iscc)
-    if not args.skip_installer and compiler is None:
+    compiler = None if args.skip_installer or args.bundle_only else find_compiler(args.iscc)
+    if not args.skip_installer and not args.bundle_only and compiler is None:
         parser.error("Install Inno Setup 6/7, pass --iscc, or use --skip-installer.")
     subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests"], cwd=ROOT, check=True)
     make_icon()
@@ -180,7 +176,7 @@ def main():
                     "--workpath", str(work / "pyinstaller"), str(ROOT / "packaging" / "windows.spec")],
                    cwd=ROOT, check=True)
     bundle = destination / "CyberAtlas"
-    include_notices(bundle)
+    include_legal_files(bundle)
     (bundle / "Read me.txt").write_text(
         f"Cyber Atlas {__version__} for Windows x64\n\n"
         "Extract this whole folder, then open CyberAtlas.exe. Python is included.\n"
@@ -198,7 +194,11 @@ def main():
         "Requires Windows 10/11 x64 with a working OpenGL graphics driver.\n"
         "This build is unsigned.\n", encoding="utf-8")
     report_path = destination / "packaged-test-results.json"
-    check_executable(bundle / "CyberAtlas.exe", report_path, work)
+    if not args.defer_desktop_checks:
+        check_executable(bundle / "CyberAtlas.exe", report_path, work)
+    if args.bundle_only:
+        print("Application folder prepared. No ZIP or installer was created; signatures are not yet applied.", flush=True)
+        return
     archive = destination / f"CyberAtlas-{__version__}-windows-x64.zip"
     with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as output:
         for path in sorted(bundle.rglob("*")):

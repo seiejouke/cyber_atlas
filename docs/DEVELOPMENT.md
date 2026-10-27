@@ -4,6 +4,22 @@
 
 Run the commands below from the repository root.
 
+## License and release notices
+
+Cyber Atlas's original work is licensed under GPL-3.0-only; see [LICENSE](../LICENSE)
+and [COPYRIGHT.txt](../COPYRIGHT.txt). Dependencies retain their own terms.
+The shared `tools/release_legal.py` collector adds the project license,
+complete supplied VTK/NumPy license directories, runtime notices and a version/hash
+manifest to future Windows and Linux bundles. Missing required notices fail the
+build. Reviewed fallback notices and their provenance are in `packaging/licenses/`.
+
+Each future bundle includes `Source code/CyberAtlas-source.zip`, containing the
+application source and build instructions from the build working tree. It does
+not include third-party dependency sources. In a Git checkout, track new project
+files before packaging; untracked files are never archived. Complete the native-library and
+corresponding-source review in the [distribution checklist](DISTRIBUTION.md)
+before publication. Existing releases have not been changed by this preparation.
+
 ## Development and release workflow
 
 Implement ordinary changes and run the checks appropriate to each change.
@@ -159,7 +175,7 @@ GUI/rendering smoke test, with VTK installed and a graphical desktop:
 python tests/smoke_ui.py
 ```
 
-The current source includes **259 core tests** covering chosen angular
+The current source includes **299 core tests** covering chosen angular
 sizes, watertight center/ring meshes, equal radial spacing, stable neighboring
 blocks, overlap rejection, gap reuse, design validation, stable references,
 layer reassignment, optional protocols, shared node/block coordinates,
@@ -171,8 +187,11 @@ checks include cancellation that preserves text edits, hidden reservations,
 save failures, Center transitions and the minimum window layout. Core tests
 also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, orbital relationships
-and revision history. The current source passes **259 core tests and 164 GUI
-workflow checks** on Windows with Python 3.12.3, Tk 8.6 and VTK 9.6.2.
+and revision history. Release-legal and Windows signing tests also cover notice
+collection, source archives, payload comparisons, certificate checks and staged
+packaging. All **299 core tests** pass on Windows. The published v0.10.0 source
+passed **259 core tests and 164 GUI workflow checks** on Windows with
+Python 3.12.3, Tk 8.6 and VTK 9.6.2.
 Version 0.10.0 passes **50 frozen runtime checks on Windows and 49 per Linux
 format**, seven isolated Windows upgrade checks and four Debian installer
 checks. This release is published; see
@@ -525,7 +544,28 @@ Outputs in `dist/`:
 Application logs are written to `logs/cyber-atlas.log` beside the active atlas
 file. For the default atlas this is `%LOCALAPPDATA%\CyberAtlas\logs`.
 Logs rotate and startup failures also display a dialog in the windowed build.
-The build does not sign or publish the application.
+This local build is unsigned and does not publish the application.
+
+### Prepare a signed Windows candidate
+
+After SignPath approval and the setup in [SIGNPATH_SETUP.md](SIGNPATH_SETUP.md),
+the manual **Prepare signed Windows candidate** workflow builds on a
+GitHub-hosted runner, requests two signing approvals, and verifies returned
+signatures, trusted timestamps, the approved certificate and unchanged payloads.
+Only first-party files and the generated uninstaller are signed; upstream DLLs
+are left alone. The finished installer is signed in the second request.
+
+`tools/sign_windows.py` implements `preflight`, `prepare`, `assemble`, `finalize`
+and `verify`. The normal `build_windows.py` command remains an unsigned local
+build. Its `--bundle-only` option is used for signing preparation and emits no
+ZIP or installer; desktop checks can be deferred only in that preparation mode.
+
+The workflow archives a **candidate**, records `desktop_validation: pending`,
+and does not publish a release or change the version. Validate the signed
+installer in a disposable Windows account using the setup guide before
+publication. Provider account approval, certificate pinning and the first real
+end-to-end signing run are still outstanding. Repository preparation alone
+does not sign the existing v0.10.0 downloads.
 
 ## Build the Linux release
 

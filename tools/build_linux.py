@@ -18,6 +18,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from atlas import __version__
+from tools.release_legal import include_legal_files, write_debian_copyright
 
 TOOL_URL = "https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage"
 TOOL_SHA256 = "ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0"
@@ -54,24 +55,6 @@ def copy_bundle(bundle: Path, destination: Path):
     for path in destination.rglob("*"):
         if not path.is_symlink():
             path.chmod(0o755 if path.is_dir() or os.access(path, os.X_OK) else 0o644)
-
-
-def notices(bundle: Path):
-    target = bundle / "Third-party notices"
-    target.mkdir(exist_ok=True)
-    for package in ("vtk", "numpy"):
-        distribution = metadata.distribution(package)
-        for item in distribution.files or ():
-            if ".dist-info/licenses/" in str(item):
-                relative = Path(*item.parts[item.parts.index("licenses") + 1:])
-                output = target / package / relative
-                output.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(distribution.locate_file(item), output)
-    for name, source in (("Python", Path(sys.base_prefix) / "LICENSE.txt"),
-                         ("Tcl", bundle / "_internal" / "_tcl_data" / "license.terms"),
-                         ("Tk", bundle / "_internal" / "_tk_data" / "license.terms")):
-        if source.is_file():
-            shutil.copy2(source, target / f"{name}-license.txt")
 
 
 def check_application(command: list[str], report: Path, work: Path, *, test_directory: Path | None = None):
@@ -125,6 +108,9 @@ def make_deb(bundle: Path, work: Path, destination: Path):
     icons = directory / "usr" / "share" / "icons" / "hicolor" / "256x256" / "apps"
     icons.mkdir(parents=True)
     shutil.copy2(ROOT / "assets" / "CyberAtlas.png", icons / "cyber-atlas.png")
+    documentation = directory / "usr" / "share" / "doc" / "cyber-atlas"
+    write_debian_copyright(bundle, documentation / "copyright")
+    shutil.copy2(bundle / "SOURCE_CODE.txt", documentation / "SOURCE_CODE.txt")
     control = directory / "DEBIAN"
     control.mkdir()
     size = sum(path.stat().st_size for path in directory.rglob("*") if path.is_file()) // 1024
@@ -188,7 +174,7 @@ def main():
                         "--distpath", str(work / "frozen"), "--workpath", str(work / "pyinstaller"),
                         str(ROOT / "packaging" / "linux.spec")], cwd=ROOT, check=True)
         bundle = work / "frozen" / "CyberAtlas"
-        notices(bundle)
+        include_legal_files(bundle)
         (bundle / "Read me.txt").write_text(
             f"Cyber Atlas {__version__} for Linux x86_64\n\n"
             "Python, Tk and VTK are included. A working X11 or XWayland desktop and OpenGL driver are required.\n"

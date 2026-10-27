@@ -15,3 +15,10 @@
 - Keep packaging workflows manual on every platform, using `workflow_dispatch`
   for GitHub Actions. Ordinary commits and quality-of-life changes must not
   trigger package builds.
+
+# Resuming distribution work
+
+- Read [docs/SESSION_HANDOFF.md](docs/SESSION_HANDOFF.md) when resuming the
+  licensing, signing and Arch distribution work. Check the current working tree
+  against that dated handoff before acting; it records context, not permission
+  to build packages, upload sources, activate services or publish a release.

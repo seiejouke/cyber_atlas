@@ -7,7 +7,21 @@
 AppId={{6B2793DE-9136-42A5-BF2E-C05AD776517B}
 AppName=Cyber Atlas
 AppVersion={#AppVersion}
+AppPublisher=Jouke Seinstra
+AppPublisherURL=https://github.com/seiejouke/cyber_atlas
+AppSupportURL=https://github.com/seiejouke/cyber_atlas/issues
+InfoBeforeFile={#RepoRoot}\COPYRIGHT.txt
 VersionInfoVersion={#AppVersion}
+VersionInfoProductName=Cyber Atlas
+VersionInfoProductVersion={#AppVersion}
+VersionInfoProductTextVersion={#AppVersion}.0
+VersionInfoCompany=Jouke Seinstra
+#ifdef UninstallerCacheDir
+SignedUninstaller=yes
+SignedUninstallerDir={#UninstallerCacheDir}
+#else
+SignedUninstaller=no
+#endif
 DefaultDirName={localappdata}\Programs\Cyber Atlas
 DefaultGroupName=Cyber Atlas
 PrivilegesRequired=lowest

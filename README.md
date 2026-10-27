@@ -8,6 +8,13 @@ Your notes work offline and stay on your computer. You can export and import atl
 
 See the [user guide](docs/USER_GUIDE.md) for controls and saving, or the [developer guide](docs/DEVELOPMENT.md) for source setup and builds.
 
+Cyber Atlas is licensed under **[GNU GPLv3 only](LICENSE)**. See the
+[copyright notice](COPYRIGHT.txt) and [third-party notices](THIRD_PARTY_NOTICES.md).
+See the [Code signing policy](docs/CODE_SIGNING.md) and [privacy policy](docs/PRIVACY.md).
+Your own notes and imported atlases remain yours. Licensing and signing work
+for future releases is tracked in the [distribution checklist](docs/DISTRIBUTION.md);
+the v0.10.0 downloads below have not been rebuilt or newly signed.
+
 ![Information heat overview with automatic main-note counts, a gradual blue-to-red scale and rings around parents](docs/main-note-heat-overview.png)
 
 ![Blocks outline view of a web application architecture, with Authentication selected and its notes visible](docs/preview.png)
@@ -104,6 +111,7 @@ what is available today.
 - [Product vision](#product-vision)
 - [Spatial information model](#spatial-information-model)
 - [Ten fundamental design principles](#ten-fundamental-design-principles)
+- [Planned feature: multi-atlas workspace](#planned-feature-multi-atlas-workspace)
 - [Cumulative source integration](#underlying-requirement-cumulative-source-integration)
 - [Four complementary dimensions](#four-complementary-dimensions)
 - [Current implementation and planned features](#alpha-implementation-versus-planned-features)
@@ -247,6 +255,46 @@ These are **types of firewall**, not four successive radial stages. Their relati
 
 **Principle:** Granularity and categorical variation need distinct spatial representations.
 
+### Planned feature: multi-atlas workspace
+
+**Status: Planned and deferred for a future update; not included in v0.10.0.**
+
+Users should be able to place several complete atlases beside one another in
+**one shared 3D viewport**, using one camera and orientation compass. For example,
+an OSI atlas and a TCP/IP atlas could stand next to each other, allowing the
+learner to explore and visually associate both frameworks at once. Each atlas
+keeps its own pillar, layers, protocols, nodes, orbital subconcepts, notes,
+information heat and FlowNotes.
+
+An **Atlases** menu would provide:
+
+- **Add empty atlas:** create a named structure with its own editable layers.
+- **Add from template:** add another atlas using a built-in template.
+- **Import atlas alongside:** add an existing JSON atlas while preserving the
+  structures already in the workspace.
+- **Manage atlases:** rename, move, focus, hide, solo, export or remove an atlas.
+
+Each atlas should have a selectable nameplate above its pillar. Selecting a
+node activates its owning atlas and updates the existing inspector. Layer and
+protocol filters apply to the active atlas, identified by name, while other
+atlases remain visible. **Focus atlas** frames one structure; **Show all atlases**
+frames the complete workspace.
+
+**Move atlas** translates the entire structure as a group, initially along the
+horizontal plane with all pillars parallel. Nodes, suborbitals, labels and
+FlowNote arrows travel together, preserving their local coordinates. New atlases
+receive enough initial spacing for their rings and suborbitals, and saved atlas
+positions remain fixed as notes are added.
+
+The workspace should save the complete arrangement, retain its changes in
+history, and support exporting an individual atlas. Existing atlas files should
+open as a workspace containing one atlas at its original position. Imported
+atlases receive distinct workspace identities so files containing identical
+internal node IDs can coexist without overwriting notes or breaking references.
+
+**Principle:** Independent knowledge structures can share one navigable space
+while retaining their internal organization and stable spatial positions.
+
 ### Underlying requirement: cumulative source integration
 
 A learner may read seven books about TCP, encounter the same mechanism repeatedly, and discover contradictory explanations. Cyber Atlas should let those encounters reinforce, extend, clarify, or challenge **one shared concept**.
@@ -290,6 +338,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Component | Status |
 | --- | --- |
 | Configurable 3D spatial architecture | **Implemented** |
+| [Multi-atlas workspace](#planned-feature-multi-atlas-workspace): add, import and arrange independent atlases in one viewport | **Planned** |
 | Blocks and Nodes visualizations | **Implemented** |
 | Stable node coordinates and manual movement | **Implemented** |
 | Clickable orientation compass with six axis views | **Implemented** |
