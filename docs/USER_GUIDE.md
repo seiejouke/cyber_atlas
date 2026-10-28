@@ -355,7 +355,7 @@ The first launch creates a local atlas containing the 14 starter notes from
 the HTML concept. Blocks support coordinate editing; clicking a sphere in
 Nodes opens its title and personal notes. **Move node** unlocks its position controls.
 
-**Current source, pending a packaged update:** new atlases also start with an
+**Packaged for v0.10.1; publication pending:** new atlases also start with an
 editable central concept for each layer. New layers and the Blank template
 create these concepts automatically. Click a central sphere or its layer label
 to edit the title and notes through the normal editor. Central concepts support
@@ -490,7 +490,7 @@ red and disable **Save move**, including reservations hidden by filters. The
 preview remains visible when its destination is outside the current layer filter.
 **Save move** saves the new position and any text edits. **Cancel move** or
 **Escape** restores the starting coordinates while keeping title and note edits.
-Moves keep the same node ID, protocol and block size. In current source, full
+Moves keep the same node ID, protocol and block size. In the v0.10.1 update, full
 Center concepts stay anchored; use **Edit layer** to reorder their layers.
 Other nodes retain their saved footprint when moved, and a full-size radial
 node can move to an empty Center to become the layer's central concept.

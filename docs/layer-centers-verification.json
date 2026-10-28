@@ -1,0 +1,83 @@
+{
+  "status": "Windows and Linux packages verified; publication pending",
+  "date": "2026-10-28",
+  "app_version": "0.10.1",
+  "previous_release_version": "0.10.0",
+  "atlas_file_version": 11,
+  "source_commit": "6c865809186dc3b2f9bbb7fd44588796eb6cb866",
+  "packaging_branch": "build/layer-concepts-0.10.1",
+  "packages_built": true,
+  "published": false,
+  "signed": false,
+  "windows_core_tests_passed": 318,
+  "linux_core_tests_passed": 318,
+  "windows_gui_workflow_checks_passed": 173,
+  "windows_runtime_checks": 50,
+  "windows_frozen_center_creation_checks": 2,
+  "windows_updater_lifecycle_checks": 7,
+  "linux_runtime_checks_per_format": 49,
+  "linux_installer_lifecycle_checks": 4,
+  "ubuntu24_appimage_runtime_checks": 49,
+  "windows_installer_check": "The installed Cyber Atlas copy was preserved; an isolated test AppId exercised installation, upgrade from 0.10.0, restart and removal.",
+  "linux_workflow_run": "https://github.com/seiejouke/cyber_atlas/actions/runs/40663086021",
+  "linux_workflow_artifact_id": 12804643901,
+  "linux_workflow_artifact_sha256": "7a2e8d26b8218b9bc03f022541e11d92e153eee5bf1778da799d6c8398b73e80",
+  "linux_build_glibc": "2.35",
+  "features": [
+    "New layers and new atlases create editable central concepts with persistent node identities",
+    "Layer labels and spheres open saved center notes or a named legacy-center draft",
+    "Center notes use normal information heat, subconcepts, FlowNotes, backups and saved-state history",
+    "Edit layer targets naming and ordering while central concepts stay anchored",
+    "New node and Add here from a center begin an outward concept on that layer",
+    "Unused default center placeholders leave with explicitly removed layers; content and references stay protected",
+    "Packages include GPL-3.0-only application licensing, dependency notices, a notice inventory and application sources"
+  ],
+  "compatibility": [
+    "Atlas format remains 11 and existing 0.10.0 atlases remain readable",
+    "Existing center IDs, notes, suborbitals, information records and flow references are preserved",
+    "Opening an old atlas or an unsaved center draft does not rewrite it",
+    "Legacy partial center blocks are preserved"
+  ],
+  "limitations": [
+    "Packages are unsigned; signing service and key setup remain pending",
+    "The full GUI workflow suite ran on Windows; Linux passed core, packaged runtime and installer checks",
+    "Release publication and replacing the installed application remain separate actions"
+  ],
+  "reports": [
+    "layer-centers-full-gui-results.json",
+    "layer-centers-windows-runtime.json",
+    "layer-centers-windows-installer.json",
+    "layer-centers-windows-updater.json",
+    "layer-centers-windows-centers.json",
+    "layer-centers-SHA256SUMS.txt",
+    "layer-centers-SHA256SUMS-linux.txt",
+    "layer-centers-linux-build.json",
+    "layer-centers-linux-runtime.json",
+    "layer-centers-linux-appimage-runtime.json",
+    "layer-centers-linux-installed-runtime.json",
+    "layer-centers-linux-installer.json",
+    "layer-centers-linux-ubuntu24-runtime.json"
+  ],
+  "files": [
+    {
+      "path": "dist/CyberAtlas-0.10.1-Setup.exe",
+      "bytes": 45764154,
+      "sha256": "35a1ce1c335dfefe9f0be874492014b02a025ab7a7f0b5e84cd75631ec132362"
+    },
+    {
+      "path": "dist/CyberAtlas-0.10.1-windows-x64.zip",
+      "bytes": 66824749,
+      "sha256": "0cbc702dfdc43444f3f5f05c482f50d3993bc2f42075aec1f1dad08a3c3f8e39"
+    },
+    {
+      "path": "dist/linux/cyber-atlas_0.10.1_amd64.deb",
+      "bytes": 89084360,
+      "sha256": "2036ea0eb954a74970b38ee9207128e25db8aa4483e8b495e024b2ed70cc587f"
+    },
+    {
+      "path": "dist/linux/CyberAtlas-0.10.1-x86_64.AppImage",
+      "bytes": 105978360,
+      "sha256": "44cc4950933dbdebcd513b8c11b88dc4d678c0f40cd583004b06db4d0a6976dc"
+    }
+  ]
+}

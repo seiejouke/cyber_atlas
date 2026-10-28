@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "version": "0.10.1",
+  "checks_passed": 2,
+  "checks": [
+    "The frozen application creates one uniquely identified editable center per layer for a new empty atlas",
+    "Opening and closing the frozen application preserves the center notes and their identities"
+  ]
+}

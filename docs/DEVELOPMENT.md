@@ -195,7 +195,14 @@ also cover error reporting without a console and safeguards for the packaged
 self-test, release validation, verified downloads, safe update handoffs, orbital relationships
 and revision history. Release-legal and Windows signing tests also cover notice
 collection, source archives, payload comparisons, certificate checks and staged
-packaging. All **299 core tests** pass on Windows. The published v0.10.0 source
+packaging. All **318 core tests** pass on Windows and Ubuntu 22.04. The v0.10.1
+candidates pass **173 Windows GUI checks**, **50 Windows frozen runtime checks**,
+**49 runtime checks per Linux format**, seven isolated Windows upgrade checks
+and four Debian installer checks. The AppImage also passes 49 runtime checks on
+Ubuntu 24.04 under WSLg. Packages are verified and await publication; see
+[layer-concept verification](layer-centers-verification.json).
+
+The published v0.10.0 source
 passed **259 core tests and 164 GUI workflow checks** on Windows with
 Python 3.12.3, Tk 8.6 and VTK 9.6.2.
 Version 0.10.0 passes **50 frozen runtime checks on Windows and 49 per Linux
@@ -572,8 +579,8 @@ installer check is skipped.
 Outputs in `dist/`:
 
 - `CyberAtlas/`: application folder containing `CyberAtlas.exe` and its runtime.
-- `CyberAtlas-0.10.0-windows-x64.zip`: complete folder for ZIP distribution.
-- `CyberAtlas-0.10.0-Setup.exe`: installer for the current Windows account.
+- `CyberAtlas-0.10.1-windows-x64.zip`: complete folder for ZIP distribution.
+- `CyberAtlas-0.10.1-Setup.exe`: installer for the current Windows account.
 - `SHA256SUMS.txt`: hashes for the distributable files.
 - `packaged-test-results.json`: results from the bundled executable.
 - `installed-test-results.json`: results from running the installed executable.
@@ -635,8 +642,8 @@ Cyber Atlas installation. A normal local build does not install the package.
 
 Outputs and reports are in `dist/linux/`:
 
-- `cyber-atlas_0.10.0_amd64.deb`
-- `CyberAtlas-0.10.0-x86_64.AppImage`
+- `cyber-atlas_0.10.1_amd64.deb`
+- `CyberAtlas-0.10.1-x86_64.AppImage`
 - `SHA256SUMS-linux.txt`
 - `linux-build-report.json` and runtime/installation test reports
 
