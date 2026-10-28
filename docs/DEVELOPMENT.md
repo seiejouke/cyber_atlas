@@ -20,6 +20,11 @@ files before packaging; untracked files are never archived. Complete the native-
 corresponding-source review in the [distribution checklist](DISTRIBUTION.md)
 before publication. Existing releases have not been changed by this preparation.
 
+Linux signing is opt-in and requires an owner-managed GPG key plus the external
+AppImageUpdate `validate` tool. See the [distribution checklist](DISTRIBUTION.md)
+for the signed build and independent verification commands. The GitHub Linux
+build remains unsigned until key custody is explicitly configured.
+
 ## Development and release workflow
 
 Implement ordinary changes and run the checks appropriate to each change.

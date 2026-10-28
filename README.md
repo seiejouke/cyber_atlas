@@ -64,6 +64,10 @@ Try the [editable orbital-cluster example](examples/orbital_cluster_atlas.json).
 
 In **Nodes**, choose **Color → Information heat**. Each saved concept's main note counts automatically, and its suborbitals add their own information to the parent. **Balanced (1–16)** is the initial preset; every additional item changes the color until red, using blue → cyan → yellow → orange → red with equally spaced counts. Compact and Extended presets are also available. A neutral ring and count badge identify parents even when their suborbitals are collapsed.
 
+Information heat visualizes **relative information volume**. Information-based
+node sizing is a planned extension of this same concept, using the same
+recorded-information counts to change node size while preserving node positions.
+
 ![Cyber Atlas interface with automatic main-note heat, Balanced preset and collapsed-parent indicators](docs/main-note-heat-overview.png)
 
 ![Cyber Atlas interface showing one main note plus three suborbitals, with the parent ring retained in focus](docs/main-note-heat-cluster.png)
@@ -104,7 +108,7 @@ This section contains the complete illustrated design philosophy. The current
 release provides the spatial notebook, information heat, saved-state history and FlowNotes;
 mastery measurements, assessments, source integration and historical
 playback remain planned capabilities. The implementation table below records
-what is available today.
+what is available today, and the development roadmap sets priorities for future work.
 
 ### Contents
 
@@ -115,10 +119,11 @@ what is available today.
 - [Cumulative source integration](#underlying-requirement-cumulative-source-integration)
 - [Four complementary dimensions](#four-complementary-dimensions)
 - [Current implementation and planned features](#alpha-implementation-versus-planned-features)
+- [Prioritized development roadmap](#prioritized-development-roadmap)
 - [Central design philosophy](#central-design-philosophy)
 
 > **Product vision and fundamental architecture**  
-> **Development stage:** Alpha · **Reference implementation:** v0.10.0 · **Updated:** 26 October 2026
+> **Development stage:** Alpha · **Reference implementation:** v0.10.0 · **Updated:** 28 October 2026
 
 ### Product vision
 
@@ -136,7 +141,7 @@ Its core motivation is **cumulative knowledge integration**: reading a page toda
 | **Radial distance** | Increasing granularity, function, or detail |
 | **Angular position** | Deliberate, recognizable spatial placement |
 | **Local orbit** | Sibling types or variants grouped around a parent concept |
-| **Outer node shell** | Relative quantity of accumulated, distinct information |
+| **Information heat / outer node shell** | Relative quantity of recorded information, shown through heat colors today, with node sizing planned |
 | **Inner node core** | Estimated mastery based on demonstrated retrieval and application |
 | **Connections** | Explicit conceptual or structural relationships |
 | **Time** | How the atlas and understanding have changed |
@@ -154,11 +159,11 @@ Concepts occupy meaningful positions in a configurable three-dimensional atlas. 
 
 **Principle:** Spatial position can act as a durable organizational reference and potentially as an additional memory-retrieval cue. A concept may belong to more than one category; the system should support cross-category references rather than forcing an inaccurate classification.
 
-#### 02. Relative information volume
+#### 02. Relative information volume: heat and node sizing
 
-Nodes expand as they accumulate *distinct, useful information*. Relative size communicates where a learner has concentrated their study. Repeating the same explanation across several sources should not automatically produce the same apparent growth as adding new concepts.
+Information heat already communicates where a learner has concentrated their study. A concept's main note, additional information entries and direct subconcept contributions determine its heat color. These counts measure recorded items; they do not automatically assess whether differently worded explanations contain distinct information.
 
-Size should use a bounded, nonlinear scaling function so that a few information-heavy nodes do not dominate the atlas. The choice of information-volume metric is a design question, not an established fact.
+Information-based node sizing is a planned extension of the same feature, using the same information counts. Size should use a bounded, nonlinear scaling function so that a few information-heavy nodes do not dominate the atlas, while node coordinates remain stable.
 
 **Principle:** The distribution of recorded information should be legible at a glance, without confusing quantity with competence.
 
@@ -346,14 +351,17 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | Stable node and suborbital labels with selection priority | **Implemented** |
 | Editable layers, protocols, labels, and templates | **Implemented** |
 | Local notes, JSON import/export, atomic saves, one-version backup | **Implemented** |
+| Beginner and intermediate construction tutorials | **Planned** — a user guide and editable examples are already available |
+| Selectable light/dark themes | **Planned** — the current interface uses a fixed dark palette |
+| Advanced custom themes | **Planned** |
 | Windows and Linux release packaging | **Implemented** |
 | Opt-in release checks and verified update downloads | **Implemented** |
 | Node connections between footprints sharing an edge; gaps remain unconnected | **Implemented** |
-| Recorded information entries and heat colors | **Implemented** |
+| Relative information volume: recorded entries, heat colors and information-based node sizing | **Heat implemented; sizing planned** as an extension using the same information counts |
 | Automatic main-note heat, linear presets and persistent parent indicators | **Implemented** |
-| Distinct-information-based node scaling | **Planned** |
 | Dual-shell mastery visualization | **Planned** |
 | Node-associated question bank and assessment history | **Planned** |
+| Guided interrogation | **Planned** — FlowNotes already supports authored recall prompts |
 | Source-aware integration and typed relationships | **Planned** |
 | Adaptive simplification and decomposition suggestions | **Planned** |
 | Saved-state recording, read-only history browsing and restore | **Implemented** |
@@ -361,8 +369,45 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | FlowNotes, manual process arrows, branch choices and shared study content | **Implemented in v0.10.0** |
 | Interactive comparative study notes | **Partial in v0.10.0** — FlowNotes provides a structured reader and clickable concept references; a standalone study-note view remains planned |
 | Orbital subconcept clusters | **Implemented** — one ring of eight stable positions, independent notes, Nodes expansion and Blocks child list |
+| Scalable subconcept architecture beyond the current eight-position ring | **Planned** |
 
 The present alpha establishes the spatial notebook. The envisioned learning mechanisms, including mastery estimates and the proposed memory benefits of spatial association, still require implementation and validation with actual learners.
+
+### Prioritized development roadmap
+
+The following priorities combine usability, learning and architecture work with
+the existing feature plans. The implementation table above records current
+availability; these priorities guide future development.
+
+| Priority | Development task | Scope and purpose |
+| --- | --- | --- |
+| **1** | **Usability testing and UI refinement** | Establish whether people can use the existing application independently. Observe creating an atlas, arranging concepts, adding subconcepts, building FlowNotes, saving and recovering work; use observed difficulties to guide UI changes. |
+| **2** | **Beginner and intermediate tutorials** | Make conceptual and procedural construction accessible. Guide beginners through a small conceptual atlas, then cover organizing a larger topic, comparing concepts and constructing a procedural FlowNote. Build on the existing user guide and editable examples. |
+| **3** | **Scalable subconcept architecture** | Extend orbital clusters beyond the current eight-child, single-ring limit while preserving recognizable positions, readable labels and straightforward navigation. Additional rings, nesting and other approaches need a separate design decision. |
+| **4** | **Performance profiling and optimization** | Establish practical limits by measuring loading, saving, camera interaction, labels, expanded clusters, history and FlowNotes at increasing atlas sizes. Use the results to prioritize improvements before extensive expansion. |
+| **5** | **Selectable light/dark themes** | Improve accessibility and usability through a consistent theme system covering controls, notes and the viewport. Extend the existing dark palette while preserving readable selection states and meaningful heat colors. |
+| **6** | **Guided interrogation and assessment** | Build on reliable conceptual notes and procedural FlowNotes with prompts for recall, explanation, comparison and tracing processes. Introduce guided questioning first, then concept questions, recorded answers and assessment history. |
+| **7** | **Advanced custom themes** | Add personalization through custom palettes and appearance settings, extending the theme system from priority 5 while preserving readable controls and information displays. |
+
+Baseline performance measurements should begin during priorities **1–2**, before
+expanding the subconcept architecture. Priority **4** remains the dedicated
+profiling and optimization milestone. Usability findings should inform later
+work and tutorial revisions.
+
+Existing feature plans fit into this roadmap as follows:
+
+| Planned capability | Placement and dependencies |
+| --- | --- |
+| [Multi-atlas workspace](#planned-feature-multi-atlas-workspace) | A separate expansion milestone after scalability and performance work. It needs its own workspace model and saving behavior alongside shared navigation and rendering. |
+| [Source integration, typed relationships and an unplaced inbox](#underlying-requirement-cumulative-source-integration) | A separate knowledge-organization milestone, beginning with sources and extracts linked to concepts, then extending relationships. Basic guided questioning can proceed independently. |
+| Information-based node sizing | An extension of implemented information heat, using the same information counts. Introduce it after evaluating spatial readability and performance, while preserving node positions. |
+| Standalone comparative study notes | Part of priority **6**, building on the existing FlowNotes reader and clickable concept references. |
+| Dual-shell mastery visualization | A later stage of priority **6**, after assessment results are available and the mastery model is defined. Untested knowledge, incorrect answers and declining retention need distinguishable states. |
+| Adaptive simplification and decomposition suggestions | Follow assessment and mastery work, using recorded difficulties to support suggestions. The learner controls any resulting structural changes. |
+| Timeline playback and scrubbing | An independent extension of implemented saved-state history. It remains a later milestone without blocking the main learning workflow. |
+
+Licensing, signing and platform distribution are tracked in the
+[distribution checklist](docs/DISTRIBUTION.md).
 
 ### Central design philosophy
 

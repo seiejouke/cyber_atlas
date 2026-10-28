@@ -18,6 +18,14 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from atlas import __version__
+from tools.linux_signing import (
+    LinuxSigningError,
+    export_public_key,
+    sign_manifest,
+    signing_fingerprint,
+    verify_signed_release,
+    write_manifest,
+)
 from tools.release_legal import include_legal_files, write_debian_copyright
 
 TOOL_URL = "https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage"
@@ -77,7 +85,7 @@ def check_application(command: list[str], report: Path, work: Path, *, test_dire
     return result
 
 
-def make_appimage(bundle: Path, work: Path, destination: Path):
+def make_appimage(bundle: Path, work: Path, destination: Path, *, sign: bool = False):
     directory = work / "CyberAtlas.AppDir"
     directory.mkdir()
     copy_bundle(bundle, directory / "usr" / "lib" / "cyber-atlas")
@@ -92,7 +100,11 @@ def make_appimage(bundle: Path, work: Path, destination: Path):
     output = destination / f"CyberAtlas-{__version__}-x86_64.AppImage"
     environment = os.environ.copy()
     environment.update(ARCH="x86_64", VERSION=__version__, APPIMAGE_EXTRACT_AND_RUN="1")
-    subprocess.run([str(tool), "--no-appstream", "--runtime-file", str(runtime), str(directory), str(output)],
+    command = [str(tool), "--no-appstream", "--runtime-file", str(runtime)]
+    if sign:
+        command.append("--sign")
+    command.extend((str(directory), str(output)))
+    subprocess.run(command,
                    env=environment, check=True, cwd=work)
     output.chmod(0o755)
     return output
@@ -159,14 +171,30 @@ def check_install(package: Path, work: Path, destination: Path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--test-install", action="store_true", help="Install, upgrade and remove the Debian package in a disposable system")
+    parser.add_argument("--sign", action="store_true",
+                        help="Sign the AppImage and checksum manifest using the configured GPG release key")
     arguments = parser.parse_args()
     if sys.platform != "linux" or platform.machine() not in ("x86_64", "amd64"):
         parser.error("Build this package on Linux x86_64.")
     for tool in ("dpkg-deb", "desktop-file-validate"):
         if not shutil.which(tool):
             parser.error(f"Required build tool is missing: {tool}")
+    fingerprint = None
+    if arguments.sign:
+        try:
+            fingerprint = signing_fingerprint(os.environ.get("CYBER_ATLAS_LINUX_SIGNING_FINGERPRINT"))
+        except LinuxSigningError as exc:
+            parser.error(str(exc))
+        for tool in ("gpg", "validate"):
+            if not shutil.which(tool):
+                parser.error(f"Signed Linux builds require '{tool}' on PATH")
     destination = ROOT / "dist" / "linux"
     destination.mkdir(parents=True, exist_ok=True)
+    signature = destination / "SHA256SUMS-linux.txt.asc"
+    if not arguments.sign and signature.exists():
+        if signature.is_symlink() or not signature.is_file():
+            parser.error(f"Refusing to overwrite an unsafe signature path: {signature}")
+        signature.unlink()
     subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"], cwd=ROOT, check=True)
     with TemporaryDirectory(prefix="cyber-atlas-linux-") as temporary:
         work = Path(temporary)
@@ -185,19 +213,28 @@ def main():
             "Logs are stored beside the atlas in logs/. Removing the application leaves your notes in place.\n", encoding="utf-8")
         packaged = check_application([str(bundle / "CyberAtlas")], destination / "linux-packaged-test-results.json", work)
         package = make_deb(bundle, work, destination)
-        appimage = make_appimage(bundle, work, destination)
+        appimage = make_appimage(bundle, work, destination, sign=arguments.sign)
         portable = check_application([str(appimage), "--appimage-extract-and-run"], destination / "linux-appimage-test-results.json", work)
         if arguments.test_install:
             check_install(package, work, destination)
-    artifacts = [package, appimage]
-    (destination / "SHA256SUMS-linux.txt").write_text(
-        "".join(f"{digest(path)}  {path.name}\n" for path in artifacts), encoding="ascii")
+        artifacts = [package, appimage]
+        manifest = destination / "SHA256SUMS-linux.txt"
+        write_manifest(artifacts, manifest)
+        if arguments.sign:
+            try:
+                sign_manifest(manifest, signature, fingerprint)
+                public_key = work / "linux-signing-public-key.asc"
+                export_public_key(fingerprint, public_key)
+                verify_signed_release(manifest, signature, artifacts, appimage, public_key, fingerprint)
+            except LinuxSigningError as exc:
+                raise RuntimeError(f"Linux signing verification failed: {exc}") from exc
     report = {
         "passed": True, "version": __version__, "platform": platform.platform(),
         "glibc": platform.libc_ver(), "python": platform.python_version(), "vtk": metadata.version("vtk"),
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "packaged_checks": packaged["checks_passed"], "appimage_checks": portable["checks_passed"],
-        "installer_checked": arguments.test_install,
+        "installer_checked": arguments.test_install, "signed": arguments.sign,
+        "signing_fingerprint": fingerprint,
         "files": [{"name": path.name, "bytes": path.stat().st_size, "sha256": digest(path)} for path in artifacts],
     }
     (destination / "linux-build-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

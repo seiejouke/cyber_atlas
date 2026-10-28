@@ -6,16 +6,17 @@ and check `git status` before continuing; later user instructions take priority.
 
 ## Resume here
 
-**Next development step: Step 3, Linux signing preparation.** Steps 1 and 2
-are implemented locally. Windows service activation, a real signed build and
-publication remain pending. Linux preparation can proceed independently while
-the owner arranges SignPath approval.
+**Linux signing preparation is implemented locally but awaits owner setup and a
+real signed run.** The next choice is how, if at all, the Linux signing identity
+will be made available to the manual GitHub workflow. Until then, its Linux
+build remains unsigned. Windows service activation, real signed builds and
+publication remain pending.
 
 Suggested instruction for a new session:
 
-> Read AGENTS.md and docs/SESSION_HANDOFF.md, then continue with Step 3: Linux
-> signing preparation. Keep package builds and publication manual, and remind
-> me of any manual steps I need to perform.
+> Read AGENTS.md and docs/SESSION_HANDOFF.md, preserve the current release
+> boundaries, and continue distribution preparation from the Linux signing
+> owner actions. Keep package builds and publication manual.
 
 ## User's chosen direction and workflow
 
@@ -37,12 +38,11 @@ Suggested instruction for a new session:
 
 - Workspace: `C:\Users\Jouke\cyber_atlas` (PowerShell).
 - GitHub: `seiejouke/cyber_atlas`, public repository.
-- Base commit at handoff: `f5521a0`, "Publish 0.10.0 downloads and verified
-  FlowNotes release documentation".
+- Starting commit for the resumed work: `a5963ec`, "Refactor legal file
+  handling and signing process for Windows".
 - Application version remains `0.10.0`; published v0.10.0 assets remain unchanged.
-- Work from this session is saved on disk as **uncommitted modifications and
-  untracked files**. It has not been pushed or backed up to GitHub. Preserve all
-  of it, including the earlier README addition described below.
+- The Linux signing preparation from the resumed session is in the working tree
+  as uncommitted changes. It has not been pushed or backed up to GitHub.
 - No application packages were built, signing requests submitted, or source
   changes uploaded during the licensing/signing preparation.
 
@@ -127,20 +127,26 @@ SignPath decides eligibility; its Foundation conditions exclude commercial dual
 licensing, and its certificate identifies SignPath Foundation as publisher.
 The next signed candidate build requires separate release/build authorization.
 
-## Next step 3: Linux signing preparation
+## Step 3: Linux signing preparation — implementation present, setup pending
 
-Implement support for GPG-signed checksum manifests and embedded AppImage
-signatures, plus verification in the manual build workflow. Keep the existing
-`.deb`/AppImage formats. A signed APT repository is deferred.
+`tools/build_linux.py --sign` creates an embedded AppImage signature and a
+GPG-signed SHA-256 manifest, then verifies both against the configured full
+fingerprint before reporting success. `tools/linux_signing.py verify` performs
+independent verification using a temporary keyring containing only the supplied
+public key. Unsigned builds remain the default. The manual GitHub Linux workflow
+has not been connected to a signing identity and still produces unsigned
+artifacts.
 
-Owner action later: establish a release-signing key, secure backup and revocation
-certificate; publish its public key/fingerprint. Do not generate or install a
-private signing key without arranging the owner's identity/storage choices.
-Keep keys/passphrases outside source control. No Linux key setup has been done.
+Owner actions: choose and establish a release-signing key; securely back up its
+private key and revocation certificate; configure that key as GPG's default for
+`appimagetool`; publish the public key and full fingerprint; install the
+AppImageUpdate `validate` tool. Never place private keys or passphrases in
+source control. No owner's Linux key has been generated, installed or used, and
+no signed package build has been run.
 
-AppImage signatures require verification tooling/integration; they do not
-universally suppress desktop prompts. Do not claim standalone `.deb` signing
-automatically establishes APT trust.
+A signed APT repository remains deferred. The `.deb` is covered by the signed
+checksum manifest, not by a native package signature or APT trust. AppImage
+signatures do not universally suppress desktop prompts.
 
 ## Later step 4: Arch distribution
 
@@ -172,6 +178,15 @@ On 26 October 2026:
 - Native Windows signature verification rejected the existing unsigned Cyber Atlas
   executable and accepted a timestamped Microsoft-signed SDK tool when pinned to
   its certificate. This was a verifier test, not project certificate activation.
+
+On 27 October 2026, for Linux signing preparation:
+
+- All **306 tests passed on Windows** using `.venv\Scripts\python.exe`.
+- `tools/build_linux.py --help` and `tools/linux_signing.py --help` completed.
+- Python byte-compilation and `git diff --check` passed.
+- No Linux package build, GPG key operation or real signature verification was
+  run. The signed path still needs validation with an owner-managed key and the
+  AppImageUpdate `validate` tool.
 
 Useful commands when changes justify rerunning checks:
 

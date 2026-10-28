@@ -84,18 +84,57 @@ release without a warning.
 References: [SignPath conditions](https://signpath.org/terms.html),
 [Microsoft SmartScreen guidance](https://learn.microsoft.com/windows/apps/package-and-deploy/smartscreen-reputation).
 
-## Step 3: Linux signing — pending
+## Step 3: Linux signing — preparation implemented, owner setup pending
 
-Add support for GPG-signed checksum manifests and embedded AppImage signatures.
-Verify signatures before a signed release can be published. A signed APT
-repository is deferred; the current distribution remains `.deb` and AppImage.
+The Linux builder now has an opt-in `--sign` mode. It asks `appimagetool` to
+embed an AppImage signature, signs the SHA-256 manifest with the configured full
+GPG fingerprint, then verifies both signatures and every listed artifact before
+marking the build successful. Verification uses a temporary keyring containing
+only the supplied public key. Unsigned builds remain the default. The
+`tools/linux_signing.py verify` command also verifies downloaded release files.
 
-Manual setup: establish the release-signing key, preserve a secure backup and
-revocation certificate, and publish the public key and fingerprint through the
-project's release documentation. Never add private keys or passphrases to Git.
+On Linux x86_64, after arranging the key and installing the AppImageUpdate
+`validate` verifier, an owner can run:
 
-An AppImage signature needs a verifier; it does not universally remove launcher
-prompts. See [AppImage signing](https://docs.appimage.org/packaging-guide/optional/signatures.html).
+```bash
+CYBER_ATLAS_LINUX_SIGNING_FINGERPRINT=YOUR_FULL_KEY_FINGERPRINT \
+  python tools/build_linux.py --sign
+```
+
+The GPG keyring's default signing key must be the same identity: `appimagetool`
+uses that default for its embedded signature. The build rejects the result if
+the embedded signature does not verify against the configured fingerprint.
+Successful signed output includes `SHA256SUMS-linux.txt.asc`.
+
+To verify a downloaded candidate, supply the published public key and both
+package paths:
+
+```bash
+python tools/linux_signing.py verify \
+  --manifest dist/linux/SHA256SUMS-linux.txt \
+  --signature dist/linux/SHA256SUMS-linux.txt.asc \
+  --appimage dist/linux/CyberAtlas-YOUR_VERSION-x86_64.AppImage \
+  --public-key path/to/release-public-key.asc \
+  --fingerprint YOUR_FULL_KEY_FINGERPRINT \
+  --artifact dist/linux/cyber-atlas_YOUR_VERSION_amd64.deb \
+  --artifact dist/linux/CyberAtlas-YOUR_VERSION-x86_64.AppImage
+```
+
+Owner actions still required: choose and establish the release-signing identity,
+securely back up its private key and revocation certificate, configure the
+keyring's default key, and publish the public key and fingerprint through
+project documentation. Never place private keys or passphrases in Git. These
+changes do not create or store a key. The manual GitHub Linux workflow remains
+unsigned; a key-custody choice and workflow integration are still required
+before it can produce signed artifacts. No signed build or release verification
+has been performed with the owner's key. Debian packages are covered by the
+signed checksum manifest, not by native `.deb` signatures or a signed APT
+repository.
+
+AppImage verification requires the external `validate` tool. Embedded
+signatures do not universally remove launcher prompts. See
+[AppImage signing](https://docs.appimage.org/packaging-guide/optional/signatures.html)
+and [AppImageUpdate](https://github.com/AppImageCommunity/AppImageUpdate).
 
 ## Step 4: Arch Linux — pending
 
