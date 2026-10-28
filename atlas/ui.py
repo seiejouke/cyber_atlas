@@ -47,6 +47,8 @@ class AtlasApp:
         self._image_item: int | None = None
         self._label_hits: list[tuple[str, tuple]] = []
         self._axis_label_boxes: list[tuple] = []
+        self._axis_hits: list[tuple[LayerId, tuple]] = []
+        self._layer_draft: LayerId | None = None
         self._hovered_node: str | None = None
         self._template_origin: dict | None = None
         self._active_template: AtlasTemplate | None = None
@@ -395,6 +397,7 @@ class AtlasApp:
             "placement_state": self.placement_state,
             "placement_origin": self._placement_origin,
             "node_move_origin": self._node_move_origin,
+            "layer_draft": self._layer_draft,
             "floating_position": self._floating_position,
             "last_size": self._last_size,
             "mode": self.scene.mode,
@@ -439,6 +442,7 @@ class AtlasApp:
         self._active_template = template
         self._loading = True
         self.selected = None
+        self._layer_draft = None
         self._node_move_origin = None
         self.placement_state = "locked"
         self._floating_position = None
@@ -493,6 +497,7 @@ class AtlasApp:
         self.placement_state = origin["placement_state"]
         self._placement_origin = origin["placement_origin"]
         self._node_move_origin = origin["node_move_origin"]
+        self._layer_draft = origin["layer_draft"]
         self._floating_position = origin["floating_position"]
         self._last_size = origin["last_size"]
         self.scene.set_preview(None)
@@ -665,26 +670,35 @@ class AtlasApp:
         self._changed()
 
     def _update_coordinate_controls(self) -> None:
+        saved = self.document.get(self.selected)
+        central = saved is not None and saved.is_layer_center
+        anchored = central or self._layer_draft is not None
         node_edit = self.scene.mode == "nodes" and self.selected is not None
-        creating = self.scene.mode == "nodes" and self.selected is None
+        creating = (self.scene.mode == "nodes" and self.selected is None) or self._layer_draft is not None
         moving = self._node_move_origin is not None
-        state = "disabled" if node_edit and not moving else "readonly"
+        state = "disabled" if anchored or node_edit and not moving else "readonly"
         self.layer_box.configure(state=state)
-        self.protocol_box.configure(state="disabled" if node_edit or moving else "readonly")
-        self.size_box.configure(state="disabled" if moving else "readonly")
-        self.scale_widget.set_enabled(not node_edit or moving)
+        self.protocol_box.configure(state="disabled" if anchored or node_edit or moving else "readonly")
+        self.size_box.configure(state="disabled" if anchored or moving else "readonly")
+        self.scale_widget.set_enabled(not anchored and (not node_edit or moving))
         fixed_center = self.depth_var.get() == CENTER_DEPTH and (
             creating or moving and BLOCK_SIZES[self.size_var.get()] == ANGULAR_SLOTS)
-        self.slot_slider.set_enabled((not node_edit or moving) and not fixed_center)
-        self.editor_heading.configure(text="MOVE NODE" if moving else "CREATE NODE" if creating else "EDIT NOTE" if node_edit else "NODE EDITOR")
-        self.save_button.configure(text="Save move" if moving else "Create node" if creating else "Save note" if node_edit else "Save node")
+        self.slot_slider.set_enabled(not anchored and (not node_edit or moving) and not fixed_center)
+        self.editor_heading.configure(text="CREATE LAYER CONCEPT" if self._layer_draft is not None else
+                                      "LAYER CONCEPT" if central else "MOVE NODE" if moving else
+                                      "CREATE NODE" if creating else "EDIT NOTE" if node_edit else "NODE EDITOR")
+        self.save_button.configure(text="Save move" if moving else "Create node" if creating else "Save note" if central or node_edit else "Save node")
         self.add_button.configure(text="New node" if self.scene.mode == "nodes" else "Add here")
-        self.move_button.configure(text="Cancel move" if moving else "Move node")
-        self.move_button.grid() if node_edit or moving else self.move_button.grid_remove()
+        self.move_button.configure(text="Edit layer" if central else "Cancel move" if moving else "Move node")
+        self.move_button.grid() if central or node_edit or moving else self.move_button.grid_remove()
 
     def move_node(self) -> bool:
         if self._template_origin is not None:
             return False
+        saved = self.document.get(self.selected)
+        if saved is not None and saved.is_layer_center:
+            self.edit_design(layer_id=saved.layer)
+            return True
         if self._node_move_origin is not None:
             self.cancel_node_move()
             return True
@@ -730,12 +744,15 @@ class AtlasApp:
         size = self.size_var.get() if self.placement_state == "placing" or self.selected is None else self._addition_size()
         return self.scene.position_at(x, y, self._layer_id(), span=BLOCK_SIZES[size])
 
-    def edit_design(self) -> None:
+    def edit_design(self, *, layer_id: LayerId | None = None) -> None:
         if self._template_origin is not None:
             return
         if not self._allow_leave():
             return
         dialog = DesignEditor(self.root, self.document, self.apply_design)
+        if layer_id is not None:
+            dialog.notebook.select(dialog.layers)
+            dialog.layers.select(layer_id)
         self.root.wait_window(dialog)
 
     def apply_design(self, candidate: Atlas) -> bool:
@@ -835,7 +852,7 @@ class AtlasApp:
         if self._loading or not hasattr(self, "band_label"):
             return
         depth = self.depth_var.get()
-        creating_node = self.scene.mode == "nodes" and self.selected is None
+        creating_node = (self.scene.mode == "nodes" and self.selected is None) or self._layer_draft is not None
         if creating_node:
             desired_size = "Full" if depth == CENTER_DEPTH else "1/16"
             if self.size_var.get() != desired_size or (depth == CENTER_DEPTH and self.slot_var.get() != "01"):
@@ -858,7 +875,9 @@ class AtlasApp:
         footprint = " / All slots" if span == ANGULAR_SLOTS else (
             f" / Slots {slot + 1:02d}{' → ' if end < slot else '–'}{end + 1:02d}" if span > 1 else ""
         )
-        fixed_center = depth == CENTER_DEPTH and (creating_node or self._node_move_origin is not None and span == ANGULAR_SLOTS)
+        saved = self.document.get(self.selected)
+        central = saved is not None and saved.is_layer_center
+        fixed_center = central or depth == CENTER_DEPTH and (creating_node or self._node_move_origin is not None and span == ANGULAR_SLOTS)
         self.slot_label.configure(text="Start slot: fixed at Center" if fixed_center else
                                   f"Start slot {slot + 1:02d} / 16 · {slot * 360 / ANGULAR_SLOTS:g}°{footprint}")
         self.slot_slider.set_context(span, self.document.free_starts(layer, depth, span, exclude_id=self.selected))
@@ -868,7 +887,11 @@ class AtlasApp:
         valid = self._refresh_preview()
         self.save_button.state(["disabled"] if placing or ((creating_node or moving) and not valid) else ["!disabled"])
         noun = "node" if self.scene.mode == "nodes" else "block"
-        if moving:
+        if central:
+            text = "Layer concept: edit its title and notes. Edit layer to rename or reorder the layer."
+        elif self._layer_draft is not None:
+            text = "Create this layer's central concept. Its position is fixed on the layer axis."
+        elif moving:
             text = "Placing: click to lock (Esc cancels move)." if placing else (
                 "Moving: choose a layer, position and start slot. Save move to keep; Esc cancels.")
         elif creating_node:
@@ -925,7 +948,8 @@ class AtlasApp:
             self._hover_job = None
 
     def begin_placement(self) -> None:
-        if self.scene.mode == "nodes":
+        saved = self.document.get(self.selected)
+        if self.scene.mode == "nodes" or self._layer_draft is not None or (saved is not None and saved.is_layer_center):
             return
         self._cancel_hover()
         self._placement_origin = self._preview_candidate()
@@ -991,6 +1015,7 @@ class AtlasApp:
         self.slot_slider.cancel_drag()
         self._cancel_hover()
         self._node_move_origin = None
+        self._layer_draft = None
         self.placement_state = "placing" if placing else "locked"
         self._floating_position = None
         self._loading = True
@@ -1050,6 +1075,45 @@ class AtlasApp:
         self._load_editor(node)
         return True
 
+    def select_layer(self, layer_id: LayerId) -> bool:
+        """Open a saved center note, or a draft for a legacy reference marker."""
+        if self._template_origin is not None:
+            return False
+        node = self.document.layer_center(layer_id)
+        # Preserve legacy split-center layouts and let their existing notes be
+        # edited rather than creating a full disk over occupied center slots.
+        if node is None:
+            node = next((note for note in self.document.nodes
+                         if note.layer == layer_id and note.depth == CENTER_DEPTH), None)
+        if node is not None:
+            if not self.select_node(node.id):
+                return False
+        elif self._layer_draft != layer_id:
+            if hasattr(self, "flows") and self.flows.active:
+                return False
+            if not self._allow_leave():
+                return False
+            # Saving a generic center draft while leaving it may have created
+            # the very note this layer click is meant to select.
+            if self.document.layer_center(layer_id) is not None:
+                return self.select_layer(layer_id)
+            self._load_editor(None, (layer_id, None, CENTER_DEPTH), slot=0, size="Full")
+            self._layer_draft = layer_id
+            self._loading = True
+            self.name_var.set(self.document.design.layer(layer_id).name)
+            self._loading = False
+            self._loaded_form = self._form_state()
+            self._changed()
+            self.name_entry.focus_set()
+        if self.scene.layer_filter not in (None, layer_id):
+            self.filter_var.set(self._layer_displays[layer_id])
+            self.scene.set_layer_filter(layer_id)
+        if self.scene.protocol_filter is not None and (node is None or not self.scene.is_visible(node)):
+            self.protocol_filter_var.set(self._all_protocols)
+            self.scene.set_protocol_filter(None)
+        self.request_render()
+        return True
+
     def _commit(self, document: Atlas, *, kind="save", summary=None, error_parent=None) -> bool:
         try:
             result = self.history.store.save(document, expected=self.document, kind=kind, summary=summary, writer=write_atlas)
@@ -1092,7 +1156,7 @@ class AtlasApp:
             return False
         try:
             existing = self.document.get(self.selected)
-            if self.scene.mode == "nodes" and existing is not None and not moving:
+            if existing is not None and (existing.is_layer_center or self.scene.mode == "nodes" and not moving):
                 values = dict(name=self.name_var.get().strip(), notes=self.notes.get("1.0", "end-1c"))
                 layer = existing.layer
             else:
@@ -1128,6 +1192,8 @@ class AtlasApp:
             return
         coordinate = (self._layer_id(), self._protocol_id(), self.depth_var.get())
         existing = self.document.get(self.selected)
+        if (existing is not None and existing.is_layer_center) or self._layer_draft is not None:
+            coordinate = (coordinate[0], coordinate[1], 0)
         start = existing.slot + existing.span if existing else int(self.slot_var.get()) - 1
         if self.scene.mode == "nodes":
             size = "Full" if coordinate[2] == CENTER_DEPTH else "1/16"
@@ -1150,7 +1216,7 @@ class AtlasApp:
             return False
         if not self._allow_leave():
             return False
-        if self.document.nodes or self.document.flows:
+        if self.document.has_content:
             if not messagebox.askyesno(
                 "Start an empty atlas?",
                 f"Replace all {len(self.document.nodes)} saved blocks and {len(self.document.flows)} flows with an empty atlas?\n\n"
@@ -1159,7 +1225,9 @@ class AtlasApp:
                 parent=self.root,
             ):
                 return False
-            if not self._commit(Atlas(design=self.document.design), kind="reset", summary="Started an empty atlas"):
+        if self.document.has_content or len(self.document.nodes) != len(self.document.design.layers):
+            if not self._commit(Atlas(design=self.document.design).with_layer_centers(),
+                                kind="reset", summary="Started an empty atlas with editable layer concepts"):
                 return False
         # Repeating this action on an empty document must preserve its backup.
         self.filter_var.set("All layers")
@@ -1167,7 +1235,7 @@ class AtlasApp:
         self.scene.set_layer_filter(None)
         self.scene.set_protocol_filter(None)
         self._last_size = "1/16"
-        self._load_editor(None)
+        self._load_editor(self.document.nodes[0] if self.document.nodes else None)
         self.reset_view()
         self._set_status(f"Empty atlas  /  {self.path}")
         self.name_entry.focus_set()
@@ -1306,6 +1374,7 @@ class AtlasApp:
         self.canvas.tag_lower(self._image_item)
         self.canvas.delete("overlay")
         self._label_hits.clear()
+        self._axis_hits.clear()
         visible = [n for n in self.document.nodes if self.scene.is_visible(n)
                    and (self.scene.mode != "nodes" or self.scene.actors[n.id][0].GetVisibility())]
         node_view = self.scene.mode == "nodes"
@@ -1333,9 +1402,14 @@ class AtlasApp:
             x, y, depth = self.scene.project((0.0, 0.0, self.document.design.z_base + i - 0.5))
             if not (0 <= depth <= 1 and 0 <= y <= height):
                 continue
+            marker = self.scene.axis_markers.get(layer.id)
+            if marker is not None and marker.GetVisibility() and 0 <= x <= width and not self.scene.occludes(x, y):
+                self._axis_hits.append((layer.id, (x - 9, y - 9, x + 9, y + 9)))
             # Reference labels must not float through a solid in front of them.
             if not node_view and self.scene.occludes(x - 24, y):
-                continue
+                center_note = self.document.layer_center(layer.id)
+                if center_note is None or self.scene.pick(x, y) != center_note.id:
+                    continue
             color = layer.color if self.scene.layer_filter in (None, layer.id) else "#41566a"
             axis_text = f"L{i} {layer.name}"
             while self.mono_font.measure(axis_text) > 170 and len(axis_text) > 4:
@@ -1353,6 +1427,7 @@ class AtlasApp:
                 self.canvas.create_text(x - 7, y - 7, text="00", anchor="se", fill=color,
                                         font=(self.mono, 7), tags="overlay")
             self._axis_label_boxes.append(label_box)
+            self._axis_hits.append((layer.id, label_box))
         labeled = []
         if node_view:
             self.information.draw_parent_indicators()
@@ -1448,6 +1523,13 @@ class AtlasApp:
                 return node_id
         return self.scene.pick(x, y)
 
+    def _layer_at(self, x: float, y: float) -> LayerId | None:
+        x0, y0, x1, y1 = self.compass.reserved_box
+        if x0 <= x <= x1 and y0 <= y <= y1:
+            return None
+        return next((layer_id for layer_id, (x0, y0, x1, y1) in reversed(self._axis_hits)
+                     if x0 <= x <= x1 and y0 <= y <= y1), None)
+
     def _press(self, event) -> str:
         self.compass.cancel_animation()
         self._cancel_hover()
@@ -1475,8 +1557,11 @@ class AtlasApp:
 
     def _release(self, event) -> str:
         if self._pressed is not None and not self._moved and event.num == 1:
+            layer_id = self._layer_at(event.x, event.y)
             if self._template_origin is not None:
                 pass
+            elif self.placement_state != "placing" and layer_id is not None:
+                self.select_layer(layer_id)
             elif self.scene.mode == "nodes" or self.clusters.editing:
                 node_id = self._pick_at(event.x, event.y)
                 if node_id is not None:
@@ -1553,7 +1638,8 @@ class AtlasApp:
                 self._hovered_node = hit
                 self.scene.set_hovered(hit)
                 self.request_render()
-            self.canvas.configure(cursor="hand2" if hit or (self.scene.mode == "blocks" and self.scene.pick_preview(x, y)) else "fleur")
+            self.canvas.configure(cursor="hand2" if hit or self._layer_at(x, y) is not None or
+                                  (self.scene.mode == "blocks" and self.scene.pick_preview(x, y)) else "fleur")
             if self.scene.mode == "blocks" and self.placement_state == "placing" and self._pressed is None:
                 position = self._position_at(x, y)
                 if position is not None:

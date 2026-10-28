@@ -210,6 +210,8 @@ def main():
             "Notes are saved in $XDG_DATA_HOME/CyberAtlas/atlas.json or ~/.local/share/CyberAtlas/atlas.json.\n"
             "Blocks starts in Outline appearance; select a block to fill it, or choose Solid to fill all blocks.\n"
             "Use Updates to check releases; daily checks are optional and off by default.\n"
+            "Central layer concepts: click their sphere or layer label to edit their notes.\n"
+            "Edit layer changes layer naming and order; New node / Add here starts an outward concept.\n"
             "Logs are stored beside the atlas in logs/. Removing the application leaves your notes in place.\n", encoding="utf-8")
         packaged = check_application([str(bundle / "CyberAtlas")], destination / "linux-packaged-test-results.json", work)
         package = make_deb(bundle, work, destination)

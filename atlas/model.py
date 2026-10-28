@@ -193,6 +193,10 @@ class Node:
     def occupied_slots(self) -> frozenset[int]:
         return frozenset((self.slot + offset) % ANGULAR_SLOTS for offset in range(self.span))
 
+    @property
+    def is_layer_center(self) -> bool:
+        return self.depth == CENTER_DEPTH and self.span == ANGULAR_SLOTS
+
     @classmethod
     def create(cls, name: str, layer: LayerId, protocol: str | None, depth: int, notes: str = "", *, slot: int = 0, span: int = 1) -> Node:
         return cls(uuid4().hex, name.strip(), layer, protocol, depth, notes, slot, span)
@@ -477,11 +481,34 @@ class Atlas:
     def get(self, node_id: str | None) -> Node | None:
         return next((n for n in self.nodes if n.id == node_id), None)
 
+    def layer_center(self, layer_id: LayerId) -> Node | None:
+        return next((node for node in self.nodes if node.layer == layer_id and node.is_layer_center), None)
+
+    def with_layer_centers(self, layer_ids=None) -> Atlas:
+        """Create ordinary notes at unoccupied layer centers, preserving saved content."""
+        occupied = {node.layer for node in self.nodes if node.depth == CENTER_DEPTH}
+        additions = tuple(Node.create(layer.name, layer.id, None, CENTER_DEPTH, span=ANGULAR_SLOTS)
+                          for layer in self.design.layers
+                          if layer.id not in occupied and (layer_ids is None or layer.id in layer_ids))
+        # Older files can contain several partial center blocks. Never replace
+        # those blocks, their positions or references with a new full center.
+        return replace(self, nodes=self.nodes + additions) if additions else self
+
+    @property
+    def has_content(self) -> bool:
+        """Fresh, unnamed-by-the-user layer centers alone are an empty workspace."""
+        return bool(self.subconcepts or self.information_entries or self.flows or any(
+            not node.is_layer_center or node.name != self.design.layer(node.layer).name
+            or node.notes or node.protocol is not None for node in self.nodes))
+
     def with_node(self, node: Node) -> Atlas:
         """Return a validated copy; never mutate the current document on failure."""
         previous = self.get(node.id)
         if previous is None:
             return replace(self, nodes=self.nodes + (node,))
+        if previous.is_layer_center and (node.layer, node.depth, node.slot, node.span) != (
+                previous.layer, previous.depth, previous.slot, previous.span):
+            raise AtlasError("A layer's central concept stays on its axis. Use Edit layer to reorder the layer.")
         return replace(self, nodes=tuple(node if old.id == node.id else old for old in self.nodes))
 
     def free_starts(self, layer: LayerId, depth: int, span: int = 1, *, exclude_id: str | None = None) -> tuple[int, ...]:

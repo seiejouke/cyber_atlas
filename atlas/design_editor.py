@@ -307,7 +307,8 @@ class EntryEditor(ttk.Frame):
         entry = next(e for e in self.entries if e.id == self.current)
         remaining = tuple(e for e in self.entries if e.id != entry.id)
         attribute = "layer" if self.kind == "layers" else "protocol"
-        count = sum(getattr(n, attribute) == entry.id for n in self.owner.draft.nodes)
+        unused = self.owner.draft.unused_centers(entry.id) if self.kind == "layers" else set()
+        count = sum(getattr(n, attribute) == entry.id and n.id not in unused for n in self.owner.draft.nodes)
         if count and replacement_id is None:
             dialog = ReassignDialog(self.owner, entry, remaining, count)
             self.owner.wait_window(dialog)
@@ -470,6 +471,9 @@ class DesignEditor(tk.Toplevel):
             mode = next(key for key, value in LABEL_MODES.items() if value == self.label_mode.get())
             candidate = self.draft.to_atlas(layer_caption=self.layer_caption.get().strip(),
                                             protocol_caption=self.protocol_caption.get().strip(), label_mode=mode)
+            previous_layers = {layer.id for layer in self._saved_document.design.layers}
+            candidate = candidate.with_layer_centers({layer.id for layer in candidate.design.layers
+                                                     if layer.id not in previous_layers})
         except AtlasError as exc:
             self.error.set(str(exc))
             return False

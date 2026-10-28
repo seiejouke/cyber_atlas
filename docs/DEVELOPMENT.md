@@ -110,7 +110,8 @@ Nodes uses these same coordinates and occupancy rules, with a uniform sphere
 at each note's position instead of its curved block mesh. Spheres do not grow
 with saved block sizes. New nodes and moves use the editor's dropdowns and
 sliders. Viewport clicks select saved nodes; **Move node** explicitly unlocks
-their position controls. A full Center note sits on the layer axis.
+their position controls. A full Center note sits on the layer axis and stays
+anchored there; its **Edit layer** action opens the design editor at that layer.
 Connections join neighbors on the same ring and nearest neighbors on the next
 occupied ring, never across layers.
 
@@ -373,6 +374,38 @@ integration, information scaling, mastery scores or nested orbits are inferred.
 
 Run `python tools/capture_clusters.py` on a graphical desktop to refresh the real
 cluster screenshots from an isolated example atlas.
+
+## Editable layer concepts
+
+Layer concepts are ordinary schema-11 `Node` records at `CENTER_DEPTH`, with a
+full sixteen-slot footprint and their own persistent IDs. `Node.is_layer_center`
+and `Atlas.layer_center` identify them. `Atlas.with_layer_centers` adds notes at
+unoccupied centers while reusing existing notes and preserving legacy partial
+center blocks. New-file startup, empty-atlas reset and the Blank template create
+centers. Applying a design creates them only for newly added layers. Titles
+initially use the saved layer name, then edit independently of layer metadata.
+
+The inspector locks a saved center's geometry and routes **Edit layer** to the
+correct design entry. `Atlas.with_node` also rejects attempts to reposition a
+saved full center; explicit design reassignment retains its existing validation.
+Creating an outward note from a center starts on radial band zero. Centers use
+the existing note, entry, orbit, FlowNotes, backup and history paths.
+
+`AtlasApp.select_layer` handles axis labels and legacy markers. Missing centers
+open an anchored draft without writes; normal Save creates the record. Template
+preview cancellation and representation changes preserve the draft. Existing
+split-center layouts open an existing center block without replacing any data.
+Fresh centers alone count as an empty atlas, so repeated reset preserves the
+previous backup and history. The portable file version is unchanged.
+
+`DesignDraft` omits unused default centers when their layers are removed or
+cleared. Edited centers and centers referenced by entries, children or flows
+remain subject to explicit reassignment and occupancy validation. Removing an
+unused center is confined to the design draft until Apply succeeds.
+
+Focused checks: `python -m unittest discover -s tests -p test_layer_centers.py`
+and `python tests/layer_center_view_checks.py`. The desktop checks also run in
+the full GUI smoke suite, using disposable atlas files.
 
 ## Spatial connections
 

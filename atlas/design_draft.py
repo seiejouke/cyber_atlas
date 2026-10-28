@@ -45,6 +45,9 @@ class DesignDraft:
         self._known[kind].update((e.id, e) for e in entries)
 
     def clear(self, kind: str) -> None:
+        if kind == "layers":
+            unused = set().union(*(self.unused_centers(layer.id) for layer in self.layers))
+            self.nodes = tuple(node for node in self.nodes if node.id not in unused)
         self.set_entries(kind, ())
         if kind == "protocols":
             self.nodes = tuple(replace(node, protocol=None) for node in self.nodes)
@@ -69,9 +72,20 @@ class DesignDraft:
             return "Reassign blocks from removed entries before applying."
         return "Changes take effect when you apply."
 
-    def _moved_nodes(self, kind: str, moves: dict) -> tuple[Node, ...]:
+    def unused_centers(self, layer_id: LayerId) -> set[str]:
+        """Default center placeholders can leave with a removed layer."""
+        layer = self._known["layers"][layer_id]
+        referenced = {child.parent_id for child in self.subconcepts}
+        referenced.update(entry.concept_id for entry in self.information_entries)
+        referenced.update(step.concept_id for flow in self.flows for step in flow.steps)
+        return {node.id for node in self.nodes if node.layer == layer_id and node.is_layer_center
+                and node.name == layer.name and not node.notes and node.protocol is None
+                and node.id not in referenced}
+
+    def _moved_nodes(self, kind: str, moves: dict, *, source=None) -> tuple[Node, ...]:
         attribute = self._attribute(kind)
-        nodes = tuple(replace(n, **{attribute: moves.get(getattr(n, attribute), getattr(n, attribute))}) for n in self.nodes)
+        nodes = tuple(replace(n, **{attribute: moves.get(getattr(n, attribute), getattr(n, attribute))})
+                      for n in (self.nodes if source is None else source))
         validate_occupancy(nodes, {key: entry.name for key, entry in self._known["layers"].items()})
         return nodes
 
@@ -90,10 +104,12 @@ class DesignDraft:
         if len(entries) == 1:
             raise AtlasError("Keep at least one entry, or use the clear-list button to start over.")
         remaining = tuple(e for e in entries if e.id != entry_id)
-        used = any(getattr(n, self._attribute(kind)) == entry_id for n in self.nodes)
+        unused = self.unused_centers(entry_id) if kind == "layers" else set()
+        source = tuple(node for node in self.nodes if node.id not in unused)
+        used = any(getattr(n, self._attribute(kind)) == entry_id for n in source)
         if used and replacement_id not in {e.id for e in remaining}:
             raise AtlasError("Choose an existing replacement entry.")
-        nodes = self._moved_nodes(kind, {entry_id: replacement_id} if used else {})
+        nodes = self._moved_nodes(kind, {entry_id: replacement_id} if used else {}, source=source)
         self.set_entries(kind, remaining)
         self.nodes = nodes
 

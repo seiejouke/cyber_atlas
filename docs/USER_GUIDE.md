@@ -355,6 +355,29 @@ The first launch creates a local atlas containing the 14 starter notes from
 the HTML concept. Blocks support coordinate editing; clicking a sphere in
 Nodes opens its title and personal notes. **Move node** unlocks its position controls.
 
+**Current source, pending a packaged update:** new atlases also start with an
+editable central concept for each layer. New layers and the Blank template
+create these concepts automatically. Click a central sphere or its layer label
+to edit the title and notes through the normal editor. Central concepts support
+additional information, information heat, orbital subconcepts, FlowNotes and
+saved-state history. Their positions stay fixed on the layer axis.
+
+Choose **Edit layer** to rename or reorder the selected concept's layer. The
+concept's title and the layer's name can differ; changing one preserves the
+other. **New node** in Nodes or **Add here** in Blocks starts an outward concept
+on the same layer.
+
+Existing atlases preserve their saved center notes and references. If a layer
+has only a reference marker, clicking the marker or label opens a draft named
+after the layer. **Create node** saves it; opening the draft alone does not
+change the saved atlas. Older layouts with split center blocks keep those
+blocks, and the layer label opens an existing center block for editing.
+
+Removing or rebuilding layers also removes their unused default center notes
+from the design draft. Centers with custom titles, notes, additional entries,
+subconcepts or FlowNote references remain protected by the normal reassignment
+and overlap checks. **Cancel** preserves the saved atlas.
+
 Click **Templates** to preview a general-purpose example in the actual Nodes
 renderer. The built-in topics are Blank atlas, Python, TypeScript, Web
 application, Solar system and Project planning. A preview is read-only and is
@@ -467,8 +490,11 @@ red and disable **Save move**, including reservations hidden by filters. The
 preview remains visible when its destination is outside the current layer filter.
 **Save move** saves the new position and any text edits. **Cancel move** or
 **Escape** restores the starting coordinates while keeping title and note edits.
-Moves keep the same node ID, protocol and block size, including when moving
-between Center and a ring. A full-size node still needs an entirely free ring.
+Moves keep the same node ID, protocol and block size. In current source, full
+Center concepts stay anchored; use **Edit layer** to reorder their layers.
+Other nodes retain their saved footprint when moved, and a full-size radial
+node can move to an empty Center to become the layer's central concept.
+A full-size node still needs an entirely free ring.
 An unsaved move survives switching between Blocks and Nodes; both views show
 the saved position. Drag and wheel continue to rotate, pan and zoom the view.
 

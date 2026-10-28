@@ -225,21 +225,19 @@ def check_node_view(root, app, path, checks):
         assert app.new_empty_atlas()
     _pump(root)
     assert app.scene.mode == "nodes" and app.document.design == without_protocols.design
-    assert not app.document.nodes and not app.scene.guides
+    assert len(app.document.nodes) == len(app.document.design.layers)
+    assert not app.document.has_content
     layer = app.document.design.layers[-1]
+    center = app.document.layer_center(layer.id)
     axis_x, axis_y, _ = app.scene.project(app.scene.layer_anchor(layer.id))
     axis_x, axis_y = round(axis_x), round(axis_y)
-    creation_form = app._form_state()
     app.canvas.event_generate("<ButtonPress-1>", x=axis_x, y=axis_y)
     app.canvas.event_generate("<ButtonRelease-1>", x=axis_x, y=axis_y)
     _pump(root)
-    assert app.selected is None and app._form_state() == creation_form
-    app.scale_widget.focus_force()
-    app.scale_widget.event_generate("<Home>")
-    _pump(root)
+    assert app.selected == center.id and not app.dirty
     assert app.depth_var.get() == CENTER_DEPTH and app.size_var.get() == "Full"
     assert app.slot_var.get() == "01" and not app.slot_slider.enabled
-    assert app.scene.preview_node is not None and app.scene.preview_node.span == 16
+    assert not app.scale_widget.enabled and app.move_button.cget("text") == "Edit layer"
     app.name_var.set("Center sphere")
     app.notes.insert("1.0", "An empty custom atlas can start with an editable axis note.")
     assert app.save_node()
@@ -248,12 +246,13 @@ def check_node_view(root, app, path, checks):
     assert center.depth == CENTER_DEPTH and center.protocol is None and center.span == 16
     assert app.scene.node_anchor(center) == app.scene.layer_anchor(center.layer)
     assert app.scene.pick(*point(center)) == center.id
-    assert set(app.scene.guides) == {center.position}
+    assert set(app.scene.guides) == {node.position for node in app.document.nodes}
     assert not app.scene.axis_markers[center.layer].GetVisibility()
     assert read_atlas(path) == app.document and not app.dirty
 
     app.new_node()
-    assert app.selected is None and app.save_button.instate(["disabled"])
+    assert app.selected is None and app.depth_var.get() == 0
+    assert app.save_button.instate(["!disabled"])
     app.depth_var.set(0)
     app.slot_var.set("05")
     assert app.size_var.get() == "1/16" and app.slot_slider.enabled
@@ -272,7 +271,7 @@ def check_node_view(root, app, path, checks):
     assert app.save_node()
     center = app.document.get(center.id)
     assert center.notes.endswith("Saved like every other node.") and read_atlas(path).get(center.id) == center
-    checks.append("the radial slider creates a full center note; empty-space clicks do nothing and the saved center sphere edits and connects normally")
+    checks.append("empty atlases contain editable, anchored layer concepts; adding an outward node preserves their identity and normal connections")
 
     root.geometry("1020x780")
     _pump(root)
@@ -424,20 +423,33 @@ def check_node_moves(root, app, path, checks):
     checks.append("switching notes during movement honors Save, Discard and Cancel; movement can also be cancelled from Blocks")
 
     app._load_editor(center)
+    with patch.object(app, "edit_design") as edit_layer:
+        app.move_button.invoke()
+    edit_layer.assert_called_once_with(layer_id=center.layer)
+    assert app._node_move_origin is None and not app.slot_slider.enabled and not app.scale_widget.enabled
+    assert app.layer_box.instate(["disabled"]) and app.size_box.instate(["disabled"])
+    app.set_view_mode("blocks")
+    app.begin_placement()
+    assert app.placement_state == "locked"
+    app.set_view_mode("nodes")
+    full = Node("move-full", "Full ring", "move-base", None, 0, span=16)
+    assert app.apply_design(app.document.with_node(full))
+    app._load_editor(full)
     app.move_button.invoke()
-    assert not app.slot_slider.enabled
     app.depth_var.set(2)
     assert app.size_var.get() == "Full" and app.slot_slider.enabled
     assert app.save_button.instate(["disabled"])  # A full ring would overlap both saved blocks.
-    app.depth_var.set(0)
+    app.depth_var.set(4)
     assert app.scene.preview_node.span == 16 and app.save_button.instate(["!disabled"])
     assert app.save_node()
-    ring = app.document.get(center.id)
-    assert ring.depth == 0 and ring.span == 16
+    ring = app.document.get(full.id)
+    assert ring.depth == 4 and ring.span == 16
     app.move_button.invoke()
+    app.layer_var.set(app._layer_displays["move-top"])
     app.depth_var.set(CENTER_DEPTH)
     assert not app.slot_slider.enabled and app.scene.preview_node.span == 16
-    assert app.save_node() and app.document.get(center.id) == center
+    assert app.save_node() and app.document.get(full.id).is_layer_center
+    assert app.move_button.cget("text") == "Edit layer"
     assert app.scene.node_anchor(app.document.get(center.id)) == app.scene.layer_anchor(center.layer)
     app._load_editor(app.document.get(wide.id))
     app.move_button.invoke()
@@ -445,7 +457,7 @@ def check_node_moves(root, app, path, checks):
     assert app.size_var.get() == "1/4" and app.slot_slider.enabled
     assert app.scene.preview_node.span == 4
     app.move_button.invoke()
-    checks.append("moving between Center and rings preserves full and partial block sizes and applies the same overlap rules")
+    checks.append("layer concepts stay anchored in both views; full and partial radial moves retain footprints and a full node can become an anchored center")
 
     original_bytes = path.read_bytes()
     app.move_button.invoke()  # An unchanged move is a clean draft, including when previewing templates.

@@ -11,7 +11,10 @@ class TemplateTests(unittest.TestCase):
             tuple(template.name for template in TEMPLATES),
             ("Blank atlas", "Python", "TypeScript", "Web application", "Solar system", "Project planning"),
         )
-        self.assertFalse(find_template("blank").atlas.nodes)
+        blank = find_template("blank").atlas
+        self.assertFalse(blank.has_content)
+        self.assertEqual(len(blank.nodes), 1)
+        self.assertEqual(blank.layer_center("blank-layer-1"), blank.nodes[0])
 
     def test_every_template_uses_the_normal_atlas_schema(self):
         for template in TEMPLATES:

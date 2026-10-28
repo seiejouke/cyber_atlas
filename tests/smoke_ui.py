@@ -35,6 +35,7 @@ from compass_view_checks import check_compass
 from navigation_view_checks import check_navigation
 from label_view_checks import check_labels
 from flow_view_checks import check_flows
+from layer_center_view_checks import check_layer_centers
 
 
 def pump(root, steps=5):
@@ -100,7 +101,8 @@ def check_clear_lists(root, app, path, checks):
     finally:
         if dialog.winfo_exists():
             dialog.cancel()
-    assert len(candidates) == 1 and not candidates[0].nodes
+    assert len(candidates) == 1 and not candidates[0].has_content
+    assert len(candidates[0].nodes) == 1 and candidates[0].nodes[0].name == "My layer"
     assert candidates[0].design.layers[0].name == "My layer"
     assert candidates[0].design.protocols == ()
     assert path.read_bytes() == original_bytes
@@ -181,7 +183,11 @@ def check_clear_lists(root, app, path, checks):
             dialog.cancel()
     assert app.document == read_atlas(path)
     assert read_atlas(path.with_suffix(".json.bak")) == cleared
-    assert len(app.document.nodes) == len(fixture.nodes) == 3
+    assert len(fixture.nodes) == 3
+    assert all((app.document.get(node.id).name, app.document.get(node.id).notes,
+                app.document.get(node.id).depth, app.document.get(node.id).slot, app.document.get(node.id).span)
+               == (node.name, node.notes, node.depth, node.slot, node.span) for node in fixture.nodes)
+    assert len(app.document.nodes) == len(fixture.nodes) + len(app.document.design.layers)
     assert all(p.name == "Replacement protocol" for p in app.document.design.protocols)
     assert all(layer.name.startswith("Replacement layer") for layer in app.document.design.layers)
     checks.append("rebuilt lists fit the minimum design window; failed Apply keeps the draft; successful Apply saves all notes and a backup")
@@ -837,11 +843,12 @@ def main(report_path=None):
                  patch("atlas.ui.messagebox.askyesno", return_value=True):
                 assert app.new_empty_atlas()
             pump(root)
-            assert app.document == read_atlas(path) == Atlas()
-            assert not app.scene.actors and app.selected is None and not app.dirty
+            assert app.document == read_atlas(path) and not app.document.has_content
+            assert len(app.scene.actors) == len(app.document.design.layers)
+            assert app.document.get(app.selected).is_layer_center and not app.dirty
             assert app.filter_var.get() == "All layers" and app.protocol_filter_var.get() == "All protocols"
-            assert app.name_var.get() == "" and app.notes.get("1.0", "end-1c") == ""
-            assert app.size_var.get() == "1/16" and app.slot_var.get() == "01"
+            assert app.name_var.get() == app.document.design.layers[0].name and app.notes.get("1.0", "end-1c") == ""
+            assert app.size_var.get() == "Full" and app.slot_var.get() == "01"
             backup_path = path.with_suffix(".json.bak")
             saved_previous = read_atlas(backup_path)
             assert len(saved_previous.nodes) == 16 and saved_previous.get(selected).name == "Saved before starting fresh"
@@ -945,7 +952,8 @@ def main(report_path=None):
             pump(root)
             assert app.document == read_atlas(path)
             assert len(app.document.design.layers) == 8 and len(app.document.design.protocols) == 18
-            assert app.document.nodes == original.nodes
+            assert app.document.nodes[:-1] == original.nodes
+            assert app.document.layer_center(custom_layer) == app.document.nodes[-1]
             assert app.layer_var.get() == "6  User services"
             assert app.layer_caption.cget("text") == "Tier" and app.protocol_caption.cget("text") == "Category"
             assert app.scene.design == app.document.design and len(app.scene._axis_actors) == 10
@@ -1026,7 +1034,8 @@ def main(report_path=None):
             assert exported == app.document
             with patch("atlas.ui.messagebox.askyesno", return_value=True):
                 assert app.new_empty_atlas()
-            assert app.document == Atlas(design=exported.design)
+            assert app.document.design == exported.design and not app.document.has_content
+            assert len(app.document.nodes) == len(exported.design.layers)
             assert read_atlas(path.with_suffix(".json.bak")) == exported
             with patch("atlas.ui.filedialog.askopenfilename", return_value=str(custom_export)), \
                  patch("atlas.ui.messagebox.askyesno", return_value=True):
@@ -1064,6 +1073,7 @@ def main(report_path=None):
             check_navigation(root, app, path, pump, checks)
             check_labels(root, app, path, pump, checks)
             check_flows(root, app, path, pump, checks)
+            check_layer_centers(root, app, path, pump, checks)
 
             root.geometry("1020x780")
             pump(root)

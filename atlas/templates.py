@@ -56,7 +56,8 @@ BLANK = AtlasTemplate(
     "blank",
     "Blank atlas",
     "A clean starting point with one editable axis level.",
-    Atlas(design=Design(
+    Atlas((Node("template-blank-1", "Starting point", "blank-layer-1", None,
+                CENTER_DEPTH, span=ANGULAR_SLOTS),), design=Design(
         (Layer("blank-layer-1", "Starting point", _COLORS[0]),),
         (),
         "Level",

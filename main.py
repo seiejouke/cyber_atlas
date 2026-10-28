@@ -66,7 +66,7 @@ def main() -> int:
                 path.rename(broken)
                 write_atlas(path, document, backup=False)
         else:
-            document = Atlas() if args.empty else example_atlas()
+            document = (Atlas() if args.empty else example_atlas()).with_layer_centers()
             write_atlas(path, document, backup=False)
         app = AtlasApp(root, path, document, settings_directory=path.parent if args.self_test else default_path().parent,
                        automatic_updates=not bool(args.self_test))

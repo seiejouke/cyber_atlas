@@ -44,6 +44,19 @@ drafts and history. See the [navigation guide](docs/USER_GUIDE.md#orientation-co
 
 ![Cyber Atlas 0.9.3 showing the clickable compass above the visible-layer slider](docs/navigation.png)
 
+## Editable layer concepts (source)
+
+**Implemented in source; not yet included in the v0.10.0 downloads.** New layers,
+new atlases and the Blank template start with an editable concept on each layer's
+vertical axis. Click its sphere or layer label to edit its title and notes, add
+information or subconcepts, or reference it in FlowNotes. **Edit layer** opens
+the layer's naming and ordering controls; the concept stays anchored to its layer.
+
+Older atlases keep their existing center notes. Clicking a layer marker without
+a note opens a named draft; **Create node** saves it through the normal save and
+history workflow. **New node / Add here** from a central concept starts an
+outward concept on that layer.
+
 ## Orbital clusters
 
 Select a saved node and choose **+ Subconcept** to create a related type with
@@ -346,6 +359,7 @@ Sources, relations, assessments, and interactive study notes connect these dimen
 | [Multi-atlas workspace](#planned-feature-multi-atlas-workspace): add, import and arrange independent atlases in one viewport | **Planned** |
 | Blocks and Nodes visualizations | **Implemented** |
 | Stable node coordinates and manual movement | **Implemented** |
+| Editable central layer concepts with automatic creation and clickable layer labels | **Implemented in source** — pending a packaged update |
 | Clickable orientation compass with six axis views | **Implemented** |
 | Retractable navigation panel and synchronized layer slider | **Implemented** |
 | Stable node and suborbital labels with selection priority | **Implemented** |
