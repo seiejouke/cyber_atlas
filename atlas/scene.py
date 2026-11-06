@@ -183,8 +183,6 @@ class Scene(FlowScene, OrbitScene):
                 self._line((0, 0, midpoint), (0, 0, upper_z - AXIS_NODE_RADIUS), 1.25,
                            color=upper.color, opacity=.62))
         for layer, z in centers:
-            self._line((AXIS_NODE_RADIUS, 0, z), (.14, 0, z), 1.0,
-                       color=layer.color, opacity=.72)
             marker = vtkActor()
             marker.SetMapper(self._axis_sphere_mapper)
             marker.SetPosition(0, 0, z)
